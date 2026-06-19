@@ -19,35 +19,71 @@
 
 ### 2026-06-19 — 修复 Cloudflare / CI 构建失败
 
-- **根因**：`pnpm-workspace.yaml` 只有 `allowBuilds`、缺少 `packages` 字段，pnpm 将其视为无效 monorepo，安装阶段报错 `packages field missing or empty`（自 `e9964b6` 审计提交起）
-- **修复**：删除该文件（单包项目不需要 workspace 配置）；`allowBuilds` 改由 `package.json` 的 `pnpm.onlyBuiltDependencies` 管理
+- **现象**：首次部署成功后，自审计提交起每次 Cloudflare 构建均在 `pnpm install` 阶段失败，报错 `packages field missing or empty`；后续新增案卷的内容提交也因此无法上线
+- **根因**：`e9964b6` 审计时新增的 `pnpm-workspace.yaml` 只有 `allowBuilds`、缺少 `packages` 字段；Cloudflare 使用 pnpm 9，检测到该文件即视为无效 monorepo
+- **修复**（`602a2fa`）：
+  - 恢复合法的 `pnpm-workspace.yaml`（`packages: ['.']`，单包项目标准写法）
+  - `allowBuilds` 改由 `package.json` 的 `pnpm.onlyBuiltDependencies` 管理
+  - 锁定 `packageManager: "pnpm@9.15.9"`，CI 由 `package.json` 统一工具链版本
+- **部署注意**：修复推送后需在 Cloudflare 面板 **Clear build cache** 再重新部署，避免旧缓存残留无效 workspace 文件
 
-### 2026-07-08 — 三路线各 3 篇案卷 + 3 篇线索
+### 2026-06-19 — 三路线各 3 篇案卷 + 3 篇线索（`4314c81`）
 
-| 路线 | 案卷 # | 线索 |
-|------|--------|------|
-| 法国心理悬疑 | 015 固定座位的常客 · 016 寡妇的信封 · 017 黄昏雨窗 | 氛围即证词 · 梅格雷式细节 · 灰色动机 |
-| 美国硬汉派 noir | 018 霓虹窗上的倒影 · 019 最后一根烟 · 020 爵士俱乐部后门 | 硬汉派谎言 · 光与影 · 蛇蝎美人还是红鲱鱼 |
-| 日本新本格建筑 | 021 滑墙画廊 · 022 榻榻米的误差 · 023 楼梯间的两面镜子 | 移动墙体 · 榻榻米算术 · 镜像诡计 |
+致敬三条经典推理传统，各增 3 篇案卷 + 3 篇线索短文：
 
-全站现共 **23 篇案卷 + 23 篇线索**。
+| 路线 | caseId | 标题 | slug | 线索 slug |
+|------|--------|------|------|-----------|
+| 法国心理悬疑 | 015 | 固定座位的常客 | `the-cafe-regular` | `atmosphere-as-evidence` |
+| | 016 | 寡妇的信封 | `the-widows-envelope` | `gray-motives` |
+| | 017 | 黄昏雨窗 | `the-dusk-rain-window` | `daily-detail-inference` |
+| 美国硬汉派 noir | 018 | 霓虹窗上的倒影 | `the-neon-reflection` | `hardboiled-lie-tells` |
+| | 019 | 最后一根烟 | `the-last-cigarette` | `light-shadow-clues` |
+| | 020 | 爵士俱乐部后门 | `the-jazz-club-backdoor` | `femme-fatale-or-herring` |
+| 日本新本格建筑 | 021 | 滑墙画廊 | `the-sliding-wall-gallery` | `moving-walls-trick` |
+| | 022 | 榻榻米的误差 | `the-tatami-count` | `tatami-arithmetic` |
+| | 023 | 楼梯间的两面镜子 | `the-stairwell-mirror` | `mirror-reflection-tricks` |
 
-### 2026-06-19 — 新增 6 篇案卷 + 10 篇线索
+新增内容后已运行 `pnpm og:export` 生成分享图并入库。
+
+### 2026-06-19 — 新增 6 篇案卷 + 10 篇线索（`5cf65fb`）
 
 **案卷（Case #009–#014）** — 沿用七段式 MDX 结构，致敬世界名著诡计类型并改写为原创故事：
 
-| caseId | 标题 | 灵感来源 |
-|--------|------|----------|
-| 009 | 交叉时刻表 | 松本清张《点与线》式列车交会不在场证明 |
-| 010 | 临终那行字 | 埃勒里·奎因临终留言 / 克里斯蒂式误导 |
-| 011 | 纸门后的第三个房间 | 日本本格建筑诡计 / 江户川乱步式空间 |
-| 012 | 宣读遗嘱的二十秒 | 《罗杰疑案》式「主持者盲点」 |
-| 013 | 空展台上的倒影 | 乱步《人间椅子》式隐藏 / 监控死角 |
-| 014 | 暴风雨之夜的第七位客人 | 克里斯蒂暴风雪山庄 / 封闭名单 |
+| caseId | 标题 | slug | 灵感来源 |
+|--------|------|------|----------|
+| 009 | 交叉时刻表 | `the-crossing-timetable` | 松本清张《点与线》式列车交会不在场证明 |
+| 010 | 临终那行字 | `the-dying-scrawl` | 埃勒里·奎因临终留言 / 克里斯蒂式误导 |
+| 011 | 纸门后的第三个房间 | `the-paper-screen-room` | 日本本格建筑诡计 / 江户川乱步式空间 |
+| 012 | 宣读遗嘱的二十秒 | `the-will-reading` | 《罗杰疑案》式「主持者盲点」 |
+| 013 | 空展台上的倒影 | `the-empty-mannequin` | 乱步《人间椅子》式隐藏 / 监控死角 |
+| 014 | 暴风雨之夜的第七位客人 | `the-storm-villa` | 克里斯蒂暴风雪山庄 / 封闭名单 |
 
-**线索（10 篇）** — 推理技巧短文，order 5–14：临终留言、列车时刻表、日式现场、主持者盲点、超自然布景、身份替换、暴风雪山庄、毒物路径、脚印解读、公平本格。
+**线索（10 篇，order 5–14）**：
+
+| order | 标题 | slug |
+|-------|------|------|
+| 5 | 临终留言的四种读法 | `dying-messages-decoded` |
+| 6 | 列车与时刻表：不在场证明的经典漏洞 | `train-alibi-tricks` |
+| 7 | 本格推理里的「日式现场」 | `japanese-honkaku-scenes` |
+| 8 | 主持者也在场：别忽略宣读、记录、引导的人 | `the-hidden-narrator` |
+| 9 | 当「超自然」成为布景 | `staged-supernatural` |
+| 10 | 身份替换：先核对什么 | `identity-swap-checklist` |
+| 11 | 暴风雪山庄：为什么每个人都可疑 | `closed-circle-mystery` |
+| 12 | 毒物进入身体的八条路径 | `poison-delivery-paths` |
+| 13 | 读脚印之前，先问三个问题 | `reading-footprints` |
+| 14 | 公平本格：作者对你负有什么义务 | `fair-play-promise` |
 
 新增内容后已运行 `pnpm og:export` 生成分享图并入库。
+
+### 2026-06-19 — 移动端导航 · 分享 · 更新按钮 · 首批扩展案卷（`cfc7cb4`）
+
+| 类别 | 改动 |
+|------|------|
+| 导航 | 移动端导航修复；`Header.astro` 响应式布局 |
+| 分享 | 新增 `ShareBar.astro` 文章分享条 |
+| 更新 | 新增 `UpdatePrompt.astro` 独立 App 更新按钮；`version.json.ts` + `buildInfo.ts` |
+| 案卷 | #006 墙那边的笑声 · #007 湖里的那个人 · #008 同一壶里的毒 |
+| 线索 | `when-time-of-death-lies` 当「死亡时间」开始撒谎 |
 
 ### 2026-06-19 — 全站审计优化（a11y / SEO / 体验）
 
@@ -56,7 +92,7 @@
 | 无障碍 | `DetectiveNotes` 恢复焦点环 + `aria-describedby`；`EvidenceList` 清除标记前 `confirm()`；`NewsletterBox` 加 `aria-disabled`；`ArchiveFilter` 筛选按钮加 `aria-pressed`；微博分享加 `aria-label` |
 | 体验 | `ArchiveFilter` URL 参数持久化（`?type=` 等）；`ShareBar` 合并为「复制链接」；`ReadingProgress` 短页修复 + 线索页启用；案卷详情上下篇导航；首页文案中性化、「精选案卷」+ 总数；类型卡片链到档案馆；标签链到筛选页 |
 | SEO | `BaseLayout` 支持 `ogType` / `article:published_time` / JSON-LD；案卷与线索详情页输出结构化数据；`404` 显式 `path="/404"` |
-| 基础设施 | CI 新增 `pnpm verify:og` 校验分享图；修复 `pnpm-workspace.yaml`；删除 `package-lock.json`；`buildInfo` 本地用 `git rev-parse HEAD`；`_headers` 补安全头与 `version.json` no-store；`global.css` container 加 safe-area；页脚加站点地图链接；线索列表显示日期；Header ≤1100px 隐藏英文副标、`prefers-color-scheme` 默认主题 |
+| 基础设施 | CI 新增 `pnpm verify:og` 校验分享图；新增 `pnpm-workspace.yaml`（后于 `602a2fa` 修正为合法单包配置）；删除 `package-lock.json`；`buildInfo` 本地用 `git rev-parse HEAD`；`_headers` 补安全头与 `version.json` no-store；`global.css` container 加 safe-area；页脚加站点地图链接；线索列表显示日期；Header ≤1100px 隐藏英文副标、`prefers-color-scheme` 默认主题 |
 
 ### 2026-06-19 — 导航栏平板/手机布局
 
@@ -96,6 +132,68 @@
 - `pnpm og:export` — 从 `og-default.svg` 导出默认图，并为每个案卷/线索生成分享图（JPEG，需 commit 到 Git）
 - `pnpm verify:og` — CI 校验每个 slug 均有对应 `public/og/cases|clues/{slug}.jpg`
 - `devDependencies.sharp` — 用于 OG 图导出（仅 `og:export` 时使用，`pnpm build` 不依赖 sharp）
+
+---
+
+## 案卷与线索目录
+
+全站现共 **23 篇案卷 + 23 篇线索**（均已提交 GitHub `main` 分支）。
+
+### 案卷一览（`src/content/cases/`）
+
+| caseId | 标题 | slug |
+|--------|------|------|
+| 001 | 雨夜旅馆的第三个杯子 | `third-cup-in-the-rainy-inn` |
+| 002 | 凌晨 2:17 的电梯 | `elevator-at-2-17` |
+| 003 | 没有脚印的雪地 | `snow-without-footprints` |
+| 004 | 最后一页不是遗书 | `the-last-page` |
+| 005 | 配重落下的那一刻 | `the-delayed-counterweight` |
+| 006 | 墙那边的笑声 | `the-laughter-through-the-wall` |
+| 007 | 湖里的那个人 | `the-misidentified-man` |
+| 008 | 同一壶里的毒 | `poison-in-the-last-cube` |
+| 009 | 交叉时刻表 | `the-crossing-timetable` |
+| 010 | 临终那行字 | `the-dying-scrawl` |
+| 011 | 纸门后的第三个房间 | `the-paper-screen-room` |
+| 012 | 宣读遗嘱的二十秒 | `the-will-reading` |
+| 013 | 空展台上的倒影 | `the-empty-mannequin` |
+| 014 | 暴风雨之夜的第七位客人 | `the-storm-villa` |
+| 015 | 固定座位的常客 | `the-cafe-regular` |
+| 016 | 寡妇的信封 | `the-widows-envelope` |
+| 017 | 黄昏雨窗 | `the-dusk-rain-window` |
+| 018 | 霓虹窗上的倒影 | `the-neon-reflection` |
+| 019 | 最后一根烟 | `the-last-cigarette` |
+| 020 | 爵士俱乐部后门 | `the-jazz-club-backdoor` |
+| 021 | 滑墙画廊 | `the-sliding-wall-gallery` |
+| 022 | 榻榻米的误差 | `the-tatami-count` |
+| 023 | 楼梯间的两面镜子 | `the-stairwell-mirror` |
+
+### 线索一览（`src/content/clues/`）
+
+| order | 标题 | slug |
+|-------|------|------|
+| 1 | 如何识别证词矛盾 | `how-to-spot-testimony-contradictions` |
+| 2 | 密室诡计的五种常见类型 | `five-types-of-locked-room` |
+| 3 | 为什么「多余物品」往往不是多余的 | `the-superfluous-object` |
+| 4 | 当「死亡时间」开始撒谎 | `when-time-of-death-lies` |
+| 5 | 临终留言的四种读法 | `dying-messages-decoded` |
+| 6 | 列车与时刻表：不在场证明的经典漏洞 | `train-alibi-tricks` |
+| 7 | 本格推理里的「日式现场」 | `japanese-honkaku-scenes` |
+| 8 | 主持者也在场：别忽略宣读、记录、引导的人 | `the-hidden-narrator` |
+| 9 | 当「超自然」成为布景 | `staged-supernatural` |
+| 10 | 身份替换：先核对什么 | `identity-swap-checklist` |
+| 11 | 暴风雪山庄：为什么每个人都可疑 | `closed-circle-mystery` |
+| 12 | 毒物进入身体的八条路径 | `poison-delivery-paths` |
+| 13 | 读脚印之前，先问三个问题 | `reading-footprints` |
+| 14 | 公平本格：作者对你负有什么义务 | `fair-play-promise` |
+| 15 | 氛围即证词：法国心理悬疑在读什么 | `atmosphere-as-evidence` |
+| 16 | 梅格雷式细节：从一杯咖啡到一封信 | `daily-detail-inference` |
+| 17 | 灰色动机：不是每个人都该被铐走 | `gray-motives` |
+| 18 | 硬汉派的谎言：每个人都在撒谎 | `hardboiled-lie-tells` |
+| 19 | 光与影：霓虹、烟、爵士灯下的线索 | `light-shadow-clues` |
+| 20 | 蛇蝎美人还是红鲱鱼？ | `femme-fatale-or-herring` |
+| 21 | 移动墙体：房间转过了，门还锁着 | `moving-walls-trick` |
+| 22 | 榻榻米算术：六叠与七叠之间 | `tatami-arithmetic` |
+| 23 | 镜像诡计：上下楼梯，可能不是同一段 | `mirror-reflection-tricks` |
 
 ---
 
@@ -162,7 +260,7 @@ src/
 1. 在 `src/content/cases/` 下新建一个 `.mdx` 文件，文件名即 URL slug，例如 `the-empty-chair.mdx` → `/cases/the-empty-chair`。
 2. 复制下面的模板，填好 frontmatter 与正文。frontmatter 会经过 `content.config.ts` 的 schema 校验，缺字段或类型不符会在构建时报错。
 
-> 现有案卷编号已用到 `008`，新案件请从 `009` 起编。
+> 现有案卷编号已用到 `023`，新案件请从 `024` 起编。新增后运行 `pnpm og:export` 生成分享图并 commit 到 `public/og/`。
 
 ```mdx
 ---
