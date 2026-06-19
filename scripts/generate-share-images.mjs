@@ -85,12 +85,18 @@ function shareCardSvg({ eyebrow, title, summary, accent = '#8B2E2E' }) {
 </svg>`;
 }
 
-async function writePng(svg, outPath) {
-  await fs.promises.mkdir(path.dirname(outPath), { recursive: true });
-  await sharp(Buffer.from(svg), { density: 144 })
-    .resize(1200, 630)
-    .png({ compressionLevel: 9, quality: 90 })
-    .toFile(outPath);
+/** 微信链接预览对 JPEG 兼容性更好；同时保留 PNG 备用 */
+async function writeShareImages(svg, basePath) {
+  await fs.promises.mkdir(path.dirname(basePath), { recursive: true });
+  const pipeline = sharp(Buffer.from(svg), { density: 144 }).resize(1200, 630);
+  await pipeline
+    .clone()
+    .jpeg({ quality: 86, mozjpeg: true })
+    .toFile(`${basePath}.jpg`);
+  await pipeline
+    .clone()
+    .png({ compressionLevel: 9 })
+    .toFile(`${basePath}.png`);
 }
 
 async function generateFromDir(dir, outDir, kind) {
@@ -115,7 +121,7 @@ async function generateFromDir(dir, outDir, kind) {
       accent: kind === 'case' ? '#8B2E2E' : '#3F5F73',
     });
 
-    await writePng(svg, path.join(outDir, `${slug}.png`));
+    await writeShareImages(svg, path.join(outDir, slug));
     count++;
   }
 
@@ -124,4 +130,4 @@ async function generateFromDir(dir, outDir, kind) {
 
 const caseCount = await generateFromDir(CASES_DIR, OG_CASES, 'case');
 const clueCount = await generateFromDir(CLUES_DIR, OG_CLUES, 'clue');
-console.log(`Wrote ${caseCount} case + ${clueCount} clue share images to public/og/`);
+console.log(`Wrote ${caseCount} case + ${clueCount} clue share images (.jpg + .png) to public/og/`);

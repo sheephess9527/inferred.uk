@@ -17,11 +17,13 @@
 
 ## 更新日志
 
-### 2026-06-19 — 朋友圈分享卡片：每页专属图 + 标题
+### 2026-06-19 — 修复朋友圈分享无图（图片入库 + JPEG）
 
-- 构建时按案卷/线索 frontmatter 自动生成分享图：`public/og/cases/{slug}.png`、`public/og/clues/{slug}.png`（`scripts/generate-share-images.mjs`）
-- 案卷/线索详情页传入专属 `ogImage`、`ogTitle`；`BaseLayout` 补全 `og:image:secure_url`、`itemprop` 等微信爬虫字段
-- 微信会缓存链接预览，更新后若未刷新可用[微信分享调试工具](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html)（搜「分享调试」）重新抓取
+- **根因**：`public/og/cases/` 此前只在本地构建时生成、未提交 Git，Cloudflare 部署后图片 404，微信爬虫抓不到 `og:image`
+- 分享图改为 **JPEG**（微信兼容性更好），并**提交到仓库**；`og:image` 指向 `.jpg`
+- 新增/改案卷后本地运行 `pnpm og:export` 再 commit 图片；`pnpm build` 不再依赖 sharp（避免 Cloudflare 构建失败）
+- 案卷/线索详情页使用 `/og/cases/{slug}.jpg`、`/og/clues/{slug}.jpg`
+- 微信会缓存链接预览，更新后可用[公众平台分享调试](https://mp.weixin.qq.com/debug/cgi-bin/switch?t=utils/share_page)重新抓取
 
 ### 2026-06-19 — 移除微信分享全屏引导层
 
@@ -206,7 +208,7 @@ order: 4          # 列表排序，数字越小越靠前
 - **导航 / 页脚**：`src/components/Header.astro`、`src/components/Footer.astro`。
 - **首页文案与模块**：`src/pages/index.astro`。
 - **默认分享图**：源文件 `public/og-default.svg`，构建时自动导出 `public/og-default.png`（首页等通用页使用）。
-- **案卷/线索分享图**：`pnpm og:export` 或 `pnpm build` 会根据各篇 frontmatter 的 `title` / `summary` / `caseId` 生成 `public/og/cases/*.png` 与 `public/og/clues/*.png`（档案风 1200×630 PNG，朋友圈链接预览用）。样式模板见 `scripts/generate-share-images.mjs`。
+- **案卷/线索分享图**：运行 `pnpm og:export` 根据 frontmatter 生成 `public/og/cases/*.{jpg,png}` 与 `public/og/clues/*.{jpg,png}`，**生成后需 commit 进 Git** 才会被 Cloudflare 部署。朋友圈使用 `.jpg`。
 - **主屏幕图标**：源文件是矢量的 `public/icon.svg` 与 `public/icon-maskable.svg`。改完后用 `sharp` 重新导出位图：
 
   ```bash
