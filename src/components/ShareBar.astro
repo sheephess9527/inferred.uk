@@ -52,6 +52,7 @@ const weiboHref =
       data-share-weibo>微博</a
     >
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
+    <button type="button" class="share__btn" data-share-text>复制图文</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>
       更多…
     </button>
@@ -282,6 +283,7 @@ const weiboHref =
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
     const posterBtn = root.querySelector<HTMLButtonElement>('[data-share-poster]');
     const xhsBtn = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
+    const textBtn = root.querySelector<HTMLButtonElement>('[data-share-text]');
 
     const canNativeShare = typeof navigator.share === 'function';
 
@@ -403,6 +405,22 @@ const weiboHref =
 
     // 小红书：无网页分享接口，且笔记不支持外链。
     // 策略：复制一段适配小红书的文案，并打开海报让用户长按保存后发布。
+    textBtn?.addEventListener('click', async () => {
+      let shareContent = `${title}
+
+${url}`;
+      if (text) shareContent = `${title}
+
+${text}
+
+${url}`;
+      if (poster) shareContent += `
+
+[分享海报] ${poster}`;
+      const ok = await copyText(shareContent);
+      showToast(ok ? '图文已复制，可直接粘贴' : '复制失败');
+    });
+
     xhsBtn?.addEventListener('click', async () => {
       const caption =
         `${title}\n\n${text}\n\n` +
