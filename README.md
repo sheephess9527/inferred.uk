@@ -399,3 +399,32 @@ order: 4          # 列表排序，数字越小越靠前
 - **类型**：文本（Plain text）
 
 添加后 Cloudflare 构建成功通过。
+### 2026-06-27 — 新增 6 篇案卷 + 10 篇线索（Case #024–#029）
+
+**案卷（Case #024–#029）** — 致敬世界经典侦探小说诡计：
+
+|| caseId | 标题 | slug | 灵感来源 |
+||--------|------|------|----------|
+|| 024 | 消失的灯 | `the-vanishing-lamp` | 约翰·狄克森·卡尔密室诡计 |
+|| 025 | 红心王后的留言 | `the-queen-of-hearts-message` | 埃勒里·奎因临终留言 |
+|| 026 | 会移动的椅子 | `the-moving-chair` | 江户川乱步空间诡计 |
+|| 027 | 通往虚无的特快 | `the-express-to-nowhere` | 松本清张列车不在场证明 |
+|| 028 | 第十位客人 | `the-tenth-guest` | 阿加莎·克里斯蒂封闭空间 |
+|| 029 | 完美的镜子 | `the-perfect-mirror` | 绫辻行人建筑镜像诡计 |
+
+**线索（新增 10 篇，order 15–24）**：
+
+|| order | 标题 | slug |
+||-------|------|------|
+|| 15 | 密室诡计的五种基本构造 | `locked-room-basics` |
+|| 16 | 临终留言的七种经典手法 | `dying-message-tricks` |
+|| 17 | 列车不在场证明的六种破绽 | `alibi-train-tricks` |
+|| 18 | 不可能犯罪的四种核心模式 | `impossible-crime-patterns` |
+|| 19 | 公平本格的五条铁律 | `fair-play-hidden-clues` |
+|| 20 | 隐藏空间的七种设计 | `hidden-room-tricks` |
+|| 21 | 身份置换的五条检查清单 | `identity-swap-checklist` |
+|| 22 | 死亡时间撒谎的六种方式 | `time-of-death-lies` |
+|| 23 | 毒物进入身体的八条路径 | `poison-delivery-paths` |
+|| 24 | 读脚印之前，先问三个问题 | `reading-footprints` |
+
+新增内容后已运行 `pnpm og:export` 生成分享图并入库。
