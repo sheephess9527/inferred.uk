@@ -15,7 +15,7 @@ const allCases = (await getCollection('cases')).sort(
 const featuredCases = allCases.filter((c) => c.data.featured);
 const showcase = featuredCases.length ? featuredCases : allCases;
 const showcaseCount = showcase.length;
-const latest = showcase.map((c) => ({
+const latest = showcase.slice(0, 10).map((c) => ({
   caseId: c.data.caseId,
   title: c.data.title,
   summary: c.data.summary,
