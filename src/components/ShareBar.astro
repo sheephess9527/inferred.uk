@@ -30,15 +30,15 @@ const weiboHref =
   <span class="share__label mono">分享 · SHARE</span>
 
   <div class="share__actions">
-    <button type="button" class="share__btn share__btn--copy" data-share-copy>复制链接</button>
+    <button type="button" class="share__btn" data-share-wechat>微信 / 朋友圈</button>
     <a
       class="share__btn"
       href={weiboHref}
       target="_blank"
       rel="noopener noreferrer"
-      data-share-weibo
-      aria-label={`分享到微博：${title}`}>微博</a
+      data-share-weibo>微博</a
     >
+    <button type="button" class="share__btn" data-share-copy>复制链接</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>
       更多…
     </button>
@@ -87,10 +87,10 @@ const weiboHref =
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
-  .share__btn--copy {
+  [data-share-wechat] {
     border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
   }
-  .share__btn--copy:hover {
+  [data-share-wechat]:hover {
     border-color: var(--color-accent);
     color: var(--color-paper);
     background: color-mix(in srgb, var(--color-accent) 22%, transparent);
@@ -130,8 +130,8 @@ const weiboHref =
     const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
 
-    const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
     const canNativeShare = typeof navigator.share === 'function';
 
     function showToast(msg: string) {
@@ -140,7 +140,7 @@ const weiboHref =
       toast.hidden = false;
       window.setTimeout(() => {
         if (toast) toast.hidden = true;
-      }, 2200);
+      }, 2600);
     }
 
     async function nativeShare() {
@@ -148,48 +148,47 @@ const weiboHref =
         await navigator.share({ title, text, url });
         return true;
       } catch {
-        return false;
+        return false; // 用户取消或失败
       }
     }
 
-    async function copyLink(message = '链接已复制') {
+    async function copyLink() {
       try {
         await navigator.clipboard.writeText(url);
-        showToast(message);
-        return true;
+        showToast('链接已复制');
       } catch {
+        // 退化方案：选中一个临时输入框
         const input = document.createElement('input');
         input.value = url;
         document.body.appendChild(input);
         input.select();
         try {
           document.execCommand('copy');
-          showToast(message);
-          return true;
+          showToast('链接已复制');
         } catch {
           showToast('复制失败，请手动复制');
-          return false;
-        } finally {
-          input.remove();
         }
+        input.remove();
       }
     }
 
+    // "更多…"：仅在支持系统分享时出现（手机分享面板含微信/微博等）
     if (canNativeShare && nativeBtn) {
       nativeBtn.hidden = false;
       nativeBtn.addEventListener('click', nativeShare);
     }
 
-    copyBtn?.addEventListener('click', async () => {
-      if (isWeChat) {
-        await copyLink('链接已复制');
-        return;
-      }
+    copyBtn?.addEventListener('click', copyLink);
+
+    // 微信 / 朋友圈：优先系统分享面板（手机可直接选微信）；
+    // 不支持时退化为复制链接，提示用户在微信里粘贴分享。
+    wechatBtn?.addEventListener('click', async () => {
       if (canNativeShare) {
         const ok = await nativeShare();
         if (ok) return;
       }
-      await copyLink('链接已复制，可在微信中打开后分享');
+      await copyLink();
+      showToast('链接已复制，可在微信中粘贴分享给好友或朋友圈');
     });
   });
 </script>
