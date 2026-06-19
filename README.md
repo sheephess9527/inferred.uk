@@ -26,6 +26,7 @@
 - 🌗 亮色 / 暗色模式切换
 - 🔍 基础 SEO（title / description / canonical / Open Graph）+ 自动 sitemap
 - 📱 移动端优先的响应式布局
+- 🍎 支持 iOS / Android「添加到主屏幕」（web app manifest + 定制档案风图标）
 
 ---
 
@@ -73,10 +74,12 @@ src/
 1. 在 `src/content/cases/` 下新建一个 `.mdx` 文件，文件名即 URL slug，例如 `the-empty-chair.mdx` → `/cases/the-empty-chair`。
 2. 复制下面的模板，填好 frontmatter 与正文。frontmatter 会经过 `content.config.ts` 的 schema 校验，缺字段或类型不符会在构建时报错。
 
+> 现有案卷编号已用到 `005`，新案件请从 `006` 起编。
+
 ```mdx
 ---
 title: "案件标题"
-caseId: "004"
+caseId: "006"
 status: "unsolved"        # unsolved | solved
 difficulty: 3             # 1-5
 types:
@@ -116,13 +119,13 @@ export const evidence = [
 </TestimonyBlock>
 
 ## 四、物证
-<EvidenceList caseId="004" items={evidence} />
+<EvidenceList caseId="006" items={evidence} />
 
 ## 五、推理问题
 <DeductionQuestions />   {/* 不传参用默认 5 问，也可传 questions={[...]} 自定义 */}
 
 ## 六、你的推理
-<DetectiveNotes caseId="004" />
+<DetectiveNotes caseId="006" />
 
 ## 七、揭晓真相
 <RevealAnswer>
@@ -163,6 +166,13 @@ order: 4          # 列表排序，数字越小越靠前
 - **导航 / 页脚**：`src/components/Header.astro`、`src/components/Footer.astro`。
 - **首页文案与模块**：`src/pages/index.astro`。
 - **默认分享图**：`public/og-default.svg`（可替换为 1200×630 的 PNG，并更新各页 `ogImage`）。
+- **主屏幕图标**：源文件是矢量的 `public/icon.svg` 与 `public/icon-maskable.svg`。改完后用 `sharp` 重新导出位图：
+
+  ```bash
+  node -e "const s=require('sharp'),fs=require('fs');const m=fs.readFileSync('public/icon.svg'),k=fs.readFileSync('public/icon-maskable.svg');(async()=>{await s(m,{density:384}).resize(180,180).png().toFile('public/apple-touch-icon.png');await s(m,{density:384}).resize(192,192).png().toFile('public/icon-192.png');await s(m,{density:384}).resize(512,512).png().toFile('public/icon-512.png');await s(k,{density:384}).resize(512,512).png().toFile('public/icon-maskable-512.png');})()"
+  ```
+
+  图标元信息与「添加到主屏幕」配置在 `public/site.webmanifest` 和 `src/layouts/BaseLayout.astro` 的 `<head>` 中。
 
 ---
 

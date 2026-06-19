@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Inferred 案卷图标">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#23201a"/>
+      <stop offset="55%" stop-color="#15130d"/>
+      <stop offset="100%" stop-color="#0c0c0a"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 档案纸背景 -->
+  <rect width="512" height="512" fill="url(#vig)"/>
+
+  <!-- 双线档案边框 -->
+  <rect x="36" y="36" width="440" height="440" fill="none" stroke="#A67C52" stroke-opacity="0.6" stroke-width="2.5"/>
+  <rect x="47" y="47" width="418" height="418" fill="none" stroke="#3A352B" stroke-width="1.5"/>
+
+  <!-- 四角定位标记 -->
+  <g stroke="#A67C52" stroke-opacity="0.55" stroke-width="2.5">
+    <path d="M70 70 h26 M70 70 v26"/>
+    <path d="M442 70 h-26 M442 70 v26"/>
+    <path d="M70 442 h26 M70 442 v-26"/>
+    <path d="M442 442 h-26 M442 442 v-26"/>
+  </g>
+
+  <!-- 衬线字母 I（用矢量绘制，不依赖字体） -->
+  <g fill="#E8DFC8">
+    <rect x="176" y="150" width="160" height="34" rx="2"/>
+    <rect x="234" y="150" width="44" height="212"/>
+    <rect x="176" y="328" width="160" height="34" rx="2"/>
+  </g>
+
+  <!-- 推断之点：暗红句点 -->
+  <circle cx="356" cy="346" r="16" fill="#8B2E2E"/>
+</svg>
