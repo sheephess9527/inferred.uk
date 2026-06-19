@@ -65,7 +65,7 @@ const weiboHref =
     <div class="poster__backdrop" data-poster-close></div>
     <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
       <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
-      <p class="poster__hint mono" data-poster-hint>长按保存图片 → 发朋友圈或小红书</p>
+      <p class="poster__hint mono" data-poster-hint>长按图片保存，或点击下方「下载图片」</p>
       <div class="poster__frame">
         <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
       </div>
@@ -398,7 +398,7 @@ const weiboHref =
     }
 
     posterBtn?.addEventListener('click', () =>
-      openPoster({ hint: '长按保存图片 → 发朋友圈或小红书' })
+      openPoster({ hint: '长按图片保存，或点击下方「下载图片」' })
     );
 
     // 小红书：无网页分享接口，且笔记不支持外链。
