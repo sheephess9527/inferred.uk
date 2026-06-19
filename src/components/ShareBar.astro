@@ -377,19 +377,33 @@ const weiboHref =
     let lastFocus: HTMLElement | null = null;
 
     function openPoster(opts?: { hint?: string; note?: string }) {
-      if (!modal || !poster) return;
-      if (posterImg && !posterImg.src) posterImg.src = poster;
+    if (!modal || !poster) return;
+      
+      if (posterImg) {
+        posterImg.style.display = 'block';
+        posterImg.onerror = () => {
+          posterImg.style.display = 'none';
+          if (posterHint) {
+            posterHint.textContent = '海报暂时无法显示，请稍后再试或直接复制链接';
+          }
+        };
+        if (!posterImg.src || posterImg.src === '') {
+          posterImg.src = poster;
+        }
+      }
+      
       if (posterDl) {
         posterDl.href = poster;
         posterDl.setAttribute('download', poster.split('/').pop() || 'inferred.jpg');
       }
+      
       if (posterHint && opts?.hint) posterHint.textContent = opts.hint;
       if (posterNote) posterNote.textContent = opts?.note ?? '';
+      
       lastFocus = document.activeElement as HTMLElement;
       modal.hidden = false;
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-    }
 
     function closePoster() {
       if (!modal) return;
