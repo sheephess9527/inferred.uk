@@ -17,6 +17,25 @@
 
 ## 更新日志
 
+### 2026-06-20 — Bundle 推送：新增分享海报功能 + Cases 041–045
+
+- 通过 `inferred-unpushed.bundle` 将 3 个已签名提交推送到 `main`：
+  - `5a174f1` feat: shareable poster (logo + QR) for 朋友圈 / 小红书 sharing
+  - `21751b2` assets: add 40 case share posters (JPG, with QR code)
+  - `f75ded0` content: add cases 041–045 and five clue articles (today's batch)
+
+- 新增功能：
+  - `ShareBar.astro` 支持生成带 Logo + QR 的可分享海报
+  - 新增 `scripts/generate-share-posters.mjs` 脚本
+  - 所有案卷现在可一键生成适合微信/小红书分享的图片
+
+- 新增内容：
+  - Cases #041–#045（5 篇新案卷）
+  - 5 篇新线索（digital-age-fair-clues、recorded-alibi-tricks 等）
+
+- 总计：34 篇案卷 + 40 篇线索
+
+
 ### 2026-06-19 — 关于页面内容更新
 
 - `about.astro`：补充项目起源（为女儿糖糖而建），更新页面文案，保留原有正文结构
