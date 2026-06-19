@@ -17,6 +17,15 @@
 
 ## 更新日志
 
+### 2026-06-19 — 全站审计优化（a11y / SEO / 体验）
+
+| 类别 | 改动 |
+|------|------|
+| 无障碍 | `DetectiveNotes` 恢复焦点环 + `aria-describedby`；`EvidenceList` 清除标记前 `confirm()`；`NewsletterBox` 加 `aria-disabled`；`ArchiveFilter` 筛选按钮加 `aria-pressed`；微博分享加 `aria-label` |
+| 体验 | `ArchiveFilter` URL 参数持久化（`?type=` 等）；`ShareBar` 合并为「复制链接」；`ReadingProgress` 短页修复 + 线索页启用；案卷详情上下篇导航；首页文案中性化、「精选案卷」+ 总数；类型卡片链到档案馆；标签链到筛选页 |
+| SEO | `BaseLayout` 支持 `ogType` / `article:published_time` / JSON-LD；案卷与线索详情页输出结构化数据；`404` 显式 `path="/404"` |
+| 基础设施 | CI 新增 `pnpm verify:og` 校验分享图；修复 `pnpm-workspace.yaml`；删除 `package-lock.json`；`buildInfo` 本地用 `git rev-parse HEAD`；`_headers` 补安全头与 `version.json` no-store；`global.css` container 加 safe-area；页脚加站点地图链接；线索列表显示日期；Header ≤1100px 隐藏英文副标、`prefers-color-scheme` 默认主题 |
+
 ### 2026-06-19 — 导航栏平板/手机布局
 
 - `Header.astro`：≤960px 时导航换到独立第二行，四栏等宽网格分布；隐藏英文副标，避免分页面顶栏挤在一行
@@ -52,9 +61,9 @@
 
 **新增脚本与依赖**
 
-- `pnpm og:export` — 手动从 `og-default.svg` 导出 PNG
-- `prebuild` — 每次 `pnpm build` 前自动执行 `og:export`
-- `devDependencies.sharp` — 用于 OG 图导出（图标导出命令不变）
+- `pnpm og:export` — 从 `og-default.svg` 导出默认图，并为每个案卷/线索生成分享图（JPEG，需 commit 到 Git）
+- `pnpm verify:og` — CI 校验每个 slug 均有对应 `public/og/cases|clues/{slug}.jpg`
+- `devDependencies.sharp` — 用于 OG 图导出（仅 `og:export` 时使用，`pnpm build` 不依赖 sharp）
 
 ---
 
@@ -80,10 +89,11 @@
 ```bash
 pnpm install      # 安装依赖
 pnpm dev          # 启动开发服务器（默认 http://localhost:4321）
-pnpm build        # 构建到 dist/（构建前自动导出 og-default.png）
+pnpm build        # 构建到 dist/
 pnpm preview      # 本地预览构建产物
 pnpm check        # 类型检查
-pnpm og:export    # 单独从 og-default.svg 导出分享用 PNG
+pnpm og:export    # 生成/更新分享图（新增内容后需运行并 commit）
+pnpm verify:og    # 校验所有案卷/线索均有分享图
 ```
 
 ---

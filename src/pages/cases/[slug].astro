@@ -8,13 +8,20 @@ import ShareBar from '../../components/ShareBar.astro';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
-  return cases.map((entry) => ({
+  const sorted = [...cases].sort(
+    (a, b) => a.data.publishedAt.getTime() - b.data.publishedAt.getTime()
+  );
+  return sorted.map((entry, i) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: {
+      entry,
+      prev: i > 0 ? sorted[i - 1] : null,
+      next: i < sorted.length - 1 ? sorted[i + 1] : null,
+    },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
 const data = entry.data;
 
@@ -23,11 +30,25 @@ const shareTitle = `${data.title} · Inferred`;
 const seoDesc = data.summary;
 const shareImage = `/og/cases/${entry.id}.jpg`;
 const shareImageAlt = `案卷 ${data.caseId}：${data.title}`;
+const publishedIso = data.publishedAt.toISOString();
 const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+const siteOrigin = Astro.site ?? 'https://inferred.uk';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.summary,
+  datePublished: publishedIso,
+  image: new URL(shareImage, siteOrigin).href,
+  url: new URL(`/cases/${entry.id}`, siteOrigin).href,
+  author: { '@type': 'Organization', name: 'Inferred' },
+  publisher: { '@type': 'Organization', name: 'Inferred' },
+};
 ---
 
 <BaseLayout
@@ -37,6 +58,9 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
   path={`/cases/${entry.id}`}
   ogImage={shareImage}
   ogImageAlt={shareImageAlt}
+  ogType="article"
+  publishedTime={publishedIso}
+  jsonLd={jsonLd}
 >
   <article class="case container container--reading">
     <ReadingProgress target="#case-body" />
@@ -49,8 +73,23 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
       <p class="case__summary">{data.summary}</p>
 
       <ul class="case__tags">
-        {data.types.map((t) => <li><Tag label={t} /></li>)}
-        {data.scene.map((s) => <li><Tag label={s} variant="scene" /></li>)}
+        {data.types.map((t) => (
+          <li>
+            <Tag
+              label={t}
+              href={`/archive?type=${encodeURIComponent(t)}`}
+            />
+          </li>
+        ))}
+        {data.scene.map((s) => (
+          <li>
+            <Tag
+              label={s}
+              variant="scene"
+              href={`/archive?scene=${encodeURIComponent(s)}`}
+            />
+          </li>
+        ))}
       </ul>
 
       <CaseMeta
@@ -69,6 +108,25 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
     </div>
 
     <ShareBar title={data.title} text={data.summary} path={`/cases/${entry.id}`} />
+
+    <nav class="case__nav" aria-label="案卷导航">
+      {prev ? (
+        <a class="case__nav-link" href={`/cases/${prev.id}`}>
+          <span class="case__nav-dir mono">上一篇</span>
+          <span class="case__nav-title">{prev.data.title}</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+      {next ? (
+        <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}`}>
+          <span class="case__nav-dir mono">下一篇</span>
+          <span class="case__nav-title">{next.data.title}</span>
+        </a>
+      ) : (
+        <span></span>
+      )}
+    </nav>
 
     <footer class="case__footer">
       <a class="case__back" href="/cases">← 返回案卷列表</a>
@@ -109,12 +167,47 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
     margin: var(--space-3) 0 0;
     font-size: 0.78rem;
   }
+  .case__nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+  .case__nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-paper);
+    transition: border-color 0.18s ease;
+  }
+  .case__nav-link:hover {
+    border-color: var(--color-gold);
+    color: var(--color-paper);
+  }
+  .case__nav-link--next {
+    text-align: right;
+  }
+  .case__nav-dir {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.1em;
+  }
+  .case__nav-title {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
   .case__footer {
     display: flex;
     justify-content: space-between;
     gap: var(--space-4);
     flex-wrap: wrap;
-    margin-top: var(--space-16);
+    margin-top: var(--space-8);
     padding-top: var(--space-6);
     border-top: 1px solid var(--color-line);
   }
@@ -125,6 +218,15 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
   }
   .case__back:hover {
     color: var(--color-gold);
+  }
+
+  @media (max-width: 560px) {
+    .case__nav {
+      grid-template-columns: 1fr;
+    }
+    .case__nav-link--next {
+      text-align: left;
+    }
   }
 </style>
 

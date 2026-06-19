@@ -25,4 +25,6 @@ jobs:
 
       - run: pnpm check
 
+      - run: pnpm verify:og
+
       - run: pnpm build

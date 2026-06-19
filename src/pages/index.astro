@@ -9,7 +9,9 @@ const allCases = (await getCollection('cases')).sort(
 );
 
 const featuredCases = allCases.filter((c) => c.data.featured);
-const latest = (featuredCases.length ? featuredCases : allCases).map((c) => ({
+const showcase = featuredCases.length ? featuredCases : allCases;
+const showcaseCount = showcase.length;
+const latest = showcase.map((c) => ({
   caseId: c.data.caseId,
   title: c.data.title,
   summary: c.data.summary,
@@ -72,7 +74,7 @@ const caseTypes = [
   <!-- 介绍 -->
   <section class="container intro">
     <p class="intro__text">
-      一份份未解案卷。<br />
+      一份份悬疑案卷。<br />
       一段段彼此矛盾的证词。<br />
       一些看似无关的线索。<br />
       你要做的，不是阅读故事。<br />
@@ -80,12 +82,13 @@ const caseTypes = [
     </p>
   </section>
 
-  <!-- 最新案卷 -->
+  <!-- 精选案卷 -->
   <section class="container section">
     <header class="section__head">
       <div>
-        <p class="eyebrow">Latest Cases</p>
-        <h2 class="section__title">最新案卷</h2>
+        <p class="eyebrow">Featured Cases</p>
+        <h2 class="section__title">精选案卷</h2>
+        <p class="section__count text-muted mono">共 {showcaseCount} 份</p>
       </div>
       <a class="section__more" href="/cases">查看全部 →</a>
     </header>
@@ -125,8 +128,10 @@ const caseTypes = [
     <ul class="types">
       {caseTypes.map((t) => (
         <li class="types__item">
-          <span class="types__label">{t.label}</span>
-          <span class="types__desc text-muted">{t.desc}</span>
+          <a class="types__link" href={`/archive?type=${encodeURIComponent(t.label)}`}>
+            <span class="types__label">{t.label}</span>
+            <span class="types__desc text-muted">{t.desc}</span>
+          </a>
         </li>
       ))}
     </ul>
@@ -238,6 +243,10 @@ const caseTypes = [
   .section__title {
     margin: var(--space-2) 0 0;
   }
+  .section__count {
+    margin: var(--space-2) 0 0;
+    font-size: 0.78rem;
+  }
   .section__more {
     font-family: var(--font-mono);
     font-size: 0.85rem;
@@ -292,11 +301,20 @@ const caseTypes = [
     background: var(--color-line);
   }
   .types__item {
+    background: var(--color-surface);
+  }
+  .types__link {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
     padding: var(--space-6);
-    background: var(--color-surface);
+    color: inherit;
+    height: 100%;
+    transition: background 0.18s ease;
+  }
+  .types__link:hover {
+    color: inherit;
+    background: var(--color-surface-2);
   }
   .types__label {
     font-family: var(--font-display);

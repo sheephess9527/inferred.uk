@@ -175,7 +175,8 @@ hr {
   width: 100%;
   max-width: var(--measure-wide);
   margin-inline: auto;
-  padding-inline: var(--space-6);
+  padding-inline: max(var(--space-6), env(safe-area-inset-left))
+    max(var(--space-6), env(safe-area-inset-right));
 }
 .container--reading {
   max-width: var(--measure);

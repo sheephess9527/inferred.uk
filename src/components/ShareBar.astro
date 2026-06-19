@@ -30,15 +30,15 @@ const weiboHref =
   <span class="share__label mono">分享 · SHARE</span>
 
   <div class="share__actions">
-    <button type="button" class="share__btn" data-share-wechat>微信 / 朋友圈</button>
+    <button type="button" class="share__btn share__btn--copy" data-share-copy>复制链接</button>
     <a
       class="share__btn"
       href={weiboHref}
       target="_blank"
       rel="noopener noreferrer"
-      data-share-weibo>微博</a
+      data-share-weibo
+      aria-label={`分享到微博：${title}`}>微博</a
     >
-    <button type="button" class="share__btn" data-share-copy>复制链接</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>
       更多…
     </button>
@@ -87,10 +87,10 @@ const weiboHref =
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
-  [data-share-wechat] {
+  .share__btn--copy {
     border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
   }
-  [data-share-wechat]:hover {
+  .share__btn--copy:hover {
     border-color: var(--color-accent);
     color: var(--color-paper);
     background: color-mix(in srgb, var(--color-accent) 22%, transparent);
@@ -130,7 +130,6 @@ const weiboHref =
     const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
-    const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
 
     const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
     const canNativeShare = typeof navigator.share === 'function';
@@ -181,9 +180,7 @@ const weiboHref =
       nativeBtn.addEventListener('click', nativeShare);
     }
 
-    copyBtn?.addEventListener('click', () => copyLink());
-
-    wechatBtn?.addEventListener('click', async () => {
+    copyBtn?.addEventListener('click', async () => {
       if (isWeChat) {
         await copyLink('链接已复制');
         return;

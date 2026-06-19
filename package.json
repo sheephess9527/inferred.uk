@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "verify:og": "node scripts/verify-og.mjs",
     "og:export": "node scripts/export-og.mjs && node scripts/generate-share-images.mjs"
   },
   "dependencies": {

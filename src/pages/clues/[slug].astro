@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
 import ShareBar from '../../components/ShareBar.astro';
 
 export async function getStaticPaths() {
@@ -13,11 +14,26 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const publishedIso = entry.data.publishedAt.toISOString();
 const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+const shareImage = `/og/clues/${entry.id}.jpg`;
+const siteOrigin = Astro.site ?? 'https://inferred.uk';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: entry.data.title,
+  description: entry.data.summary,
+  datePublished: publishedIso,
+  image: new URL(shareImage, siteOrigin).href,
+  url: new URL(`/clues/${entry.id}`, siteOrigin).href,
+  author: { '@type': 'Organization', name: 'Inferred' },
+  publisher: { '@type': 'Organization', name: 'Inferred' },
+};
 ---
 
 <BaseLayout
@@ -25,10 +41,15 @@ const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
   ogTitle={`${entry.data.title} · Inferred`}
   description={entry.data.summary}
   path={`/clues/${entry.id}`}
-  ogImage={`/og/clues/${entry.id}.jpg`}
+  ogImage={shareImage}
   ogImageAlt={`推理技巧：${entry.data.title}`}
+  ogType="article"
+  publishedTime={publishedIso}
+  jsonLd={jsonLd}
 >
   <article class="container container--reading clue">
+    <ReadingProgress target="#clue-body" />
+
     <header class="clue__header">
       <p class="eyebrow">Clues · 推理技巧</p>
       <h1>{entry.data.title}</h1>
@@ -36,7 +57,7 @@ const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
       <p class="mono text-muted clue__date">{dateStr}</p>
     </header>
 
-    <div class="prose">
+    <div id="clue-body" class="prose">
       <Content />
     </div>
 

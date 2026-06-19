@@ -23,15 +23,23 @@ const articles = (await getCollection('clues')).sort((a, b) => {
 
   <section class="container clues-section">
     <ul class="clue-list">
-      {articles.map((a) => (
-        <li>
-          <a class="clue-card" href={`/clues/${a.id}`}>
-            <h2 class="clue-card__title">{a.data.title}</h2>
-            <p class="clue-card__summary text-muted">{a.data.summary}</p>
-            <span class="clue-card__cta mono">阅读 →</span>
-          </a>
-        </li>
-      ))}
+      {articles.map((a) => {
+        const dateStr = a.data.publishedAt.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        return (
+          <li>
+            <a class="clue-card" href={`/clues/${a.id}`}>
+              <h2 class="clue-card__title">{a.data.title}</h2>
+              <p class="clue-card__summary text-muted">{a.data.summary}</p>
+              <span class="clue-card__meta mono text-muted">{dateStr}</span>
+              <span class="clue-card__cta mono">阅读 →</span>
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </section>
 </BaseLayout>
@@ -80,6 +88,10 @@ const articles = (await getCollection('clues')).sort((a, b) => {
     margin: 0;
     font-size: 0.95rem;
     flex: 1;
+  }
+  .clue-card__meta {
+    font-size: 0.75rem;
+    margin: 0;
   }
   .clue-card__cta {
     color: var(--color-gold);

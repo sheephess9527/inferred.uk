@@ -1,3 +1,8 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+
 /og/*
   Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *
@@ -5,3 +10,6 @@
 /og-default.jpg
   Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *
+
+/version.json
+  Cache-Control: no-store, no-cache, must-revalidate

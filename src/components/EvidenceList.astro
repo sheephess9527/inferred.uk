@@ -288,6 +288,7 @@ function evidenceKey(label: string): string {
     board
       .querySelector<HTMLButtonElement>('[data-evidence-reset]')
       ?.addEventListener('click', () => {
+        if (!confirm('确定要清除本案所有物证标记吗？此操作无法撤销。')) return;
         save(caseId, {});
         buttons.forEach((btn) => paint(btn, 'none'));
       });

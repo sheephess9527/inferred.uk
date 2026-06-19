@@ -9,7 +9,7 @@
     新案卷上架时，把它送到你的信箱。没有广告，只有谜案。
   </p>
 
-  <form class="newsletter__form" aria-describedby="newsletter-note">
+  <form class="newsletter__form" aria-describedby="newsletter-note" aria-disabled="true">
     <label class="visually-hidden" for="newsletter-email">邮箱地址</label>
     <input
       id="newsletter-email"
@@ -19,7 +19,7 @@
       autocomplete="email"
       disabled
     />
-    <button type="button" class="newsletter__btn mono" disabled>即将开放</button>
+    <button type="button" class="newsletter__btn mono" disabled aria-disabled="true">即将开放</button>
   </form>
   <p class="newsletter__note text-muted" id="newsletter-note">
     订阅功能正在筹备中。

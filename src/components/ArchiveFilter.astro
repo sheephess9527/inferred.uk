@@ -31,18 +31,18 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     <div class="archive__group">
       <span class="archive__group-label">状态</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="status" data-value="" type="button">全部</button>
-        <button class="chip" data-filter="status" data-value="unsolved" type="button">未解</button>
-        <button class="chip" data-filter="status" data-value="solved" type="button">已解</button>
+        <button class="chip is-on" data-filter="status" data-value="" type="button" aria-pressed="true">全部</button>
+        <button class="chip" data-filter="status" data-value="unsolved" type="button" aria-pressed="false">未解</button>
+        <button class="chip" data-filter="status" data-value="solved" type="button" aria-pressed="false">已解</button>
       </div>
     </div>
 
     <div class="archive__group">
       <span class="archive__group-label">难度</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="difficulty" data-value="" type="button">全部</button>
+        <button class="chip is-on" data-filter="difficulty" data-value="" type="button" aria-pressed="true">全部</button>
         {difficulties.map((d) => (
-          <button class="chip mono" data-filter="difficulty" data-value={String(d)} type="button">
+          <button class="chip mono" data-filter="difficulty" data-value={String(d)} type="button" aria-pressed="false">
             {stars(d)}
           </button>
         ))}
@@ -52,9 +52,9 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     <div class="archive__group">
       <span class="archive__group-label">类型</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="type" data-value="" type="button">全部</button>
+        <button class="chip is-on" data-filter="type" data-value="" type="button" aria-pressed="true">全部</button>
         {allTypes.map((t) => (
-          <button class="chip" data-filter="type" data-value={t} type="button">{t}</button>
+          <button class="chip" data-filter="type" data-value={t} type="button" aria-pressed="false">{t}</button>
         ))}
       </div>
     </div>
@@ -63,9 +63,9 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       <div class="archive__group">
         <span class="archive__group-label">场景</span>
         <div class="archive__chips">
-          <button class="chip is-on" data-filter="scene" data-value="" type="button">全部</button>
+          <button class="chip is-on" data-filter="scene" data-value="" type="button" aria-pressed="true">全部</button>
           {allScenes.map((s) => (
-            <button class="chip" data-filter="scene" data-value={s} type="button">{s}</button>
+            <button class="chip" data-filter="scene" data-value={s} type="button" aria-pressed="false">{s}</button>
           ))}
         </div>
       </div>
@@ -197,6 +197,27 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       return true;
     };
 
+    const setChip = (group: string, value: string) => {
+      state[group] = value;
+      root
+        .querySelectorAll<HTMLButtonElement>(`.chip[data-filter="${group}"]`)
+        .forEach((c) => {
+          const on = (c.dataset.value ?? '') === value;
+          c.classList.toggle('is-on', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+    };
+
+    const syncUrl = () => {
+      const params = new URLSearchParams();
+      for (const [key, val] of Object.entries(state)) {
+        if (val) params.set(key, val);
+      }
+      const qs = params.toString();
+      const next = qs ? `${location.pathname}?${qs}` : location.pathname;
+      history.replaceState(null, '', next);
+    };
+
     const apply = () => {
       let visible = 0;
       items.forEach((el) => {
@@ -211,14 +232,17 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     root.querySelectorAll<HTMLButtonElement>('.chip').forEach((chip) => {
       chip.addEventListener('click', () => {
         const group = chip.dataset.filter!;
-        state[group] = chip.dataset.value ?? '';
-        root
-          .querySelectorAll<HTMLButtonElement>(`.chip[data-filter="${group}"]`)
-          .forEach((c) => c.classList.toggle('is-on', c === chip));
+        setChip(group, chip.dataset.value ?? '');
+        syncUrl();
         apply();
       });
     });
 
+    const params = new URLSearchParams(location.search);
+    for (const key of Object.keys(state)) {
+      const val = params.get(key);
+      if (val !== null) setChip(key, val);
+    }
     apply();
   }
 </script>

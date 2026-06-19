@@ -18,6 +18,12 @@ export interface Props {
   ogImage?: string;
   /** 分享图 alt 文案 */
   ogImageAlt?: string;
+  /** Open Graph 类型：首页等用 website，案卷/线索详情用 article */
+  ogType?: 'website' | 'article';
+  /** ISO 8601 发布时间，用于 article 页面 */
+  publishedTime?: string;
+  /** JSON-LD 结构化数据对象 */
+  jsonLd?: Record<string, unknown>;
   noindex?: boolean;
 }
 
@@ -28,6 +34,9 @@ const {
   ogTitle = title,
   ogImage = '/og-default.jpg',
   ogImageAlt = 'Inferred — 真相从不明说，只能被推断',
+  ogType = 'website',
+  publishedTime,
+  jsonLd,
   noindex = false,
 } = Astro.props;
 
@@ -66,7 +75,7 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph / 微信·微博链接卡片 -->
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={description} />
@@ -78,6 +87,7 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="zh_CN" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 
     <!-- 微信等爬虫备用字段 -->
     <meta itemprop="name" content={ogTitle} />
@@ -92,6 +102,10 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {jsonLd && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
 
     <!-- 主题在首帧前确定，避免闪烁；同步浏览器/PWA 顶栏颜色 -->
     <script is:inline>
@@ -110,6 +124,8 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
           var saved = localStorage.getItem('inferred:theme');
           if (saved === 'light' || saved === 'dark') {
             window.inferredApplyTheme(saved);
+          } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+            window.inferredApplyTheme('light');
           }
         } catch (e) {}
       })();

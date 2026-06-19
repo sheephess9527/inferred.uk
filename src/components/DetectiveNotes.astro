@@ -21,8 +21,9 @@ const placeholder = `写下你的推理：
     rows="6"
     placeholder={placeholder}
     aria-label="侦探笔记：写下你的推理"
+    aria-describedby={`notes-hint-${caseId}`}
     spellcheck="false"></textarea>
-  <p class="notes__hint text-muted">笔记只保存在你的浏览器里，不会上传。</p>
+  <p class="notes__hint text-muted" id={`notes-hint-${caseId}`}>笔记只保存在你的浏览器里，不会上传。</p>
 </section>
 
 <style>
@@ -67,7 +68,8 @@ const placeholder = `写下你的推理：
     padding: 0;
   }
   .notes__input:focus-visible {
-    outline: none;
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
   }
   .notes__input::placeholder {
     color: var(--color-muted);

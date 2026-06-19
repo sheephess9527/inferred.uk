@@ -127,6 +127,12 @@ const isActive = (href: string) =>
   .site-nav__link.is-active .site-nav__en {
     color: var(--color-gold);
   }
+
+  @media (max-width: 1100px) {
+    .site-nav__en {
+      display: none;
+    }
+  }
   .theme-toggle {
     background: transparent;
     border: 1px solid var(--color-line);
