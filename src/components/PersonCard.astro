@@ -1,0 +1,87 @@
+---
+export interface Props {
+  name: string;
+  role?: string;
+  age?: string | number;
+  relation?: string;
+  alibi?: string;
+}
+const { name, role, age, relation, alibi } = Astro.props;
+---
+
+<article class="person-card">
+  <header class="person-card__head">
+    <h4 class="person-card__name">{name}</h4>
+    {role && <span class="person-card__role mono">{role}</span>}
+  </header>
+  <dl class="person-card__facts">
+    {age && (<><dt>年龄</dt><dd>{age}</dd></>)}
+    {relation && (<><dt>与死者关系</dt><dd>{relation}</dd></>)}
+    {alibi && (<><dt>案发时声称</dt><dd>{alibi}</dd></>)}
+  </dl>
+  <div class="person-card__extra"><slot /></div>
+</article>
+
+<style>
+  .person-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    padding: var(--space-4) var(--space-6);
+    margin: var(--space-4) 0;
+  }
+  .person-card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    border-bottom: 1px dashed var(--color-line);
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+  .person-card__name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .person-card__role {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-cold);
+  }
+  .person-card__facts {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: var(--space-1) var(--space-4);
+    margin: 0;
+  }
+  .person-card__facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    align-self: baseline;
+  }
+  .person-card__facts dd {
+    margin: 0;
+  }
+  .person-card__extra:empty {
+    display: none;
+  }
+  .person-card__extra {
+    margin-top: var(--space-3);
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  @media (max-width: 460px) {
+    .person-card__facts {
+      grid-template-columns: 1fr;
+    }
+    .person-card__facts dd {
+      margin-bottom: var(--space-2);
+    }
+  }
+</style>

@@ -1,0 +1,52 @@
+---
+export interface Props {
+  speaker: string;
+  time?: string;
+}
+const { speaker, time } = Astro.props;
+---
+
+<article class="testimony">
+  <header class="testimony__head">
+    <span class="testimony__speaker">{speaker}</span>
+    <span class="text-muted">的证词</span>
+    {time && <span class="testimony__time mono">{time}</span>}
+  </header>
+  <div class="testimony__body">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .testimony {
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid var(--color-line);
+    border-left: 2px solid var(--color-accent-cold);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+  .testimony__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-2);
+  }
+  .testimony__speaker {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+  .testimony__time {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+  }
+  .testimony__body {
+    font-style: italic;
+    color: var(--color-paper);
+  }
+  .testimony__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

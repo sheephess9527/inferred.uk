@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="线索中断｜Inferred"
+  description="这条线索没有指向任何案卷。"
+  noindex={true}
+>
+  <section class="container notfound">
+    <p class="eyebrow">Error 404 · 线索中断</p>
+    <h1 class="notfound__title">这条线索<br />没有指向任何案卷。</h1>
+    <p class="notfound__lead text-muted">
+      你要找的页面不存在，或者已被归档到别处。
+    </p>
+    <div class="notfound__actions">
+      <a class="btn" href="/">返回首页</a>
+      <a class="btn btn--ghost" href="/cases">查看案卷</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: var(--space-24);
+    text-align: center;
+  }
+  .notfound__title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin: var(--space-4) 0;
+  }
+  .notfound__lead {
+    max-width: 28rem;
+    margin: 0 auto var(--space-8);
+  }
+  .notfound__actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    padding: 0.8em 1.6em;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+  .btn--ghost {
+    background: transparent;
+    border-color: var(--color-line);
+  }
+  .btn--ghost:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+</style>

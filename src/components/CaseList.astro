@@ -1,0 +1,54 @@
+---
+import CaseCard from './CaseCard.astro';
+
+export interface CaseItem {
+  caseId: string;
+  title: string;
+  summary: string;
+  difficulty: number;
+  types: string[];
+  readingTime: string;
+  status: 'unsolved' | 'solved';
+  slug: string;
+}
+
+export interface Props {
+  cases: CaseItem[];
+  emptyText?: string;
+}
+const { cases, emptyText = '此分类下暂无案卷。' } = Astro.props;
+---
+
+{
+  cases.length === 0 ? (
+    <p class="case-list__empty text-muted">{emptyText}</p>
+  ) : (
+    <ul class="case-list">
+      {cases.map((c) => (
+        <li>
+          <CaseCard {...c} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .case-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .case-list > li {
+    display: flex;
+  }
+  .case-list__empty {
+    padding: var(--space-8) 0;
+    text-align: center;
+    border: 1px dashed var(--color-line);
+    border-radius: var(--radius);
+  }
+</style>

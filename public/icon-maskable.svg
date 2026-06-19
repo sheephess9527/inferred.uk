@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Inferred 案卷图标（可遮罩）">
+  <defs>
+    <radialGradient id="vigm" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#23201a"/>
+      <stop offset="55%" stop-color="#15130d"/>
+      <stop offset="100%" stop-color="#0c0c0a"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 满幅背景，确保任意遮罩形状下都不露白 -->
+  <rect width="512" height="512" fill="url(#vigm)"/>
+
+  <!-- 主要内容收进中央安全区（约 80%） -->
+  <g transform="translate(256 256) scale(0.78) translate(-256 -256)">
+    <rect x="36" y="36" width="440" height="440" fill="none" stroke="#A67C52" stroke-opacity="0.6" stroke-width="2.5"/>
+    <rect x="47" y="47" width="418" height="418" fill="none" stroke="#3A352B" stroke-width="1.5"/>
+    <g fill="#E8DFC8">
+      <rect x="176" y="150" width="160" height="34" rx="2"/>
+      <rect x="234" y="150" width="44" height="212"/>
+      <rect x="176" y="328" width="160" height="34" rx="2"/>
+    </g>
+    <circle cx="356" cy="346" r="16" fill="#8B2E2E"/>
+  </g>
+</svg>

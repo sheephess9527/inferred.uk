@@ -1,0 +1,251 @@
+---
+// 互动物证板：点击每条物证可循环标记为 重要 / 可疑 / 误导 / 排除。
+// 标记状态按 caseId 存入 localStorage，刷新后保留。
+export interface EvidenceItem {
+  label: string;
+  detail?: string;
+}
+export interface Props {
+  caseId: string;
+  items: EvidenceItem[];
+}
+const { caseId, items } = Astro.props;
+---
+
+<section class="evidence" data-evidence aria-labelledby={`evidence-${caseId}`}>
+  <header class="evidence__head">
+    <p class="eyebrow" id={`evidence-${caseId}`}>物证 · Evidence</p>
+    <p class="evidence__hint text-muted">
+      点击任一物证为它贴上标签：<span class="dot dot--important"></span>重要 ·
+      <span class="dot dot--suspicious"></span>可疑 ·
+      <span class="dot dot--misleading"></span>误导 ·
+      <span class="dot dot--excluded"></span>排除。标记会保存在本设备上。
+    </p>
+  </header>
+
+  <ol class="evidence__list">
+    {
+      items.map((item, i) => (
+        <li class="evidence__item">
+          <button
+            type="button"
+            class="evidence__btn"
+            data-evidence-item
+            data-index={i}
+            data-case={caseId}
+            aria-pressed="false"
+          >
+            <span class="evidence__num mono">{String(i + 1).padStart(2, '0')}</span>
+            <span class="evidence__text">
+              <span class="evidence__label">{item.label}</span>
+              {item.detail && <span class="evidence__detail text-muted">{item.detail}</span>}
+            </span>
+            <span class="evidence__mark mono" data-evidence-mark aria-hidden="true">
+              未标记
+            </span>
+          </button>
+        </li>
+      ))
+    }
+  </ol>
+
+  <button type="button" class="evidence__reset mono" data-evidence-reset data-case={caseId}>
+    清除本案标记
+  </button>
+</section>
+
+<style>
+  .evidence {
+    margin: var(--space-6) 0;
+  }
+  .evidence__head {
+    margin-bottom: var(--space-4);
+  }
+  .evidence__hint {
+    font-size: 0.85rem;
+    margin: var(--space-2) 0 0;
+  }
+  .dot {
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    margin: 0 0.2em 0 0.5em;
+    vertical-align: baseline;
+  }
+  .dot--important { background: var(--color-gold); }
+  .dot--suspicious { background: var(--color-accent); }
+  .dot--misleading { background: var(--color-accent-cold); }
+  .dot--excluded { background: var(--color-muted); }
+
+  .evidence__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    counter-reset: none;
+  }
+  .evidence__btn {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-left: 3px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-paper);
+    cursor: pointer;
+    font: inherit;
+    transition: border-color 0.18s ease, background 0.18s ease;
+  }
+  .evidence__btn:hover {
+    background: var(--color-surface-2);
+  }
+  .evidence__num {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    padding-top: 0.25em;
+  }
+  .evidence__text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+  }
+  .evidence__label {
+    line-height: 1.5;
+  }
+  .evidence__detail {
+    font-size: 0.85rem;
+  }
+  .evidence__mark {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    padding: 0.3em 0.55em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  /* 各标记状态：左边框 + 标签着色 */
+  .evidence__btn[data-state='important'] { border-left-color: var(--color-gold); }
+  .evidence__btn[data-state='important'] .evidence__mark {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+  }
+  .evidence__btn[data-state='suspicious'] { border-left-color: var(--color-accent); }
+  .evidence__btn[data-state='suspicious'] .evidence__mark {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .evidence__btn[data-state='misleading'] { border-left-color: var(--color-accent-cold); }
+  .evidence__btn[data-state='misleading'] .evidence__mark {
+    color: var(--color-accent-cold);
+    border-color: var(--color-accent-cold);
+  }
+  .evidence__btn[data-state='excluded'] {
+    border-left-color: var(--color-muted);
+    opacity: 0.6;
+  }
+  .evidence__btn[data-state='excluded'] .evidence__label {
+    text-decoration: line-through;
+  }
+
+  .evidence__reset {
+    margin-top: var(--space-4);
+    background: transparent;
+    border: 1px solid var(--color-line);
+    color: var(--color-muted);
+    padding: 0.4em 0.8em;
+    border-radius: var(--radius);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+  }
+  .evidence__reset:hover {
+    color: var(--color-paper);
+    border-color: var(--color-gold);
+  }
+</style>
+
+<script>
+  type State = 'none' | 'important' | 'suspicious' | 'misleading' | 'excluded';
+  const ORDER: State[] = ['none', 'important', 'suspicious', 'misleading', 'excluded'];
+  const LABELS: Record<State, string> = {
+    none: '未标记',
+    important: '重要',
+    suspicious: '可疑',
+    misleading: '误导',
+    excluded: '排除',
+  };
+
+  const keyFor = (caseId: string) => `inferred:clues:${caseId}`;
+
+  function load(caseId: string): Record<string, State> {
+    try {
+      const raw = localStorage.getItem(keyFor(caseId));
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function save(caseId: string, data: Record<string, State>) {
+    try {
+      localStorage.setItem(keyFor(caseId), JSON.stringify(data));
+    } catch (e) {}
+  }
+
+  function paint(btn: HTMLElement, state: State) {
+    const mark = btn.querySelector<HTMLElement>('[data-evidence-mark]');
+    if (state === 'none') {
+      delete btn.dataset.state;
+      btn.setAttribute('aria-pressed', 'false');
+    } else {
+      btn.dataset.state = state;
+      btn.setAttribute('aria-pressed', 'true');
+    }
+    const label = LABELS[state];
+    if (mark) mark.textContent = label;
+    const text = btn.querySelector('.evidence__label')?.textContent ?? '';
+    btn.setAttribute(
+      'aria-label',
+      `物证：${text}。当前标记：${label}。点击切换标记。`
+    );
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-evidence]').forEach((board) => {
+    const buttons = board.querySelectorAll<HTMLElement>('[data-evidence-item]');
+    const caseId = buttons[0]?.dataset.case;
+    if (!caseId) return;
+    const stored = load(caseId);
+
+    buttons.forEach((btn) => {
+      const idx = btn.dataset.index!;
+      paint(btn, stored[idx] ?? 'none');
+      btn.addEventListener('click', () => {
+        const current = (btn.dataset.state as State) ?? 'none';
+        const next = ORDER[(ORDER.indexOf(current) + 1) % ORDER.length];
+        paint(btn, next);
+        const data = load(caseId);
+        if (next === 'none') delete data[idx];
+        else data[idx] = next;
+        save(caseId, data);
+      });
+    });
+
+    board
+      .querySelector<HTMLButtonElement>('[data-evidence-reset]')
+      ?.addEventListener('click', () => {
+        save(caseId, {});
+        buttons.forEach((btn) => paint(btn, 'none'));
+      });
+  });
+</script>

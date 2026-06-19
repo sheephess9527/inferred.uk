@@ -1,0 +1,94 @@
+---
+import DifficultyStars from './DifficultyStars.astro';
+
+export interface Props {
+  caseId: string;
+  status: 'unsolved' | 'solved';
+  difficulty: number;
+  types: string[];
+  readingTime: string;
+  clueCount?: number;
+}
+const { caseId, status, difficulty, types, readingTime, clueCount } = Astro.props;
+const statusCn = status === 'solved' ? '已解' : '未解';
+const statusEn = status === 'solved' ? 'SOLVED' : 'UNSOLVED';
+const typeEn = types.join(' / ');
+---
+
+<dl class="case-meta">
+  <div class="case-meta__row">
+    <dt>案卷编号</dt>
+    <dd class="mono">CASE FILE #{caseId}</dd>
+  </div>
+  <div class="case-meta__row">
+    <dt>状态</dt>
+    <dd>
+      <span class:list={['mono', 'case-meta__status', `is-${status}`]}>{statusEn}</span>
+      <span class="text-muted">· {statusCn}</span>
+    </dd>
+  </div>
+  <div class="case-meta__row">
+    <dt>难度</dt>
+    <dd><DifficultyStars value={difficulty} showLabel /></dd>
+  </div>
+  <div class="case-meta__row">
+    <dt>类型</dt>
+    <dd>{typeEn}</dd>
+  </div>
+  <div class="case-meta__row">
+    <dt>推理时间</dt>
+    <dd class="mono">{readingTime}</dd>
+  </div>
+  {
+    typeof clueCount === 'number' && clueCount > 0 && (
+      <div class="case-meta__row">
+        <dt>线索数量</dt>
+        <dd class="mono">{clueCount}</dd>
+      </div>
+    )
+  }
+</dl>
+
+<style>
+  .case-meta {
+    margin: 0;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    padding: var(--space-4) var(--space-6);
+  }
+  .case-meta__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+    border-bottom: 1px dashed var(--color-line);
+  }
+  .case-meta__row:last-child {
+    border-bottom: none;
+  }
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    align-self: center;
+  }
+  dd {
+    margin: 0;
+    align-self: center;
+  }
+  .case-meta__status.is-unsolved {
+    color: var(--color-accent);
+  }
+  .case-meta__status.is-solved {
+    color: var(--color-gold);
+  }
+  @media (max-width: 460px) {
+    .case-meta__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>

@@ -1,0 +1,313 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseList from '../components/CaseList.astro';
+import NewsletterBox from '../components/NewsletterBox.astro';
+
+const allCases = (await getCollection('cases')).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+
+const latest = (allCases.filter((c) => c.data.featured).length
+  ? allCases.filter((c) => c.data.featured)
+  : allCases
+)
+  .slice(0, 3)
+  .map((c) => ({
+    caseId: c.data.caseId,
+    title: c.data.title,
+    summary: c.data.summary,
+    difficulty: c.data.difficulty,
+    types: c.data.types,
+    readingTime: c.data.readingTime,
+    status: c.data.status,
+    slug: c.id,
+  }));
+
+const steps = [
+  {
+    n: '01',
+    title: '阅读案卷',
+    body: '查看人物、证词、物证和时间线。',
+  },
+  {
+    n: '02',
+    title: '找出矛盾',
+    body: '注意那些被轻轻带过，却不该出现的细节。',
+  },
+  {
+    n: '03',
+    title: '推断真相',
+    body: '在答案揭晓前，写下你的判断。',
+  },
+];
+
+const caseTypes = [
+  { label: '密室', desc: '门窗反锁，凶手却已离开。' },
+  { label: '不在场证明', desc: '每个人都说自己当时在别处。' },
+  { label: '时间线诡计', desc: '真相藏在事件发生的顺序里。' },
+  { label: '证词矛盾', desc: '有人多说了一个不该知道的细节。' },
+  { label: '叙述性诡计', desc: '你读到的，未必是事情的全貌。' },
+  { label: '物证误导', desc: '最显眼的线索，往往是设给你的。' },
+];
+---
+
+<BaseLayout
+  title="Inferred｜原创互动悬疑推理案卷"
+  description="Inferred 是一个原创互动推理网站。阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。"
+  path="/"
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <p class="eyebrow hero__eyebrow">The truth is never stated. It is inferred.</p>
+      <h1 class="hero__title">真相从不明说，<br />只能被推断。</h1>
+      <p class="hero__subtitle">
+        阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/cases">开始推理</a>
+        <a class="btn btn--ghost" href="/archive">进入档案馆</a>
+      </div>
+    </div>
+    <div class="hero__rule" aria-hidden="true"></div>
+  </section>
+
+  <!-- 介绍 -->
+  <section class="container intro">
+    <p class="intro__text">
+      一份份未解案卷。<br />
+      一段段彼此矛盾的证词。<br />
+      一些看似无关的线索。<br />
+      你要做的，不是阅读故事。<br />
+      你要做的，<strong>是推断它们之间真正的关系。</strong>
+    </p>
+  </section>
+
+  <!-- 最新案卷 -->
+  <section class="container section">
+    <header class="section__head">
+      <div>
+        <p class="eyebrow">Latest Cases</p>
+        <h2 class="section__title">最新案卷</h2>
+      </div>
+      <a class="section__more" href="/cases">查看全部 →</a>
+    </header>
+    <CaseList cases={latest} />
+  </section>
+
+  <!-- 玩法说明 -->
+  <section class="how">
+    <div class="container">
+      <header class="section__head">
+        <div>
+          <p class="eyebrow">How It Works</p>
+          <h2 class="section__title">三步，从线索到真相</h2>
+        </div>
+      </header>
+      <ol class="how__steps">
+        {steps.map((s) => (
+          <li class="how__step">
+            <span class="how__num mono">{s.n}</span>
+            <h3 class="how__step-title">{s.title}</h3>
+            <p class="how__step-body text-muted">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 案件类型 -->
+  <section class="container section">
+    <header class="section__head">
+      <div>
+        <p class="eyebrow">Case Types</p>
+        <h2 class="section__title">你会遇到的诡计</h2>
+      </div>
+      <a class="section__more" href="/archive">按类型浏览 →</a>
+    </header>
+    <ul class="types">
+      {caseTypes.map((t) => (
+        <li class="types__item">
+          <span class="types__label">{t.label}</span>
+          <span class="types__desc text-muted">{t.desc}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- 订阅 -->
+  <section class="container section">
+    <NewsletterBox />
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: var(--space-24);
+    padding-bottom: var(--space-16);
+    position: relative;
+  }
+  .hero__inner {
+    max-width: var(--measure-wide);
+  }
+  .hero__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+  .hero__title {
+    font-size: clamp(2.4rem, 7vw, 4.5rem);
+    line-height: 1.1;
+    margin: 0 0 var(--space-6);
+    letter-spacing: 0.01em;
+  }
+  .hero__subtitle {
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    color: var(--color-muted);
+    max-width: 34rem;
+    margin: 0 0 var(--space-8);
+  }
+  .hero__actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .hero__rule {
+    margin-top: var(--space-16);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      var(--color-line) 40%,
+      transparent
+    );
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    padding: 0.8em 1.6em;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .btn--primary {
+    background: var(--color-accent);
+    color: var(--color-paper);
+    border-color: var(--color-accent);
+  }
+  .btn--primary:hover {
+    background: color-mix(in srgb, var(--color-accent) 80%, black);
+    color: var(--color-paper);
+  }
+  .btn--ghost {
+    border-color: var(--color-line);
+    color: var(--color-paper);
+  }
+  .btn--ghost:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
+  /* 介绍 */
+  .intro {
+    padding-block: var(--space-16);
+  }
+  .intro__text {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 3.2vw, 2rem);
+    line-height: 1.7;
+    max-width: var(--measure);
+  }
+  .intro__text strong {
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  /* 通用 section */
+  .section {
+    padding-block: var(--space-12);
+  }
+  .section__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    flex-wrap: wrap;
+  }
+  .section__title {
+    margin: var(--space-2) 0 0;
+  }
+  .section__more {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+  .section__more:hover {
+    color: var(--color-gold);
+  }
+
+  /* How it works */
+  .how {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    padding-block: var(--space-16);
+  }
+  .how__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .how__step {
+    border-top: 2px solid var(--color-accent);
+    padding-top: var(--space-4);
+  }
+  .how__num {
+    font-size: 1.4rem;
+    color: var(--color-accent);
+  }
+  .how__step-title {
+    margin: var(--space-3) 0 var(--space-2);
+  }
+  .how__step-body {
+    margin: 0;
+  }
+
+  /* 案件类型 */
+  .types {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-line);
+  }
+  .types__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-6);
+    background: var(--color-surface);
+  }
+  .types__label {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-paper);
+  }
+  .types__desc {
+    font-size: 0.9rem;
+  }
+</style>

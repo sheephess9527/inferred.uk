@@ -1,0 +1,224 @@
+---
+import CaseCard from './CaseCard.astro';
+
+export interface ArchiveCase {
+  caseId: string;
+  title: string;
+  summary: string;
+  difficulty: number;
+  types: string[];
+  scene: string[];
+  readingTime: string;
+  status: 'unsolved' | 'solved';
+  slug: string;
+  publishedAt: Date;
+}
+export interface Props {
+  cases: ArchiveCase[];
+}
+const { cases } = Astro.props;
+
+const uniq = (arr: string[]) => [...new Set(arr)].sort((a, b) => a.localeCompare(b, 'zh'));
+const allTypes = uniq(cases.flatMap((c) => c.types));
+const allScenes = uniq(cases.flatMap((c) => c.scene));
+const difficulties = [1, 2, 3, 4, 5].filter((d) => cases.some((c) => c.difficulty === d));
+
+const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+---
+
+<div class="archive" data-archive>
+  <div class="archive__filters" role="group" aria-label="筛选案卷">
+    <div class="archive__group">
+      <span class="archive__group-label">状态</span>
+      <div class="archive__chips">
+        <button class="chip is-on" data-filter="status" data-value="" type="button">全部</button>
+        <button class="chip" data-filter="status" data-value="unsolved" type="button">未解</button>
+        <button class="chip" data-filter="status" data-value="solved" type="button">已解</button>
+      </div>
+    </div>
+
+    <div class="archive__group">
+      <span class="archive__group-label">难度</span>
+      <div class="archive__chips">
+        <button class="chip is-on" data-filter="difficulty" data-value="" type="button">全部</button>
+        {difficulties.map((d) => (
+          <button class="chip mono" data-filter="difficulty" data-value={String(d)} type="button">
+            {stars(d)}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="archive__group">
+      <span class="archive__group-label">类型</span>
+      <div class="archive__chips">
+        <button class="chip is-on" data-filter="type" data-value="" type="button">全部</button>
+        {allTypes.map((t) => (
+          <button class="chip" data-filter="type" data-value={t} type="button">{t}</button>
+        ))}
+      </div>
+    </div>
+
+    {allScenes.length > 0 && (
+      <div class="archive__group">
+        <span class="archive__group-label">场景</span>
+        <div class="archive__chips">
+          <button class="chip is-on" data-filter="scene" data-value="" type="button">全部</button>
+          {allScenes.map((s) => (
+            <button class="chip" data-filter="scene" data-value={s} type="button">{s}</button>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <p class="archive__count text-muted" data-archive-count aria-live="polite"></p>
+
+  <ul class="archive__grid">
+    {cases.map((c) => (
+      <li
+        data-archive-item
+        data-types={c.types.join('|')}
+        data-scene={c.scene.join('|')}
+        data-difficulty={String(c.difficulty)}
+        data-status={c.status}
+      >
+        <CaseCard
+          caseId={c.caseId}
+          title={c.title}
+          summary={c.summary}
+          difficulty={c.difficulty}
+          types={c.types}
+          readingTime={c.readingTime}
+          status={c.status}
+          slug={c.slug}
+        />
+      </li>
+    ))}
+  </ul>
+
+  <p class="archive__empty text-muted" data-archive-empty hidden>
+    没有符合当前筛选条件的案卷。
+  </p>
+</div>
+
+<style>
+  .archive__filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .archive__group {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .archive__group-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    min-width: 3rem;
+  }
+  .archive__chips {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-family: var(--font-serif-cn);
+    font-size: 0.85rem;
+    padding: 0.35em 0.8em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .chip:hover {
+    color: var(--color-paper);
+  }
+  .chip.is-on {
+    color: var(--color-paper);
+    border-color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  }
+  .archive__count {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    margin: 0 0 var(--space-6);
+  }
+  .archive__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .archive__grid > li {
+    display: flex;
+  }
+  .archive__grid > li[hidden] {
+    display: none;
+  }
+  .archive__empty {
+    padding: var(--space-12) 0;
+    text-align: center;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-archive]');
+  if (root) {
+    const items = Array.from(root.querySelectorAll<HTMLElement>('[data-archive-item]'));
+    const countEl = root.querySelector<HTMLElement>('[data-archive-count]');
+    const emptyEl = root.querySelector<HTMLElement>('[data-archive-empty]');
+    const state: Record<string, string> = {
+      status: '',
+      difficulty: '',
+      type: '',
+      scene: '',
+    };
+
+    const matches = (el: HTMLElement) => {
+      if (state.status && el.dataset.status !== state.status) return false;
+      if (state.difficulty && el.dataset.difficulty !== state.difficulty) return false;
+      if (state.type && !(el.dataset.types ?? '').split('|').includes(state.type))
+        return false;
+      if (state.scene && !(el.dataset.scene ?? '').split('|').includes(state.scene))
+        return false;
+      return true;
+    };
+
+    const apply = () => {
+      let visible = 0;
+      items.forEach((el) => {
+        const ok = matches(el);
+        el.hidden = !ok;
+        if (ok) visible++;
+      });
+      if (countEl) countEl.textContent = `共 ${visible} 份案卷`;
+      if (emptyEl) emptyEl.hidden = visible !== 0;
+    };
+
+    root.querySelectorAll<HTMLButtonElement>('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const group = chip.dataset.filter!;
+        state[group] = chip.dataset.value ?? '';
+        root
+          .querySelectorAll<HTMLButtonElement>(`.chip[data-filter="${group}"]`)
+          .forEach((c) => c.classList.toggle('is-on', c === chip));
+        apply();
+      });
+    });
+
+    apply();
+  }
+</script>

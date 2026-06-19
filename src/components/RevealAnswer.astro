@@ -1,0 +1,118 @@
+---
+// 揭晓真相：默认折叠，点击前显示警告。
+// 基于原生 <details>，键盘可操作、无 JS 也能展开；
+// 不持久化展开状态——刷新即回到未揭晓，保留仪式感。
+// 作者应把【真相 / 关键矛盾 / 伏笔解析 / 推理链】全部写在此组件内，避免提前剧透。
+---
+
+<details class="reveal" data-reveal>
+  <summary class="reveal__summary">
+    <span class="reveal__gate">
+      <span class="reveal__warning">答案一旦打开，推理就结束了。确认你已经完成判断。</span>
+      <span class="reveal__btn">
+        <span class="reveal__btn-icon" aria-hidden="true">⊘</span>
+        我已完成推理，揭晓真相
+      </span>
+    </span>
+    <span class="reveal__opened mono" aria-hidden="true">已揭晓 · 点击收起</span>
+  </summary>
+
+  <div class="reveal__content">
+    <p class="eyebrow reveal__eyebrow">Solution · 真相揭晓</p>
+    <slot />
+  </div>
+</details>
+
+<style>
+  .reveal {
+    margin: var(--space-8) 0;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+  .reveal__summary {
+    list-style: none;
+    cursor: pointer;
+    display: block;
+    padding: var(--space-6);
+    text-align: center;
+  }
+  .reveal__summary::-webkit-details-marker {
+    display: none;
+  }
+  .reveal__gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .reveal__warning {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    max-width: 28rem;
+  }
+  .reveal__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    padding: 0.7em 1.4em;
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .reveal__summary:hover .reveal__btn {
+    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+  }
+  .reveal__opened {
+    display: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--color-gold);
+    text-transform: uppercase;
+  }
+
+  .reveal[open] .reveal__summary {
+    text-align: left;
+    padding: var(--space-3) var(--space-6);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .reveal[open] .reveal__gate {
+    display: none;
+  }
+  .reveal[open] .reveal__opened {
+    display: inline-block;
+  }
+
+  .reveal__content {
+    padding: var(--space-6);
+    animation: reveal-fade 0.4s ease;
+  }
+  .reveal__eyebrow {
+    color: var(--color-accent);
+    margin: 0 0 var(--space-3);
+  }
+  .reveal__content :global(h2),
+  .reveal__content :global(h3) {
+    margin-top: var(--space-6);
+  }
+  .reveal__content :global(> :first-child + *) {
+    margin-top: 0;
+  }
+
+  @keyframes reveal-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
