@@ -5,7 +5,11 @@ import CaseList from '../components/CaseList.astro';
 import NewsletterBox from '../components/NewsletterBox.astro';
 
 const allCases = (await getCollection('cases')).sort(
-  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+  (a, b) => {
+    const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+    if (dateDiff !== 0) return dateDiff;
+    return b.data.caseId.localeCompare(a.data.caseId);
+  }
 );
 
 const featuredCases = allCases.filter((c) => c.data.featured);
