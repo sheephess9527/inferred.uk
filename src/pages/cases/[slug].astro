@@ -107,7 +107,12 @@ const jsonLd = {
       <Content />
     </div>
 
-    <ShareBar title={data.title} text={data.summary} path={`/cases/${entry.id}`} />
+    <ShareBar
+      title={data.title}
+      text={data.summary}
+      path={`/cases/${entry.id}`}
+      poster={`/share/cases/${entry.id}.jpg`}
+    />
 
     <nav class="case__nav" aria-label="案卷导航">
       {prev ? (

@@ -6,10 +6,14 @@ export interface Props {
   text?: string;
   /** 站内绝对路径，例如 /cases/xxx */
   path: string;
+  /** 分享海报图（竖版，含二维码）；提供后显示「生成海报」与「小红书」 */
+  poster?: string;
 }
 
-const { title, text = '', path } = Astro.props;
-const url = new URL(path, Astro.site ?? 'https://inferred.uk').href;
+const { title, text = '', path, poster } = Astro.props;
+const site = Astro.site ?? 'https://inferred.uk';
+const url = new URL(path, site).href;
+const posterUrl = poster ? new URL(poster, site).href : '';
 
 // 微博分享 intent（无需 SDK，直接打开分享弹窗）
 const weiboHref =
@@ -25,12 +29,21 @@ const weiboHref =
   data-url={url}
   data-title={title}
   data-text={text}
+  data-poster={posterUrl}
   aria-label="分享这篇文章"
 >
   <span class="share__label mono">分享 · SHARE</span>
 
   <div class="share__actions">
+    {poster && (
+      <button type="button" class="share__btn share__btn--poster" data-share-poster>
+        生成分享海报
+      </button>
+    )}
     <button type="button" class="share__btn" data-share-wechat>微信 / 朋友圈</button>
+    {poster && (
+      <button type="button" class="share__btn" data-share-xhs>小红书</button>
+    )}
     <a
       class="share__btn"
       href={weiboHref}
@@ -46,6 +59,23 @@ const weiboHref =
 
   <p class="share__toast mono" data-share-toast hidden aria-live="polite">链接已复制</p>
 </aside>
+
+{poster && (
+  <div class="poster" data-poster-modal hidden aria-hidden="true">
+    <div class="poster__backdrop" data-poster-close></div>
+    <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
+      <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
+      <p class="poster__hint mono" data-poster-hint>长按图片保存，再发到朋友圈或小红书</p>
+      <div class="poster__frame">
+        <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
+      </div>
+      <div class="poster__foot">
+        <a class="poster__dl" data-poster-dl download>下载图片</a>
+        <span class="poster__note mono" data-poster-note></span>
+      </div>
+    </div>
+  </div>
+)}
 
 <style>
   .share {
@@ -87,6 +117,15 @@ const weiboHref =
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
+  .share__btn--poster {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  }
+  .share__btn--poster:hover {
+    background: color-mix(in srgb, var(--color-gold) 22%, transparent);
+    color: var(--color-paper);
+  }
   [data-share-wechat] {
     border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
   }
@@ -94,6 +133,10 @@ const weiboHref =
     border-color: var(--color-accent);
     color: var(--color-paper);
     background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  [data-share-xhs]:hover {
+    border-color: #ff2e4d;
+    color: #ff2e4d;
   }
   .share__toast {
     flex-basis: 100%;
@@ -119,6 +162,111 @@ const weiboHref =
       text-align: center;
     }
   }
+
+  /* 海报弹窗 */
+  .poster[hidden] {
+    display: none;
+  }
+  .poster {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5);
+  }
+  .poster__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(3px);
+  }
+  .poster__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(92vw, 24rem);
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    animation: poster-in 0.25s ease;
+  }
+  .poster__x {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-paper) 8%, transparent);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .poster__x:hover {
+    color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-paper) 16%, transparent);
+  }
+  .poster__hint {
+    margin: 0;
+    padding-right: 2rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--color-gold);
+  }
+  .poster__frame {
+    overflow: auto;
+    border-radius: calc(var(--radius) - 2px);
+    border: 1px solid var(--color-line);
+    background: #0e0e0c;
+  }
+  .poster__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .poster__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .poster__dl {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.4em 1em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .poster__dl:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  .poster__note {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  @keyframes poster-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 </style>
 
 <script>
@@ -126,11 +274,14 @@ const weiboHref =
     const url = root.dataset.url ?? location.href;
     const title = root.dataset.title ?? document.title;
     const text = root.dataset.text ?? '';
+    const poster = root.dataset.poster ?? '';
 
     const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
+    const posterBtn = root.querySelector<HTMLButtonElement>('[data-share-poster]');
+    const xhsBtn = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
 
     const canNativeShare = typeof navigator.share === 'function';
 
@@ -140,7 +291,7 @@ const weiboHref =
       toast.hidden = false;
       window.setTimeout(() => {
         if (toast) toast.hidden = true;
-      }, 2600);
+      }, 3200);
     }
 
     async function nativeShare() {
@@ -152,24 +303,31 @@ const weiboHref =
       }
     }
 
-    async function copyLink() {
+    async function copyText(value: string) {
       try {
-        await navigator.clipboard.writeText(url);
-        showToast('链接已复制');
+        await navigator.clipboard.writeText(value);
+        return true;
       } catch {
-        // 退化方案：选中一个临时输入框
-        const input = document.createElement('input');
-        input.value = url;
+        const input = document.createElement('textarea');
+        input.value = value;
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
         document.body.appendChild(input);
         input.select();
+        let ok = false;
         try {
-          document.execCommand('copy');
-          showToast('链接已复制');
+          ok = document.execCommand('copy');
         } catch {
-          showToast('复制失败，请手动复制');
+          ok = false;
         }
         input.remove();
+        return ok;
       }
+    }
+
+    async function copyLink() {
+      const ok = await copyText(url);
+      showToast(ok ? '链接已复制' : '复制失败，请手动复制');
     }
 
     // "更多…"：仅在支持系统分享时出现（手机分享面板含微信/微博等）
@@ -188,7 +346,65 @@ const weiboHref =
         if (ok) return;
       }
       await copyLink();
-      showToast('链接已复制，可在微信中粘贴分享给好友或朋友圈');
+      showToast('链接已复制，可在微信中粘贴；发朋友圈建议用「生成分享海报」');
     });
+
+    /* ---- 海报弹窗 ---- */
+    const modal = document.querySelector<HTMLElement>('[data-poster-modal]');
+    const posterImg = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
+    const posterDl = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
+    const posterNote = modal?.querySelector<HTMLElement>('[data-poster-note]');
+    const posterHint = modal?.querySelector<HTMLElement>('[data-poster-hint]');
+    let lastFocus: HTMLElement | null = null;
+
+    function openPoster(opts?: { hint?: string; note?: string }) {
+      if (!modal || !poster) return;
+      if (posterImg && !posterImg.src) posterImg.src = poster;
+      if (posterDl) {
+        posterDl.href = poster;
+        posterDl.setAttribute('download', poster.split('/').pop() || 'inferred.jpg');
+      }
+      if (posterHint && opts?.hint) posterHint.textContent = opts.hint;
+      if (posterNote) posterNote.textContent = opts?.note ?? '';
+      lastFocus = document.activeElement as HTMLElement;
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePoster() {
+      if (!modal) return;
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      lastFocus?.focus?.();
+    }
+
+    posterBtn?.addEventListener('click', () =>
+      openPoster({ hint: '长按图片保存，再发到朋友圈或小红书' })
+    );
+
+    // 小红书：无网页分享接口，且笔记不支持外链。
+    // 策略：复制一段适配小红书的文案，并打开海报让用户长按保存后发布。
+    xhsBtn?.addEventListener('click', async () => {
+      const caption =
+        `${title}\n\n${text}\n\n` +
+        `完整案卷 👉 ${url}\n` +
+        `#推理 #悬疑 #解谜 #本格推理 #Inferred`;
+      const ok = await copyText(caption);
+      openPoster({
+        hint: '长按保存海报，去小红书发布',
+        note: ok ? '文案已复制，粘贴到正文即可' : '',
+      });
+    });
+
+    if (modal) {
+      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach((el) =>
+        el.addEventListener('click', closePoster)
+      );
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closePoster();
+      });
+    }
   });
 </script>
