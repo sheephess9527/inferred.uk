@@ -47,23 +47,6 @@ const weiboHref =
   <p class="share__toast mono" data-share-toast hidden aria-live="polite">链接已复制</p>
 </aside>
 
-{/* 微信内置浏览器引导层：无法直接调起朋友圈，只能引导用户用右上角菜单 */}
-<div
-  class="wx-guide"
-  data-wx-guide
-  hidden
-  role="dialog"
-  aria-modal="true"
-  aria-label="分享到微信"
->
-  <div class="wx-guide__arrow" aria-hidden="true">↗</div>
-  <p class="wx-guide__text">
-    点击右上角 <strong>···</strong><br />
-    选择「分享到朋友圈」或「发送给朋友」
-  </p>
-  <button type="button" class="wx-guide__close" data-wx-close>我知道了</button>
-</div>
-
 <style>
   .share {
     margin-top: var(--space-12);
@@ -136,61 +119,6 @@ const weiboHref =
       text-align: center;
     }
   }
-
-  /* 微信引导层 */
-  .wx-guide {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: rgba(0, 0, 0, 0.78);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: calc(var(--space-6) + env(safe-area-inset-top)) var(--space-8) 0
-      var(--space-8);
-    text-align: right;
-  }
-  .wx-guide__arrow {
-    font-size: 3rem;
-    line-height: 1;
-    margin-right: 0.5rem;
-    animation: wx-bounce 1.4s ease-in-out infinite;
-  }
-  .wx-guide__text {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin: var(--space-3) 0 var(--space-8);
-  }
-  .wx-guide__text strong {
-    font-size: 1.3em;
-    letter-spacing: 0.1em;
-  }
-  .wx-guide__close {
-    align-self: center;
-    margin-top: var(--space-8);
-    font-family: var(--font-mono);
-    background: transparent;
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 999px;
-    padding: 0.6em 1.6em;
-    cursor: pointer;
-  }
-  @keyframes wx-bounce {
-    0%,
-    100% {
-      transform: translate(0, 0);
-    }
-    50% {
-      transform: translate(4px, -4px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .wx-guide__arrow {
-      animation: none;
-    }
-  }
 </style>
 
 <script>
@@ -203,8 +131,6 @@ const weiboHref =
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
-    const guide = document.querySelector<HTMLElement>('[data-wx-guide]');
-    const guideClose = document.querySelector<HTMLButtonElement>('[data-wx-close]');
 
     const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
     const canNativeShare = typeof navigator.share === 'function';
@@ -223,88 +149,50 @@ const weiboHref =
         await navigator.share({ title, text, url });
         return true;
       } catch {
-        return false; // 用户取消或失败
+        return false;
       }
     }
 
-    async function copyLink() {
+    async function copyLink(message = '链接已复制') {
       try {
         await navigator.clipboard.writeText(url);
-        showToast('链接已复制');
+        showToast(message);
+        return true;
       } catch {
-        // 退化方案：选中一个临时输入框
         const input = document.createElement('input');
         input.value = url;
         document.body.appendChild(input);
         input.select();
         try {
           document.execCommand('copy');
-          showToast('链接已复制');
+          showToast(message);
+          return true;
         } catch {
           showToast('复制失败，请手动复制');
+          return false;
+        } finally {
+          input.remove();
         }
-        input.remove();
       }
     }
 
-    // “更多…”：仅在支持系统分享时出现（手机分享面板含微信/微博等）
     if (canNativeShare && nativeBtn) {
       nativeBtn.hidden = false;
       nativeBtn.addEventListener('click', nativeShare);
     }
 
-    copyBtn?.addEventListener('click', copyLink);
-
-    let guideReturnFocus: HTMLElement | null = null;
-
-    function openGuide() {
-      if (!guide) return;
-      guideReturnFocus = document.activeElement as HTMLElement | null;
-      guide.hidden = false;
-      guideClose?.focus();
-    }
-
-    function closeGuide() {
-      if (!guide || guide.hidden) return;
-      guide.hidden = true;
-      guideReturnFocus?.focus();
-      guideReturnFocus = null;
-    }
+    copyBtn?.addEventListener('click', () => copyLink());
 
     wechatBtn?.addEventListener('click', async () => {
       if (isWeChat) {
-        openGuide();
+        await copyLink('链接已复制');
         return;
       }
       if (canNativeShare) {
         const ok = await nativeShare();
         if (ok) return;
       }
-      try {
-        await navigator.clipboard.writeText(url);
-      } catch {
-        const input = document.createElement('input');
-        input.value = url;
-        document.body.appendChild(input);
-        input.select();
-        try {
-          document.execCommand('copy');
-        } catch {
-          showToast('复制失败，请手动复制');
-          input.remove();
-          return;
-        }
-        input.remove();
-      }
-      showToast('链接已复制，可在微信中打开后分享到朋友圈');
-    });
-
-    guideClose?.addEventListener('click', closeGuide);
-    guide?.addEventListener('click', (e) => {
-      if (e.target === guide) closeGuide();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && guide && !guide.hidden) closeGuide();
+      await copyLink('链接已复制，可在微信中打开后分享');
     });
   });
 </script>
