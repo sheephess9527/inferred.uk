@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseMeta from '../../components/CaseMeta.astro';
 import Tag from '../../components/Tag.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -60,6 +61,8 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
     <div id="case-body" class="case__body prose">
       <Content />
     </div>
+
+    <ShareBar title={data.title} text={data.summary} path={`/cases/${entry.id}`} />
 
     <footer class="case__footer">
       <a class="case__back" href="/cases">← 返回案卷列表</a>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('clues');
@@ -35,6 +36,8 @@ const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
     <div class="prose">
       <Content />
     </div>
+
+    <ShareBar title={entry.data.title} text={entry.data.summary} path={`/clues/${entry.id}`} />
 
     <footer class="clue__footer">
       <a class="clue__back" href="/clues">← 返回线索</a>
