@@ -52,6 +52,8 @@ const weiboHref =
       data-share-weibo>微博</a
     >
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
+    <button type="button" class="share__btn" data-share-text>复制图文</button>
+    <button type="button" class="share__btn" data-share-text>复制图文</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>
       更多…
     </button>
@@ -337,6 +339,23 @@ const weiboHref =
     }
 
     copyBtn?.addEventListener('click', copyLink);
+    // 复制图文功能
+    async function copyTextWithPoster() {
+      let shareContent = `${title}\n\n${url}`;
+      
+      if (text) {
+        shareContent = `${title}\n\n${text}\n\n${url}`;
+      }
+      
+      if (poster) {
+        shareContent += `\n\n[分享海报] ${poster}`;
+      }
+      
+      const ok = await copyText(shareContent);
+      showToast(ok ? '图文已复制，可直接粘贴到小红书/朋友圈' : '复制失败');
+    }
+    
+    textBtn?.addEventListener('click', copyTextWithPoster);
 
     // 微信 / 朋友圈：优先系统分享面板（手机可直接选微信）；
     // 不支持时退化为复制链接，提示用户在微信里粘贴分享。
