@@ -9,14 +9,17 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "astro": "astro",
     "check": "astro check",
     "verify:og": "node scripts/verify-og.mjs",
-    "og:export": "node scripts/export-og.mjs && node scripts/generate-share-images.mjs"
+    "og:export": "node scripts/export-og.mjs && node scripts/generate-share-images.mjs",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/sitemap": "^3.6.0",
     "@fontsource/ibm-plex-mono": "^5.2.0",
@@ -25,9 +28,13 @@
     "typescript": "^5.9.0"
   },
   "devDependencies": {
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "wrangler": "^4.102.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
