@@ -19,7 +19,10 @@ const { Content } = await render(entry);
 const data = entry.data;
 
 const seoTitle = `${data.title}｜Inferred Case File #${data.caseId}`;
+const shareTitle = `${data.title} · Inferred`;
 const seoDesc = data.summary;
+const shareImage = `/og/cases/${entry.id}.png`;
+const shareImageAlt = `案卷 ${data.caseId}：${data.title}`;
 const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
   year: 'numeric',
   month: 'long',
@@ -29,8 +32,11 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
 
 <BaseLayout
   title={seoTitle}
+  ogTitle={shareTitle}
   description={seoDesc}
   path={`/cases/${entry.id}`}
+  ogImage={shareImage}
+  ogImageAlt={shareImageAlt}
 >
   <article class="case container container--reading">
     <ReadingProgress target="#case-body" />

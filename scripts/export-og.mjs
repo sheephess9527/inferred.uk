@@ -5,7 +5,7 @@ const svg = fs.readFileSync('public/og-default.svg');
 
 await sharp(svg, { density: 144 })
   .resize(1200, 630)
-  .png()
+  .png({ compressionLevel: 9, quality: 90 })
   .toFile('public/og-default.png');
 
 console.log('Wrote public/og-default.png (1200×630)');

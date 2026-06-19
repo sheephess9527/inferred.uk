@@ -22,8 +22,11 @@ const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
 
 <BaseLayout
   title={`${entry.data.title}｜Inferred 线索`}
+  ogTitle={`${entry.data.title} · Inferred`}
   description={entry.data.summary}
   path={`/clues/${entry.id}`}
+  ogImage={`/og/clues/${entry.id}.png`}
+  ogImageAlt={`推理技巧：${entry.data.title}`}
 >
   <article class="container container--reading clue">
     <header class="clue__header">
