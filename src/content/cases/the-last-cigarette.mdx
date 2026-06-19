@@ -1,0 +1,153 @@
+---
+title: "最后一根烟"
+caseId: "019"
+status: "unsolved"
+difficulty: 3
+types:
+  - "硬汉派"
+  - "时间线诡计"
+  - "物证误导"
+scene:
+  - "办公室"
+  - "雨夜"
+readingTime: "8-11 分钟"
+clueCount: 6
+publishedAt: "2026-07-04"
+summary: "烟灰缸里只有一根烟，却有两个烟头。他说自己昨晚没来过——可打火机是热的。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者傅铭倒在办公室沙发，太阳穴中枪。烟灰缸里一根未燃尽的香烟，旁有另一枚完全燃尽的烟头。", detail: "死亡时间 23:45 前后。" },
+  { label: "办公室只有一把钥匙，傅铭本人与合伙人沈岸各持一柄复制钥匙。", detail: "" },
+  { label: "沈岸称整晚在家，23:00 后未出门；小区监控 22:50–06:00 无其车辆出入。", detail: "" },
+  { label: "傅铭专用打火机搁在桌上，金属表面余温，似刚使用过。", detail: "" },
+  { label: "完全燃尽的烟头滤嘴口红印偏淡；未燃尽那根滤嘴无口红。", detail: "" },
+  { label: "傅铭秘书黎音的日程显示：她 23:30 曾给傅铭手机打电话，无人接听；她称「只是催文件」。", detail: "" },
+];
+
+## 一、案发
+
+傅铭的办公室在二十二层，雨夜城里只剩霓虹反光。
+
+他死在沙发上，像刚歇了一会儿。枪声被雨盖住，隔壁律所没人听见。
+
+烟灰缸很奇怪：一根烟还没抽完，旁边却躺着另一枚 **完全燃尽** 的烟头。
+
+沈岸说昨晚没来过。可打火机是热的。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="傅铭"
+  role="律所合伙人"
+  age="48"
+  relation="死者"
+  alibi="——"
+>
+  近期与沈岸争夺事务所控制权。
+</PersonCard>
+
+<PersonCard
+  name="沈岸"
+  role="合伙人"
+  age="46"
+  relation="生意伙伴 / 竞争对手"
+  alibi="自称整晚在家"
+>
+  有办公室复制钥匙，脾气硬，说话短。
+</PersonCard>
+
+<PersonCard
+  name="黎音"
+  role="秘书"
+  age="30"
+  relation="下属"
+  alibi="称 23:30 在办公室外打电话"
+>
+  掌握两人争权邮件，近期被傅铭威胁辞退。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈岸" time="案发次日">
+  “我没去。监控没有我的车。傅铭的死跟我无关。烟？他天天抽，办公室里有烟不奇怪。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="黎音" time="问询时">
+  “我打电话是催他签文件。没人接，我就回家了。口红？我不抽烟，滤嘴上的印子跟我没关系。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="019" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "两个烟头，说明来过几个人？",
+    "燃尽的烟头有淡口红，未燃尽的没有——谁抽了哪根？",
+    "热的打火机，能推翻「昨晚没来过」吗？",
+    "小区监控没有车，等于人没出过门吗？",
+    ".hammett 式办公室：最熟的门，往往最危险？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="019" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **黎音**。
+
+她 23:30 到场，用复制钥匙（傅铭曾交给她保管文件柜的备用钥匙，可开办公室门）进入，与傅铭争执。傅铭点烟，她借火时留下 **淡口红印** 在 **先燃尽的那根** 上；随后枪击，傅铭手中 **未燃尽** 的那根掉落。
+
+她擦去了自己指纹，却忘了两根烟的 **燃烧阶段** 不同。热的打火机是傅铭刚用的，不是沈岸来的证据。
+
+沈岸确实在家——他坐地铁去朋友家喝酒，**没开车**，小区监控看不到车。他是 noir 式 **被栽赃的合伙人**。
+
+### 关键矛盾
+
+两个烟头不是两人各抽一根，而是 **同一人两次点烟 + 一次借火**。口红在燃尽那根，说明 **后到的女人** 接触过先抽完的那根。
+
+### 伏笔解析
+
+1. **燃尽 vs 未燃尽**——时间线藏在灰烬长度里。
+2. **淡口红**——不是艳色，是「曾靠近」的痕迹。
+3. **23:30 电话**——她证明自己在场附近，却伪装成「未进门」。
+4. **沈岸无车出入**——监控盲区：人走路，车不动。
+5. **复制钥匙**——秘书比合伙人更接近门。
+6. **雨夜办公室**——硬汉派不靠密室，靠 **谁握钥匙**。
+
+最后一根烟没抽完。故事在烟灰里。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

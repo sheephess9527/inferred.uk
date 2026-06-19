@@ -1,0 +1,155 @@
+---
+title: "榻榻米的误差"
+caseId: "022"
+status: "unsolved"
+difficulty: 4
+types:
+  - "建筑诡计"
+  - "叙述性诡计"
+  - "日本本格"
+scene:
+  - "日式旅馆"
+  - "雪夜"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-07-07"
+summary: "客房标明六叠，实测却是七叠。多出来的一叠，通向哪里？"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者旅人桐谷倒在「松」号房，喉部割伤。纸门扣死，障子无破。", detail: "" },
+  { label: "旅馆宣传册写「松」号六叠间；桐谷用步伐测得沿墙短边约七叠长度。", detail: "一叠约 90×180cm。" },
+  { label: "壁橱深处榻榻米颜色略浅，边缘切割痕迹新。", detail: "" },
+  { label: "相邻「竹」号房壁橱少一叠榻榻米厚度，露出夹层入口。", detail: "" },
+  { label: "女将称所有房间「标准六叠」，拒绝重新丈量。", detail: "" },
+  { label: "桐谷行李中有建筑系旧教材，夹着一页手写：「多出来的一叠 = 偷来的面积」。", detail: "" },
+];
+
+## 一、案发
+
+雪夜，山中旅馆。
+
+「松」号六叠间——宣传册这么写。桐谷是学建筑的，入住第一晚就在心里画平面图。他总觉得 **短边多走了一步**。
+
+第二夜，他死在房里。纸门扣死，雪地上无外人脚印。
+
+女将说：「六叠就是六叠，日本旅馆，还能量错？」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="桐谷"
+  role="旅人 / 前建筑系学生"
+  age="37"
+  relation="死者"
+  alibi="——"
+>
+  调查老式旅馆违规改建，准备投稿调查报道。
+</PersonCard>
+
+<PersonCard
+  name="女将"
+  role="旅馆主人"
+  age="58"
+  relation="经营者"
+  alibi="自称在一楼账房"
+>
+  坚持房间为标准六叠，对丈量极度反感。
+</PersonCard>
+
+<PersonCard
+  name="阿原"
+  role="杂役"
+  age="24"
+  relation="员工"
+  alibi="自称在厨房备餐"
+>
+  负责客房铺榻榻米，手上有近期切割工具使用记录。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="女将" time="案发后">
+  “松号六叠，几十年都这样。客人死在自己房里，别赖旅馆格局。他量榻榻米？那是冒犯。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="阿原" time="问询时">
+  “铺席是我铺的，按女将吩咐做。切割？旧席子坏了总要修，跟杀人没关系。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="022" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "六叠与七叠，差在哪里？",
+    "颜色略浅的榻榻米，说明什么？",
+    "「竹」号少一叠，与「松」号多一叠，如何拼在一起？",
+    "桐谷笔记里的「偷来的面积」，在指控谁？",
+    "纸门密室，能否用「多出来的一叠」解释进出？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="022" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **女将**（指使阿原铺席、动手封口）。
+
+改建时从「竹」号壁橱 **偷一叠面积** 并入「松」号，形成壁橱后 **窄夹层**（约一叠宽）。女将经夹层潜入「松」号杀害桐谷——桐谷已发现尺寸误差并准备曝光违规改建，威胁旅馆执照。
+
+纸门仍扣死，因为进出走 **壁橱夹层**，不经庭院。七叠实测长度来自 **多并入的一叠**；浅色榻榻米是后补切割件。
+
+阿原是执行者，但动机的核心是 **女将** 对「六叠」名分的执念——日本旅馆的叠数即信誉。
+
+### 关键矛盾
+
+横沟正史式日常：一叠 90 厘米，是 **数学** 也是 **荣誉**。宣传册写六叠，实测七叠，必有一叠来路不明。
+
+桐谷笔记点题：多出来的一叠，是偷来的面积，也是偷来的杀人通道。
+
+### 伏笔解析
+
+1. **步伐测得七叠**——读者可复现的公平线索。
+2. **浅色切割缘**——新席旧席并置，时间不一致。
+3. **竹号少一叠**——守恒：面积不会凭空出现。
+4. **壁橱**——日式房间最常被忽略的「第二面墙」。
+5. **女将拒绝丈量**——叙述性诡计：拒绝即承认。
+6. **建筑系旅人**——本格需要会量房的人进场。
+
+六叠的名分，多出来的一叠，藏着刀。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,153 @@
+---
+title: "爵士俱乐部后门"
+caseId: "020"
+status: "unsolved"
+difficulty: 4
+types:
+  - "硬汉派"
+  - "敲诈"
+  - "消失诡计"
+scene:
+  - "爵士俱乐部"
+  - "雨夜"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-07-05"
+summary: "他死在后台，前台正在演最后一曲。所有人都盯着舞台——后门却开着。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者罗哲倒在后台休息室，颈侧勒痕。死亡时间约 22:50。", detail: "" },
+  { label: "前台 22:45–23:05 正在演出，鼓手、贝斯、萨克斯手均在台上，观众与吧台员可作证。", detail: "" },
+  { label: "后台后门半开，门外小巷积水，有一双 41 码男鞋脚印通向街角。", detail: "" },
+  { label: "罗哲口袋有敲诈便条复印件，指向乐队经理人孟柯挪用演出款。", detail: "" },
+  { label: "鼓手阿哲的演出鞋是 43 码；孟柯 41 码，但声称「演出时我在台下前排」。", detail: "" },
+  { label: "后台监控坏了一周；孟柯上周报修单上有鼓手阿哲的签字代填。", detail: "" },
+];
+
+## 一、案发
+
+雨夜，爵士俱乐部仍满座。
+
+最后一曲《蓝雨》响起，萨克斯像哭。台下没人想到，后台的罗哲正被勒死在沙发上。
+
+门从舞台到后台要穿过窄廊。演出进行中，乐手都在台上——至少， **观众看见的那三个都在**。
+
+后门半开，脚印伸向雨里。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="罗哲"
+  role="会计"
+  age="39"
+  relation="死者"
+  alibi="——"
+>
+  掌握孟柯挪用款项证据，案发前来取钱。
+</PersonCard>
+
+<PersonCard
+  name="孟柯"
+  role="经理人"
+  age="44"
+  relation="被敲诈对象"
+  alibi="自称在台下前排看完整场"
+>
+  41 码，熟悉后台所有钥匙。
+</PersonCard>
+
+<PersonCard
+  name="阿哲"
+  role="鼓手"
+  age="36"
+  relation="乐队成员"
+  alibi="22:45–23:05 在台上"
+>
+  43 码，与门外脚印不符；代填监控报修单。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="孟柯" time="案发后">
+  “我在台下，很多人看见我。罗哲敲诈我？有这回事，但我没动手。后门？后台的事我不熟。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="阿哲" time="演出结束">
+  “我整场在台上打鼓。监控坏了跟我没关系——孟柯让我帮忙签过维修单，我懒得问。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="020" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "乐手都在台上，后台谁能进？",
+    "41 码脚印，会把谁锁进小巷？",
+    "孟柯在台下，等于没去过后台吗？",
+    "监控坏了一周，对谁最有利？",
+    "敲诈便条，是动机还是布景？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="020" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **孟柯**。
+
+《蓝雨》有一段 **七分钟鼓独奏**，观众视线锁在台上，阿哲在演，但 **孟柯并不在台下**——他趁曲目开始前的三十秒从侧幕溜进后台，勒死罗哲，从后门离开，再绕回观众席 **前排**（有人记得他「晚来一步」，却以为他一直在）。
+
+41 码脚印是他的。他报修监控并让阿哲代签，是为了 **延后修复**。
+
+阿哲的 43 码排除他动脚；孟柯用「台上三人都在」制造 **全体不在场**，却忘了经理人本就不该在台上。
+
+### 关键矛盾
+
+硬汉派爵士场景：音乐盖住脚步，灯光盖住侧幕。观众作证「乐手在台上」，不能作证 **经理人一直在台下**。
+
+### 伏笔解析
+
+1. **后门半开**—— noir 从不走正门。
+2. **七分钟独奏**——时间窗比密室更实用。
+3. **41 码**——鞋码比名字诚实。
+4. **代签报修**——拖延监控，比破坏监控更干净。
+5. **敲诈便条**——动机直白， noir 不玩玄的。
+6. **《蓝雨》**——曲名是氛围；真相在 **曲间三十秒**。
+
+前台还在演。后台已经空了。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,158 @@
+---
+title: "滑墙画廊"
+caseId: "021"
+status: "unsolved"
+difficulty: 5
+types:
+  - "建筑诡计"
+  - "密室"
+  - "日本本格"
+scene:
+  - "美术馆"
+  - "老宅"
+readingTime: "11-15 分钟"
+clueCount: 7
+publishedAt: "2026-07-06"
+summary: "展厅四面是墙，地面无出口。死者倒在中央，唯一的门从内侧锁死——墙却移动过。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者策展人白石倒在圆形展厅中央，胸口中刀。单门从内侧插销锁死，无窗。", detail: "" },
+  { label: "展厅为改建老宅舞厅，四面墙上有四幅等大油画，分别描绘春、夏、秋、冬。", detail: "" },
+  { label: "「夏」画框略向前突出 2 厘米，轨道灰尘有近期擦痕。", detail: "" },
+  { label: "地面无地道痕迹；天花板为原装木梁，无拆卸迹象。", detail: "" },
+  { label: "助手小泉称案发前听到「沉重的摩擦声」，以为是空调。", detail: "" },
+  { label: "馆长佐藤持有改建前图纸，拒绝出示，称「遗失」。", detail: "" },
+  { label: "「夏」画后方夹层内发现血迹与一把短刀，刀柄缠布条（小泉惯用包扎手法）。", detail: "" },
+];
+
+## 一、案发
+
+这座私人画廊建在明治末年的老宅里。
+
+圆形展厅，四面墙，一幅画占一面。访客入口只有一扇门，从内侧插销锁死。
+
+白石倒在圆心，胸口中刀。没有窗，没有地道，没有天花板入口。
+
+完美的密室。
+
+可绫辻行人会说： **本格先量墙，再量人。**
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="白石"
+  role="策展人"
+  age="42"
+  relation="死者"
+  alibi="——"
+>
+  计划将画廊改为主题酒店，引发馆长不满。
+</PersonCard>
+
+<PersonCard
+  name="小泉"
+  role="助手"
+  age="28"
+  relation="下属"
+  alibi="声称在办公室，听见摩擦声"
+>
+  刀柄包扎手法与其急救训练一致。
+</PersonCard>
+
+<PersonCard
+  name="佐藤"
+  role="馆长 / 老宅继承人"
+  age="67"
+  relation="雇主"
+  alibi="自称在二楼书房"
+>
+  反对改建，掌握老图纸。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="小泉" time="案发后">
+  “摩擦声很短，像重物在轨道上。我没多想。白石老师跟我有分歧，但我没杀他。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="佐藤" time="问询时">
+  “这宅子我熟。圆形展厅是舞厅改的，墙就是墙。画能杀人吗？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="021" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "四面墙都是墙，出口可能在哪里？",
+    "「夏」画框为何略向前？轨道灰尘说明什么？",
+    "摩擦声，是空调，还是墙在移动？",
+    "凶手必须从密室离开，还是可以让密室变成「另一间」？",
+    "改建前图纸，会改变你对「圆」的理解吗？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="021" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **小泉**。
+
+圆形展厅实为 **可旋转的巨型转盘结构**（老舞厅地板改造）：四面墙整体可缓慢旋转。「夏」画所在的墙段是一扇 **滑墙门**，旋转到位后与隔壁储藏室相通。
+
+小泉在夹层内刺击白石，旋转展厅 **约九十度** 后从储藏室离开，再远程复位（电动绞盘，藏在「秋」画后）。外部单门仍从内侧锁死——因为 **房间本身转过了**，门后的空间已不是原来的「门外走廊」，而是短暂连通的储藏间。
+
+摩擦声即转盘移动。佐藤隐瞒图纸，是因改建违规且他知情。
+
+### 关键矛盾
+
+绫辻式建筑诡计：密室不是锁住了人，是 **转走了墙**。地面无地道，因为出口在 **水平旋转** 的接缝里。
+
+刀在夹层发现，包扎手法指向小泉——改建酒店会裁掉他的职位，动机足够。
+
+### 伏笔解析
+
+1. **四幅画等大**——掩盖四段墙体等重，便于旋转平衡。
+2. **「夏」略突出**——滑门段需要额外导轨。
+3. **轨道灰尘擦痕**——机械诡计必留痕迹。
+4. **圆心尸体**——转盘旋转时，圆心相对位移最小，利于布置现场。
+5. **佐藤遗失图纸**——叙述性隐瞒，建筑诡计常见搭档。
+6. **「量墙」**——日本本格第一动作：先怀疑墙是不是墙。
+
+门还锁着。房间已经转过了。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

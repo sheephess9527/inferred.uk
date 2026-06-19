@@ -1,0 +1,155 @@
+---
+title: "楼梯间的两面镜子"
+caseId: "023"
+status: "unsolved"
+difficulty: 4
+types:
+  - "建筑诡计"
+  - "身份误认"
+  - "日本本格"
+scene:
+  - "公寓"
+  - "雨夜"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-07-08"
+summary: "楼梯间上下各有一面镜。监控拍到她上楼，镜子里的她却在下楼。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者租户阮澜倒在六楼走廊，后脑钝击。死亡时间 21:30 前后。", detail: "" },
+  { label: "楼梯间 21:28 监控：穿米色风衣女子上楼，面部未清晰。", detail: "" },
+  { label: "五楼转角镜（向上看）映出同一女子 **下楼** 背影，时间戳 21:29。", detail: "与监控上楼方向矛盾。" },
+  { label: "六楼转角镜（向下看）映出女子 **上楼** 背影，时间戳 21:29。", detail: "" },
+  { label: "公寓改建说明：五楼镜为普通镜；六楼镜为 **双面镜**（背面连通物管间）。", detail: "物管间有人时，六楼镜呈透明观察面。" },
+  { label: "物管员秦叔鞋印 41 码，与六楼镜后地面新泥一致；阮澜前男友周河 41 码，称「当晚未进楼」。", detail: "" },
+];
+
+## 一、案发
+
+老旧公寓的楼梯间，上下各有一面镜。
+
+21:28，监控里穿米色风衣的女子在上楼。21:29，五楼镜子里，同一个背影却在 **下楼**。
+
+21:30，六楼阮澜倒在自家门口。
+
+镜子不会说谎——除非 **它根本不是同一面镜**。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="阮澜"
+  role="租户"
+  age="32"
+  relation="死者"
+  alibi="——"
+>
+  与周河分手，近期更换门锁。
+</PersonCard>
+
+<PersonCard
+  name="周河"
+  role="前男友"
+  age="34"
+  relation="情感纠纷"
+  alibi="声称当晚未进公寓楼"
+>
+  41 码，熟悉公寓改建历史。
+</PersonCard>
+
+<PersonCard
+  name="秦叔"
+  role="物管员"
+  age="59"
+  relation="员工"
+  alibi="称在物管间值班看电视"
+>
+  41 码，持有物管间钥匙，与六楼双面镜相邻。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="周河" time="案发后">
+  “我没进楼。监控里的风衣？阮澜常穿米色，但那不一定是我。镜子我不懂。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="秦叔" time="问询时">
+  “六楼那面镜是双面镜，老毛病了。我值班没离岗。五楼镜照到下楼？那是五楼，跟我没关系。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="023" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "同一人能否同时在上楼与下楼？",
+    "五楼镜与六楼镜，看到的是同一段楼梯吗？",
+    "双面镜在诡计里能做什么？",
+    "41 码鞋印出现在镜后，说明什么？",
+    "监控、镜子、证人——哪个在说谎？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="023" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **周河**。
+
+他穿米色风衣（阮澜曾送他的旧衣）从 **物管间经双面镜侧** 观察楼梯，确认阮澜开门时机，从背后袭击后 **从物管间撤离**——监控只拍楼梯主视角，拍不到物管间门。
+
+21:28 监控「上楼」的女子实为 **阮澜本人** 回家；21:29 五楼镜映出「下楼」背影，是周河 **从六楼物管间经镜后通道下至五楼** 的影像——两面镜子记录的是 **不同楼梯段 + 不同光学路径**，并非同一人的连续运动。
+
+秦叔当晚短暂离岗（电视广告时间去倒垃圾），给了周河窗口；镜后泥印与周河鞋码一致。秦叔替周河遮掩，因曾收周河好处。
+
+### 关键矛盾
+
+岛田庄司式「镜子诡计」：读者默认镜中即现实，却忘了 **镜的位置与类型** 决定你看见的是哪条路径。
+
+监控说上楼，五楼镜说下楼——不是人分身，是 **两个人 + 两套光学** 被误读为一人。
+
+### 伏笔解析
+
+1. **上下各一面镜**——先问是否同一规格。
+2. **双面镜说明**——公平线索前置；物管间即旁路。
+3. **时间戳同为 21:29**——不同位置，可拍不同人。
+4. **米色风衣**——身份模糊工具，非性别符号。
+5. **41 码镜后泥印**——把凶手从「画面」拉回「地面」。
+6. **改建说明**——本格建筑诡计的文件必须出现。
+
+镜子里的方向，取决于你站在哪一级楼梯。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

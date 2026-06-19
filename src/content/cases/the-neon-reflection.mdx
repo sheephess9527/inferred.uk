@@ -1,0 +1,155 @@
+---
+title: "霓虹窗上的倒影"
+caseId: "018"
+status: "unsolved"
+difficulty: 4
+types:
+  - "硬汉派"
+  - "不在场证明"
+  - "监控"
+scene:
+  - "汽车旅馆"
+  - "雨夜"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-07-03"
+summary: "雨夜，汽车旅馆，霓虹灯把房间号映在玻璃上。监控里她整晚没出门——玻璃上的数字却少了一位。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者韩戈倒在 214 房间，后脑遭钝击。窗外霓虹招牌映出「AUTO INN 214」倒影。", detail: "死亡时间 23:20 前后。" },
+  { label: "走廊监控：23:00–01:00，214 门未开，无外人进出。", detail: "" },
+  { label: "隔壁 215 住客叶青称 23:30 听见「214 有女人哭」，随后是重物倒地。", detail: "" },
+  { label: "韩戈手机与一名会计的勒索短信往来，涉及公司假账。", detail: "" },
+  { label: "叶青行李箱内有一套与韩戈体型相近的男式外套、鸭舌帽。", detail: "她声称「帮朋友寄存」。" },
+  { label: "旅馆外墙霓虹灯管「4」字段故障，实际亮的是「AUTO INN 21_」，倒影在 214 窗上却显示完整「214」。", detail: "故障发生在案发前一周。" },
+];
+
+## 一、案发
+
+雨像钉子一样敲在汽车旅馆的铁皮屋顶上。
+
+214 的霓虹倒影本该是 **AUTO INN 214**。可法医说，韩戈死在 23:20 左右，而监控 stubborn 地坚持：那一小时，214 的门没开过。
+
+叶青在 215，隔着薄墙，说听见女人哭，然后一声闷响。
+
+韩戈是做假账的人。城里总有人想让他闭嘴。汽车旅馆这种地方，最适合把声音埋进雨里。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="韩戈"
+  role="会计"
+  age="41"
+  relation="死者"
+  alibi="——"
+>
+  掌握公司假账证据，近期收到威胁。
+</PersonCard>
+
+<PersonCard
+  name="叶青"
+  role="215 住客"
+  age="34"
+  relation="自称与死者素不相识"
+  alibi="监控显示未离开 215"
+>
+  登记用假名，付现金，无行李以外物品。
+</PersonCard>
+
+<PersonCard
+  name="老关"
+  role="夜班前台"
+  age="55"
+  relation="旅馆员工"
+  alibi="前台值班，可查看监控"
+>
+  知道霓虹灯「4」字故障，未报修。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="叶青" time="案发次日">
+  “我听见的是女人哭。我整晚没出门，监控能证明。韩戈是谁？我隔壁住的是谁，我根本不知道。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="老关" time="问询时">
+  “这旅馆我干了十年。214 门没开，就是没开。霓虹坏了一个字？那是招牌的事，跟杀人有什么关系。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="018" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "监控没开门，等于没人进 214 吗？",
+    "霓虹倒影完整显示「214」，与灯管故障，能同时成立吗？",
+    "叶青听见「女人哭」——哭的是谁？",
+    "男式外套在女人行李箱里，意味着什么？",
+    "汽车旅馆的相邻房间，共享什么？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="018" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **叶青**。
+
+214 与 215 的衣柜墙在改建时被打通 **一道可移动的薄板**（旅馆偷工减料）。她从未走出 215 的 **门**，却从墙板进入 214，击杀韩戈后返回。监控只拍走廊，不拍墙内。
+
+霓虹「4」字故障，真实倒影应是 **21_**；叶青在 214 窗上贴了 **完整「214」的反光贴纸**，让外面看起来像「214 仍正常亮着」，误导警方对房间号的现场确认。
+
+「女人哭」是她自己演的戏——硬汉派里，声音是最便宜的伪装。
+
+### 关键矛盾
+
+钱德勒式：每个人都在撒谎，撒谎的理由比杀人更丑。叶青不是「蛇蝎美人」模板，而是 **受雇清理假账证人** 的专业人士；男式外套是撤离备用，不是情趣。
+
+监控不说谎，但 **它只看见门**。
+
+### 伏笔解析
+
+1. **门没开**—— noir 经典：镜头外还有墙。
+2. **霓虹故障 vs 完整倒影**——窗上的数字被人 **补过**。
+3. **女人哭**——引你去猜性别，忽略 **隔壁就是凶手**。
+4. **现金假名入住**——职业习惯，不是浪漫。
+5. **老关不报修霓虹**——小人物懒政，却成为诡计掩护。
+6. **雨夜汽车旅馆**——场景即氛围；真相在 **廉价建筑** 的缝隙里。
+
+霓虹亮着 214。人死在隔壁的门后。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
