@@ -1,0 +1,43 @@
+---
+title: "最后一张牌"
+caseId: "034"
+status: "unsolved"
+difficulty: 4
+types:
+  - "临终留言"
+  - "桥牌诡计"
+scene:
+  - "牌室"
+readingTime: "11-15 分钟"
+clueCount: 6
+publishedAt: "2026-06-19"
+summary: "被害人死前把最后一张牌放在桌上。那张牌，指向了凶手。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者桌上放着一张红心K。", detail: "" },
+];
+
+## 一、案发
+
+最后一张牌。
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+红心K指向了凶手。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,100 @@
+---
+title: "最后一个字"
+caseId: "031"
+status: "unsolved"
+difficulty: 5
+types:
+  - "临终留言"
+  - "文字谜题"
+  - "误导"
+scene:
+  - "书房"
+  - "图书馆"
+readingTime: "12-16 分钟"
+clueCount: 7
+publishedAt: "2026-06-19"
+summary: "被害人在死前只来得及写下一个字。那个字，究竟是凶手的名字，还是另一个陷阱？"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者沈默在书桌前被刺，右手握着一支沾血的钢笔，纸上只写了一个字：「王」。", detail: "" },
+  { label: "嫌疑人共有三人：妻子林薇、学生陆明、牌友周然。", detail: "" },
+  { label: "死者生前是桥牌大师，书桌上摆着一副未打完的牌。", detail: "" },
+  { label: "纸上的「王」字写得歪斜，像是临死前匆忙写下。", detail: "" },
+];
+
+## 一、案发
+
+沈默死在自己的书房。
+
+他胸口插着一把匕首，右手还握着一支沾血的钢笔。在他面前的纸上，只写了一个字——「王」。
+
+这是他留下的唯一遗言。
+
+## 二、人物
+
+（框架，完整内容后续补充）
+
+---
+
+## 三、证词
+
+（框架）
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="031" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "「王」究竟是指人，还是指牌？",
+    "沈默为什么只来得及写一个字？",
+    "如果这是误导，真正的答案应该是什么？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="031" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **陆明**。
+
+「王」并不是指人，而是指**「王牌」**。沈默在死前想写的是「红心K」，但只来得及写一个「王」字。
+
+### 关键矛盾
+
+- 沈默其实想写「红心K」，指向陆明手里拿的那张牌。
+- 陆明后来偷偷把那张红心K放回牌堆。
+
+### 伏笔解析
+
+1. **「王」**——桥牌术语中的双关。
+2. **未打完的牌**——真正的答案藏在牌局里。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
