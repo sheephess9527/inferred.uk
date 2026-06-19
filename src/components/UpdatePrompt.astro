@@ -1,0 +1,169 @@
+---
+import { BUILD_ID } from '../buildInfo';
+---
+
+{/*
+  仅在“添加到主屏幕”的独立 App 模式下出现的悬浮按钮。
+  - 平时是一个小的刷新键（iOS 独立模式没有地址栏 / 刷新按钮，容易卡在旧版本）。
+  - 检测到站点有新版本时，变成醒目的“有新内容 · 更新”，点按即重载到最新。
+  浏览器普通标签页中不显示（由脚本判断后移除）。
+*/}
+<button
+  id="update-prompt"
+  class="update-prompt"
+  type="button"
+  data-build={BUILD_ID}
+  aria-label="刷新到最新版本"
+  title="刷新到最新版本"
+  hidden
+>
+  <span class="update-prompt__icon" aria-hidden="true">↻</span>
+  <span class="update-prompt__label">有新内容 · 更新</span>
+</button>
+
+<style>
+  .update-prompt {
+    position: fixed;
+    right: calc(var(--space-4) + env(safe-area-inset-right));
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    z-index: 80;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    height: 2.75rem;
+    padding: 0;
+    width: 2.75rem;
+    justify-content: center;
+
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--color-muted);
+
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease,
+      width 0.25s ease, padding 0.25s ease;
+  }
+
+  .update-prompt:hover {
+    color: var(--color-paper);
+    border-color: var(--color-gold);
+  }
+
+  .update-prompt__icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    flex: none;
+  }
+
+  .update-prompt__label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    transition: max-width 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+  }
+
+  /* 检测到新版本：展开成带文字的胶囊，并以暗红强调 */
+  .update-prompt.has-update {
+    width: auto;
+    padding: 0 1.1rem 0 0.95rem;
+    gap: 0.5rem;
+    color: var(--color-paper);
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    animation: update-pulse 2.4s ease-in-out infinite;
+  }
+  .update-prompt.has-update:hover {
+    border-color: var(--color-paper);
+  }
+  .update-prompt.has-update .update-prompt__label {
+    max-width: 12rem;
+    opacity: 1;
+  }
+
+  @keyframes update-pulse {
+    0%,
+    100% {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+    50% {
+      box-shadow: 0 6px 26px color-mix(in srgb, var(--color-accent) 70%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .update-prompt.has-update {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const el = document.getElementById('update-prompt');
+    if (!el) return;
+
+    // 仅在独立 App（添加到主屏幕）模式下显示。
+    const standalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (navigator as unknown as { standalone?: boolean }).standalone === true;
+
+    if (!standalone) {
+      el.remove();
+      return;
+    }
+
+    const currentVersion = el.dataset.build ?? '';
+    el.hidden = false;
+
+    let updateReady = false;
+
+    async function checkForUpdate() {
+      try {
+        const res = await fetch('/version.json?_=' + Date.now(), {
+          cache: 'no-store',
+        });
+        if (!res.ok) return;
+        const data = (await res.json()) as { version?: string };
+        if (data.version && currentVersion && data.version !== currentVersion) {
+          updateReady = true;
+          el!.classList.add('has-update');
+          el!.setAttribute('aria-label', '有新内容，点击更新');
+          el!.setAttribute('title', '有新内容，点击更新');
+        }
+      } catch {
+        /* 离线或网络异常时静默忽略，下次再试 */
+      }
+    }
+
+    el.addEventListener('click', () => {
+      // 有更新则重载到最新；没有更新时，按钮也充当独立模式下的手动刷新。
+      location.reload();
+    });
+
+    // 首次延迟检查，避免和首屏加载抢资源。
+    setTimeout(checkForUpdate, 1500);
+
+    // 回到前台时再查一次（用户切走又切回，最可能赶上新部署）。
+    document.addEventListener('visibilitychange', () => {
+      if (!updateReady && document.visibilityState === 'visible') {
+        checkForUpdate();
+      }
+    });
+    window.addEventListener('focus', () => {
+      if (!updateReady) checkForUpdate();
+    });
+
+    // 长时间停留时定期轮询。
+    setInterval(() => {
+      if (!updateReady) checkForUpdate();
+    }, 5 * 60 * 1000);
+  })();
+</script>
