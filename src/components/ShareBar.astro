@@ -40,9 +40,9 @@ const weiboHref =
         生成分享海报
       </button>
     )}
-    <button type="button" class="share__btn" data-share-wechat>微信 / 朋友圈</button>
+    <button type="button" class="share__btn" data-share-wechat>微信/朋友圈</button>
     {poster && (
-      <button type="button" class="share__btn" data-share-xhs>小红书</button>
+      <button type="button" class="share__btn" data-share-xhs>去小红书</button>
     )}
     <a
       class="share__btn"
@@ -52,8 +52,6 @@ const weiboHref =
       data-share-weibo>微博</a
     >
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
-    <button type="button" class="share__btn" data-share-text>复制图文</button>
-    <button type="button" class="share__btn" data-share-text>复制图文</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>
       更多…
     </button>
@@ -67,7 +65,7 @@ const weiboHref =
     <div class="poster__backdrop" data-poster-close></div>
     <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
       <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
-      <p class="poster__hint mono" data-poster-hint>长按图片保存，再发到朋友圈或小红书</p>
+      <p class="poster__hint mono" data-poster-hint>长按保存图片 → 发朋友圈或小红书</p>
       <div class="poster__frame">
         <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
       </div>
@@ -400,7 +398,7 @@ const weiboHref =
     }
 
     posterBtn?.addEventListener('click', () =>
-      openPoster({ hint: '长按图片保存，再发到朋友圈或小红书' })
+      openPoster({ hint: '长按保存图片 → 发朋友圈或小红书' })
     );
 
     // 小红书：无网页分享接口，且笔记不支持外链。
