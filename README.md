@@ -74,7 +74,7 @@ src/
 1. 在 `src/content/cases/` 下新建一个 `.mdx` 文件，文件名即 URL slug，例如 `the-empty-chair.mdx` → `/cases/the-empty-chair`。
 2. 复制下面的模板，填好 frontmatter 与正文。frontmatter 会经过 `content.config.ts` 的 schema 校验，缺字段或类型不符会在构建时报错。
 
-> 现有案卷编号已用到 `005`，新案件请从 `006` 起编。
+> 现有案卷编号已用到 `008`，新案件请从 `009` 起编。
 
 ```mdx
 ---
@@ -173,6 +173,7 @@ order: 4          # 列表排序，数字越小越靠前
   ```
 
   图标元信息与「添加到主屏幕」配置在 `public/site.webmanifest` 和 `src/layouts/BaseLayout.astro` 的 `<head>` 中。
+- **独立 App 的更新按钮**：`src/components/UpdatePrompt.astro`。仅在「添加到主屏幕」的独立模式下显示一个悬浮按钮（iOS 独立模式没有地址栏 / 刷新键，容易卡在旧版本）。它会轮询 `/version.json`（由 `src/pages/version.json.ts` + `src/buildInfo.ts` 在每次构建生成新的 `BUILD_ID`），检测到新版本就高亮为「有新内容 · 更新」，点按即重载到最新；平时也充当手动刷新键。Cloudflare/Netlify 等会注入 commit SHA 作为版本号。
 
 ---
 
