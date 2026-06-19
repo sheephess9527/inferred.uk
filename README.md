@@ -17,6 +17,11 @@
 
 ## 更新日志
 
+### 2026-06-19 — 修复 Cloudflare / CI 构建失败
+
+- **根因**：`pnpm-workspace.yaml` 只有 `allowBuilds`、缺少 `packages` 字段，pnpm 将其视为无效 monorepo，安装阶段报错 `packages field missing or empty`（自 `e9964b6` 审计提交起）
+- **修复**：删除该文件（单包项目不需要 workspace 配置）；`allowBuilds` 改由 `package.json` 的 `pnpm.onlyBuiltDependencies` 管理
+
 ### 2026-07-08 — 三路线各 3 篇案卷 + 3 篇线索
 
 | 路线 | 案卷 # | 线索 |
