@@ -1,0 +1,165 @@
+---
+title: "会移动的椅子"
+caseId: "026"
+status: "unsolved"
+difficulty: 5
+types:
+  - "空间诡计"
+  - "隐藏空间"
+  - "身份置换"
+scene:
+  - "书斋"
+  - "古宅"
+readingTime: "13-17 分钟"
+clueCount: 7
+publishedAt: "2026-06-27"
+summary: "一间普通的书斋里，一把椅子却像活了一样移动。凶手究竟藏在哪里？"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者唐远坐在书斋的藤椅上，被人从身后勒死。藤椅被移动了约三十厘米。", detail: "" },
+  { label: "书斋四壁书架环绕，没有任何可见的隐藏门或暗格。", detail: "" },
+  { label: "死者生前是著名藏书家，书斋禁止任何人进入。", detail: "" },
+  { label: "三名嫌疑人：管家老陈、侄子唐泽、情人苏婉。", detail: "" },
+  { label: "案发当晚，书斋内传来「椅子移动」的声响。", detail: "" },
+  { label: "死者颈部勒痕呈环状，凶器疑似丝绸领带。", detail: "" },
+  { label: "书斋地毯上有一道极浅的拖痕，与藤椅位置不符。", detail: "" },
+];
+
+## 一、案发
+
+唐远死在自己的书斋。
+
+他坐在那把最喜欢的藤椅上，被人从身后用丝绸领带勒死。奇怪的是，藤椅被移动了大约三十厘米，而书斋的门窗全部反锁。
+
+更诡异的是，案发当晚，仆人听到书斋里传来「椅子移动」的声响，却没有看到任何人进出。
+
+这间书斋是唐远亲自设计的，没有任何可见的暗门或夹层。凶手究竟藏在哪里？
+
+## 二、人物
+
+<PersonCard
+  name="唐远"
+  role="藏书家"
+  age="62"
+  relation="死者"
+  alibi="——"
+>
+  国内最著名的私人藏书家，性格偏执，对书斋有近乎病态的控制欲。
+</PersonCard>
+
+<PersonCard
+  name="老陈"
+  role="管家"
+  age="58"
+  relation="服侍唐远三十年"
+  alibi="声称在厨房"
+>
+  知道书斋所有秘密，包括一些不为人知的「机关」。
+</PersonCard>
+
+<PersonCard
+  name="唐泽"
+  role="侄子"
+  age="32"
+  relation="唯一继承人"
+  alibi="声称在楼下看电视"
+>
+  最近因遗产问题与唐远发生激烈争吵。
+</PersonCard>
+
+<PersonCard
+  name="苏婉"
+  role="情人"
+  age="35"
+  relation="唐远的秘密情人"
+  alibi="声称在卧室休息"
+>
+  唐远曾答应为她买下一套房子，但一直没有兑现。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="老陈" time="问询时">
+  “我一直在厨房。书斋的门我锁得死死的，除了唐先生自己，谁也进不去。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="唐泽" time="问询时">
+  “我在楼下看电视。突然听到楼上『吱呀』一声，像椅子被拖动的声音。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="苏婉" time="问询时">
+  “我在卧室。唐先生说今晚不许任何人打扰他整理藏书。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="026" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "藤椅为什么会移动三十厘米？",
+    "书斋里那声「椅子移动」的声音，到底是谁发出的？",
+    "如果书斋没有暗门，凶手如何藏身其中？",
+    "老陈声称「锁得死死的」，这句话是否可信？",
+    "唐泽听到的声音，和真正的杀人过程有什么关系？",
+    "苏婉为什么强调「不许任何人打扰」？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。凶手藏在哪里？藤椅移动的真正原因是什么？
+
+<DetectiveNotes caseId="026" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **老陈**。
+
+书斋里确实没有暗门，但有一把「会移动的椅子」——藤椅的底部其实是活的，可以旋转打开，下面是一个极浅的地窖。
+
+老陈在唐远进入书斋后，从地窖爬出，从身后勒死他，然后把藤椅转回原位，自己重新躲回地窖。
+
+### 关键矛盾
+
+- **藤椅移动**：老陈在作案后把椅子转回原位时，留下了三十厘米的误差。
+- **「椅子移动」的声音**：其实是老陈从地窖爬出时，藤椅底部转动发出的声音。
+- **老陈的「锁门」**：他确实锁了门，但地窖的入口在椅子下面。
+
+### 伏笔解析
+
+1. **「会移动的椅子」**——作者用「移动」这个词，暗示椅子本身就是机关。
+2. **地毯上的拖痕**——老陈把椅子转回时留下的痕迹。
+3. **老陈的「三十年」**——只有他知道书斋的所有秘密。
+4. **江户川乱步式的空间诡计**——真正的隐藏空间，往往就在最显眼的地方。
+
+这是一场利用「活椅子」完成的隐藏空间杀人。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

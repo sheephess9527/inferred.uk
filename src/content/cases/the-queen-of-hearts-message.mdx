@@ -1,0 +1,165 @@
+---
+title: "红心王后的留言"
+caseId: "025"
+status: "unsolved"
+difficulty: 4
+types:
+  - "临终留言"
+  - "文字谜题"
+  - "误导"
+scene:
+  - "图书馆"
+  - "书房"
+readingTime: "11-15 分钟"
+clueCount: 6
+publishedAt: "2026-06-27"
+summary: "被害人在死前用血在纸上写下「红心王后」。这句话究竟是遗言，还是精心设计的谜题？"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者沈默躺在书房地板上，胸口被匕首刺中。右手握着一张纸，上面用血写着「红心王后」。", detail: "" },
+  { label: "纸条上的字迹歪斜，像是临死前匆忙写下。", detail: "" },
+  { label: "书房书架上有一副扑克牌，红心Q 被抽走。", detail: "" },
+  { label: "沈默生前是桥牌高手，当晚正在和三位朋友打牌。", detail: "" },
+  { label: "三名嫌疑人分别是：妻子林薇、好友周然、学生陆明。", detail: "" },
+  { label: "死者生前写过一本桥牌攻略，书中反复提到「红心王后」是关键牌。", detail: "" },
+];
+
+## 一、案发
+
+沈默死在自己的书房。
+
+他胸口插着一把匕首，右手还握着一张纸，上面用血写着四个字：「红心王后」。
+
+当晚沈默正在和三位牌友打桥牌。牌局进行到一半，他忽然说身体不舒服，回书房休息。十分钟后，众人听到一声闷响，冲进去发现他已经死亡。
+
+那张血写的纸条，是他留下的唯一遗言。
+
+## 二、人物
+
+<PersonCard
+  name="沈默"
+  role="桥牌大师、作家"
+  age="58"
+  relation="死者"
+  alibi="——"
+>
+  国内最著名的桥牌理论家，性格偏执，对牌艺要求近乎苛刻。
+</PersonCard>
+
+<PersonCard
+  name="林薇"
+  role="妻子"
+  age="52"
+  relation="沈默的第二任妻子"
+  alibi="声称在厨房准备夜宵"
+>
+  与沈默感情不和，怀疑他在外面有情人。
+</PersonCard>
+
+<PersonCard
+  name="周然"
+  role="多年牌友"
+  age="55"
+  relation="沈默的桥牌搭档"
+  alibi="声称在客厅等沈默回来"
+>
+  曾和沈默因一笔牌局赌注发生争执。
+</PersonCard>
+
+<PersonCard
+  name="陆明"
+  role="学生、助手"
+  age="29"
+  relation="沈默的得意门生"
+  alibi="声称去洗手间"
+>
+  最近被沈默严厉批评，怀疑自己抄袭了老师的理论。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="林薇" time="问询时">
+  “我一直在厨房。他突然说不舒服，我就让他回书房休息了。我什么都没听见。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="周然" time="问询时">
+  “我当时在客厅等他。红心王后……那是我们昨晚打牌时，他最常说的词。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="陆明" time="问询时">
+  “我去洗手间了。回来就看到大家冲进书房。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="025" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "「红心王后」究竟是指人，还是指牌？",
+    "沈默为什么要在临死前写这句话？",
+    "书架上那副被抽走的红心Q，说明了什么？",
+    "三位嫌疑人中，谁最有可能理解「红心王后」的真正含义？",
+    "如果这是误导，真正的遗言应该是什么？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。「红心王后」究竟指向谁？凶手如何利用了这句话？
+
+<DetectiveNotes caseId="025" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **陆明**。
+
+「红心王后」并不是遗言，而是沈默在临死前写下的**凶手名字的暗示**。
+
+沈默在被刺后，用血在纸上写了「红心王后」。但真正的含义是：**凶手是「红心Q」**——而「Q」在桥牌术语里代表「女王」。
+
+沈默其实想写的是「红心Q的拥有者」——也就是陆明。因为当晚陆明手里拿的正是红心Q。
+
+### 关键矛盾
+
+- 陆明声称自己去洗手间，但实际上他趁沈默回书房时，偷偷跟进去刺杀了他。
+- 沈默在死前把红心Q抽走，就是想告诉后人：凶手是拿着这张牌的人。
+- 陆明后来把红心Q放回牌堆，试图消除痕迹，但沈默已经用血写下了关键信息。
+
+### 伏笔解析
+
+1. **「红心王后」**——作者用桥牌术语制造双关，真正的答案其实是「红心Q」。
+2. **被抽走的牌**——沈默在死前把Q抽走，就是想留下物证。
+3. **陆明的「洗手间」**——最经典的不在场证明之一。
+4. **沈默的性格**——他作为桥牌大师，最后一刻依然用牌语留下线索。
+
+这是一场用桥牌术语完成的临终留言谜题。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

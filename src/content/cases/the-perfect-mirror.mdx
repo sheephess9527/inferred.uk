@@ -1,0 +1,164 @@
+---
+title: "完美的镜子"
+caseId: "029"
+status: "unsolved"
+difficulty: 5
+types:
+  - "镜像诡计"
+  - "建筑诡计"
+  - "对称杀人"
+scene:
+  - "镜厅"
+  - "古宅"
+readingTime: "13-17 分钟"
+clueCount: 7
+publishedAt: "2026-06-27"
+summary: "一间全是镜子的房间里，凶手如何在「完美对称」中完成杀人？"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者林远躺在镜厅中央，被人从身后刺杀。镜厅四壁全是镜子。", detail: "" },
+  { label: "镜厅只有一扇门，从内部反锁。", detail: "" },
+  { label: "死者生前是建筑师，镜厅是他亲自设计的「完美对称」空间。", detail: "" },
+  { label: "三名嫌疑人：妻子苏婉、助手周然、竞争对手唐泽。", detail: "" },
+  { label: "案发当晚，镜厅内传来「镜子破碎」的声音。", detail: "" },
+  { label: "死者胸口插着一面小镜子，镜面朝向自己。", detail: "" },
+  { label: "镜厅地砖上有两组完全相同的脚印。", detail: "" },
+];
+
+## 一、案发
+
+林远死在自己设计的「镜厅」。
+
+这间房间四壁全是镜子，站在中央的人会看到无数个自己。林远被从身后刺杀，镜厅门从内部反锁。
+
+更诡异的是，案发当晚，仆人听到镜厅内传来「镜子破碎」的声音。
+
+凶手如何在「完美对称」的空间里完成杀人？
+
+## 二、人物
+
+<PersonCard
+  name="林远"
+  role="建筑师"
+  age="55"
+  relation="死者"
+  alibi="——"
+>
+  镜厅的设计者，性格偏执，对「对称」有近乎病态的追求。
+</PersonCard>
+
+<PersonCard
+  name="苏婉"
+  role="妻子"
+  age="48"
+  relation="林远的妻子"
+  alibi="声称在卧室"
+>
+  与林远感情不和，怀疑他在外面有情人。
+</PersonCard>
+
+<PersonCard
+  name="周然"
+  role="助手"
+  age="30"
+  relation="林远的得意助手"
+  alibi="声称在楼下"
+>
+  最近被林远严厉批评。
+</PersonCard>
+
+<PersonCard
+  name="唐泽"
+  role="竞争对手"
+  age="42"
+  relation="林远的商业对手"
+  alibi="声称在隔壁房间"
+>
+  曾被林远当众羞辱。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="苏婉" time="问询时">
+  “我在卧室。突然听到镜厅传来『咔嚓』一声，像镜子碎了。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="周然" time="问询时">
+  “我在楼下整理文件。镜厅的门我锁得死死的。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="唐泽" time="问询时">
+  “我在隔壁房间。突然听到镜厅传来声音，我冲进去就看到林远倒在地上。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="029" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "镜厅为什么会有两组完全相同的脚印？",
+    "「镜子破碎」的声音说明了什么？",
+    "死者胸口的小镜子有什么意义？",
+    "如果凶手利用了「镜像对称」，会怎样？",
+    "镜厅的「完美对称」设计，是否是破案的关键？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。凶手如何利用「镜像」完成杀人？
+
+<DetectiveNotes caseId="029" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **周然**。
+
+他利用了镜厅的「完美对称」设计，在镜子前制造了「两个自己」的假象。
+
+周然在林远进入镜厅后，从身后刺杀他，然后把一面小镜子插在林远胸口，制造「凶手从镜子里出来」的假象。
+
+### 关键矛盾
+
+- **两组脚印**：周然在镜子前走动，留下了两组完全相同的脚印。
+- **「镜子破碎」**：其实是周然在作案后故意打碎一面镜子，制造混乱。
+- **小镜子**：是周然用来「伪造镜像凶手」的道具。
+
+### 伏笔解析
+
+1. **「完美对称」**——作者反复强调镜厅的对称，暗示凶手利用了镜像。
+2. **两组脚印**——这是最大的破绽。
+3. **小镜子**——凶手故意把镜子插在死者胸口，制造「镜像杀人」的假象。
+4. **绫辻行人式建筑诡计**——真正的答案，往往藏在「建筑本身」。
+
+这是一场利用「镜像对称」完成的建筑诡计杀人。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
