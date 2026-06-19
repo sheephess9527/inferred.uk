@@ -1,0 +1,35 @@
+---
+export interface Props {
+  value: number; // 1-5
+  showLabel?: boolean;
+}
+const { value, showLabel = false } = Astro.props;
+const max = 5;
+const clamped = Math.max(0, Math.min(max, Math.round(value)));
+
+const labels: Record<number, string> = {
+  1: '入门',
+  2: '简单',
+  3: '标准',
+  4: '困难',
+  5: '高难',
+};
+const label = labels[clamped] ?? '';
+---
+
+<span class="stars" role="img" aria-label={`难度 ${clamped} / ${max}${label ? '，' + label : ''}`}>
+  {Array.from({ length: max }).map((_, i) => (
+    <span class={i < clamped ? 'star-full' : 'star-empty'} aria-hidden="true">★</span>
+  ))}
+  {showLabel && label && <span class="stars__label">{label}</span>}
+</span>
+
+<style>
+  .stars__label {
+    font-family: var(--font-serif-cn);
+    color: var(--color-muted);
+    margin-left: var(--space-2);
+    font-size: 0.85em;
+    letter-spacing: normal;
+  }
+</style>

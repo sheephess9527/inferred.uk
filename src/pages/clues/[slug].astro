@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('clues');
+  return articles.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${entry.data.title}｜Inferred 线索`}
+  description={entry.data.summary}
+  path={`/clues/${entry.id}`}
+>
+  <article class="container container--reading clue">
+    <header class="clue__header">
+      <p class="eyebrow">Clues · 推理技巧</p>
+      <h1>{entry.data.title}</h1>
+      <p class="clue__summary text-muted">{entry.data.summary}</p>
+      <p class="mono text-muted clue__date">{dateStr}</p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="clue__footer">
+      <a class="clue__back" href="/clues">← 返回线索</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .clue {
+    padding-top: var(--space-16);
+  }
+  .clue__header {
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .clue__summary {
+    font-size: 1.1rem;
+    margin: var(--space-3) 0;
+  }
+  .clue__date {
+    font-size: 0.78rem;
+    margin: 0;
+  }
+  .clue__footer {
+    margin-top: var(--space-16);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+  .clue__back {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+  .clue__back:hover {
+    color: var(--color-gold);
+  }
+</style>

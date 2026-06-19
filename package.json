@@ -1,0 +1,24 @@
+{
+  "name": "inferred",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Inferred — 原创互动悬疑推理案卷站。真相从不明说，只能被推断。",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/sitemap": "^3.6.0",
+    "@fontsource/ibm-plex-mono": "^5.2.0",
+    "@fontsource/playfair-display": "^5.2.0",
+    "astro": "^5.13.0",
+    "typescript": "^5.9.0"
+  }
+}

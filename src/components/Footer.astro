@@ -1,0 +1,73 @@
+---
+const year = new Date().getFullYear();
+const nav = [
+  { href: '/cases', label: '案卷' },
+  { href: '/clues', label: '线索' },
+  { href: '/archive', label: '档案馆' },
+  { href: '/about', label: '关于' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <p class="site-footer__title">Inferred<span class="text-accent">.</span>uk</p>
+      <p class="text-muted site-footer__tagline">真相从不明说，只能被推断。</p>
+      <p class="eyebrow">The truth is never stated. It is inferred.</p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="页脚导航">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </div>
+
+  <div class="container site-footer__legal">
+    <span class="mono">© {year} Inferred</span>
+    <span class="text-muted">原创互动推理案卷 · 一切人物与案件均属虚构</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-24);
+    border-top: 1px solid var(--color-line);
+    background: var(--color-surface);
+    padding-block: var(--space-12) var(--space-8);
+  }
+  .site-footer__inner {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+  .site-footer__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin: 0 0 var(--space-2);
+  }
+  .site-footer__tagline {
+    margin: 0 0 var(--space-1);
+  }
+  .site-footer__nav {
+    display: flex;
+    gap: var(--space-6);
+    align-items: flex-start;
+  }
+  .site-footer__nav a {
+    color: var(--color-muted);
+  }
+  .site-footer__nav a:hover {
+    color: var(--color-paper);
+  }
+  .site-footer__legal {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+</style>

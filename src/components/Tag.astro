@@ -1,0 +1,47 @@
+---
+export interface Props {
+  label: string;
+  variant?: 'type' | 'scene' | 'status-unsolved' | 'status-solved';
+  href?: string;
+}
+const { label, variant = 'type', href } = Astro.props;
+const Wrapper = href ? 'a' : 'span';
+---
+
+<Wrapper class:list={['tag', `tag--${variant}`]} href={href}>
+  {label}
+</Wrapper>
+
+<style>
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    padding: 0.35em 0.6em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    background: transparent;
+    white-space: nowrap;
+  }
+  a.tag:hover {
+    color: var(--color-paper);
+    border-color: var(--color-gold);
+  }
+  .tag--scene {
+    color: var(--color-accent-cold);
+    border-color: color-mix(in srgb, var(--color-accent-cold) 45%, var(--color-line));
+  }
+  .tag--status-unsolved {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-line));
+    text-transform: uppercase;
+  }
+  .tag--status-solved {
+    color: var(--color-gold);
+    border-color: color-mix(in srgb, var(--color-gold) 50%, var(--color-line));
+    text-transform: uppercase;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+export interface Props {
+  questions?: string[];
+  title?: string;
+}
+const {
+  title = '在揭晓答案前，请先思考',
+  questions = [
+    '谁在说谎？',
+    '真正的矛盾在哪里？',
+    '最关键的线索是什么？',
+    '凶手如何完成诡计？',
+    '真相是什么？',
+  ],
+} = Astro.props;
+---
+
+<aside class="questions" aria-label="推理问题">
+  <p class="eyebrow">Questions · 推理问题</p>
+  <p class="questions__title">{title}：</p>
+  <ol class="questions__list">
+    {questions.map((q) => <li>{q}</li>)}
+  </ol>
+</aside>
+
+<style>
+  .questions {
+    margin: var(--space-6) 0;
+    padding: var(--space-6);
+    border: 1px dashed var(--color-line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+  .questions__title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    margin: var(--space-2) 0 var(--space-3);
+  }
+  .questions__list {
+    margin: 0;
+    padding-left: 1.4em;
+    counter-reset: q;
+    list-style: none;
+  }
+  .questions__list li {
+    position: relative;
+    padding: var(--space-1) 0;
+    counter-increment: q;
+  }
+  .questions__list li::before {
+    content: counter(q, decimal-leading-zero);
+    position: absolute;
+    left: -1.6em;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-accent);
+  }
+</style>

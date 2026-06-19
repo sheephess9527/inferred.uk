@@ -1,0 +1,81 @@
+---
+// v1：视觉占位，不接外部服务。表单禁用，提交不会发送任何数据。
+---
+
+<section class="newsletter" aria-labelledby="newsletter-title">
+  <p class="eyebrow">Newsletter · 每周案卷</p>
+  <h2 class="newsletter__title" id="newsletter-title">让下一份案卷找到你</h2>
+  <p class="newsletter__lead text-muted">
+    新案卷上架时，把它送到你的信箱。没有广告，只有谜案。
+  </p>
+
+  <form class="newsletter__form" aria-describedby="newsletter-note">
+    <label class="visually-hidden" for="newsletter-email">邮箱地址</label>
+    <input
+      id="newsletter-email"
+      type="email"
+      name="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+      disabled
+    />
+    <button type="button" class="newsletter__btn mono" disabled>即将开放</button>
+  </form>
+  <p class="newsletter__note text-muted" id="newsletter-note">
+    订阅功能正在筹备中。
+  </p>
+</section>
+
+<style>
+  .newsletter {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    padding: var(--space-12) var(--space-8);
+    text-align: center;
+  }
+  .newsletter__title {
+    margin: var(--space-2) 0 var(--space-3);
+  }
+  .newsletter__lead {
+    max-width: 32rem;
+    margin: 0 auto var(--space-6);
+  }
+  .newsletter__form {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 30rem;
+    margin: 0 auto;
+  }
+  .newsletter__form input {
+    flex: 1 1 16rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-paper);
+    padding: 0.7em 0.9em;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  .newsletter__form input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .newsletter__btn {
+    padding: 0.7em 1.4em;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--color-gold);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    cursor: not-allowed;
+    white-space: nowrap;
+  }
+  .newsletter__note {
+    margin: var(--space-4) 0 0;
+    font-size: 0.78rem;
+  }
+</style>

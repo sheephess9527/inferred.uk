@@ -1,0 +1,154 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseMeta from '../../components/CaseMeta.astro';
+import Tag from '../../components/Tag.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+
+const seoTitle = `${data.title}｜Inferred Case File #${data.caseId}`;
+const seoDesc = data.summary;
+const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDesc}
+  path={`/cases/${entry.id}`}
+>
+  <article class="case container container--reading">
+    <ReadingProgress target="#case-body" />
+
+    <header class="case__header">
+      <p class="eyebrow case__eyebrow">
+        Case File #{data.caseId} · {data.status === 'solved' ? 'Solved' : 'Unsolved'}
+      </p>
+      <h1 class="case__title">{data.title}</h1>
+      <p class="case__summary">{data.summary}</p>
+
+      <ul class="case__tags">
+        {data.types.map((t) => <li><Tag label={t} /></li>)}
+        {data.scene.map((s) => <li><Tag label={s} variant="scene" /></li>)}
+      </ul>
+
+      <CaseMeta
+        caseId={data.caseId}
+        status={data.status}
+        difficulty={data.difficulty}
+        types={data.types}
+        readingTime={data.readingTime}
+        clueCount={data.clueCount}
+      />
+      <p class="case__published mono text-muted">归档于 {dateStr}</p>
+    </header>
+
+    <div id="case-body" class="case__body prose">
+      <Content />
+    </div>
+
+    <footer class="case__footer">
+      <a class="case__back" href="/cases">← 返回案卷列表</a>
+      <a class="case__back" href="/archive">进入档案馆 →</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .case {
+    padding-top: var(--space-12);
+  }
+  .case__header {
+    margin-bottom: var(--space-8);
+  }
+  .case__eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+  .case__title {
+    margin-bottom: var(--space-4);
+  }
+  .case__summary {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-bottom: var(--space-6);
+  }
+  .case__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+  .case__published {
+    margin: var(--space-3) 0 0;
+    font-size: 0.78rem;
+  }
+  .case__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-top: var(--space-16);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+  .case__back {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+  .case__back:hover {
+    color: var(--color-gold);
+  }
+</style>
+
+<style is:global>
+  /* 案卷正文排版 */
+  .prose h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .prose h2::before {
+    content: '§ ';
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+  .prose h3 {
+    color: var(--color-gold);
+  }
+  .prose ol,
+  .prose ul {
+    padding-left: 1.4em;
+  }
+  .prose li {
+    margin-bottom: var(--space-2);
+  }
+  .prose blockquote {
+    margin: var(--space-4) 0;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--color-accent-cold);
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .prose strong {
+    color: var(--color-paper);
+  }
+</style>

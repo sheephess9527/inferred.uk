@@ -1,0 +1,114 @@
+---
+// 侦探笔记：用户写下推理，自动保存到 localStorage（每个 caseId 独立）。
+export interface Props {
+  caseId: string;
+}
+const { caseId } = Astro.props;
+const placeholder = `写下你的推理：
+谁在说谎？
+关键矛盾是什么？
+真正的真相是什么？`;
+---
+
+<section class="notes" data-notes data-case={caseId} aria-labelledby={`notes-${caseId}`}>
+  <header class="notes__head">
+    <h3 class="notes__title" id={`notes-${caseId}`}>侦探笔记</h3>
+    <span class="notes__status mono" data-notes-status aria-live="polite"></span>
+  </header>
+  <textarea
+    class="notes__input"
+    data-notes-input
+    rows="6"
+    placeholder={placeholder}
+    aria-label="侦探笔记：写下你的推理"
+    spellcheck="false"></textarea>
+  <p class="notes__hint text-muted">笔记只保存在你的浏览器里，不会上传。</p>
+</section>
+
+<style>
+  .notes {
+    margin: var(--space-6) 0;
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 1.79rem,
+      color-mix(in srgb, var(--color-line) 40%, transparent) 1.8rem
+    );
+  }
+  .notes__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .notes__title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  .notes__status {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+  .notes__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--color-paper);
+    font-family: var(--font-serif-cn);
+    font-size: 1rem;
+    line-height: 1.8;
+    resize: vertical;
+    padding: 0;
+  }
+  .notes__input:focus-visible {
+    outline: none;
+  }
+  .notes__input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.7;
+  }
+  .notes__hint {
+    margin: var(--space-3) 0 0;
+    font-size: 0.78rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-notes]').forEach((root) => {
+    const caseId = root.dataset.case;
+    if (!caseId) return;
+    const input = root.querySelector<HTMLTextAreaElement>('[data-notes-input]');
+    const status = root.querySelector<HTMLElement>('[data-notes-status]');
+    if (!input) return;
+    const key = `inferred:notes:${caseId}`;
+
+    try {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        input.value = saved;
+        if (status) status.textContent = '已保存';
+      }
+    } catch (e) {}
+
+    let timer: number | undefined;
+    input.addEventListener('input', () => {
+      if (status) status.textContent = '正在输入…';
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        try {
+          if (input.value.trim()) localStorage.setItem(key, input.value);
+          else localStorage.removeItem(key);
+          if (status) status.textContent = '已保存';
+        } catch (e) {
+          if (status) status.textContent = '保存失败';
+        }
+      }, 500);
+    });
+  });
+</script>

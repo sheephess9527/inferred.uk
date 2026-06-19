@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="关于｜Inferred"
+  description="Inferred 是一个原创互动推理项目。这里的每一篇内容都是一份等待被阅读、质疑和推断的案卷。"
+  path="/about"
+>
+  <article class="container container--reading about">
+    <header class="about__header">
+      <p class="eyebrow">About · 关于</p>
+      <h1>关于 Inferred</h1>
+    </header>
+
+    <div class="prose about__body">
+      <p>Inferred 是一个原创互动推理项目。</p>
+      <p>
+        这里的每一篇内容都不是单纯的故事，而是一份等待被阅读、质疑和推断的案卷。
+      </p>
+      <p>你会看到人物、证词、物证、时间线和看似无关的细节。</p>
+      <p>其中一部分是真的。</p>
+      <p>一部分是误导。</p>
+      <p>还有一部分，只有在你重新阅读时才会显露意义。</p>
+
+      <hr />
+
+      <p class="about__coda">
+        真相从不明说。<br />
+        它只能被推断。
+      </p>
+    </div>
+
+    <p class="about__brand mono text-muted">
+      Inferred.uk · The truth is never stated. It is inferred.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-top: var(--space-16);
+  }
+  .about__header {
+    margin-bottom: var(--space-8);
+  }
+  .about__body p {
+    font-size: 1.1rem;
+  }
+  .about__coda {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.6;
+    color: var(--color-gold);
+  }
+  .about__brand {
+    margin-top: var(--space-16);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+</style>
