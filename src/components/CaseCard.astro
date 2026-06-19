@@ -18,11 +18,11 @@ const href = `/cases/${slug}`;
 const statusCn = status === 'solved' ? '已解' : '未解';
 ---
 
-<article class="case-card">
+<article class="case-card" data-case-slug={slug}>
   <a class="case-card__link" href={href} aria-label={`打开案卷 ${title}`}>
     <header class="case-card__head">
       <span class="case-card__id mono">Case #{caseId}</span>
-      <Tag label={statusCn} variant={`status-${status}`} />
+      <span class:list={['tag', `tag--status-${status}`]} data-progress-badge>{statusCn}</span>
     </header>
 
     <h3 class="case-card__title">{title}</h3>
@@ -140,4 +140,54 @@ const statusCn = status === 'solved' ? '已解' : '未解';
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  /* inline tag styles — badge rendered as plain span, not Tag component */
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    padding: 0.35em 0.6em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    background: transparent;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+  .tag--status-unsolved {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-line));
+  }
+  .tag--status-solved {
+    color: var(--color-gold);
+    border-color: color-mix(in srgb, var(--color-gold) 50%, var(--color-line));
+  }
+  .tag--status-reading {
+    color: #e8a84c;
+    border-color: color-mix(in srgb, #e8a84c 45%, var(--color-line));
+  }
+  .tag--status-user-solved {
+    color: #6abf8a;
+    border-color: color-mix(in srgb, #6abf8a 45%, var(--color-line));
+  }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-case-slug]').forEach((card) => {
+    const slug = card.dataset.caseSlug;
+    const badge = card.querySelector<HTMLElement>('[data-progress-badge]');
+    if (!badge || !slug) return;
+    try {
+      const progress = localStorage.getItem(`inferred:progress:/cases/${slug}`);
+      if (progress === 'solved') {
+        badge.textContent = '已结案';
+        badge.className = 'tag tag--status-user-solved';
+      } else if (progress === 'reading') {
+        badge.textContent = '推理中';
+        badge.className = 'tag tag--status-reading';
+      }
+    } catch (_) {}
+  });
+</script>

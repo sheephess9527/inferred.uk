@@ -5,7 +5,7 @@
 // 作者应把【真相 / 关键矛盾 / 伏笔解析 / 推理链】全部写在此组件内，避免提前剧透。
 ---
 
-<details class="reveal" data-reveal>
+<details class="reveal" data-reveal data-reveal-answer>
   <summary class="reveal__summary">
     <span class="reveal__gate">
       <span class="reveal__warning">答案一旦打开，推理就结束了。确认你已经完成判断。</span>
@@ -116,3 +116,16 @@
     }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('[data-reveal-answer]').forEach((el) => {
+    el.addEventListener('toggle', () => {
+      if (el.open) {
+        try {
+          localStorage.setItem(`inferred:progress:${location.pathname}`, 'solved');
+          window.dispatchEvent(new CustomEvent('inferred:case-solved'));
+        } catch (_) {}
+      }
+    });
+  });
+</script>

@@ -135,6 +135,15 @@ const jsonLd = {
   </article>
 </BaseLayout>
 
+<script is:inline define:vars={{ caseSlug: entry.id }}>
+  try {
+    const key = `inferred:progress:/cases/${caseSlug}`;
+    if (localStorage.getItem(key) !== 'solved') {
+      localStorage.setItem(key, 'reading');
+    }
+  } catch (_) {}
+</script>
+
 <style>
   .case {
     padding-top: var(--space-12);

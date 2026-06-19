@@ -1,7 +1,7 @@
 ---
 export interface Props {
   label: string;
-  variant?: 'type' | 'scene' | 'status-unsolved' | 'status-solved';
+  variant?: 'type' | 'scene' | 'status-unsolved' | 'status-solved' | 'status-reading' | 'status-user-solved';
   href?: string;
 }
 const { label, variant = 'type', href } = Astro.props;
@@ -42,6 +42,16 @@ const Wrapper = href ? 'a' : 'span';
   .tag--status-solved {
     color: var(--color-gold);
     border-color: color-mix(in srgb, var(--color-gold) 50%, var(--color-line));
+    text-transform: uppercase;
+  }
+  .tag--status-reading {
+    color: #e8a84c;
+    border-color: color-mix(in srgb, #e8a84c 45%, var(--color-line));
+    text-transform: uppercase;
+  }
+  .tag--status-user-solved {
+    color: #6abf8a;
+    border-color: color-mix(in srgb, #6abf8a 45%, var(--color-line));
     text-transform: uppercase;
   }
 </style>

@@ -15,11 +15,29 @@ const {
 } = Astro.props;
 ---
 
-<aside class="questions" aria-label="推理问题">
-  <p class="eyebrow">Questions · 推理问题</p>
-  <p class="questions__title">{title}：</p>
+<aside class="questions" aria-label="推理问题" data-deductions>
+  <header class="questions__head">
+    <div>
+      <p class="eyebrow">Questions · 推理问题</p>
+      <p class="questions__title">{title}：</p>
+    </div>
+    <span class="questions__progress mono" data-q-progress aria-live="polite"></span>
+  </header>
   <ol class="questions__list">
-    {questions.map((q) => <li>{q}</li>)}
+    {questions.map((q, i) => (
+      <li class="questions__item" data-q-item={i}>
+        <span class="questions__text">{q}</span>
+        <button
+          class="questions__check"
+          data-q-check={i}
+          aria-pressed="false"
+          title="标记为已思考"
+          aria-label={`标记「${q}」为已思考`}
+        >
+          <span class="questions__icon" aria-hidden="true">○</span>
+        </button>
+      </li>
+    ))}
   </ol>
 </aside>
 
@@ -31,28 +49,136 @@ const {
     border-radius: var(--radius);
     background: color-mix(in srgb, var(--color-surface) 60%, transparent);
   }
+  .questions__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
   .questions__title {
     font-family: var(--font-display);
     font-size: 1.05rem;
-    margin: var(--space-2) 0 var(--space-3);
+    margin: var(--space-2) 0 0;
+  }
+  .questions__progress {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    white-space: nowrap;
+    margin-top: 0.3em;
+    flex-shrink: 0;
   }
   .questions__list {
     margin: 0;
-    padding-left: 1.4em;
+    padding: 0;
     counter-reset: q;
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
   }
-  .questions__list li {
-    position: relative;
-    padding: var(--space-1) 0;
+  .questions__item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    border-radius: calc(var(--radius) - 2px);
     counter-increment: q;
+    position: relative;
   }
-  .questions__list li::before {
+  .questions__item::before {
     content: counter(q, decimal-leading-zero);
-    position: absolute;
-    left: -1.6em;
+    flex-shrink: 0;
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: var(--color-accent);
+    transition: color 0.2s ease;
+  }
+  .questions__item.is-done::before {
+    color: color-mix(in srgb, var(--color-accent) 40%, var(--color-muted));
+  }
+  .questions__text {
+    flex: 1;
+    transition: color 0.2s ease, opacity 0.2s ease;
+  }
+  .questions__item.is-done .questions__text {
+    color: var(--color-muted);
+    opacity: 0.65;
+  }
+  .questions__check {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.15em 0.3em;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1;
+    border-radius: 3px;
+    transition: color 0.15s ease, background 0.15s ease;
+    margin-left: auto;
+  }
+  .questions__check:hover {
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+  .questions__item.is-done .questions__check {
+    color: #6abf8a;
+  }
+  .questions__item.is-done .questions__check:hover {
+    color: var(--color-muted);
+    background: color-mix(in srgb, var(--color-muted) 10%, transparent);
+  }
+  .questions__icon {
+    pointer-events: none;
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-deductions]').forEach((root) => {
+    const path = location.pathname;
+    const key = (i: number) => `inferred:q:${path}:${i}`;
+    const checks = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-q-check]'));
+    const progressEl = root.querySelector<HTMLElement>('[data-q-progress]');
+
+    function updateProgress() {
+      if (!progressEl) return;
+      const done = checks.filter((btn) => {
+        try { return localStorage.getItem(key(Number(btn.dataset.qCheck))) === '1'; }
+        catch (_) { return false; }
+      }).length;
+      progressEl.textContent = done > 0
+        ? `${done} / ${checks.length} 已思考`
+        : `${checks.length} 题待推理`;
+    }
+
+    function applyState(btn: HTMLButtonElement, done: boolean) {
+      const icon = btn.querySelector('.questions__icon');
+      btn.setAttribute('aria-pressed', done ? 'true' : 'false');
+      if (icon) icon.textContent = done ? '●' : '○';
+      btn.closest('[data-q-item]')?.classList.toggle('is-done', done);
+    }
+
+    checks.forEach((btn) => {
+      const i = Number(btn.dataset.qCheck);
+      try { applyState(btn, localStorage.getItem(key(i)) === '1'); }
+      catch (_) {}
+    });
+    updateProgress();
+
+    checks.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.qCheck);
+        const nowDone = btn.getAttribute('aria-pressed') !== 'true';
+        applyState(btn, nowDone);
+        try {
+          if (nowDone) localStorage.setItem(key(i), '1');
+          else localStorage.removeItem(key(i));
+        } catch (_) {}
+        updateProgress();
+      });
+    });
+  });
+</script>

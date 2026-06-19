@@ -94,7 +94,15 @@ const caseTypes = [
         <h2 class="section__title">精选案卷</h2>
         <p class="section__count text-muted mono">共 {showcaseCount} 份</p>
       </div>
-      <a class="section__more" href="/cases">查看全部 →</a>
+      <div class="section__head-right">
+        <div class="user-progress" data-user-progress data-total={allCases.length} hidden>
+          <span class="user-progress__label mono" data-progress-label></span>
+          <div class="user-progress__bar" aria-hidden="true">
+            <div class="user-progress__fill" data-progress-fill></div>
+          </div>
+        </div>
+        <a class="section__more" href="/cases">查看全部 →</a>
+      </div>
     </header>
     <CaseList cases={latest} />
   </section>
@@ -328,4 +336,68 @@ const caseTypes = [
   .types__desc {
     font-size: 0.9rem;
   }
+
+  .section__head-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-3);
+  }
+  .user-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+  }
+  .user-progress__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+  .user-progress__bar {
+    width: 7rem;
+    height: 3px;
+    background: var(--color-line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .user-progress__fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-accent), #6abf8a);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
 </style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-user-progress]');
+  if (el) {
+    const total = Number(el.dataset.total) || 0;
+    let solved = 0;
+    let reading = 0;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k?.startsWith('inferred:progress:')) {
+          const v = localStorage.getItem(k);
+          if (v === 'solved') solved++;
+          else if (v === 'reading') reading++;
+        }
+      }
+    } catch (_) {}
+    if (solved > 0 || reading > 0) {
+      el.removeAttribute('hidden');
+      const label = el.querySelector('[data-progress-label]');
+      const fill = el.querySelector<HTMLElement>('[data-progress-fill]');
+      if (label) {
+        label.textContent = solved > 0
+          ? `已结案 ${solved}${reading > 0 ? ` · 推理中 ${reading}` : ''} / ${total}`
+          : `推理中 ${reading} / ${total}`;
+      }
+      if (fill) {
+        fill.style.width = `${Math.min(100, Math.round((solved / total) * 100))}%`;
+      }
+    }
+  }
+</script>
