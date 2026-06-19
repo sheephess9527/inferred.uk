@@ -15,6 +15,33 @@
 
 ---
 
+## 更新日志
+
+### 2026-06-19 — Bug 修复与体验改进
+
+基于代码审查，修复以下问题（对应文件见括号）：
+
+| 问题 | 修复 |
+|------|------|
+| 案卷页阅读进度条在移动端与双行导航重叠 | `ReadingProgress.astro` 改用 CSS 变量 `--header-height`；`Header.astro` 用 `ResizeObserver` 实时测量 header 高度 |
+| 首页只显示 3 个 featured 案卷，其余被截断 | `index.astro` 移除 `.slice(0, 3)`，展示**全部** `featured: true` 的案卷（按发布日期排序） |
+| 社交分享预览图用 SVG，微信/微博等不显示缩略图 | 新增 `scripts/export-og.mjs`，构建前自动导出 `public/og-default.png`（1200×630）；`BaseLayout.astro` 默认 `ogImage` 改为 PNG |
+| 物证标记按数组下标存 localStorage，内容增删后标记错位 | `EvidenceList.astro` 改为按物证 `label` 的 hash 存储（`inferred:evidence:{caseId}`），并自动迁移旧版 `inferred:clues:{caseId}` 数据 |
+| 切换亮色模式后浏览器/PWA 顶栏颜色不变 | `BaseLayout.astro` + `Header.astro`：主题切换时同步更新 `theme-color` 与 `apple-mobile-web-app-status-bar-style` |
+| 案卷列表文案写死「未解案卷」，与已解案件矛盾 | `cases/index.astro` 改为中性表述 |
+| 微信分享引导层无障碍不完整 | `ShareBar.astro`：补 `aria-modal`、Esc 关闭、打开时聚焦关闭按钮、关闭后还原焦点；桌面端微信分享合并为一次 toast |
+| PWA 锁定竖屏，平板横屏阅读不便 | `site.webmanifest`：`orientation` 改为 `any` |
+| 无 CI 自动构建检查 | 新增 `.github/workflows/ci.yml`（`pnpm check` + `pnpm build`） |
+| 域名 `inferred.uk` 尚未解析（部署问题） | README 部署章节补充 DNS 检查清单（需你在托管商侧配置，代码无法代劳） |
+
+**新增脚本与依赖**
+
+- `pnpm og:export` — 手动从 `og-default.svg` 导出 PNG
+- `prebuild` — 每次 `pnpm build` 前自动执行 `og:export`
+- `devDependencies.sharp` — 用于 OG 图导出（图标导出命令不变）
+
+---
+
 ## 功能一览
 
 - 📄 案卷详情页（正式档案排版，而非普通博客）
@@ -37,9 +64,10 @@
 ```bash
 pnpm install      # 安装依赖
 pnpm dev          # 启动开发服务器（默认 http://localhost:4321）
-pnpm build        # 构建到 dist/
+pnpm build        # 构建到 dist/（构建前自动导出 og-default.png）
 pnpm preview      # 本地预览构建产物
 pnpm check        # 类型检查
+pnpm og:export    # 单独从 og-default.svg 导出分享用 PNG
 ```
 
 ---
@@ -47,6 +75,8 @@ pnpm check        # 类型检查
 ## 目录结构
 
 ```
+.github/workflows/     # CI：push/PR 时自动 check + build
+scripts/               # 构建辅助脚本（如 export-og.mjs）
 src/
 ├── components/        # 可复用组件（CaseCard、RevealAnswer、EvidenceList…）
 ├── content/
@@ -92,7 +122,7 @@ readingTime: "8-12 分钟"
 clueCount: 6
 publishedAt: "2026-06-20"
 summary: "一句话勾住读者的案件摘要。"
-featured: true            # 是否在首页“最新案卷”展示
+featured: true            # 是否在首页“最新案卷”展示（所有 featured 案卷都会列出，按 publishedAt 排序）
 ---
 
 import PersonCard from '../../components/PersonCard.astro';
@@ -139,7 +169,7 @@ export const evidence = [
 ```
 
 > 注意：
-> - `<EvidenceList>` 和 `<DetectiveNotes>` 的 `caseId` 要与 frontmatter 的 `caseId` 一致——它决定了 `localStorage` 的存储 key。
+> - `<EvidenceList>` 和 `<DetectiveNotes>` 的 `caseId` 要与 frontmatter 的 `caseId` 一致——它决定了 `localStorage` 的存储 key（物证标记存于 `inferred:evidence:{caseId}`，按物证 `label` 内容的 hash 索引，**不要用数组下标**）。
 > - 请把【真相 / 关键矛盾 / 伏笔解析】**全部写在 `<RevealAnswer>` 里**，避免在折叠之前剧透。
 
 ## 如何新增一篇线索文章
@@ -165,7 +195,7 @@ order: 4          # 列表排序，数字越小越靠前
 - **设计系统（颜色、字体、间距）**：`src/styles/global.css` 顶部的 CSS 变量。
 - **导航 / 页脚**：`src/components/Header.astro`、`src/components/Footer.astro`。
 - **首页文案与模块**：`src/pages/index.astro`。
-- **默认分享图**：`public/og-default.svg`（可替换为 1200×630 的 PNG，并更新各页 `ogImage`）。
+- **默认分享图**：源文件 `public/og-default.svg`，构建时自动导出 `public/og-default.png`（1200×630，供微信/微博等使用）。改完 SVG 后运行 `pnpm og:export` 或 `pnpm build` 重新生成 PNG。各页可通过 `BaseLayout` 的 `ogImage` 覆盖。
 - **主屏幕图标**：源文件是矢量的 `public/icon.svg` 与 `public/icon-maskable.svg`。改完后用 `sharp` 重新导出位图：
 
   ```bash
@@ -183,6 +213,14 @@ order: 4          # 列表排序，数字越小越靠前
 
 - **Cloudflare Pages / Netlify / Vercel**：连接仓库，构建命令 `pnpm build`，输出目录 `dist`。
 - 部署后把自定义域名 `inferred.uk` 指向托管商，并确认 `astro.config.mjs` 中 `site` 与最终域名一致（影响 canonical、sitemap、OG 链接）。
+
+**上线检查清单**
+
+1. 托管商已连接 GitHub 仓库，CI（`.github/workflows/ci.yml`）在 main 分支通过。
+2. 自定义域名 `inferred.uk` 的 DNS 已指向托管商（A/CNAME 记录生效；可用 `nslookup inferred.uk` 验证）。
+3. 托管商已开启 HTTPS，且 `https://inferred.uk` 可正常打开。
+4. `https://inferred.uk/sitemap-index.xml` 与 `https://inferred.uk/version.json` 可访问。
+5. 分享任一案卷到微信/微博，确认预览图（`og-default.png`）正常显示。
 
 ---
 

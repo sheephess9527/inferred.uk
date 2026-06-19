@@ -13,7 +13,7 @@ const { target = '#case-body' } = Astro.props;
 <style>
   .reading-progress {
     position: sticky;
-    top: 4rem; /* 紧贴 header 下沿 */
+    top: var(--header-height, 4rem); /* 跟随实际 header 高度（含移动端双行导航） */
     z-index: 40;
     height: 2px;
     background: transparent;

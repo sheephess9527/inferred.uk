@@ -172,20 +172,38 @@ const isActive = (href: string) =>
 </style>
 
 <script>
+  const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
   const icon = document.querySelector<HTMLElement>('[data-theme-icon]');
 
   function currentTheme(): 'light' | 'dark' {
     return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   }
+
   function paintIcon() {
     if (icon) icon.textContent = currentTheme() === 'light' ? '◐' : '◑';
   }
+
+  function syncHeaderHeight() {
+    if (!header) return;
+    document.documentElement.style.setProperty(
+      '--header-height',
+      `${header.getBoundingClientRect().height}px`
+    );
+  }
+
   paintIcon();
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight, { passive: true });
+  if (typeof ResizeObserver !== 'undefined' && header) {
+    new ResizeObserver(syncHeaderHeight).observe(header);
+  }
 
   toggle?.addEventListener('click', () => {
     const next = currentTheme() === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
+    (
+      window as unknown as { inferredApplyTheme?: (theme: string) => void }
+    ).inferredApplyTheme?.(next);
     try {
       localStorage.setItem('inferred:theme', next);
     } catch (e) {}

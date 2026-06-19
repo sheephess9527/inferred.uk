@@ -48,7 +48,14 @@ const weiboHref =
 </aside>
 
 {/* 微信内置浏览器引导层：无法直接调起朋友圈，只能引导用户用右上角菜单 */}
-<div class="wx-guide" data-wx-guide hidden role="dialog" aria-label="分享到微信">
+<div
+  class="wx-guide"
+  data-wx-guide
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="分享到微信"
+>
   <div class="wx-guide__arrow" aria-hidden="true">↗</div>
   <p class="wx-guide__text">
     点击右上角 <strong>···</strong><br />
@@ -248,27 +255,56 @@ const weiboHref =
 
     copyBtn?.addEventListener('click', copyLink);
 
+    let guideReturnFocus: HTMLElement | null = null;
+
+    function openGuide() {
+      if (!guide) return;
+      guideReturnFocus = document.activeElement as HTMLElement | null;
+      guide.hidden = false;
+      guideClose?.focus();
+    }
+
+    function closeGuide() {
+      if (!guide || guide.hidden) return;
+      guide.hidden = true;
+      guideReturnFocus?.focus();
+      guideReturnFocus = null;
+    }
+
     wechatBtn?.addEventListener('click', async () => {
       if (isWeChat) {
-        // 微信内：无法直接调起朋友圈，引导用户用右上角菜单
-        if (guide) guide.hidden = false;
+        openGuide();
         return;
       }
-      // 微信外：优先系统分享面板（手机可直接选微信）
       if (canNativeShare) {
         const ok = await nativeShare();
         if (ok) return;
       }
-      // 桌面端退化：复制链接并提示用微信打开
-      await copyLink();
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        try {
+          document.execCommand('copy');
+        } catch {
+          showToast('复制失败，请手动复制');
+          input.remove();
+          return;
+        }
+        input.remove();
+      }
       showToast('链接已复制，可在微信中打开后分享到朋友圈');
     });
 
-    guideClose?.addEventListener('click', () => {
-      if (guide) guide.hidden = true;
-    });
+    guideClose?.addEventListener('click', closeGuide);
     guide?.addEventListener('click', (e) => {
-      if (e.target === guide) guide.hidden = true;
+      if (e.target === guide) closeGuide();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && guide && !guide.hidden) closeGuide();
     });
   });
 </script>

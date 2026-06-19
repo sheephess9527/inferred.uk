@@ -8,21 +8,17 @@ const allCases = (await getCollection('cases')).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
 
-const latest = (allCases.filter((c) => c.data.featured).length
-  ? allCases.filter((c) => c.data.featured)
-  : allCases
-)
-  .slice(0, 3)
-  .map((c) => ({
-    caseId: c.data.caseId,
-    title: c.data.title,
-    summary: c.data.summary,
-    difficulty: c.data.difficulty,
-    types: c.data.types,
-    readingTime: c.data.readingTime,
-    status: c.data.status,
-    slug: c.id,
-  }));
+const featuredCases = allCases.filter((c) => c.data.featured);
+const latest = (featuredCases.length ? featuredCases : allCases).map((c) => ({
+  caseId: c.data.caseId,
+  title: c.data.title,
+  summary: c.data.summary,
+  difficulty: c.data.difficulty,
+  types: c.data.types,
+  readingTime: c.data.readingTime,
+  status: c.data.status,
+  slug: c.id,
+}));
 
 const steps = [
   {

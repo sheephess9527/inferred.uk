@@ -21,7 +21,7 @@ const {
   title,
   description,
   path = Astro.url.pathname,
-  ogImage = '/og-default.svg',
+  ogImage = '/og-default.png',
   noindex = false,
 } = Astro.props;
 
@@ -41,10 +41,14 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? 'https://inferred.uk').href;
     <!-- 添加到主屏幕（iOS / Android） -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0E0E0C" />
+    <meta name="theme-color" content="#0E0E0C" id="meta-theme-color" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+      id="meta-status-bar"
+    />
     <meta name="apple-mobile-web-app-title" content="Inferred" />
     <meta name="application-name" content="Inferred" />
 
@@ -72,13 +76,23 @@ const ogImageUrl = new URL(ogImage, Astro.site ?? 'https://inferred.uk').href;
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- 主题在首帧前确定，避免闪烁 -->
+    <!-- 主题在首帧前确定，避免闪烁；同步浏览器/PWA 顶栏颜色 -->
     <script is:inline>
       (function () {
+        var THEME_COLORS = { dark: '#0E0E0C', light: '#E8E2D2' };
+        var STATUS_BAR = { dark: 'black-translucent', light: 'default' };
+        window.inferredApplyTheme = function (theme) {
+          var resolved = theme === 'light' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = resolved;
+          var themeColor = document.getElementById('meta-theme-color');
+          var statusBar = document.getElementById('meta-status-bar');
+          if (themeColor) themeColor.setAttribute('content', THEME_COLORS[resolved]);
+          if (statusBar) statusBar.setAttribute('content', STATUS_BAR[resolved]);
+        };
         try {
-          const saved = localStorage.getItem('inferred:theme');
+          var saved = localStorage.getItem('inferred:theme');
           if (saved === 'light' || saved === 'dark') {
-            document.documentElement.dataset.theme = saved;
+            window.inferredApplyTheme(saved);
           }
         } catch (e) {}
       })();

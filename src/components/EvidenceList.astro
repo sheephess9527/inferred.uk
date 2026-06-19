@@ -10,6 +10,15 @@ export interface Props {
   items: EvidenceItem[];
 }
 const { caseId, items } = Astro.props;
+
+/** 物证内容的稳定 ID，避免按数组下标存储导致内容增删后标记错位 */
+function evidenceKey(label: string): string {
+  let h = 5381;
+  for (let i = 0; i < label.length; i++) {
+    h = ((h << 5) + h) ^ label.charCodeAt(i);
+  }
+  return 'e' + (h >>> 0).toString(36);
+}
 ---
 
 <section class="evidence" data-evidence aria-labelledby={`evidence-${caseId}`}>
@@ -32,6 +41,7 @@ const { caseId, items } = Astro.props;
             class="evidence__btn"
             data-evidence-item
             data-index={i}
+            data-evidence-key={evidenceKey(item.label)}
             data-case={caseId}
             aria-pressed="false"
           >
@@ -187,7 +197,8 @@ const { caseId, items } = Astro.props;
     excluded: '排除',
   };
 
-  const keyFor = (caseId: string) => `inferred:clues:${caseId}`;
+  const keyFor = (caseId: string) => `inferred:evidence:${caseId}`;
+  const legacyKeyFor = (caseId: string) => `inferred:clues:${caseId}`;
 
   function load(caseId: string): Record<string, State> {
     try {
@@ -197,10 +208,43 @@ const { caseId, items } = Astro.props;
       return {};
     }
   }
+
   function save(caseId: string, data: Record<string, State>) {
     try {
       localStorage.setItem(keyFor(caseId), JSON.stringify(data));
     } catch (e) {}
+  }
+
+  /** 将旧版按数组下标的标记迁移到按物证内容 hash 存储 */
+  function migrateLegacy(
+    caseId: string,
+    buttons: NodeListOf<HTMLElement>
+  ): Record<string, State> {
+    const current = load(caseId);
+    if (Object.keys(current).length > 0) return current;
+
+    try {
+      const raw = localStorage.getItem(legacyKeyFor(caseId));
+      if (!raw) return {};
+      const legacy = JSON.parse(raw) as Record<string, State>;
+      const migrated: Record<string, State> = {};
+
+      buttons.forEach((btn) => {
+        const idx = btn.dataset.index;
+        const id = btn.dataset.evidenceKey;
+        if (!idx || !id) return;
+        const state = legacy[idx];
+        if (state && state !== 'none') migrated[id] = state;
+      });
+
+      if (Object.keys(migrated).length > 0) {
+        save(caseId, migrated);
+        localStorage.removeItem(legacyKeyFor(caseId));
+      }
+      return migrated;
+    } catch (e) {
+      return {};
+    }
   }
 
   function paint(btn: HTMLElement, state: State) {
@@ -225,18 +269,18 @@ const { caseId, items } = Astro.props;
     const buttons = board.querySelectorAll<HTMLElement>('[data-evidence-item]');
     const caseId = buttons[0]?.dataset.case;
     if (!caseId) return;
-    const stored = load(caseId);
+    const stored = migrateLegacy(caseId, buttons);
 
     buttons.forEach((btn) => {
-      const idx = btn.dataset.index!;
-      paint(btn, stored[idx] ?? 'none');
+      const id = btn.dataset.evidenceKey!;
+      paint(btn, stored[id] ?? 'none');
       btn.addEventListener('click', () => {
         const current = (btn.dataset.state as State) ?? 'none';
         const next = ORDER[(ORDER.indexOf(current) + 1) % ORDER.length];
         paint(btn, next);
         const data = load(caseId);
-        if (next === 'none') delete data[idx];
-        else data[idx] = next;
+        if (next === 'none') delete data[id];
+        else data[id] = next;
         save(caseId, data);
       });
     });
