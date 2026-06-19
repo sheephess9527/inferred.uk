@@ -1,0 +1,274 @@
+---
+export interface Props {
+  /** 文章标题 */
+  title: string;
+  /** 一句话摘要，作为分享文案 */
+  text?: string;
+  /** 站内绝对路径，例如 /cases/xxx */
+  path: string;
+}
+
+const { title, text = '', path } = Astro.props;
+const url = new URL(path, Astro.site ?? 'https://inferred.uk').href;
+
+// 微博分享 intent（无需 SDK，直接打开分享弹窗）
+const weiboHref =
+  'https://service.weibo.com/share/share.php?url=' +
+  encodeURIComponent(url) +
+  '&title=' +
+  encodeURIComponent(`${title}｜Inferred`);
+---
+
+<aside
+  class="share"
+  data-share
+  data-url={url}
+  data-title={title}
+  data-text={text}
+  aria-label="分享这篇文章"
+>
+  <span class="share__label mono">分享 · SHARE</span>
+
+  <div class="share__actions">
+    <button type="button" class="share__btn" data-share-wechat>微信 / 朋友圈</button>
+    <a
+      class="share__btn"
+      href={weiboHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-weibo>微博</a
+    >
+    <button type="button" class="share__btn" data-share-copy>复制链接</button>
+    <button type="button" class="share__btn share__btn--more" data-share-native hidden>
+      更多…
+    </button>
+  </div>
+
+  <p class="share__toast mono" data-share-toast hidden aria-live="polite">链接已复制</p>
+</aside>
+
+{/* 微信内置浏览器引导层：无法直接调起朋友圈，只能引导用户用右上角菜单 */}
+<div class="wx-guide" data-wx-guide hidden role="dialog" aria-label="分享到微信">
+  <div class="wx-guide__arrow" aria-hidden="true">↗</div>
+  <p class="wx-guide__text">
+    点击右上角 <strong>···</strong><br />
+    选择「分享到朋友圈」或「发送给朋友」
+  </p>
+  <button type="button" class="wx-guide__close" data-wx-close>我知道了</button>
+</div>
+
+<style>
+  .share {
+    margin-top: var(--space-12);
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+  .share__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .share__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-left: auto;
+  }
+  .share__btn {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    color: var(--color-paper);
+    background: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.45em 1em;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .share__btn:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  [data-share-wechat] {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
+  }
+  [data-share-wechat]:hover {
+    border-color: var(--color-accent);
+    color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .share__toast {
+    flex-basis: 100%;
+    margin: 0;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--color-gold);
+  }
+
+  @media (max-width: 560px) {
+    .share {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .share__actions {
+      margin-left: 0;
+    }
+    .share__btn {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+    .share__toast {
+      text-align: center;
+    }
+  }
+
+  /* 微信引导层 */
+  .wx-guide {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.78);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: calc(var(--space-6) + env(safe-area-inset-top)) var(--space-8) 0
+      var(--space-8);
+    text-align: right;
+  }
+  .wx-guide__arrow {
+    font-size: 3rem;
+    line-height: 1;
+    margin-right: 0.5rem;
+    animation: wx-bounce 1.4s ease-in-out infinite;
+  }
+  .wx-guide__text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: var(--space-3) 0 var(--space-8);
+  }
+  .wx-guide__text strong {
+    font-size: 1.3em;
+    letter-spacing: 0.1em;
+  }
+  .wx-guide__close {
+    align-self: center;
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    padding: 0.6em 1.6em;
+    cursor: pointer;
+  }
+  @keyframes wx-bounce {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(4px, -4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wx-guide__arrow {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share]').forEach((root) => {
+    const url = root.dataset.url ?? location.href;
+    const title = root.dataset.title ?? document.title;
+    const text = root.dataset.text ?? '';
+
+    const toast = root.querySelector<HTMLElement>('[data-share-toast]');
+    const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
+    const guide = document.querySelector<HTMLElement>('[data-wx-guide]');
+    const guideClose = document.querySelector<HTMLButtonElement>('[data-wx-close]');
+
+    const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+    const canNativeShare = typeof navigator.share === 'function';
+
+    function showToast(msg: string) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.hidden = false;
+      window.setTimeout(() => {
+        if (toast) toast.hidden = true;
+      }, 2200);
+    }
+
+    async function nativeShare() {
+      try {
+        await navigator.share({ title, text, url });
+        return true;
+      } catch {
+        return false; // 用户取消或失败
+      }
+    }
+
+    async function copyLink() {
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('链接已复制');
+      } catch {
+        // 退化方案：选中一个临时输入框
+        const input = document.createElement('input');
+        input.value = url;
+        document.body.appendChild(input);
+        input.select();
+        try {
+          document.execCommand('copy');
+          showToast('链接已复制');
+        } catch {
+          showToast('复制失败，请手动复制');
+        }
+        input.remove();
+      }
+    }
+
+    // “更多…”：仅在支持系统分享时出现（手机分享面板含微信/微博等）
+    if (canNativeShare && nativeBtn) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', nativeShare);
+    }
+
+    copyBtn?.addEventListener('click', copyLink);
+
+    wechatBtn?.addEventListener('click', async () => {
+      if (isWeChat) {
+        // 微信内：无法直接调起朋友圈，引导用户用右上角菜单
+        if (guide) guide.hidden = false;
+        return;
+      }
+      // 微信外：优先系统分享面板（手机可直接选微信）
+      if (canNativeShare) {
+        const ok = await nativeShare();
+        if (ok) return;
+      }
+      // 桌面端退化：复制链接并提示用微信打开
+      await copyLink();
+      showToast('链接已复制，可在微信中打开后分享到朋友圈');
+    });
+
+    guideClose?.addEventListener('click', () => {
+      if (guide) guide.hidden = true;
+    });
+    guide?.addEventListener('click', (e) => {
+      if (e.target === guide) guide.hidden = true;
+    });
+  });
+</script>
