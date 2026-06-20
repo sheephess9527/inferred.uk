@@ -42,6 +42,13 @@
 
 - 新增内容：
   - Cases #041–#045（5 篇新案卷）
+
+### 2026-06-20 — Footer 设计优化（减少品牌重复）
+
+- 大幅简化 `Footer.astro`：移除 Logo + 中英文标语块，消除与 Header 的视觉重复
+- Footer 改为极简居中布局：仅保留导航链接 + 版权法律信息
+- 视觉上让 Footer 更轻、更低调，作为页面收尾而非再次强调品牌
+- 同步精简了相关 CSS，改善移动端显示
   - 5 篇新线索（digital-age-fair-clues、recorded-alibi-tricks 等）
 
 - 总计：34 篇案卷 + 40 篇线索
