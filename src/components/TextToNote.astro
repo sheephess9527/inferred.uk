@@ -1,0 +1,83 @@
+---
+// 文本选中 → 发送到笔记（工作台模式）
+---
+
+<script>
+  import { addNote } from '../lib/notes';
+
+  let currentSelection = null;
+  let floatBtn = null;
+
+  function createFloatButton() {
+    if (floatBtn) return floatBtn;
+
+    const btn = document.createElement('button');
+    btn.className = 'text-to-note-btn mono';
+    btn.textContent = '添加到笔记';
+    btn.style.cssText = `
+      position: absolute; z-index: 1000; padding: 6px 12px;
+      font-size: 0.75rem; background: #111; color: #fff;
+      border: none; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      cursor: pointer; display: none;
+    `;
+
+    btn.addEventListener('click', () => {
+      if (currentSelection) {
+        const text = currentSelection.toString().trim();
+        if (text.length > 3) {
+          const caseSlug = document.body.dataset.currentCaseSlug || undefined;
+          addNote(text, caseSlug);
+          btn.textContent = '已添加';
+          setTimeout(() => {
+            btn.style.display = 'none';
+            btn.textContent = '添加到笔记';
+          }, 1200);
+        }
+      }
+    });
+
+    document.body.appendChild(btn);
+    floatBtn = btn;
+    return btn;
+  }
+
+  function showFloatButton(range) {
+    const btn = createFloatButton();
+    const rect = range.getBoundingClientRect();
+    btn.style.left = `${rect.left + window.scrollX}px`;
+    btn.style.top = `${rect.bottom + window.scrollY + 8}px`;
+    btn.style.display = 'block';
+    currentSelection = range;
+  }
+
+  function hideFloatButton() {
+    if (floatBtn) floatBtn.style.display = 'none';
+    currentSelection = null;
+  }
+
+  document.addEventListener('mouseup', () => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed || selection.toString().trim().length < 4) {
+      hideFloatButton();
+      return;
+    }
+    const isCasePage = location.pathname.startsWith('/cases/');
+    const isDeskMode = document.body.classList.contains('desk-mode');
+    if (isCasePage && isDeskMode) {
+      const range = selection.getRangeAt(0);
+      showFloatButton(range);
+    }
+  });
+
+  document.addEventListener('mousedown', (e) => {
+    if (floatBtn && !floatBtn.contains(e.target)) hideFloatButton();
+  });
+
+  window.addEventListener('inferred:desk-mode-changed', (e) => {
+    if (!e.detail?.active) hideFloatButton();
+  });
+</script>
+
+<style>
+  .text-to-note-btn:hover { background: #222; }
+</style>

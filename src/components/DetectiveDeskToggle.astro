@@ -1,0 +1,62 @@
+---
+// 工作台模式切换按钮（仅 PC/平板显示）
+---
+
+<button 
+  class="desk-toggle mono"
+  data-desk-toggle
+  aria-label="切换工作台模式"
+>
+  <span class="desk-toggle__text">工作台</span>
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLElement>('[data-desk-toggle]');
+  if (!btn) return;
+
+  const mediaQuery = window.matchMedia('(min-width: 1024px)');
+  function toggleVisibility() {
+    btn.style.display = mediaQuery.matches ? 'inline-flex' : 'none';
+  }
+  toggleVisibility();
+  mediaQuery.addEventListener('change', toggleVisibility);
+
+  btn.addEventListener('click', () => {
+    const body = document.body;
+    const isDeskMode = body.classList.toggle('desk-mode');
+
+    btn.classList.toggle('active', isDeskMode);
+    btn.querySelector('.desk-toggle__text')!.textContent = isDeskMode ? '标准阅读' : '工作台';
+
+    window.dispatchEvent(new CustomEvent('inferred:desk-mode-changed', { 
+      detail: { active: isDeskMode } 
+    }));
+  });
+</script>
+
+<style>
+  .desk-toggle {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .desk-toggle:hover {
+    border-color: var(--color-paper);
+    color: var(--color-paper);
+  }
+
+  .desk-toggle.active {
+    background: var(--color-paper);
+    color: var(--color-bg);
+    border-color: var(--color-paper);
+  }
+</style>
