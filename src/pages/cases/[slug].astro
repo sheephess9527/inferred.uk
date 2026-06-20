@@ -5,6 +5,7 @@ import CaseMeta from '../../components/CaseMeta.astro';
 import Tag from '../../components/Tag.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
 import ShareBar from '../../components/ShareBar.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -106,6 +107,8 @@ const jsonLd = {
     <div id="case-body" class="case__body prose">
       <Content />
     </div>
+
+    <DetectiveNotes caseId={entry.id} />
 
     <ShareBar
       title={data.title}

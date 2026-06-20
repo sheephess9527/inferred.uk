@@ -17,6 +17,25 @@
 
 ## 更新日志
 
+### 2026-06-20 — 侦探笔记上线 + 清理 Phase 1 未完成的孤儿组件
+
+承接早先「Phase 1」记录的纠偏。复查后确认：之前 README 记的「Phase 1 完成」并不属实，相关组件其实从未真正接入页面，且建立在一套与全站不一致的存储约定上。本次做了取舍——保留真正可用的部分，删除坏掉的部分。
+
+- **新增：案卷页「侦探笔记」**
+  - `src/pages/cases/[slug].astro` 接入 `DetectiveNotes.astro`：每篇案卷正文下方多一个自动保存的推理笔记框。
+  - 笔记按 `inferred:notes:<caseId>` 分案卷独立存储，仅存于浏览器本地、不上传，输入 0.5s 后防抖落盘。
+
+- **澄清：进度仪表盘无需「恢复」**
+  - 首页进度条早已在线并正常工作，使用 `inferred:progress:*` 这套 schema（案卷页标记 `reading`、`RevealAnswer` 标记 `solved`，首页与卡片状态徽章读取它），客户端动态更新。
+  - 此前的 `ProgressDashboard.astro` 用的是另一套 `inferred_progress` schema，全站无任何代码写入，且仅在构建时渲染（永远显示 0），属于对已有功能的坏掉的重复实现。
+
+- **删除：未接入且互不自洽的工作台孤儿组件**
+  - `src/components/ProgressDashboard.astro`（构建期占位，死 schema）
+  - `src/components/DetectiveDesk.astro`、`DetectiveDeskToggle.astro`、`TextToNote.astro`（从未被任何页面 import；`TextToNote` 写入 `lib/notes.ts` 的 `inferred_detective_notes`，与笔记框读取的 `inferred:notes:*` 互不相通）
+  - `src/lib/progress.ts`、`src/lib/notes.ts`（仅被上述孤儿组件引用的死抽象）
+
+- **验证**：`pnpm check`（0 error）、`pnpm build` 通过；构建产物中确认案卷页已含 `data-notes`/侦探笔记区块。
+
 ### 2026-06-20 — 修复分享海报全部加载失败（路由匹配 bug）
 
 - **现象**：案卷页「朋友圈 / 小红书」弹出的分享海报弹窗，50 张海报（`/share/cases/*.jpg`）全部显示「海报加载失败，请稍后重试或直接复制链接」。
