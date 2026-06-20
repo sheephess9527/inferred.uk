@@ -438,22 +438,6 @@ const weiboHref =
     });
 
 cat /tmp/new_copy_text.js
-    xhsBtn?.addEventListener('click', async () => {
-      const caption =
-        `${title}\n\n${text}\n\n` +
-        `完整案卷 👉 ${url}\n` +
-        `#推理 #悬疑 #解谜 #本格推理 #Inferred`;
-      const ok = await copyText(caption);
-      openPoster({
-        hint: '长按保存海报，去小红书发布',
-        note: ok ? '文案已复制，粘贴到正文即可' : '',
-      });
-    });
-
-    if (modal) {
-      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach((el) =>
-        el.addEventListener('click', closePoster)
-      );
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !modal.hidden) closePoster();
       });
