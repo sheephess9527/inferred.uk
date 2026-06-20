@@ -45,6 +45,12 @@
 
 ### 2026-06-20 — Footer 设计优化（减少品牌重复）
 
+### 2026-06-20 — About 页面进一步优化
+
+- 移除页面中间重复的 coda 结束语（与 Footer 重复）
+- 页面标题改为「关于 推知 Inferred」
+- 正文字号整体调小（1.1rem → 1.02rem），提升阅读舒适度
+
 ### 2026-06-20 — About 页面底部重复内容清理
 
 - 移除 `about.astro` 底部重复的品牌标语块（`Inferred.uk · The truth is never stated...`）
