@@ -12,7 +12,7 @@
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
 - **当前规模**：**100 篇案卷**（001–100）+ **52 篇线索**
-- **最新提交**：`e648432` — `fix: case progress status display; enrich cases 056-100`
+- **最新提交**：见下方更新日志
 
 ---
 
@@ -485,6 +485,14 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — 全站质量修复（001–100 统一标准）
+
+- **001–055** 共 55 篇扩充：5–6 人物、4 段证词、红鲱鱼物证（与 056–100 同标准）
+- 全库 100 篇去除 `**` 加粗（物证板不再显示星号）
+- 档案馆进度筛选：未解 / 推理中 / 已结案 / 已解（读 `localStorage`）
+- `ShareBar` 复制优先 `navigator.clipboard`，保留兼容回退
+- 维护脚本：`strip-asterisks.mjs`、`audit-site.mjs`（审计应为 0 issue）
 
 ### 2026-06-21 — 案卷质量与状态显示
 

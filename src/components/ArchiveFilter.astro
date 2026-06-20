@@ -29,11 +29,13 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 <div class="archive" data-archive>
   <div class="archive__filters" role="group" aria-label="筛选案卷">
     <div class="archive__group">
-      <span class="archive__group-label">状态</span>
+      <span class="archive__group-label">进度</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="status" data-value="" type="button" aria-pressed="true">全部</button>
-        <button class="chip" data-filter="status" data-value="unsolved" type="button" aria-pressed="false">未解</button>
-        <button class="chip" data-filter="status" data-value="solved" type="button" aria-pressed="false">已解</button>
+        <button class="chip is-on" data-filter="progress" data-value="" type="button" aria-pressed="true">全部</button>
+        <button class="chip" data-filter="progress" data-value="fresh" type="button" aria-pressed="false">未解</button>
+        <button class="chip" data-filter="progress" data-value="reading" type="button" aria-pressed="false">推理中</button>
+        <button class="chip" data-filter="progress" data-value="closed" type="button" aria-pressed="false">已结案</button>
+        <button class="chip" data-filter="progress" data-value="site-solved" type="button" aria-pressed="false">已解</button>
       </div>
     </div>
 
@@ -78,10 +80,11 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     {cases.map((c) => (
       <li
         data-archive-item
+        data-case-slug={c.slug}
         data-types={c.types.join('|')}
         data-scene={c.scene.join('|')}
         data-difficulty={String(c.difficulty)}
-        data-status={c.status}
+        data-site-status={c.status}
       >
         <CaseCard
           caseId={c.caseId}
@@ -182,14 +185,31 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     const countEl = root.querySelector<HTMLElement>('[data-archive-count]');
     const emptyEl = root.querySelector<HTMLElement>('[data-archive-empty]');
     const state: Record<string, string> = {
-      status: '',
+      progress: '',
       difficulty: '',
       type: '',
       scene: '',
     };
 
+    const readProgress = (slug: string | undefined) => {
+      if (!slug) return null;
+      try {
+        return localStorage.getItem(`inferred:progress:/cases/${slug}`);
+      } catch {
+        return null;
+      }
+    };
+
     const matches = (el: HTMLElement) => {
-      if (state.status && el.dataset.status !== state.status) return false;
+      if (state.progress) {
+        const slug = el.dataset.caseSlug;
+        const p = readProgress(slug);
+        const site = el.dataset.siteStatus;
+        if (state.progress === 'fresh' && (p === 'reading' || p === 'solved')) return false;
+        if (state.progress === 'reading' && p !== 'reading') return false;
+        if (state.progress === 'closed' && p !== 'solved') return false;
+        if (state.progress === 'site-solved' && site !== 'solved') return false;
+      }
       if (state.difficulty && el.dataset.difficulty !== state.difficulty) return false;
       if (state.type && !(el.dataset.types ?? '').split('|').includes(state.type))
         return false;
@@ -240,10 +260,17 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     });
 
     const params = new URLSearchParams(location.search);
-    for (const key of Object.keys(state)) {
-      const val = params.get(key);
-      if (val !== null) setChip(key, val);
+    // 兼容旧链接 ?status=unsolved|solved
+    const legacyStatus = params.get('status');
+    if (legacyStatus === 'unsolved') setChip('progress', 'fresh');
+    else if (legacyStatus === 'solved') setChip('progress', 'site-solved');
+    else {
+      for (const key of Object.keys(state)) {
+        const val = params.get(key);
+        if (val !== null) setChip(key, val);
+      }
     }
     apply();
+    window.addEventListener('inferred:case-solved', apply);
   }
 </script>

@@ -304,18 +304,33 @@ const weiboHref =
     }
 
     async function copyText(value: string): Promise<boolean> {
-      try { await navigator.clipboard.writeText(value); return true; }
-      catch {
-        const el = Object.assign(document.createElement('textarea'), {
-          value, style: 'position:fixed;opacity:0',
-        });
-        document.body.appendChild(el);
-        el.select();
-        let ok = false;
-        try { ok = document.execCommand('copy'); } catch { ok = false; }
-        el.remove();
-        return ok;
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(value);
+          return true;
+        } catch {
+          /* secure context or permission denied — try fallback */
+        }
       }
+      const el = Object.assign(document.createElement('textarea'), {
+        value,
+        style: 'position:fixed;left:-9999px;top:0',
+        ariaHidden: 'true',
+      });
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      let ok = false;
+      try {
+        // Fallback for in-app browsers without Clipboard API
+        if (typeof document.queryCommandSupported === 'function' && document.queryCommandSupported('copy')) {
+          ok = Boolean((document as Document & { execCommand(commandId: string): boolean }).execCommand('copy'));
+        }
+      } catch {
+        ok = false;
+      }
+      el.remove();
+      return ok;
     }
 
     function openPoster(opts: { steps: string[]; actionHref?: string }) {

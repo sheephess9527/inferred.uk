@@ -8,8 +8,8 @@ types:
   - "桥牌诡计"
 scene:
   - "牌室"
-readingTime: "11-15 分钟"
-clueCount: 6
+readingTime: "12-16 分钟"
+clueCount: 7
 publishedAt: "2026-06-19"
 summary: "被害人死前把最后一张牌放在桌上。那张牌，指向了凶手。"
 featured: false
@@ -23,12 +23,136 @@ import DetectiveNotes from '../../components/DetectiveNotes.astro';
 import RevealAnswer from '../../components/RevealAnswer.astro';
 
 export const evidence = [
-  { label: "死者桌上放着一张红心K。", detail: "" },
+  { label: "顾川倒在牌室，胸前刺伤；右手边独置一张红心 K，牌角沾血。", detail: "" },
+  { label: "牌局记录板停在「加倍」格；顾川习惯用最后一张牌暗示叫牌者。", detail: "" },
+  { label: "当晚四人：妻白绫、搭档程索、徒弟孟秋、债主鲁宽；皆无 K 在手。", detail: "" },
+  { label: "孟秋指甲缝有纸纤维，与牌室备用牌背胶层一致；备用牌少一张红心 K。", detail: "" },
+  { label: "程索声称「K 是顾川惯常留的胜牌标记」，与顾川手稿「K=最后叫牌者」矛盾。", detail: "" },
+  { label: "鲁宽袖口有扑克蜡，称「输钱擦汗」；进出记录 21:40 离席又 21:48 返回。", detail: "鲁宽无作案时间窗。" },
+  { label: "白绫耳坠在内侧找到微量血滴，形状飞溅；她称「扶尸体时沾到」。", detail: "飞溅方向指向站位左侧。" },
 ];
 
 ## 一、案发
 
-最后一张牌。
+顾川死在私人牌室。
+
+牌局散了，灯还亮着。他胸前插着裁纸刀，右手边只放着一张牌——红心 K。
+
+顾川生前说过：「我若出事，看最后一张牌。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="顾川"
+  role="桥牌教练"
+  age="60"
+  relation="死者"
+  alibi="——"
+>
+  习惯用最后一张牌暗示叫牌者；手稿记「K=最后叫牌者」。
+</PersonCard>
+
+<PersonCard
+  name="白绫"
+  role="妻子"
+  age="54"
+  relation="配偶"
+  alibi="称在厨房热汤"
+>
+  耳坠内侧有血滴；称扶尸沾到。
+</PersonCard>
+
+<PersonCard
+  name="程索"
+  role="搭档"
+  age="57"
+  relation="多年牌友"
+  alibi="称在客厅复盘"
+>
+  与顾川有分成纠纷；解释 K 为「胜牌标记」。
+</PersonCard>
+
+<PersonCard
+  name="孟秋"
+  role="徒弟"
+  age="27"
+  relation="学生"
+  alibi="称去车库取忘拿的牌套"
+>
+  指甲纸纤维；备用牌少红心 K。
+</PersonCard>
+
+<PersonCard
+  name="鲁宽"
+  role="债主"
+  age="49"
+  relation="赌债关系"
+  alibi="称短暂离席取现金"
+>
+  袖口扑克蜡；21:40–21:48 进出有记录。
+</PersonCard>
+
+<PersonCard
+  name="沈姨"
+  role="佣人"
+  age="58"
+  relation="管家"
+  alibi="称在洗衣间"
+>
+  听见 21:46 牌室短促争吵，随后一声闷响。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="程索" time="问询时">
+  “顾川赢了喜欢把 K 留桌上，是习惯。孟秋那孩子手笨，别瞎联想。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="孟秋" time="问询时">
+  “我去车库拿牌套，回来就看到他倒了。K？老师说过叫牌者——当晚最后叫加倍的是我，但我没杀人。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="白绫" time="问询时">
+  “我在厨房。听见响声跑过去，扶他时血溅到我耳坠。程索和鲁宽吵过钱，你查他们。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="沈姨" time="问询时">
+  “21:46 我听见顾先生说『把备用牌放下』，然后是摔倒声。牌室门当时虚掩。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="029" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "红心 K 是习惯，还是指认？",
+    "记录板「加倍」与最后叫牌者——谁符合？",
+    "备用牌少一张——真牌还是替换？",
+    "白绫耳坠血滴方向——扶尸还是近身？",
+    "鲁宽 21:40–21:48 离席——能排除吗？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断：谁在说谎？程索的分成、白绫的耳坠、鲁宽的赌债——哪一条是红鲱鱼，哪一条是缝？
+
+<DetectiveNotes caseId="029" />
+
+---
 
 ## 七、揭晓真相
 
@@ -36,7 +160,29 @@ export const evidence = [
 
 ### 真相
 
-红心K指向了凶手。
+凶手是孟秋。
+
+顾川发现他偷换备用牌出千，争执中孟秋用裁纸刀刺杀。濒死顾川按惯例留最后叫牌者之牌——当晚最后叫「加倍」的是孟秋，故置红心 K。孟秋事后从备用牌套抽走同张 K 想混淆，指甲纸纤维与少牌互证。
+
+他声称取牌套，实为销毁证据；21:46 沈姨听见「把备用牌放下」对上了现场。
+
+### 关键矛盾
+
+程索称 K 为胜牌标记，与顾川手稿「K=最后叫牌者」矛盾——手稿为公平线索。血滴飞溅方向指向左侧站位，符合孟秋叫牌座位，非白绫扶尸所能形成。
+
+鲁宽进出有记录，无窗——红鲱鱼。
+
+### 伏笔解析
+
+1. 最后一张牌——顾川自定规则，非神秘象征。
+2. 加倍记录板——锁定最后叫牌者。
+3. 备用牌少张——偷换物理痕迹。
+4. 指甲纸纤维——拆封备用牌套。
+5. 程索错误解释——红鲱鱼式误导。
+6. 白绫耳坠——红鲱鱼，方向不符扶尸。
+7. 沈姨时间 21:46——与孟秋「取牌套」重叠。
+
+牌桌不说谎，说谎的是抽走牌的人。
 
 真相从不明说。它只能被推断。
 

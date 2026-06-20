@@ -8,8 +8,8 @@ types:
   - "隐藏空间"
 scene:
   - "书斋"
-readingTime: "10-14 分钟"
-clueCount: 6
+readingTime: "12-16 分钟"
+clueCount: 7
 publishedAt: "2026-06-19"
 summary: "密室从内反锁，钥匙却消失了。凶手到底是如何离开的？"
 featured: false
@@ -23,16 +23,134 @@ import DetectiveNotes from '../../components/DetectiveNotes.astro';
 import RevealAnswer from '../../components/RevealAnswer.astro';
 
 export const evidence = [
-  { label: "死者倒在书斋，门从内反锁，钥匙消失不见。", detail: "" },
+  { label: "学者裴砚倒在书斋，喉部割伤；门从内反锁，钥匙消失。", detail: "" },
+  { label: "书斋仅一扇门、两扇窗；窗栓完好，窗外无攀爬痕迹。", detail: "" },
+  { label: "书架第三层典籍排列与相邻层厚度不一致；该层后方墙板有微缝。", detail: "" },
+  { label: "侄子裴朗声称「从未进过书斋」；鞋底却有书斋专用杉木地板蜡。", detail: "" },
+  { label: "竞争对手章牧赠裴砚善本，内夹纸条「密道在架后」；章牧称「玩笑」。", detail: "" },
+  { label: "女佣阿禾见裴朗案发前捧厚书入廊，书脊无字；裴砚藏书皆钤印。", detail: "" },
+  { label: "密道出口在侧厅储物间，地面有干涸血点；储物间钥匙登记在裴朗名下。", detail: "" },
 ];
 
 ## 一、案发
 
 书斋门从内反锁，钥匙却不见了。
 
+裴砚倒在案前，喉部一刀。窗户封死，门外的人撞了很久才用备用钥匙进入——锁舌在内侧，像典型的密室。
+
+可钥匙不在屋里，也不在死者身上。
+
+---
+
 ## 二、人物
 
-（框架）
+<PersonCard
+  name="裴砚"
+  role="经学家"
+  age="66"
+  relation="死者"
+  alibi="——"
+>
+  书斋禁入；架后藏维修密道，仅告知继承人。
+</PersonCard>
+
+<PersonCard
+  name="裴朗"
+  role="侄子"
+  age="34"
+  relation="继承人"
+  alibi="称在偏厅写信"
+>
+  鞋底杉木蜡；储物间钥匙登记名下。
+</PersonCard>
+
+<PersonCard
+  name="章牧"
+  role="同行学者"
+  age="52"
+  relation="竞争对手"
+  alibi="称当日未登门"
+>
+  赠书夹「密道」纸条，称玩笑；与裴砚争典籍归属。
+</PersonCard>
+
+<PersonCard
+  name="阿禾"
+  role="女佣"
+  age="40"
+  relation="佣人"
+  alibi="称在厨房"
+>
+  见裴朗捧无字厚书入廊。
+</PersonCard>
+
+<PersonCard
+  name="沈书"
+  role="老书商"
+  age="59"
+  relation="裴砚友人"
+  alibi="称午后已离府"
+>
+  知架后密道曾用于搬书，近年少人走。
+</PersonCard>
+
+<PersonCard
+  name="贺巡"
+  role="县警"
+  age="38"
+  relation="办案人"
+  alibi="——"
+>
+  发现密道出口血点与书斋血型一致。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="裴朗" time="问询时">
+  “我在偏厅写信，没进书斋。钥匙消失？我不知道。叔叔防我夺产，把秘密都藏着。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="章牧" time="问询时">
+  “纸条是恶作剧，裴砚死了我不会拿这种事开玩笑。密道？我听都没听过。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="阿禾" time="问询时">
+  “我看见裴朗少爷抱一本厚书往书斋那头去，书脊没字，不像老爷的藏书。之后就没见他了。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="沈书" time="问询时">
+  “架后确有旧搬书道，出口在储物间。裴砚说过只告诉继承人——若钥匙消失，可能是凶手根本不用钥匙。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="030" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "钥匙消失——是带走，还是根本不需要？",
+    "书架厚度不一——后面藏着什么？",
+    "裴朗鞋底杉木蜡——进过书斋吗？",
+    "章牧的纸条——玩笑，还是提示？",
+    "无字厚书——是假书，还是工具？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断：谁在说谎？章牧的纸条、裴朗的偏厅、阿禾的厚书——哪一条是红鲱鱼，哪一条是缝？
+
+<DetectiveNotes caseId="030" />
 
 ---
 
@@ -42,11 +160,29 @@ export const evidence = [
 
 ### 真相
 
-凶手利用了书架后的隐藏通道。
+凶手是裴朗。
+
+他经架后密道潜入书斋，杀害裴砚后原路退出，从储物间离开。门仍从内反锁——因裴砚习惯独处反锁，裴朗从未从门进出，故无需钥匙，钥匙「消失」是密室误导。
+
+无字厚书为伪装道具，掩护其捧「书」接近书斋。鞋底杉木蜡、储物间钥匙登记、出口血点互证。
+
+### 关键矛盾
+
+密室追问「钥匙去哪」——答案是不需要钥匙。书架厚度不一为公平线索，沈书证词点破「继承人知密道」。
+
+章牧纸条——红鲱鱼：他未登门，纸条是早年恶作剧，与本案动线无关。
 
 ### 伏笔解析
 
-1. **消失的钥匙**——根本不需要钥匙。
+1. 消失钥匙——误导方向，真解在无钥离开。
+2. 书架厚度——隐藏墙板缝。
+3. 裴朗杉木蜡——书斋地板专属。
+4. 无字厚书——伪装接近。
+5. 储物间钥匙——出口登记。
+6. 出口血点——逃离路径。
+7. 章牧纸条——红鲱鱼，引往错误密道叙事。
+
+密室问锁，答案在架后。
 
 真相从不明说。它只能被推断。
 
