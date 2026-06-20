@@ -16,5 +16,15 @@ export default defineConfig({
     },
   },
 
-  adapter: cloudflare()
+  adapter: cloudflare({
+    routes: {
+      extend: {
+        exclude: [
+          { pattern: '/share/cases/*' },
+          { pattern: '/og/cases/*' },
+          { pattern: '/og/clues/*' },
+        ]
+      }
+    }
+  }),
 });

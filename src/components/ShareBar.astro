@@ -9,7 +9,7 @@ export interface Props {
 const { title, text = '', path, poster } = Astro.props;
 const site = Astro.site ?? 'https://inferred.uk';
 const url = new URL(path, site).href;
-const posterUrl = poster ? new URL(poster, site).href : '';
+const posterUrl = poster ?? '';
 
 const weiboHref =
   'https://service.weibo.com/share/share.php?url=' +

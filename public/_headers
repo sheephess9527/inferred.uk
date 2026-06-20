@@ -7,6 +7,10 @@
   Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *
 
+/share/*
+  Cache-Control: public, max-age=86400
+  Access-Control-Allow-Origin: *
+
 /og-default.jpg
   Cache-Control: public, max-age=86400
   Access-Control-Allow-Origin: *
