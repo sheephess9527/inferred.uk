@@ -23,21 +23,17 @@ const weiboHref =
 
   <div class="share__actions">
     {poster && (
-      <button type="button" class="share__btn share__btn--poster" data-share-poster>
-        生成分享海报
-      </button>
+      <button type="button" class="share__btn share__btn--wechat" data-share-wechat>朋友圈</button>
     )}
-    <button type="button" class="share__btn" data-share-wechat>微信/朋友圈</button>
     {poster && (
-      <button type="button" class="share__btn" data-share-xhs>去小红书</button>
+      <button type="button" class="share__btn share__btn--xhs" data-share-xhs>小红书</button>
     )}
     <a class="share__btn" href={weiboHref} target="_blank" rel="noopener noreferrer" data-share-weibo>微博</a>
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
-    <button type="button" class="share__btn" data-share-text>复制图文</button>
     <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button>
   </div>
 
-  <p class="share__toast mono" data-share-toast hidden aria-live="polite">链接已复制</p>
+  <p class="share__toast mono" data-share-toast hidden aria-live="polite"></p>
 </aside>
 
 {poster && (
@@ -45,13 +41,13 @@ const weiboHref =
     <div class="poster__backdrop" data-poster-close></div>
     <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
       <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
-      <p class="poster__hint mono" data-poster-hint>长按图片保存，或点击下方「下载图片」</p>
-      <div class="poster__frame">
+      <ol class="poster__steps mono" data-poster-steps aria-label="操作步骤"></ol>
+      <div class="poster__frame" data-poster-frame>
         <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
       </div>
       <div class="poster__foot">
-        <a class="poster__dl" data-poster-dl download>下载图片</a>
-        <span class="poster__note mono" data-poster-note></span>
+        <a class="poster__dl" data-poster-dl download>↓ 下载图片</a>
+        <a class="poster__action" data-poster-action target="_blank" rel="noopener noreferrer" hidden>去小红书</a>
       </div>
     </div>
   </div>
@@ -91,30 +87,25 @@ const weiboHref =
     border-radius: 999px;
     padding: 0.45em 1em;
     cursor: pointer;
+    text-decoration: none;
     transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
   }
   .share__btn:hover {
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
-  .share__btn--poster {
-    border-color: var(--color-gold);
-    color: var(--color-gold);
-    background: color-mix(in srgb, var(--color-gold) 12%, transparent);
-  }
-  .share__btn--poster:hover {
-    background: color-mix(in srgb, var(--color-gold) 22%, transparent);
-    color: var(--color-paper);
-  }
-  [data-share-wechat] {
+  .share__btn--wechat {
     border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
   }
-  [data-share-wechat]:hover {
+  .share__btn--wechat:hover {
     border-color: var(--color-accent);
     color: var(--color-paper);
-    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
   }
-  [data-share-xhs]:hover {
+  .share__btn--xhs {
+    border-color: color-mix(in srgb, #ff2e4d 50%, var(--color-line));
+  }
+  .share__btn--xhs:hover {
     border-color: #ff2e4d;
     color: #ff2e4d;
   }
@@ -144,9 +135,7 @@ const weiboHref =
   }
 
   /* 海报弹窗 */
-  .poster[hidden] {
-    display: none;
-  }
+  .poster[hidden] { display: none; }
   .poster {
     position: fixed;
     inset: 0;
@@ -159,13 +148,13 @@ const weiboHref =
   .poster__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.78);
-    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(4px);
   }
   .poster__dialog {
     position: relative;
     z-index: 1;
-    width: min(92vw, 24rem);
+    width: min(92vw, 22rem);
     max-height: 92vh;
     display: flex;
     flex-direction: column;
@@ -174,7 +163,7 @@ const weiboHref =
     background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
-    animation: poster-in 0.25s ease;
+    animation: poster-in 0.22s ease;
   }
   .poster__x {
     position: absolute;
@@ -194,18 +183,42 @@ const weiboHref =
     color: var(--color-paper);
     background: color-mix(in srgb, var(--color-paper) 16%, transparent);
   }
-  .poster__hint {
+
+  /* 步骤列表 */
+  .poster__steps {
     margin: 0;
+    padding-left: 1.4em;
     padding-right: 2rem;
+    list-style: decimal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
     font-size: 0.74rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     color: var(--color-gold);
+    line-height: 1.5;
   }
+
+  /* 海报图区域 */
   .poster__frame {
-    overflow: auto;
+    position: relative;
+    overflow: hidden;
     border-radius: calc(var(--radius) - 2px);
     border: 1px solid var(--color-line);
     background: #0e0e0c;
+    min-height: 6rem;
+  }
+  .poster__frame[data-loading]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--color-line);
+    border-top-color: var(--color-gold);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
   }
   .poster__img {
     display: block;
@@ -225,143 +238,122 @@ const weiboHref =
     border: 1px solid var(--color-line);
     border-radius: 999px;
     padding: 0.4em 1em;
+    text-decoration: none;
     transition: border-color 0.15s ease, color 0.15s ease;
   }
   .poster__dl:hover {
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
-  .poster__note {
-    font-size: 0.7rem;
-    color: var(--color-muted);
-    text-align: right;
+  .poster__action {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #ff2e4d;
+    border: 1px solid #ff2e4d;
+    border-radius: 999px;
+    padding: 0.4em 1em;
+    text-decoration: none;
+    transition: background 0.15s ease;
   }
+  .poster__action:hover {
+    background: color-mix(in srgb, #ff2e4d 15%, transparent);
+  }
+  .poster__action[hidden] { display: none; }
 
   @keyframes poster-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 </style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-share]').forEach((root) => {
-    const url = root.dataset.url ?? location.href;
-    const title = root.dataset.title ?? document.title;
-    const text = root.dataset.text ?? '';
+    const url    = root.dataset.url    ?? location.href;
+    const title  = root.dataset.title  ?? document.title;
+    const text   = root.dataset.text   ?? '';
     const poster = root.dataset.poster ?? '';
 
-    const toast = root.querySelector<HTMLElement>('[data-share-toast]');
+    const toast     = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
-    const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const copyBtn   = root.querySelector<HTMLButtonElement>('[data-share-copy]');
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
-    const posterBtn = root.querySelector<HTMLButtonElement>('[data-share-poster]');
-    const xhsBtn = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
-    const textBtn = root.querySelector<HTMLButtonElement>('[data-share-text]');
+    const xhsBtn    = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
 
-    const canNativeShare = typeof navigator.share === 'function';
+    const modal       = document.querySelector<HTMLElement>('[data-poster-modal]');
+    const posterImg   = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
+    const posterFrame = modal?.querySelector<HTMLElement>('[data-poster-frame]');
+    const posterDl    = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
+    const posterAct   = modal?.querySelector<HTMLAnchorElement>('[data-poster-action]');
+    const posterSteps = modal?.querySelector<HTMLElement>('[data-poster-steps]');
+    let lastFocus: HTMLElement | null = null;
+
+    // 页面加载后立即预加载海报，用户点击时从缓存秒出
+    if (poster) {
+      const pre = new Image();
+      pre.src = poster;
+    }
 
     function showToast(msg: string) {
       if (!toast) return;
       toast.textContent = msg;
       toast.hidden = false;
-      window.setTimeout(() => { if (toast) toast.hidden = true; }, 3200);
+      window.setTimeout(() => { if (toast) toast.hidden = true; }, 3000);
     }
 
-    async function nativeShare() {
-      try { await navigator.share({ title, text, url }); return true; }
-      catch { return false; }
-    }
-
-    async function copyText(value: string) {
+    async function copyText(value: string): Promise<boolean> {
       try { await navigator.clipboard.writeText(value); return true; }
       catch {
-        const input = document.createElement('textarea');
-        input.value = value; input.style.position = 'fixed'; input.style.opacity = '0';
-        document.body.appendChild(input); input.select();
-        let ok = false; try { ok = document.execCommand('copy'); } catch { ok = false; }
-        input.remove(); return ok;
+        const el = Object.assign(document.createElement('textarea'), {
+          value, style: 'position:fixed;opacity:0',
+        });
+        document.body.appendChild(el);
+        el.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch { ok = false; }
+        el.remove();
+        return ok;
       }
     }
 
-    async function copyLink() {
-      const ok = await copyText(url);
-      showToast(ok ? '链接已复制' : '复制失败，请手动复制');
-    }
-
-    async function copyTextWithPoster() {
-      let shareContent = `${title}\n\n`;
-      if (text) shareContent += `${text}\n\n`;
-      shareContent += `${url}`;
-      if (poster) shareContent += `\n\n[分享海报] ${poster}`;
-      shareContent += `\n\n#推理 #悬疑 #本格推理 #Inferred`;
-      const ok = await copyText(shareContent);
-      showToast(ok ? '图文已复制，可直接粘贴到小红书/朋友圈' : '复制失败');
-    }
-
-    if (canNativeShare && nativeBtn) {
-      nativeBtn.hidden = false;
-      nativeBtn.addEventListener('click', nativeShare);
-    }
-
-    copyBtn?.addEventListener('click', copyLink);
-    textBtn?.addEventListener('click', copyTextWithPoster);
-
-    wechatBtn?.addEventListener('click', async () => {
-      if (canNativeShare) {
-        const ok = await nativeShare(); if (ok) return;
-      }
-      await copyLink();
-      showToast('链接已复制。发朋友圈推荐点击「生成分享海报」');
-    });
-
-    posterBtn?.addEventListener('click', () =>
-      openPoster({ hint: '长按图片保存，或点击下方「下载图片」' })
-    );
-
-    xhsBtn?.addEventListener('click', async () => {
-      let shareContent = `${title}\n\n`;
-      if (text) shareContent += `${text}\n\n`;
-      shareContent += `${url}`;
-      if (poster) shareContent += `\n\n[分享海报] ${poster}`;
-      shareContent += `\n\n#推理 #悬疑 #本格推理 #Inferred`;
-      const ok = await copyText(shareContent);
-      showToast(ok ? '小红书图文已复制，可直接粘贴发布' : '复制失败');
-      if (poster) {
-        setTimeout(() => openPoster({ hint: '长按保存海报，粘贴文案即可发布', note: '文案已复制' }), 800);
-      }
-    });
-
-    const modal = document.querySelector<HTMLElement>('[data-poster-modal]');
-    const posterImg = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
-    const posterDl = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
-    const posterNote = modal?.querySelector<HTMLElement>('[data-poster-note]');
-    const posterHint = modal?.querySelector<HTMLElement>('[data-poster-hint]');
-    let lastFocus: HTMLElement | null = null;
-
-    function openPoster(opts?: { hint?: string; note?: string }) {
+    function openPoster(opts: { steps: string[]; actionHref?: string }) {
       if (!modal || !poster) return;
-      if (posterImg) {
-        posterImg.style.display = 'block';
-        posterImg.onerror = () => {
-          if (posterBtn) posterBtn.style.display = 'none';
-          if (xhsBtn) xhsBtn.style.display = 'none';
-          posterImg.style.display = 'none';
-          if (posterHint) posterHint.textContent = '海报暂时无法显示，请稍后再试或直接复制链接';
-        };
-        if (!posterImg.src || posterImg.src === '') posterImg.src = poster;
+
+      // 只在第一次打开时设置 src（预加载已把图片放进缓存，几乎瞬间完成）
+      if (!posterImg?.getAttribute('src')) {
+        posterFrame?.setAttribute('data-loading', '');
+        if (posterImg) {
+          posterImg.onload  = () => posterFrame?.removeAttribute('data-loading');
+          posterImg.onerror = () => {
+            posterFrame?.removeAttribute('data-loading');
+            if (posterSteps) {
+              posterSteps.innerHTML = '<li>海报加载失败，请稍后重试或直接复制链接</li>';
+            }
+          };
+          posterImg.src = poster;
+        }
       }
+
       if (posterDl) {
         posterDl.href = poster;
         posterDl.setAttribute('download', poster.split('/').pop() || 'inferred.jpg');
       }
-      if (posterHint && opts?.hint) posterHint.textContent = opts.hint;
-      if (posterNote) posterNote.textContent = opts?.note ?? '';
+
+      if (posterSteps) {
+        posterSteps.innerHTML = opts.steps.map(s => `<li>${s}</li>`).join('');
+      }
+
+      if (posterAct) {
+        if (opts.actionHref) {
+          posterAct.href = opts.actionHref;
+          posterAct.hidden = false;
+        } else {
+          posterAct.hidden = true;
+        }
+      }
+
       lastFocus = document.activeElement as HTMLElement;
       modal.hidden = false;
       modal.setAttribute('aria-hidden', 'false');
@@ -377,8 +369,53 @@ const weiboHref =
     }
 
     if (modal) {
-      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach(el => el.addEventListener('click', closePoster));
-      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closePoster(); });
+      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach(el =>
+        el.addEventListener('click', closePoster)
+      );
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !modal.hidden) closePoster();
+      });
     }
+
+    // 原生分享（仅在支持的浏览器上展示）
+    if (typeof navigator.share === 'function' && nativeBtn) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', () =>
+        navigator.share({ title, text, url }).catch(() => {})
+      );
+    }
+
+    copyBtn?.addEventListener('click', async () => {
+      const ok = await copyText(url);
+      showToast(ok ? '链接已复制' : '复制失败，请手动复制');
+    });
+
+    // 朋友圈：打开海报 + 三步微信指引
+    wechatBtn?.addEventListener('click', () => {
+      openPoster({
+        steps: [
+          '长按图片 → 保存到相册',
+          '打开微信 → 发现 → 朋友圈',
+          '点「相册」选刚保存的图，直接发布',
+        ],
+      });
+    });
+
+    // 小红书：先复制文案，再打开海报 + 三步引导 + 跳转按鈕
+    xhsBtn?.addEventListener('click', async () => {
+      const caption = [title, text, url, '#推理 #悬疑 #解谜 #本格推理 #Inferred']
+        .filter(Boolean)
+        .join('\n\n');
+      const copied = await copyText(caption);
+
+      openPoster({
+        steps: [
+          copied ? '✓ 文案已自动复制' : '手动复制文案（稍后粘贴）',
+          '长按图片 → 保存到相册',
+          '去小红书 → 新建笔记 → 选图 → 粘贴文案',
+        ],
+        actionHref: 'https://www.xiaohongshu.com',
+      });
+    });
   });
 </script>
