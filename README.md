@@ -17,6 +17,17 @@
 
 ## 更新日志
 
+### 2026-06-20 — 修复分享海报全部加载失败（路由匹配 bug）
+
+- **现象**：案卷页「朋友圈 / 小红书」弹出的分享海报弹窗，50 张海报（`/share/cases/*.jpg`）全部显示「海报加载失败，请稍后重试或直接复制链接」。
+- **根因**：Cloudflare Pages 的 `_routes.json` 中通配符 `*` 只匹配**单个路径段**。原有的 `/share/*` 规则能匹配 `/share/foo`，但**匹配不到** `/share/cases/slug.jpg`（`/share/` 后面有两段）。因此所有海报图片请求都被错误地交给 Worker 处理（走 `env.ASSETS.fetch()` 间接取资源），而非直接命中 CDN 静态资源，导致静默失败。
+- **修复**：
+  - `astro.config.mjs`：为 `@astrojs/cloudflare` 适配器添加 `routes.extend.exclude`，显式排除 `/share/cases/*`、`/og/cases/*`、`/og/clues/*`，让这些请求绕过 Worker 直达 CDN 资源存储。
+  - `ShareBar.astro`：`posterUrl` 由绝对 URL（`new URL(poster, site).href`）改为相对路径（`poster ?? ''`），避免预览/非生产域名下 origin 不匹配。
+  - `public/_headers`：为 `/share/*` 补充 `Cache-Control` 与 CORS 头，与已有的 `/og/*` 保持一致。
+- **影响文件**：`astro.config.mjs`、`src/components/ShareBar.astro`、`public/_headers`
+- **验证**：`pnpm build` 后确认生成的 `dist/_routes.json` 已包含 `/share/cases/*` 等显式排除项；`pnpm check`、`pnpm verify:og` 均通过。
+
 ### 2026-06-20 — Bundle 推送：新增分享海报功能 + Cases 041–045
 
 - 通过 `inferred-unpushed.bundle` 将 3 个已签名提交推送到 `main`：
@@ -624,4 +635,3 @@ order: 38          # 当前最大为 37
    - 缺少清晰的“发朋友圈/小红书”操作指引
 
 **下一步**：将基于此清单进行系统性重构。
-
