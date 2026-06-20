@@ -1,0 +1,130 @@
+---
+title: "挂钩上的黄铜钥匙"
+caseId: "098"
+status: "unsolved"
+difficulty: 5
+types:
+  - "钥匙诡计"
+  - "调换推理"
+scene:
+  - "旅馆走廊"
+  - "夜深"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "值班台挂钩上钥匙还在。可那是黄铜展示钥——真镍钥早已开门杀人，再换回挂钩。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "旅馆老板娘阮宿死于 302，锐器伤。值班台挂钩仍挂 **302 钥匙**。", detail: "" },
+  { label: "挂钩钥匙为 **黄铜镀金展示钥**，齿浅，无法开 302；真钥为镍合金，齿深。", detail: "" },
+  { label: "302 门锁沟槽有镍屑，与展示钥材质不符；沟槽镍屑与真钥磨损一致。", detail: "" },
+  { label: "夜班前台 **钟匙** 称整晚未离值班台，挂钩钥匙一直在；其口袋有镍粉与黄铜粉混杂。", detail: "" },
+  { label: "钟匙抽屉有真钥复制模与镀金展示钥第二把；阮宿拟将前台改自助并辞退钟匙。", detail: "" },
+  { label: "锐器为开瓶器，钟匙腰挂同款；302 地垫下藏真钥，齿沾阮宿血型。", detail: "" },
+  { label: "展示钥挂钩位置有新旧擦痕——昨夜真钥挂此处，今晨被换回黄铜钥。", detail: "" },
+];
+
+## 一、案发
+
+夜深，旅馆走廊地毯吸走脚步声。
+
+老板娘阮宿倒在 302，锐器伤。值班台挂钩上，302 钥匙好好挂着。
+
+探员取钥试齿：浅，黄铜光。
+
+「这把开不了门，」他说，「 **开门的钥匙，来过又走了。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="阮宿"
+  role="老板娘"
+  age="46"
+  relation="死者"
+  alibi="——"
+>
+  拟改自助前台辞退钟匙。
+</PersonCard>
+
+<PersonCard
+  name="钟匙"
+  role="夜班前台"
+  age="32"
+  relation="雇员"
+  alibi="称钥匙始终在挂钩"
+>
+  复制模；镍粉黄铜粉。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="钟匙" time="问询时">
+  “钥匙没离过钩。她死在房里，与我值班台何干？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="098" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "黄铜展示钥 vs 镍真钥——挂钩上的是哪一把？",
+    "锁沟镍屑——谁用真钥开过门？",
+    "口袋镍粉黄铜粉——调换留下的痕迹？",
+    "地垫真钥与开瓶器——行凶后如何复位？",
+    "钥匙在钩上，能否等于钥匙未动？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="098" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **钟匙**。他以真镍钥开 302 行凶，事后换黄铜展示钥回挂钩——齿浅钥开不了门，却骗过肉眼。锁沟镍屑、挂钩擦痕、口袋双金属粉互证；地垫藏真钥为匆忙遗漏。
+
+开瓶器为凶器。改自助辞退是动机。**本格钥匙诡计：看见钥，不等于用过钥。**
+
+### 关键矛盾
+
+钩上有钥，沟里有镍——真钥来过，展示钥在值班。
+
+### 伏笔解析
+
+1. **黄铜 vs 镍**——调换核心。
+2. **锁沟镍屑**——真钥使用。
+3. **挂钩擦痕**——换钥动作。
+4. **地垫真钥**——遗漏。
+5. **辞退纠纷**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

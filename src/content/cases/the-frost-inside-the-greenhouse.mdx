@@ -1,0 +1,130 @@
+---
+title: "内侧结霜的玻璃"
+caseId: "095"
+status: "unsolved"
+difficulty: 5
+types:
+  - "假密室"
+  - "热力学推理"
+scene:
+  - "植物园温室"
+  - "凌晨"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "温室门从内锁死，像密室。可玻璃内侧结霜——说明门在凌晨曾长时间敞开，热气外泄。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "园长柯培死于温室兰花架旁，电击伤。门从内插销，外表无破坏。", detail: "" },
+  { label: "玻璃 **内侧** 下层结霜，上层无霜；室外 3°C，室内余温仍 26°C。", detail: "" },
+  { label: "热力学：门若一直紧闭，内外温差不足以让内侧结霜；需 **开门散热后重关**。", detail: "" },
+  { label: "夜班管理员 **温篱** 称全程在外巡查，温室门锁完好；其巡检 PDA 3:12 在温室门 30 米外打卡。", detail: "" },
+  { label: "温篱靴底有温室专用砂土，与门外干净步道矛盾；砂土仅在 **内侧门槛** 成堆。", detail: "" },
+  { label: "柯培拟辞退温篱并改自动温控；电击源为破损喷灌线，绝缘胶带为温篱工具袋同款。", detail: "" },
+  { label: "内侧门把有温篱掌纹重叠三组——开门、布置、再关门锁销。", detail: "" },
+];
+
+## 一、案发
+
+凌晨，植物园温室像一颗湿热的玻璃心。
+
+园长柯培倒在兰花架旁，电击。门从内插销，无外力痕迹。
+
+探员以指甲刮内侧玻璃：薄霜。
+
+「密室？」他摇头，「 **霜在里头——门开过。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="柯培"
+  role="园长"
+  age="49"
+  relation="死者"
+  alibi="——"
+>
+  拟辞退温篱改自动温控。
+</PersonCard>
+
+<PersonCard
+  name="温篱"
+  role="夜班管理员"
+  age="42"
+  relation="雇员"
+  alibi="称 3:12 在门外 30 米打卡"
+>
+  靴底砂土；喷灌胶带。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="温篱" time="问询时">
+  “我从外头巡查，门一直锁着。里面结霜，是温控坏了。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="095" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "内侧结霜 vs 室内余温——门是否曾长时间敞开？",
+    "砂土堆在门槛内侧——谁从里向外带出土？",
+    "3:12 门外打卡——能否与入内行凶并存？",
+    "喷灌胶带与破损线缆——电击如何布置？",
+    "假密室：锁从内落下，不等于无人进出。",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="095" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **温篱**。他入内布置喷灌漏电，行凶后开门散热制造「久闭温室」假象，再关门上插销——内侧结霜是 **开门散热** 的热力学余迹。砂土堆于内侧门槛，揭穿其入内。
+
+门外 30 米打卡为行凶后补打。辞退与自动化取代是动机。**卡尔式密室：锁是真的，空气历史是假的。**
+
+### 关键矛盾
+
+门说没开过，霜说开过。信锁，还是信热？
+
+### 伏笔解析
+
+1. **内侧结霜**——开门证据。
+2. **门槛砂土**——入内动线。
+3. **掌纹三组**——开关门序列。
+4. **喷灌胶带**——电击装置。
+5. **辞退纠纷**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

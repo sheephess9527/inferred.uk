@@ -1,0 +1,130 @@
+---
+title: "墨水干涸的那一行"
+caseId: "094"
+status: "unsolved"
+difficulty: 4
+types:
+  - "笔迹时间"
+  - "身份破绽"
+scene:
+  - "山间旅舍"
+  - "晨雾"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "访客簿上，他的签名墨迹已干。可登记时间写着一刻钟前——墨不可能干得那么快。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "旅舍主人岑宿死于登记台，锐器伤。晨雾未散，账本摊开。", detail: "" },
+  { label: "账本末行 **「沈行」** 登记 6:10，墨迹 **全干**，指腹搓擦不掉。", detail: "" },
+  { label: "同册 6:08 上一行墨迹仍潮；室内湿度 82%，正常墨迹干透需 **四十分钟以上**。", detail: "" },
+  { label: "住客沈行称 6:10 刚下车登记；其大衣肩无雾珠，鞋底干燥，不像雾中步行。", detail: "" },
+  { label: "岑宿拟将旅舍改作民宿并清退长租客沈行；沈行行李有旧账本撕页，缺 6:10 那一行。", detail: "" },
+  { label: "锐器为裁纸刀，沈行文具袋同款；登记台抽屉有沈行备用墨水，瓶盖开于昨夜。", detail: "" },
+  { label: "6:10 时间字迹与沈行签名墨色不同——时间为今早补写，签名来自昨夜撕页。", detail: "" },
+];
+
+## 一、案发
+
+晨雾贴窗，山间旅舍煤油灯将熄未熄。
+
+主人岑宿倒在登记台，锐器伤。住客沈行指着账本：「6:10 我刚到，刚签名。」
+
+探员以指腹试墨：干透了。
+
+「一刻钟前写的字，」他说，「 **不该干成这样。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="岑宿"
+  role="旅舍主人"
+  age="58"
+  relation="死者"
+  alibi="——"
+>
+  拟改民宿清退沈行。
+</PersonCard>
+
+<PersonCard
+  name="沈行"
+  role="长租住客"
+  age="47"
+  relation="住客"
+  alibi="称 6:10 雾中刚到并登记"
+>
+  撕页账本；裁纸刀。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈行" time="问询时">
+  “我签名时他在。雾大，你查脚印也没用。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="094" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "6:10 签名全干 vs 6:08 仍潮——时间戳是否可信？",
+    "肩无雾珠、鞋干燥——真从雾中走来？",
+    "撕页缺行与备用墨昨夜开盖——签名是否预写？",
+    "时间字迹墨色不同——何者后补？",
+    "笔迹 alibi：信时钟，还是信湿度？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="094" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **沈行**。他昨夜以备用墨预签撕页，行凶后贴回账本并 **补写 6:10 时间**——故签名干透、时间墨迹新。肩无雾珠、鞋干燥揭穿「刚到」。
+
+裁纸刀为凶器。清退长租是动机。**湿度是本格的钟**：四十分钟规则下，6:10 不可能全干。
+
+### 关键矛盾
+
+签名说清晨，墨水说昨夜。同一行字，两个时辰。
+
+### 伏笔解析
+
+1. **干湿对比**——时间伪造。
+2. **雾珠与鞋底**——行程谎言。
+3. **撕页缺行**——预签来源。
+4. **墨色不一**——补写时间。
+5. **清退纠纷**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

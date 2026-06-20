@@ -1,0 +1,130 @@
+---
+title: "盖了两次的邮戳"
+caseId: "092"
+status: "unsolved"
+difficulty: 4
+types:
+  - "邮务诡计"
+  - "时间伪造"
+scene:
+  - "邮局分拣台"
+  - "午后"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "两封信，同一分钟邮戳。一封证明他在外地，另一封却从本地信箱寄出——戳印重叠了半格。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "邮局局长闻笺死于分拣室，钝器击打太阳穴。手边摊着当日盖戳登记簿。", detail: "" },
+  { label: "副局长 **沈邮** 出示 alibi 信：盖戳 **14:32**，日戳为邻市支局，证明其在出差地寄出。", detail: "" },
+  { label: "分拣台废篓另一封信同戳 **14:32**，日戳为本局；邮资面额与沈邮习惯使用的旧版邮票一致。", detail: "" },
+  { label: "两枚戳印 **重叠半格**，边缘墨迹深浅不一；显微镜见后盖戳压在前盖戳墨脊上。", detail: "" },
+  { label: "闻笺拟调任沈邮至偏远支局并查其倒卖纪念戳；沈邮当日应在本局值班。", detail: "" },
+  { label: "沈邮拇指套沾有日戳油墨，与废篓信戳色谱一致；值班表 14:28–14:40 仅沈一人持戳。", detail: "" },
+  { label: "邻市支局 14:32 无沈邮监控记录；其 alibi 信投递箱位于本局对面街角。", detail: "" },
+];
+
+## 一、案发
+
+午后，分拣室皮带慢转，日戳机像一颗钝心。
+
+局长闻笺倒在台边，太阳穴钝伤。副局长沈邮递上一封信：「14:32 我在邻市盖戳，有信为证。」
+
+探员从废篓抽出另一封，邮戳也是 14:32，日戳却是本局。
+
+「同一分钟，」他说，「 **戳子盖了两次，人却只在一处。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="闻笺"
+  role="局长"
+  age="52"
+  relation="死者"
+  alibi="——"
+>
+  拟调任沈邮并查倒卖纪念戳。
+</PersonCard>
+
+<PersonCard
+  name="沈邮"
+  role="副局长"
+  age="45"
+  relation="下属"
+  alibi="称 14:32 邻市寄信"
+>
+  持戳时段独处；拇指套油墨。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈邮" time="问询时">
+  “邮戳是国家时间。我在邻市，本局的事与我何干？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="092" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "两封信同戳 14:32、墨迹叠压——先盖哪一枚？",
+    "邻市无监控、投递箱在本局对面——alibi 信从哪寄出？",
+    "14:28–14:40 仅沈持戳——谁能在本局盖第二枚？",
+    "废篓信与旧版邮票——像随手丢弃还是刻意留痕？",
+    "邮戳能伪造时间，还是只能伪造地点？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="092" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **沈邮**。他值班时先在本局盖废篓信（真实位置），再调日戳盘伪造邻市字样盖 alibi 信，同一分钟 **连盖两次** 造成叠印。邻市无记录、投递箱在对面街角——两信皆出自其手。
+
+钝器行凶后，他以为废篓信已销毁；叠印显微痕迹留下。调任与查倒卖戳是动机。**邮戳证明地点，叠印证明谎言。**
+
+### 关键矛盾
+
+一分钟内，戳印不能既在邻市又在本局——除非 **同一只手盖了两遍**。
+
+### 伏笔解析
+
+1. **叠压半格**——双盖物证。
+2. **邻市无监控**——alibi 虚空。
+3. **投递箱位置**——本地寄出。
+4. **持戳独处**——机会。
+5. **倒卖戳调查**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,130 @@
+---
+title: "七号座留下的竞拍牌"
+caseId: "100"
+status: "unsolved"
+difficulty: 5
+types:
+  - "拍卖 alibi"
+  - "身份错位"
+scene:
+  - "拍卖行大厅"
+  - "夜场"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "七号座竞拍牌留在椅上，登记显示他在场。可举牌号码与结算单签名，不是同一个人。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "拍卖行鉴定师宋鉴死于库房，钝器伤。夜场正在进行，大厅灯火通明。", detail: "" },
+  { label: "七号座 **竞拍牌 07** 留在椅上；登记册 21:15 签到 **「沈槌」** 持牌 07。", detail: "" },
+  { label: "21:18 举牌的 07 号以 **左手** 举至额高；沈槌档案登记为 **右利手**。", detail: "" },
+  { label: "21:40 结算单 07 号签名为沈槌，笔迹与登记册一致；但笔压异常轻，像 **描摹**。", detail: "" },
+  { label: "助理 **顾价** 右腕缠绷带称伤；其左手拇指腹有竞拍牌握压红痕，与 07 牌背凹痕吻合。", detail: "" },
+  { label: "宋鉴拟揭发顾价掉包拍品；库房监控 21:25–21:35 盲区，恰为夜场最高潮。", detail: "" },
+  { label: "07 牌柄有双层指纹：表层沈槌，底层顾价；沈槌 21:10 在门外咖啡厅监控，未入场。", detail: "" },
+];
+
+## 一、案发
+
+夜场槌声如雷，拍卖行大厅却有一席空着牌。
+
+鉴定师宋鉴倒在库房，钝伤。七号座竞拍牌 07 留在椅上，登记写沈槌。
+
+探员对比录像：21:18 举牌的 07 用左手。
+
+「沈槌是右利手，」他说，「 **牌在，人未必在。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="宋鉴"
+  role="鉴定师"
+  age="48"
+  relation="死者"
+  alibi="——"
+>
+  拟揭发顾价掉包。
+</PersonCard>
+
+<PersonCard
+  name="顾价"
+  role="助理"
+  age="34"
+  relation="下属"
+  alibi="称整晚在侧台记录"
+>
+  左手握压痕；右腕绷带。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="顾价" time="问询时">
+  “07 是沈槌的号，我只是在侧台。库房盲区，与我无关。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="100" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "左手举牌 vs 沈槌右利手——谁坐在 07？",
+    "双层指纹与沈槌门外监控——牌是否被预置？",
+    "签名笔压轻如描摹——结算单谁签的？",
+    "顾价左手红痕与牌背凹痕——持牌人是谁？",
+    "拍卖 alibi：信登记，还是信举牌的手？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="100" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **顾价**。他预借沈槌身份登记 07 号，将牌置于空座，自己以 **左手** 隔席举牌（右腕假伤绷带），再描摹沈槌签名结算——制造「沈槌在场」链。沈槌实未入场，门外监控与牌柄底层指纹为顾价。
+
+行凶趁 21:25–21:35 库房盲区。掉包揭发是动机。**身份错位：牌号证明座位，手证明人。**
+
+### 关键矛盾
+
+登记写沈槌，举牌用左手——07 号在，沈槌不在。
+
+### 伏笔解析
+
+1. **左举 vs 右利**——持牌人破绽。
+2. **双层指纹**——预置牌。
+3. **门外监控**——沈槌未入场。
+4. **描摹签名**——伪造结算。
+5. **掉包揭发**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
