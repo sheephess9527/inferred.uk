@@ -1,4 +1,6 @@
 ---
+import BrandMark from './BrandMark.astro';
+
 const nav = [
   { href: '/cases', cn: '案卷', en: 'Cases' },
   { href: '/clues', cn: '线索', en: 'Clues' },
@@ -13,10 +15,14 @@ const isActive = (href: string) =>
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href="/" aria-label="Inferred 首页">
-      <span class="brand__mark">Inferred</span>
-      <span class="brand__dot" aria-hidden="true">.</span>
-      <span class="brand__tld">uk</span>
+    <a class="brand" href="/" aria-label="推知 Inferred 首页">
+      <BrandMark class="brand__logo" size={34} />
+      <span class="brand__name">
+        <span class="brand__cn">推知</span>
+        <span class="brand__en">
+          <span class="brand__mark">Inferred</span><span class="brand__dot" aria-hidden="true">.</span><span class="brand__tld">uk</span>
+        </span>
+      </span>
     </a>
 
     <nav class="site-nav" aria-label="主导航">
@@ -71,13 +77,33 @@ const isActive = (href: string) =>
     padding-inline: max(0px, env(safe-area-inset-left)) max(0px, env(safe-area-inset-right));
   }
   .brand {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     color: var(--color-paper);
     margin-right: auto;
     flex-shrink: 0;
+  }
+  .brand__logo {
+    flex-shrink: 0;
+    display: block;
+  }
+  .brand__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .brand__cn {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+  }
+  .brand__en {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
   }
   .site-nav {
     flex-shrink: 1;
@@ -89,7 +115,7 @@ const isActive = (href: string) =>
   .brand__tld {
     color: var(--color-muted);
     font-family: var(--font-mono);
-    font-size: 0.85em;
+    font-size: 0.82em;
   }
   .site-nav ul {
     display: flex;
@@ -160,8 +186,14 @@ const isActive = (href: string) =>
       padding-block: var(--space-3) var(--space-4);
     }
     .brand {
-      font-size: 1.15rem;
       margin-right: 0;
+      gap: var(--space-2);
+    }
+    .brand__cn {
+      font-size: 1.15rem;
+    }
+    .brand__en {
+      font-size: 0.82rem;
     }
     .theme-toggle {
       order: 2;

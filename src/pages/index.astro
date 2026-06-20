@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseList from '../components/CaseList.astro';
 import NewsletterBox from '../components/NewsletterBox.astro';
+import BrandMark from '../components/BrandMark.astro';
 
 const allCases = (await getCollection('cases')).sort(
   (a, b) => {
@@ -55,16 +56,24 @@ const caseTypes = [
 ---
 
 <BaseLayout
-  title="Inferred｜原创互动悬疑推理案卷"
-  description="Inferred 是一个原创互动推理网站。阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。"
+  title="推知 Inferred｜原创互动悬疑推理案卷"
+  description="推知 Inferred 是一个原创互动推理网站。真相从不明说，只能被推断——阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。"
   path="/"
 >
   <!-- Hero -->
   <section class="hero">
     <div class="container hero__inner">
+      <div class="hero__brand">
+        <BrandMark class="hero__logo" size={68} title="推知 Inferred" />
+        <span class="hero__brand-name">
+          <span class="hero__brand-cn">推知</span>
+          <span class="hero__brand-en">Inferred</span>
+        </span>
+      </div>
       <p class="eyebrow hero__eyebrow">The truth is never stated. It is inferred.</p>
       <h1 class="hero__title">真相从不明说，<br />只能被推断。</h1>
       <p class="hero__subtitle">
+        不是被告知，而是自己看见。<br />
         阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。
       </p>
       <div class="hero__actions">
@@ -164,6 +173,36 @@ const caseTypes = [
   }
   .hero__inner {
     max-width: var(--measure-wide);
+  }
+  .hero__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .hero__logo {
+    flex-shrink: 0;
+    display: block;
+  }
+  .hero__brand-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .hero__brand-cn {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.9rem;
+    letter-spacing: 0.12em;
+    color: var(--color-paper);
+  }
+  .hero__brand-en {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
   }
   .hero__eyebrow {
     margin-bottom: var(--space-6);

@@ -1,4 +1,6 @@
 ---
+import BrandMark from './BrandMark.astro';
+
 const year = new Date().getFullYear();
 const nav = [
   { href: '/cases', label: '案卷' },
@@ -11,19 +13,21 @@ const nav = [
 <footer class="site-footer">
   <div class="container site-footer__inner">
     <div class="site-footer__brand">
-      <p class="site-footer__title">Inferred<span class="text-accent">.</span>uk</p>
+      <p class="site-footer__title">
+        <BrandMark class="site-footer__logo" size={28} />
+        <span>推知 Inferred<span class="text-accent">.</span><span class="text-muted">uk</span></span>
+      </p>
       <p class="text-muted site-footer__tagline">真相从不明说，只能被推断。</p>
       <p class="eyebrow">The truth is never stated. It is inferred.</p>
     </div>
 
     <nav class="site-footer__nav" aria-label="页脚导航">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      <a href="/sitemap-index.xml">站点地图</a>
     </nav>
   </div>
 
   <div class="container site-footer__legal">
-    <span class="mono">© {year} Inferred</span>
+    <span class="mono">© {year} 推知 Inferred</span>
     <span class="text-muted">原创互动推理案卷 · 一切人物与案件均属虚构</span>
   </div>
 </footer>
@@ -43,9 +47,16 @@ const nav = [
     flex-wrap: wrap;
   }
   .site-footer__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     font-family: var(--font-display);
     font-size: 1.3rem;
     margin: 0 0 var(--space-2);
+  }
+  .site-footer__logo {
+    flex-shrink: 0;
+    display: block;
   }
   .site-footer__tagline {
     margin: 0 0 var(--space-1);

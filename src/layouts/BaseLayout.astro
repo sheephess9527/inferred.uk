@@ -33,14 +33,14 @@ const {
   path = Astro.url.pathname,
   ogTitle = title,
   ogImage = '/og-default.jpg',
-  ogImageAlt = 'Inferred — 真相从不明说，只能被推断',
+  ogImageAlt = '推知 Inferred — 真相从不明说，只能被推断',
   ogType = 'website',
   publishedTime,
   jsonLd,
   noindex = false,
 } = Astro.props;
 
-const siteName = 'Inferred';
+const siteName = '推知 Inferred';
 const siteOrigin = Astro.site ?? 'https://inferred.uk';
 const canonical = new URL(path, siteOrigin).href;
 const ogImageUrl = new URL(ogImage, siteOrigin).href;
@@ -66,8 +66,8 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
       content="black-translucent"
       id="meta-status-bar"
     />
-    <meta name="apple-mobile-web-app-title" content="Inferred" />
-    <meta name="application-name" content="Inferred" />
+    <meta name="apple-mobile-web-app-title" content="推知" />
+    <meta name="application-name" content="推知" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -100,8 +100,6 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-
-    <link rel="sitemap" href="/sitemap-index.xml" />
 
     {jsonLd && (
       <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
