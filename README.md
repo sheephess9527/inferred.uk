@@ -12,7 +12,7 @@
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
 - **当前规模**：**100 篇案卷**（001–100）+ **52 篇线索**
-- **最新提交**：`6bcb3a4` — `content: add cases 091-100`
+- **最新提交**：`e648432` — `fix: case progress status display; enrich cases 056-100`
 
 ---
 
@@ -35,12 +35,38 @@
 4. **文风**：优雅克制、公平本格（fair play）；灵感可来自世界经典悬疑（阿加莎、卡尔、钱德勒、高罗佩、日本本格等），但**剧情须原创**。
 5. **公平性**：关键线索须在揭晓前以物证/细节形式出现；禁止事后空降设定。
 6. **组件约定**：
-   - `export const evidence` 通常 **7 条**（`clueCount: 7`）
+   - `export const evidence` **7 条**（`clueCount: 7`）；其中 1–2 条用 `detail` 标注红鲱鱼误导方向
    - `EvidenceList` / `DetectiveNotes` 的 `caseId` 与 frontmatter 一致
    - `DeductionQuestions` 通常 **5 个问题**
-   - 人物通常 **2 个** `PersonCard`（死者 + 凶手嫌疑人）
+   - **5–6 个** `PersonCard`：死者 + 真凶 + **至少 2 个红鲱鱼嫌疑人**（参考 001、091）
+   - **4 个** `TestimonyBlock`：互相矛盾、各为其主
+   - **禁止 `**` 加粗**：物证 `label` 在 `EvidenceList` 中按纯文本渲染，星号会原样显示
+   - `readingTime` 进阶案卷用 `"12-16 分钟"`
+   - 第六节在 `<DetectiveNotes>` 前写一句**推理引导语**（邀请读者先判断再揭晓）
+   - 揭晓须说明红鲱鱼为何误导；`伏笔解析` **6–7 条**
 7. **`featured`**：每批约 25–30% 为 `true`；首页精选仅展示最新 10 篇 featured（`index.astro` `.slice(0, 10)`）。**近邻相似案卷只保留一篇 featured**（见下方审计备忘）。
 8. **slug**：文件名即 URL，英文 kebab-case，如 `the-coat-from-yesterdays-reel.mdx` → `/cases/the-coat-from-yesterdays-reel`。
+
+### 案卷状态（站点 vs 读者进度）
+
+两套状态并存，UI 优先显示读者进度：
+
+| 层级 | 字段 / 存储 | 取值 | 界面文案 |
+|------|-------------|------|----------|
+| 站点 | frontmatter `status` | `unsolved` / `solved` | 未解 / 已解 |
+| 读者 | `localStorage` `inferred:progress:/cases/{slug}` | `reading` / `solved` | 推理中 / 已结案 |
+
+**触发逻辑**（`src/pages/cases/[slug].astro`、`RevealAnswer.astro`）：
+
+1. 打开案卷页 → 若非已结案，写入 `reading`
+2. 展开「揭晓真相」→ 写入 `solved`，并派发 `inferred:case-solved` 事件
+
+**显示位置**（`e648432` 修复）：
+
+- 列表卡片 `CaseCard.astro`：`data-progress-badge`
+- 详情页眉 + `CaseMeta.astro`：读取同一 `localStorage` 键，揭晓后即时更新
+
+新增案卷 `status` 保持 `"unsolved"` 即可；读者进度由前端自动管理。
 
 ### 发布后流程（必须按序）
 
@@ -83,6 +109,9 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-20 | 071–090 | 20 | `f6ecfd9` | 经典悬疑灵感大批次 |
 | 2026-06-20 | — | — | `b023f7b` | 三对近邻案卷差异化（无新编号） |
 | 2026-06-20 | 091–100 | 10 | `6bcb3a4` | 监控/邮务/机械诡计批次 |
+| 2026-06-21 | 056–100 | 45 | `e648432` | 扩充人物/证词/红鲱鱼；去除 `**`；修复进度状态显示 |
+
+**质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
 
 ---
 
@@ -102,7 +131,7 @@ types:
 scene:
   - "场景一"
   - "场景二"
-readingTime: "10-13 分钟"
+readingTime: "12-16 分钟"
 clueCount: 7
 publishedAt: "2026-06-20"
 summary: "一句话摘要，点明核心矛盾。"
@@ -117,33 +146,34 @@ import DetectiveNotes from '../../components/DetectiveNotes.astro';
 import RevealAnswer from '../../components/RevealAnswer.astro';
 
 export const evidence = [
-  { label: "物证一。", detail: "可选补充。" },
-  { label: "物证二。", detail: "" },
-  // …共 7 条
+  { label: "物证一。", detail: "" },
+  { label: "物证二。", detail: "红鲱鱼：指向错误嫌疑人。" },
+  // …共 7 条，勿用 ** 加粗
 ];
 
 ## 一、案发
-（叙事开场，优雅克制）
+（2–3 段叙事；开场抛出矛盾，点名多名在场者）
 
 ---
 
 ## 二、人物
 
-<PersonCard name="死者" role="身份" age="年龄" relation="死者" alibi="——">
-  动机背景一句。
-</PersonCard>
-
-<PersonCard name="嫌疑人" role="身份" age="年龄" relation="关系" alibi="声称的不在场">
-  可疑细节一句。
-</PersonCard>
+<PersonCard name="死者" … />
+<PersonCard name="真凶" … />
+<PersonCard name="红鲱鱼甲" … />
+<PersonCard name="红鲱鱼乙" … />
+<PersonCard name="证人/同事" … />
+<!-- 共 5–6 人 -->
 
 ---
 
 ## 三、证词
 
-<TestimonyBlock speaker="嫌疑人" time="问询时">
-  “证词原文。”
-</TestimonyBlock>
+<TestimonyBlock speaker="真凶" time="问询时">“…”</TestimonyBlock>
+<TestimonyBlock speaker="红鲱鱼甲" time="…">“…”</TestimonyBlock>
+<TestimonyBlock speaker="红鲱鱼乙" time="…">“…”</TestimonyBlock>
+<TestimonyBlock speaker="证人" time="…">“…”</TestimonyBlock>
+<!-- 共 4 段，互相矛盾 -->
 
 ---
 
@@ -155,19 +185,13 @@ export const evidence = [
 
 ## 五、推理问题
 
-<DeductionQuestions
-  questions={[
-    "问题一？",
-    "问题二？",
-    "问题三？",
-    "问题四？",
-    "问题五？",
-  ]}
-/>
+<DeductionQuestions questions={["…", "…", "…", "…", "…"]} />
 
 ---
 
 ## 六、你的推理
+
+在打开答案前，写下你的判断：谁在说谎？哪条线索最可疑？
 
 <DetectiveNotes caseId="101" />
 
@@ -178,18 +202,15 @@ export const evidence = [
 <RevealAnswer>
 
 ### 真相
-
-（凶手、手法、动机，公平复盘）
+（凶手、手法、动机；说明红鲱鱼为何有效）
 
 ### 关键矛盾
-
 （一句点题）
 
 ### 伏笔解析
-
-1. **线索一**——说明。
-2. **线索二**——说明。
-3. …
+1. 线索一——说明。
+2. …
+（共 6–7 条，勿用 **）
 
 真相从不明说。它只能被推断。
 
@@ -387,6 +408,7 @@ export const evidence = [
 ## 功能一览
 
 - 案卷详情页（档案风排版）
+- 案卷进度：未解 / 推理中 / 已结案（`localStorage`，揭晓后即时更新）
 - 档案馆：按状态 / 难度 / 类型 / 场景筛选
 - 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`）
 - 侦探笔记（自动保存）
@@ -464,12 +486,18 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-06-21 — 案卷质量与状态显示
+
+- **056–100 共 45 篇**内容扩充（`e648432`）：每篇 5–6 人物、4 段矛盾证词、红鲱鱼物证、去除全文 `**`
+- 修复读者进度状态：`CaseMeta` / 详情页眉 / `CaseCard` 正确显示 **未解 → 推理中 → 已结案**
+- `CaseMeta` 新增必填 `slug` prop，与 `localStorage` 键 `inferred:progress:/cases/{slug}` 对齐
+
 ### 2026-06-20 — 内容与文档
 
 - 新增案卷 **091–100**（`6bcb3a4`）
 - 三对近邻案卷差异化（`b023f7b`）：052/088、041/066、039/063
 - 新增案卷 **071–090**（`f6ecfd9`）、**061–070**（`c2cad64`）、**056–060**（`89324a6`）
-- README 重写：案卷规则、发布流程、完整目录、审计备忘
+- README 重写：案卷规则、发布流程、完整目录、审计备忘（`2c33abb`）
 
 ### 2026-06-20 — 分享与资源
 
