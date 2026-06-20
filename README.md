@@ -45,6 +45,14 @@
 
 ### 2026-06-20 — Footer 设计优化（减少品牌重复）
 
+### 2026-06-20 — Phase 1：侦探生涯档案与工作台模式开发（进行中）
+
+- 新增 `src/lib/progress.ts`：localStorage 进度管理工具（unread / in-progress / solved）
+- 新增 `ProgressDashboard.astro`：首页克制进度仪表盘（已结案 X / Y）
+- 重构 `CaseCard.astro`：支持动态状态徽章（未解 / 推理中 / 已结案）
+- 新增 `DetectiveDeskToggle.astro`：工作台模式切换按钮（仅 ≥1024px 显示）
+- 新增 `DetectiveDesk.astro`：基础分屏工作台布局容器
+
 ### 2026-06-20 — About 页面进一步优化
 
 - 移除页面中间重复的 coda 结束语（与 Footer 重复）

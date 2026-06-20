@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseList from '../components/CaseList.astro';
 import NewsletterBox from '../components/NewsletterBox.astro';
+import ProgressDashboard from '../components/ProgressDashboard.astro';
 import BrandMark from '../components/BrandMark.astro';
 
 const allCases = (await getCollection('cases')).sort(
@@ -96,6 +97,7 @@ const caseTypes = [
   </section>
 
   <!-- 精选案卷 -->
+    <ProgressDashboard totalCases={allCases.length} client:load />
   <section class="container section">
     <header class="section__head">
       <div>
@@ -138,6 +140,7 @@ const caseTypes = [
   </section>
 
   <!-- 案件类型 -->
+    <ProgressDashboard totalCases={allCases.length} client:load />
   <section class="container section">
     <header class="section__head">
       <div>
@@ -159,6 +162,7 @@ const caseTypes = [
   </section>
 
   <!-- 订阅 -->
+    <ProgressDashboard totalCases={allCases.length} client:load />
   <section class="container section">
     <NewsletterBox />
   </section>
