@@ -3,13 +3,14 @@ import DifficultyStars from './DifficultyStars.astro';
 
 export interface Props {
   caseId: string;
+  slug: string;
   status: 'unsolved' | 'solved';
   difficulty: number;
   types: string[];
   readingTime: string;
   clueCount?: number;
 }
-const { caseId, status, difficulty, types, readingTime, clueCount } = Astro.props;
+const { caseId, slug, status, difficulty, types, readingTime, clueCount } = Astro.props;
 const statusCn = status === 'solved' ? '已解' : '未解';
 const statusEn = status === 'solved' ? 'SOLVED' : 'UNSOLVED';
 const typeEn = types.join(' / ');
@@ -22,9 +23,12 @@ const typeEn = types.join(' / ');
   </div>
   <div class="case-meta__row">
     <dt>状态</dt>
-    <dd>
-      <span class:list={['mono', 'case-meta__status', `is-${status}`]}>{statusEn}</span>
-      <span class="text-muted">· {statusCn}</span>
+    <dd data-case-progress data-case-slug={slug} data-site-status={status}>
+      <span
+        class:list={['mono', 'case-meta__status', `is-${status}`]}
+        data-case-progress-en
+      >{statusEn}</span>
+      <span class="text-muted" data-case-progress-cn>· {statusCn}</span>
     </dd>
   </div>
   <div class="case-meta__row">
@@ -85,6 +89,12 @@ const typeEn = types.join(' / ');
   .case-meta__status.is-solved {
     color: var(--color-gold);
   }
+  .case-meta__status.is-reading {
+    color: #e8a84c;
+  }
+  .case-meta__status.is-user-solved {
+    color: #6abf8a;
+  }
   @media (max-width: 460px) {
     .case-meta__row {
       grid-template-columns: 1fr;
@@ -92,3 +102,52 @@ const typeEn = types.join(' / ');
     }
   }
 </style>
+
+<script>
+  function updateCaseProgressBadge(root: HTMLElement) {
+    const slug = root.dataset.caseSlug;
+    const en = root.querySelector<HTMLElement>('[data-case-progress-en]');
+    const cn = root.querySelector<HTMLElement>('[data-case-progress-cn]');
+    if (!slug || !en || !cn) return;
+
+    const siteSolved = root.dataset.siteStatus === 'solved';
+    let progress: string | null = null;
+    try {
+      progress = localStorage.getItem(`inferred:progress:/cases/${slug}`);
+    } catch (_) {}
+
+    if (progress === 'solved') {
+      en.textContent = 'CLOSED';
+      en.className = 'mono case-meta__status is-user-solved';
+      cn.textContent = '· 已结案';
+    } else if (progress === 'reading') {
+      en.textContent = 'ACTIVE';
+      en.className = 'mono case-meta__status is-reading';
+      cn.textContent = '· 推理中';
+    } else if (siteSolved) {
+      en.textContent = 'SOLVED';
+      en.className = 'mono case-meta__status is-solved';
+      cn.textContent = '· 已解';
+    } else {
+      en.textContent = 'UNSOLVED';
+      en.className = 'mono case-meta__status is-unsolved';
+      cn.textContent = '· 未解';
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-case-progress]').forEach(updateCaseProgressBadge);
+  window.addEventListener('inferred:case-solved', () => {
+    document.querySelectorAll<HTMLElement>('[data-case-progress]').forEach(updateCaseProgressBadge);
+    document.querySelectorAll<HTMLElement>('[data-progress-badge]').forEach((badge) => {
+      const card = badge.closest<HTMLElement>('[data-case-slug]');
+      if (!card?.dataset.caseSlug) return;
+      try {
+        const progress = localStorage.getItem(`inferred:progress:/cases/${card.dataset.caseSlug}`);
+        if (progress === 'solved') {
+          badge.textContent = '已结案';
+          badge.className = 'tag tag--status-user-solved';
+        }
+      } catch (_) {}
+    });
+  });
+</script>

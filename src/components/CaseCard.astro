@@ -18,7 +18,7 @@ const href = `/cases/${slug}`;
 const statusCn = status === 'solved' ? '已解' : '未解';
 ---
 
-<article class="case-card" data-case-slug={slug}>
+<article class="case-card" data-case-slug={slug} data-site-status={status}>
   <a class="case-card__link" href={href} aria-label={`打开案卷 ${title}`}>
     <header class="case-card__head">
       <span class="case-card__id mono">Case #{caseId}</span>
@@ -175,19 +175,30 @@ const statusCn = status === 'solved' ? '已解' : '未解';
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-case-slug]').forEach((card) => {
-    const slug = card.dataset.caseSlug;
-    const badge = card.querySelector<HTMLElement>('[data-progress-badge]');
-    if (!badge || !slug) return;
-    try {
-      const progress = localStorage.getItem(`inferred:progress:/cases/${slug}`);
-      if (progress === 'solved') {
-        badge.textContent = '已结案';
-        badge.className = 'tag tag--status-user-solved';
-      } else if (progress === 'reading') {
-        badge.textContent = '推理中';
-        badge.className = 'tag tag--status-reading';
-      }
-    } catch (_) {}
-  });
+  function updateProgressBadges() {
+    document.querySelectorAll<HTMLElement>('[data-case-slug]').forEach((card) => {
+      const slug = card.dataset.caseSlug;
+      const badge = card.querySelector<HTMLElement>('[data-progress-badge]');
+      if (!badge || !slug) return;
+      const siteStatus = card.dataset.siteStatus === 'solved' ? 'solved' : 'unsolved';
+      try {
+        const progress = localStorage.getItem(`inferred:progress:/cases/${slug}`);
+        if (progress === 'solved') {
+          badge.textContent = '已结案';
+          badge.className = 'tag tag--status-user-solved';
+        } else if (progress === 'reading') {
+          badge.textContent = '推理中';
+          badge.className = 'tag tag--status-reading';
+        } else if (siteStatus === 'solved') {
+          badge.textContent = '已解';
+          badge.className = 'tag tag--status-solved';
+        } else {
+          badge.textContent = '未解';
+          badge.className = 'tag tag--status-unsolved';
+        }
+      } catch (_) {}
+    });
+  }
+  updateProgressBadges();
+  window.addEventListener('inferred:case-solved', updateProgressBadges);
 </script>

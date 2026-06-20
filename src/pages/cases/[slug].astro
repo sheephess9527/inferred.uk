@@ -66,8 +66,8 @@ const jsonLd = {
     <ReadingProgress target="#case-body" />
 
     <header class="case__header">
-      <p class="eyebrow case__eyebrow">
-        Case File #{data.caseId} · {data.status === 'solved' ? 'Solved' : 'Unsolved'}
+      <p class="eyebrow case__eyebrow" data-case-eyebrow data-case-slug={entry.id} data-site-status={data.status}>
+        Case File #{data.caseId} · <span data-case-eyebrow-text>{data.status === 'solved' ? 'Solved' : 'Unsolved'}</span>
       </p>
       <h1 class="case__title">{data.title}</h1>
       <p class="case__summary">{data.summary}</p>
@@ -94,6 +94,7 @@ const jsonLd = {
 
       <CaseMeta
         caseId={data.caseId}
+        slug={entry.id}
         status={data.status}
         difficulty={data.difficulty}
         types={data.types}
@@ -140,13 +141,26 @@ const jsonLd = {
   </article>
 </BaseLayout>
 
-<script is:inline define:vars={{ caseSlug: entry.id }}>
+<script is:inline define:vars={{ caseSlug: entry.id, siteStatus: data.status }}>
+  function syncEyebrow() {
+    var eyebrow = document.querySelector('[data-case-eyebrow]');
+    var text = eyebrow && eyebrow.querySelector('[data-case-eyebrow-text]');
+    if (!text) return;
+    try {
+      var p = localStorage.getItem('inferred:progress:/cases/' + caseSlug);
+      if (p === 'solved') text.textContent = 'Closed · 已结案';
+      else if (p === 'reading') text.textContent = 'Active · 推理中';
+      else text.textContent = siteStatus === 'solved' ? 'Solved' : 'Unsolved';
+    } catch (_) {}
+  }
   try {
-    const key = `inferred:progress:/cases/${caseSlug}`;
+    var key = 'inferred:progress:/cases/' + caseSlug;
     if (localStorage.getItem(key) !== 'solved') {
       localStorage.setItem(key, 'reading');
     }
   } catch (_) {}
+  syncEyebrow();
+  window.addEventListener('inferred:case-solved', syncEyebrow);
 </script>
 
 <style>
