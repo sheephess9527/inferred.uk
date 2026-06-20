@@ -1,0 +1,140 @@
+---
+title: "楼梯间的不对称负重"
+caseId: "084"
+status: "unsolved"
+difficulty: 5
+types:
+  - "脚印推理"
+  - "爱伦·坡式"
+scene:
+  - "旧公寓楼梯"
+  - "深夜"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "楼梯只留一串脚印，却像两个人在抬。坡道上的深浅，揭穿不可能的力量。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "住户岑寂死于五楼平台，勒痕。楼梯尘迹仅 **一串** 上行印，尺码四十一。", detail: "" },
+  { label: "同串印在上行中段呈 **深浅交替**：左阶深、右阶浅，周期约与成人 **双人抬物** 同步。", detail: "" },
+  { label: "岑体重 78kg；若单人背尸上行，踵压应连续加深，非左右交替。", detail: "" },
+  { label: "合租人梁潜、邵随皆四十一码鞋，体重 62kg 与 71kg；邵有搬运工背景。", detail: "" },
+  { label: "邵随右手掌茧与楼梯扶手擦痕高度一致；梁潜当日称「整夜在屋打游戏」。", detail: "游戏登录 23:10–00:40 间断。" },
+  { label: "岑掌握二人合伙虚报装修款证据，拟次日报案。", detail: "" },
+  { label: "五楼平台有勒痕绳纤维，与邵工具袋麻绳同批。", detail: "" },
+];
+
+## 一、案发
+
+深夜，旧公寓楼梯灯坏了一半。
+
+岑寂死在五楼平台，颈勒。楼梯尘迹只有 **一串** 四十一码上行印——像一个人来，像一个人走。
+
+探员蹲看中段：左阶深，右阶浅，再左深右浅，像 **两个人抬着东西**，却只剩一串鞋。
+
+「爱伦·坡会问，」他轻声说，「 **谁有不可能的力量？** 还是 **谁有同伙？**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="岑寂"
+  role="住户"
+  age="39"
+  relation="死者"
+  alibi="——"
+>
+  掌握梁邵虚报证据。
+</PersonCard>
+
+<PersonCard
+  name="梁潜"
+  role="合租人"
+  age="33"
+  relation="室友"
+  alibi="称整夜打游戏"
+>
+  登录间断；四十一码。
+</PersonCard>
+
+<PersonCard
+  name="邵随"
+  role="合租人"
+  age="35"
+  relation="室友"
+  alibi="称早睡未出门"
+>
+  搬运背景；麻绳与掌茧。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="梁潜" time="问询时">
+  “我打游戏，没出屋。楼梯印与我何干？四十一码楼里不止我。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="084" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "一串印为何呈左右深浅交替？",
+    "单人背 78kg 上行，踵压应如何分布？",
+    "两双四十一码、搬运背景——如何共踩一串？",
+    "游戏登录间断，能否覆盖楼梯时间窗？",
+    "坡道上的不对称，是不是第二个人在？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="084" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+**梁潜、邵随** 合谋：邵勒杀后，二人 **共踩同一串四十一码鞋** 抬尸上行——左深右浅交替是 **双人负重** 节奏，非单人背尸。爱伦·坡式「不可能力量」解答：不是超人，是 **两人**。
+
+邵麻绳、掌茧；梁登录间断掩护。虚报证据与报案威胁是动机。一串印不是一人，是 **交替承重的一串**。
+
+### 关键矛盾
+
+数量是一，力学是二。脚印会说话，说的是 **分担**。
+
+### 伏笔解析
+
+1. **深浅交替**——双人抬物。
+2. **单人背尸模型不符**——排除独角。
+3. **双四十一码与搬运背景**——嫌疑人。
+4. **登录间断**——梁参与。
+5. **麻绳纤维**——邵手法。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

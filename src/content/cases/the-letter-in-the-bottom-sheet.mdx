@@ -1,0 +1,138 @@
+---
+title: "压在底稿下的那封信"
+caseId: "071"
+status: "unsolved"
+difficulty: 5
+types:
+  - "隐藏物证"
+  - "心理误导"
+scene:
+  - "报馆编辑部"
+  - "凌晨"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "整间屋子翻遍了，找不到那封勒索信。它一直在桌上——被当天十八版底样压在最底下，人人路过，人人视而不见。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "主笔魏时言死于编辑部，颈侧勒痕。全楼搜寻「黑色勒索信」，抽屉、夹缝、垃圾桶均未见。", detail: "" },
+  { label: "魏桌上厚堆当日各版底样，最底一张社论校样下夹一页匿名打印信，内容与搜查描述一致。", detail: "信未藏，只是被「工作物」合法遮盖。" },
+  { label: "夜班排版员称凌晨多次经过魏桌取底样，「桌上只有纸，没有信」。", detail: "" },
+  { label: "副主编俞澈掌夜班签字权，与魏因头条署名权诉讼；她凌晨 2:10 登记「取社论终样」。", detail: "" },
+  { label: "俞澈当日将社论终样故意延后签字，使底样堆至十八版厚；她熟知魏习惯「不挪底样」。", detail: "" },
+  { label: "匿名信纸张纤维与报馆内部测试纸同批；打印时间戳落在俞澈登记取样前四分钟。", detail: "" },
+  { label: "魏死前最后一通电话指责「你把信藏起来了」——录音里俞澈答「我藏？你眼瞎」。", detail: "" },
+];
+
+## 一、案发
+
+凌晨，报馆编辑部仍亮着白灯。
+
+主笔魏时言倒在转椅边，颈侧勒痕。全楼的人都在找一封黑色勒索信——抽屉翻过，夹缝探过，垃圾桶倒空。
+
+「不见了。」夜班排版员说，「像人间蒸发。」
+
+探员走到魏的桌前。厚堆底样，社论、要闻、副刊，像一座纸做的山。他没掀顶，直接抽 **最底** 一张社论校样。
+
+底下，一页打印信。
+
+「你们找的是密室，」他轻声说，「信在 **最显眼的地方**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="魏时言"
+  role="主笔"
+  age="43"
+  relation="死者"
+  alibi="——"
+>
+  习惯不挪桌上底样；与俞澈有署名权诉讼。
+</PersonCard>
+
+<PersonCard
+  name="俞澈"
+  role="副主编"
+  age="39"
+  relation="同事"
+  alibi="称凌晨在拼版室，未动魏桌"
+>
+  掌夜班签字权；2:10 登记取社论终样。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="排版员" time="案发后">
+  “我路过他桌子好几回，只有底样，哪有什么信？要是有一张黑信，我会看不见？”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="俞澈" time="问询时">
+  “信若真在他桌上，搜不出来是你们笨。我取的是社论样，不是他的命。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="071" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "若信在桌上最底层，夜班多次「取底样」为何无人看见？",
+    "谁能让底样堆厚到十八版、且熟知魏「不挪底样」的习惯？",
+    "匿名信纸张与报馆测试纸同批、打印时间在取样前——信从哪来？",
+    "电话录音「你把信藏起来了」与「压在底稿下」是否同一手法？",
+    "最危险的藏匿，是藏起，还是让人习惯看不见？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="071" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **俞澈**。她将勒索信置于魏桌 **最底层底样下**——不藏密室，而藏 **编辑部的日常秩序** 里。魏从不挪底样，夜班排版员只抽上层取版，人人「看见桌子」，却无人翻到底；信于是成为爱伦·坡所谓 **「藏在明处」** 之物。
+
+她延后社论签字，堆厚纸山；打印时间在她取样前，纸张同报馆测试批。勒杀后全楼搜「消失的信」，反而把视线引向夹缝与垃圾桶，远离桌面。电话争吵里魏说「你把信藏起来」，俞澈答「你眼瞎」——一语双关：不是眼瞎，是 **心盲于习惯**。
+
+### 关键矛盾
+
+搜遍屋子找不到，因为所有人都在找 **「被藏的东西」**，不是 **「被工作合法遮盖的东西」**。
+
+### 伏笔解析
+
+1. **最底校样下夹信**——明处藏匿。
+2. **十八版厚堆与延后签字**——俞澈制造遮盖。
+3. **魏不挪底样**——习惯成盲点。
+4. **同批纸、打印时间**——信源在楼内。
+5. **电话录音双关**——手法自述。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

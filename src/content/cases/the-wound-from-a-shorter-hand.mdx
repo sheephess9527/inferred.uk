@@ -1,0 +1,128 @@
+---
+title: "来自更低处的伤口"
+caseId: "085"
+status: "unsolved"
+difficulty: 5
+types:
+  - "法医推理"
+  - "塞耶斯式"
+scene:
+  - "乡间诊所"
+  - "黄昏"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "证人说凶手高大、从上挥下。伤口角度却说：刀来自更矮的那只手。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "村医贺临死于诊所诊床，颈侧锐伤。目击者称见「高个蒙面人自上而下挥刀」。", detail: "" },
+  { label: "伤口入射角约 **水平略向上**（+8°），非自上而下；刀长 18cm 与角度匹配 **矮者持短刀平刺转割**。", detail: "" },
+  { label: "贺临身高 172cm；护士温见身高 158cm，惯用 **左手** 持器械。", detail: "" },
+  { label: "温见称黄昏在药房，所长可证；所长却近视未戴镜，仅见「门口影子很高」。", detail: "" },
+  { label: "门口影子高因温见脚穿贺备用 **厚底木屐**（诊室外柜），挥刀后脱下放回。", detail: "" },
+  { label: "木屐底有新鲜血点；温见左袖内侧有喷溅，与贺血型一致。", detail: "" },
+  { label: "贺临拟举报温见挪用药品；温见丈夫为高个木匠，当日不在村。", detail: "" },
+];
+
+## 一、案发
+
+黄昏，乡间诊所门帘半卷。
+
+村医贺临倒在诊床，颈侧一刀。目击者说：「高个蒙面人， **从上往下** 劈。」
+
+法医量角：「+8°，略向上。这不是高个 **从上** 的手。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="贺临"
+  role="村医"
+  age="46"
+  relation="死者"
+  alibi="——"
+>
+  拟举报温见挪用药品。
+</PersonCard>
+
+<PersonCard
+  name="温见"
+  role="护士"
+  age="33"
+  relation="同事"
+  alibi="称在药房，所长见高影"
+>
+  身高 158cm，左手；厚底木屐与喷溅点。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="所长" time="问询时">
+  “我近视，就看见门口影子很高，像男人。温见娇小，哪能那样？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="085" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "伤口 +8° 向上，与高个自上而下是否相容？",
+    "158cm 左手短刀，能否形成该角度？",
+    "高影是否可能来自厚底木屐而非真人身高？",
+    "木屐血点、左袖喷溅——谁真正站在门口？",
+    "塞耶斯式：信目击，还是信伤口？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="085" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **温见**。她穿贺备用厚底木屐制造 **高影**，实际以 **矮身左手** 平刺转割——伤口 +8° 向上，塞耶斯式否定「高大从上」叙述。木屐血点、左袖喷溅、左手器械习惯互证。
+
+所长近视只见影子；丈夫高个木匠成红鲱鱼。挪用举报是动机。目击错的是 **高度**，不是 **有没有凶手**。
+
+### 关键矛盾
+
+影子可以穿木屐，伤口不能。角度是更矮的那只手写的。
+
+### 伏笔解析
+
+1. **+8° 向上**——否定高个从上。
+2. **温见身高与左手**——匹配。
+3. **厚底木屐**——假高影。
+4. **木屐血、袖上喷溅**——物证。
+5. **挪用举报**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

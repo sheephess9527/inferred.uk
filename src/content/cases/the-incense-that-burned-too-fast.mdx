@@ -1,0 +1,128 @@
+---
+title: "燃得过快的香"
+caseId: "082"
+status: "unsolved"
+difficulty: 5
+types:
+  - "毒杀诡计"
+  - "高罗佩式"
+scene:
+  - "道观客堂"
+  - "夜静"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "香炉里燃的是敬神香，却在一炷香时间内要了命。毒不在茶，在烟——狄仁杰会先闻那一缕。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "住持清让死于客堂蒲团，窒息表象。案旁香炉余灰，室内无打斗。", detail: "" },
+  { label: "香灰长度显示燃烧 **不足半炷**；同批敬神香常态应燃 **一炷约四十分钟**。", detail: "" },
+  { label: "香芯被掏空填入曼陀罗粉，外裹原香泥；燃速加快且释烟致幻窒息。", detail: "" },
+  { label: "香材采购单由知客道士 **闻止** 签署；清让近日要撤闻止外购权。", detail: "" },
+  { label: "闻止指缝有香泥与曼陀罗茎纤维；客堂窗缝灰样与其袖袋取样一致。", detail: "" },
+  { label: "茶盏无毒；众人只查饮食，忽略 **烟路**。", detail: "" },
+  { label: "清让窒息前抓落香座，座底刻「闻」字旧划——非新刻，为习惯刻标记。", detail: "闻止惯在自购香座底刻姓。" },
+];
+
+## 一、案发
+
+夜静，道观客堂烟缕细直。
+
+住持清让倒在蒲团，窒息。茶盏在侧，验过无毒。香炉余灰短，像 **半炷不到** 就熄了命。
+
+探员捻灰：「敬神香该燃四十分钟。这炷 **跑得太快**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="清让"
+  role="住持"
+  age="59"
+  relation="死者"
+  alibi="——"
+>
+  拟撤闻止外购权。
+</PersonCard>
+
+<PersonCard
+  name="闻止"
+  role="知客道士"
+  age="37"
+  relation="道士"
+  alibi="称在经堂，未进客堂"
+>
+  签署香材采购；香座底刻「闻」。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="闻止" time="问询时">
+  “茶无毒，与我何干？香是敬神的，谁敢动？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="082" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "半炷灰 vs 四十分钟常态——香被动过手脚吗？",
+    "茶无毒，烟路是否被忽略？",
+    "香芯曼陀罗、燃速加快——毒从哪进入？",
+    "采购权与香座底「闻」——谁碰过这炷香？",
+    "高罗佩式：先查盏，还是先查炉？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="082" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **闻止**。他掏空香芯填曼陀罗粉，燃速加快释烟致幻窒息——高罗佩式 **毒在烟不在茶**。半炷灰、袖袋灰样、指缝纤维互证；香座底「闻」为其习惯标记。
+
+撤外购权是动机。众人查饮食，漏 **烟路**，正是公平本格陷阱与解答。
+
+### 关键矛盾
+
+茶清，香浊。死者死在 **敬神的那一缕**。
+
+### 伏笔解析
+
+1. **半炷灰**——燃速异常。
+2. **曼陀罗香芯**——机制。
+3. **茶无毒**——误导。
+4. **闻止采购与刻字**——人与物。
+5. **撤权争执**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,132 @@
+---
+title: "玻璃门后的弯弹"
+caseId: "074"
+status: "unsolved"
+difficulty: 5
+types:
+  - "弹道诡计"
+  - "不在场证明"
+scene:
+  - "江轮甲板"
+  - "月夜"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "枪响时他在下层舱厅，有数十人作证。可子弹拐过玻璃门——尼罗河上的角度，在江轮上重演。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "收藏家裴溯死于上层甲板休息舱门口，额部枪伤。江轮夜航，下层舱厅当时举办赏月酒会。", detail: "" },
+  { label: "弹道鉴定：子弹入射角自 **右舷斜上方** 折入；休息舱门为钢化玻璃，门旁有新鲜弹擦痕与玻璃粉末。", detail: "" },
+  { label: "下层舱厅右舷紧急出口外窄廊可直视上层休息舱门玻璃；酒会时该出口因装饰帘半掩。", detail: "" },
+  { label: "宾客俞岚称全程在下层主持酒会，二十余人可证；上层枪响时她在祝酒词第三句。", detail: "" },
+  { label: "祝酒词录音背景有 **两响**：先金属擦玻璃锐声，后枪声——间隔约零点四秒。", detail: "" },
+  { label: "俞岚与裴溯因拍卖佣金决裂；她熟悉轮上消防演练路线，曾协助布置装饰帘。", detail: "" },
+  { label: "下层廊道栏杆内侧发现一枚覆绒袖扣，绒色与俞岚当晚礼服一致；袖扣背面有火药残留。", detail: "" },
+];
+
+## 一、案发
+
+月夜，江轮切开江面，上层像一座浮动的亭。
+
+收藏家裴溯倒在休息舱门口，额部一枪。下层舱厅里，酒会正到高潮——俞岚在祝酒，二十多人抬头听她。
+
+「她在下层，」有人低声说，「上层开枪，与她何干？」
+
+探员蹲看玻璃门。擦痕新，粉末亮；弹道却自右舷斜上方 **折入**，像子弹在门前 **拐了弯**。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="裴溯"
+  role="收藏家"
+  age="49"
+  relation="死者"
+  alibi="——"
+>
+  与俞岚有佣金决裂。
+</PersonCard>
+
+<PersonCard
+  name="俞岚"
+  role="拍卖行代表"
+  age="41"
+  relation="酒会主持"
+  alibi="称下层祝酒全程有数十人见证"
+>
+  熟悉消防路线；礼服袖扣与廊道发现一致。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="俞岚" time="问询时">
+  “我在下层念祝酒词，录音为证。上层开枪，除非子弹会拐弯，否则轮不到我。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="074" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "弹道右舷斜上方折入、玻璃擦痕——子弹是否经门玻璃改向？",
+    "下层右舷窄廊直视上层门玻璃——谁熟悉这条「看不见的射击廊」？",
+    "祝酒录音「先擦玻璃、后枪响」——两声与弹道如何对应？",
+    "数十人见证下层祝酒，能否排除下层廊道 **短暂** 探头射击？",
+    "袖扣火药残留与佣金决裂，把枪口递回谁？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="074" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **俞岚**。她在下层祝酒 **间隙** 经右舷窄廊探出，向上一层休息舱 **玻璃门** 射击——子弹 **擦门折入**，形成「上层开枪、下层有众多证人」的尼罗河式角度诡计。
+
+录音先锐后响，是擦玻璃再命中的顺序；弹道与擦痕互证。袖扣火药残留落在下层廊道。她布置装饰帘半掩出口，熟悉演练路线。祝酒词提供 **集体不在场**，却遮不住 **零点几秒** 的廊道。
+
+### 关键矛盾
+
+证人听见她在下层，子弹却从 **她站得到的角度** 折入。人证信声场，弹道信几何。
+
+### 伏笔解析
+
+1. **折入弹道与玻璃擦痕**——反弹路径。
+2. **下层廊道直视上层门**——射击位。
+3. **祝酒录音两响**——时间顺序。
+4. **袖扣火药**——物理回链。
+5. **佣金决裂**——动机。
+
+子弹会拐弯吗？不会。 **玻璃会**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

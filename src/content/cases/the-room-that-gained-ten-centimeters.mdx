@@ -1,0 +1,130 @@
+---
+title: "多出十公分的房间"
+caseId: "077"
+status: "unsolved"
+difficulty: 5
+types:
+  - "建筑诡计"
+  - "本格密室"
+scene:
+  - "租屋公寓"
+  - "夏午"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "租客死在「六叠半」的房里，门从内锁死。可这间房，比平面图悄悄宽了十公分——绫辻行人的尺，藏杀人者。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "租客陆见微死于 302 室，锐器伤。门从内反锁，窗栓完好。", detail: "平面图标注六叠半。" },
+  { label: "实测室内东墙至西墙 2.91 米，竣工图 2.81 米；多 **10 公分**。", detail: "" },
+  { label: "东墙衣柜背面板可整体内推，露出夹缝通道，通向相邻 301 空置储物间。", detail: "301 登记人为房东亲属容栖。" },
+  { label: "容栖掌公寓改建，三个月前以「防潮」为由重做 302 东墙衣柜；陆因涨租与容争执。", detail: "" },
+  { label: "夹缝地面有陆血滴与容鞋印（软底拖鞋纹）；301 侧门把有容指纹。", detail: "" },
+  { label: "302 门内反锁为钮舌锁，可从夹缝侧用细线钩回——线头残留于锁孔。", detail: "" },
+  { label: "其他住户不知夹缝存在；招租广告仍用旧平面图。", detail: "" },
+];
+
+## 一、案发
+
+夏午，租屋公寓 302 静得能听见空调滴水。
+
+租客陆见微死在「六叠半」的房里，门从内反锁。窗栓完好，像标准本格密室。
+
+探员卷尺一拉，皱眉。
+
+「竣工图 2.81 米。」他说，「实测 2.91。 **这间房，宽了十公分。**」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="陆见微"
+  role="租客"
+  age="31"
+  relation="死者"
+  alibi="——"
+>
+  因涨租与容栖争执。
+</PersonCard>
+
+<PersonCard
+  name="容栖"
+  role="房东亲属"
+  age="36"
+  relation="改建负责人"
+  alibi="称夏午在管理处"
+>
+  三个月前重做 302 东墙衣柜。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="容栖" time="问询时">
+  “防潮改建，合规。他死在从里反锁的屋里，我能穿墙？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="077" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "平面图与实测差十公分——多出来的宽度去哪了？",
+    "衣柜背面可内推、夹缝通 301——密室还是双室？",
+    "夹缝血滴与容栖鞋印、301 门把指纹，说明谁走过？",
+    "钮舌锁线钩回——「从内反锁」能否在离开后制造？",
+    "绫辻式解答：凶手在墙里，还是墙外？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="077" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **容栖**。她借防潮改建，将 302 东墙做成 **夹墙衣柜**，偷出十公分通道连 301——绫辻行人式建筑诡计。行凶后经夹缝退入 301，细线钩回钮舌锁，制造从内反锁。
+
+实测与竣工图差、夹缝血滴与拖鞋纹、301 门把指纹互证。涨租争执是动机。住户只知旧平面图，不知房间已被 **悄悄加长**。
+
+### 关键矛盾
+
+门说六叠半，尺说 **六叠半加十公分**。多出来的不是面积，是 **凶手的路**。
+
+### 伏笔解析
+
+1. **实测多十公分**——建筑异常。
+2. **衣柜夹缝通 301**——通道。
+3. **夹缝血与鞋印**——动线。
+4. **线钩钮舌锁**——假密室。
+5. **改建与涨租**——人与利。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

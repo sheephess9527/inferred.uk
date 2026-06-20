@@ -1,0 +1,132 @@
+---
+title: "骑不上坡的自行车"
+caseId: "081"
+status: "unsolved"
+difficulty: 5
+types:
+  - "物理 alibi"
+  - "克罗夫特式"
+scene:
+  - "滨海公路"
+  - "晨雾"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "他说骑车二十分钟就能到山顶旅馆。可那辆单车，在晨雾里根本骑不上那段坡。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "旅馆主人盛棠死于山顶露台，坠崖表象。崖边泥印有一双自行车胎纹。", detail: "" },
+  { label: "嫌疑人路岑称 6:10 从山脚驿站骑车出发，6:30 抵达山顶发现尸体；驿站打卡支持 6:10。", detail: "" },
+  { label: "山顶至山脚连续上坡 4.2 公里，平均坡度 9%；气象记录晨雾湿度 94%，路面摩擦系数低。", detail: "" },
+  { label: "路岑所租单车为 **单速公路窄胎**；同型号测试：湿坡 9% 上，职业骑手均速不足 12km/h，全程需 **≥22 分钟**。", detail: "" },
+  { label: "路岑与盛棠因旅馆土地租赁决裂；路岑车胎泥仅 **山脚泥色**，山顶露台泥印无对应胎纹深度。", detail: "露台印更浅，似推车而非骑上。" },
+  { label: "驿站至山顶有一条 **货运索道** 早班票，6:18 刷卡为路岑；索道 6:26 到顶。", detail: "" },
+  { label: "路岑背包侧袋有索道票根纤维，与 6:18 票一致。", detail: "" },
+];
+
+## 一、案发
+
+晨雾把滨海公路裹成一条灰绳。
+
+山顶旅馆主人盛棠死在露台，像坠崖。崖边泥印有自行车胎纹。
+
+路岑说：「六点十分驿站出发，骑车二十分钟到顶，六点三十发现他。」
+
+探员看坡度表：4.2 公里，平均九，路面湿。
+
+「这坡，」他轻声说，「这辆窄胎车 **骑不上去那么快**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="盛棠"
+  role="旅馆主人"
+  age="48"
+  relation="死者"
+  alibi="——"
+>
+  与路岑有土地租赁决裂。
+</PersonCard>
+
+<PersonCard
+  name="路岑"
+  role="承租人"
+  age="41"
+  relation="嫌疑人"
+  alibi="称 6:10 骑车 6:30 到顶"
+>
+  6:18 索道刷卡；背包票根纤维。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="路岑" time="问询时">
+  “驿站打卡为证。我骑车上来，发现他死了。自行车还能说谎？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="081" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "湿坡 9%、窄胎单速——二十分钟够吗？",
+    "山脚泥色 vs 露台浅印——车是骑上，还是推上、或根本没骑？",
+    "6:18 索道票与 6:26 到顶，是否更贴合「发现尸体」时间？",
+    "克罗夫特式 alibi：打卡在脚，真身在索？",
+    "胎纹在崖边，能证明骑车到达，还是仅证明车曾出现？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="081" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **路岑**。他 **6:18 乘货运索道** 上顶（6:26 到），行凶后布置自行车胎纹于崖边——克罗夫特式 **物理 alibi 破裂**：湿坡九单速窄胎无法二十分钟登顶，测试需 ≥22 分钟且职业骑手条件。
+
+驿站 6:10 打卡后他未骑完全程，索道票根纤维在包侧。山脚泥色、露台浅印说明车未如其所言骑上。租赁决裂是动机。自行车在案，骑的不是那段坡。
+
+### 关键矛盾
+
+打卡证明你 **在驿站**，不证明你 **在坡上**。
+
+### 伏笔解析
+
+1. **坡度测试 ≥22 分钟**——物理不可能。
+2. **索道 6:18–6:26**——真实上顶路径。
+3. **票根纤维**——物证。
+4. **泥色与浅印**——车未骑上。
+5. **租赁决裂**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

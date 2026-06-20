@@ -1,0 +1,131 @@
+---
+title: "陌生人的围裙结"
+caseId: "076"
+status: "unsolved"
+difficulty: 4
+types:
+  - "日常细节"
+  - "梅格雷式"
+scene:
+  - "小酒馆"
+  - "冬雨"
+readingTime: "9-12 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "后厨只少了一把刀。死者围裙上的结，却是这条街上没人会打的那种。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "酒馆老板杜衡死于后厨，腹刀。围裙仍在身上，腰间打 **双环反结**。", detail: "本街厨师惯用单环右结。" },
+  { label: "杜衡每日亲自系围裙，三十年单环右结；双环反结为 **海事厨房** 旧习。", detail: "" },
+  { label: "帮厨三人皆单环右结；临时帮工表仅 **裴浪** 一名海事帮厨背景，冬雨夜应到未到。", detail: "" },
+  { label: "裴浪与杜衡因酒款赊欠起争，上周酒后扬言「你那结，我看着碍眼」。", detail: "" },
+  { label: "后厨缺一把剔骨刀，刀架空位油迹新；裴浪住处搜出同型号刀，柄缠海事麻绳。", detail: "" },
+  { label: "门口泥印有一双 **海事靴** 纹，与裴浪旧照靴底一致；杜衡靴为酒馆后厨软底。", detail: "" },
+];
+
+## 一、案发
+
+冬雨敲铁皮，小酒馆后厨一股热腥气。
+
+老板杜衡倒在砧板边，腹上一刀。围裙还在，腰间却打了个 **双环反结**——像船上的厨房，不像这条老街。
+
+探员问三个帮厨：「你们怎么系围裙？」
+
+「单环，右边。」三人齐声。
+
+「那死者身上这个结，」他轻声说，「是谁替他系的？」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="杜衡"
+  role="老板"
+  age="52"
+  relation="死者"
+  alibi="——"
+>
+  三十年单环右结；与裴浪有赊欠争执。
+</PersonCard>
+
+<PersonCard
+  name="裴浪"
+  role="临时帮工"
+  age="38"
+  relation="海事帮厨"
+  alibi="称冬雨夜未到店"
+>
+  习惯双环反结；刀与靴纹吻合。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="帮厨甲" time="问询时">
+  “杜老板从不让我们碰他围裙结。他那结，三十年没变过。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="076" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "死者三十年单环右结，现场双环反结说明什么？",
+    "海事厨房旧习在本街帮工中，谁独有？",
+    "「碍眼」的到底是结，还是人？",
+    "缺刀、靴纹、麻绳缠柄——动线指向谁？",
+    "梅格雷会先看围裙，还是先看刀？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="076" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **裴浪**。他入后厨行凶，围裙结却留下 **海事双环反结**——非死者习惯，而是凶手自己系法或替死者系上的陌生手。西默农式细节：整条街厨师单环右结，唯海事背景不同。
+
+缺刀、麻绳柄、门口海事靴纹与裴浪一致；赊欠与「碍眼」是动机。帮工表登记他应到未到，却留下结与印。
+
+### 关键矛盾
+
+后厨少刀是大声；围裙结是 **低声**。人声吵时，梅格雷听的是 **习惯**。
+
+### 伏笔解析
+
+1. **双环反结 vs 单环右结**——手不属于死者。
+2. **海事背景唯一**——裴浪。
+3. **缺刀与麻绳柄**——工具链。
+4. **门口靴纹**——到场。
+5. **赊欠争执**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

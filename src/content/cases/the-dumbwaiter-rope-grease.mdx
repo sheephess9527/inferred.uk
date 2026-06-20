@@ -1,0 +1,130 @@
+---
+title: "食梯绳上的油渍"
+caseId: "073"
+status: "unsolved"
+difficulty: 5
+types:
+  - "密室"
+  - "建筑诡计"
+scene:
+  - "老饭店"
+  - "夜雨"
+readingTime: "11-14 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "房门从内反锁，窗外无迹。凶手却从食梯上来——绳上的油，是卡尔式密室留下的唯一裂缝。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "富商宋伯衡死于五楼套房，喉部勒痕。门链从内扣死，窗栓完好，似密室。", detail: "" },
+  { label: "房内无挣扎大范围痕迹；天花板食梯口盖板微翘，边缘有新鲜指油与绳纤维。", detail: "老饭店仍保留厨房至各层食梯。" },
+  { label: "食梯井绳身有垂直摩擦油痕，高度对应五楼；井底滑轮新上润滑脂，与厨房食梯油缸同源。", detail: "" },
+  { label: "值班厨师长韩鼎掌食梯钥匙，雨夜 22:40 登记「下送冷盘」至五楼；冷盘记录却为 23:10 才下单。", detail: "" },
+  { label: "宋伯衡与韩鼎因饭店股权回购决裂；若宋死，韩可按旧约回购其股份。", detail: "" },
+  { label: "门链从内扣死可用 **短叉片** 滑出再复位，套房餐具缺一只银叉；叉尖有微量绳纤维。", detail: "" },
+  { label: "五楼走廊地毯有从食梯口至房门的短湿痕，与雨夜厨师鞋油底纹一致。", detail: "" },
+];
+
+## 一、案发
+
+夜雨，老饭店五楼静得像沉在水底。
+
+富商宋伯衡死在套房里，喉间勒痕。门链从内扣着，窗户栓死——又是一间 **从里面封死** 的屋子。
+
+探员抬头。天花板上，食梯口盖板微微翘边，像有人从 **上面** 下来过。
+
+「门窗说没人进，」他摸绳，「食梯绳却说 **有人上下过**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="宋伯衡"
+  role="富商"
+  age="58"
+  relation="死者"
+  alibi="——"
+>
+  与韩鼎有股权回购决裂。
+</PersonCard>
+
+<PersonCard
+  name="韩鼎"
+  role="厨师长"
+  age="47"
+  relation="雇员"
+  alibi="称 22:40 食梯送冷盘，未进套房"
+>
+  掌食梯钥匙；登记时间与下单时间矛盾。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="韩鼎" time="问询时">
+  “食梯是老设施，我送个冷盘而已。他门从里扣死，我能变成苍蝇飞进去？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="073" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "门链从内扣死，天花板食梯口却微翘——进出路径可能在哪？",
+    "绳身油痕高度对应五楼、滑轮新脂——食梯最近被谁使用？",
+    "22:40 登记送盘、23:10 才下单——哪一个时间在说谎？",
+    "缺银叉与叉尖绳纤维，如何解释「从内扣死」？",
+    "走廊湿痕与厨师鞋油底纹，把动线钉向谁？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="073" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **韩鼎**。他经 **食梯** 潜入五楼，勒杀后从房内用 **银叉顶开内扣门链** 再复位，制造密室——约翰·狄克森·卡尔式路径：不是穿墙，是走 **建筑里被遗忘的竖道**。
+
+食梯绳油痕、盖板指油、滑轮新脂与厨房油缸同源；走廊湿痕与厨师鞋底一致。登记 22:40「送冷盘」早于 23:10 下单，说明登记是掩护。股权回购决裂是动机。
+
+### 关键矛盾
+
+密室骗门，食梯骗井。绳上的油，是卡尔会喜欢的 **唯一诚实的指纹**。
+
+### 伏笔解析
+
+1. **食梯口微翘、绳油**——竖向通道。
+2. **登记与下单时间**——假勤务。
+3. **银叉顶门链**——从内复位。
+4. **走廊湿痕鞋底**——韩鼎动线。
+5. **股权动机**——利。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

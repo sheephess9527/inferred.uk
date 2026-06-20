@@ -1,0 +1,134 @@
+---
+title: "三瓶墨水的三角"
+caseId: "075"
+status: "unsolved"
+difficulty: 5
+types:
+  - "临终布局"
+  - "奎因式推理"
+scene:
+  - "法官书房"
+  - "深秋夜"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "他没能再写字，却把三只墨水瓶摆成三角。埃勒里·奎因会说：这不是装饰，是最后一道推理题。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "退休法官顾秉衡死于书房，胸口中刀。右手无力，未留字迹；案上三瓶墨水呈 **正三角** 摆放。", detail: "黑、蓝、红各一。" },
+  { label: "三角顶点指向书架第三格；该格仅存一本卷宗，封面姓氏 **桑**。", detail: "" },
+  { label: "三瓶瓶盖开合度不同：黑瓶刚开，蓝瓶半开，红瓶紧闭；顾习惯用 **蓝墨** 批卷。", detail: "" },
+  { label: "红瓶底部有非顾指纹；黑、蓝为顾常用。红瓶购自街角文具店，收据签收名 **桑迟**。", detail: "" },
+  { label: "桑迟为顾昔日书记员，三年前因徇私被顾移送纪检；近日出狱回城。", detail: "" },
+  { label: "桑迟左手有墨渍，与红瓶底部指纹位置吻合；案发前一日曾至顾宅门外徘徊。", detail: "" },
+  { label: "刀柄缠蓝布，与顾书房废布同色——凶手取现场物伪装；但缠法为 **左手内收**，非顾右撇子习惯。", detail: "" },
+];
+
+## 一、案发
+
+深秋夜，法官书房像一口收声的老钟。
+
+顾秉衡倒在案边，胸口中刀。右手垂落，无力再写一字。桌上却摆着三只墨水瓶——黑、蓝、红， **正三角**，尖角指着书架。
+
+老书记员在门外叹：「他一辈子出题给人做，临死还摆一道。」
+
+探员看瓶盖：蓝半开，黑刚开，红紧闭。
+
+「他平日只用蓝，」他说，「三角却指着 **红瓶不该在的那一格**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="顾秉衡"
+  role="退休法官"
+  age="67"
+  relation="死者"
+  alibi="——"
+>
+  右撇子，习惯蓝墨批卷。
+</PersonCard>
+
+<PersonCard
+  name="桑迟"
+  role="前书记员"
+  age="44"
+  relation="旧部"
+  alibi="称案发夜在旅店，未入院"
+>
+  左手墨渍；三年前被顾移送纪检；红瓶指纹与收据。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="桑迟" time="问询时">
+  “我感激他判我，也恨他判我。可我那晚在旅店，没碰他的墨水瓶。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="075" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "无力写字的死者，为何用三瓶墨水而非文字留言？",
+    "三角顶点指第三格「桑」卷宗——是姓名提示还是书架坐标？",
+    "红瓶紧闭却有外人指纹、蓝瓶半开——哪只瓶属于「闯入者」？",
+    "刀柄缠法左手内收，与顾右撇子习惯是否一致？",
+    "奎因式临终布局：三角顶角、颜色、开合，哪一条在指桑迟？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="075" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **桑迟**。顾临死以 **三瓶墨水** 布奎因式三角：顶点指书架第三格 **桑** 卷宗，红瓶紧闭却带桑指纹——红是桑带入的外来色，蓝是顾常用色，黑是干扰；三角让读者先看见几何，再看见 **姓名**。
+
+桑左手墨渍与红瓶底纹、收据签收一致；刀柄缠法左手内收，非顾习惯。顾右手指无力，布局用 **物序** 代文字，公平本格里线索前置。
+
+### 关键矛盾
+
+没有字，却有题。 **颜色与开合** 就是笔划。
+
+### 伏笔解析
+
+1. **三角指第三格桑卷宗**——姓名坐标。
+2. **红瓶外人指纹、蓝为常用**——闯入者色标。
+3. **桑左手墨渍**——物理回链。
+4. **刀柄左手缠法**——行凶手。
+5. **纪检旧怨**——动机。
+
+临终留言不一定是字，也可以是 **摆给读者的一道选择题**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

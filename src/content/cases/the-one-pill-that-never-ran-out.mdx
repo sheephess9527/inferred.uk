@@ -1,0 +1,130 @@
+---
+title: "永远用不完的那一粒"
+caseId: "080"
+status: "unsolved"
+difficulty: 5
+types:
+  - "毒杀诡计"
+  - "有栖川有栖式"
+scene:
+  - "疗养公寓"
+  - "早春"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "处方说每日两粒，瓶却永远剩半。药师少了一粒记录，多了一条命。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "退休教授言昭死于公寓，心衰表象。日常服用蓝色控心粒，每日两粒。", detail: "" },
+  { label: "药瓶余量显示已服二十日，却 **始终剩约半瓶**；按两粒/日应见底。", detail: "" },
+  { label: "公寓药房台账：言昭处方 **每十日领一瓶**，领药签字交替出现言与药师游初。", detail: "" },
+  { label: "游初近月将蓝色粒 **换为同色缓释安慰剂** 给言服用，真药累积在游柜中。", detail: "真药过量致心律紊乱。" },
+  { label: "言昭发现账本异常，拟向管委会举报游初虚领；案发前夜与游争执。", detail: "" },
+  { label: "游初指节有蓝色粉末，与真药包衣一致；言血检呈 **未处方剂量** 药物峰值。", detail: "" },
+  { label: "安慰剂瓶底批号与台账领药批号 **每周错位一日**——游提前一日入账。", detail: "" },
+];
+
+## 一、案发
+
+早春，疗养公寓安静得像沉在水底。
+
+退休教授言昭在卧室离世，心衰表象。床头蓝色控心粒，每日两粒，雷打不动。
+
+探员对药瓶：二十日过去，仍剩半瓶。
+
+「两粒一天，」他说，「这瓶 **早该空了**。除非有人 **让你以为在吃，却没真吃足**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="言昭"
+  role="退休教授"
+  age="68"
+  relation="死者"
+  alibi="——"
+>
+  拟举报游初虚领；每日两粒控心粒。
+</PersonCard>
+
+<PersonCard
+  name="游初"
+  role="公寓药师"
+  age="40"
+  relation="药师"
+  alibi="称按方发药，无异常"
+>
+  台账签字交替；柜中藏真药。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="游初" time="问询时">
+  “我按处方发药。他死在心衰，与药何干？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="080" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "每日两粒二十日，瓶为何仍半满？",
+    "台账签字交替、批号错位一日——药瓶与账本谁在说谎？",
+    "同色安慰剂替换后，真药去哪？",
+    "血检未处方剂量峰值，与换药时间如何对应？",
+    "有栖川式慢毒：杀人的是缺药，还是多药？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="080" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **游初**。她以同色安慰剂替换言昭日常控心粒，真药累积后 **在某日过量投入** 造成心律紊乱死亡——瓶永远半满是 **虚领与替换** 的账目裂缝：病人以为在吃，台账以为在发，真药在游柜中等待致命剂量。
+
+批号错位、签字交替、蓝色指节粉末、血检峰值互证。言拟举报虚领，是动机。毒杀不在一日，在 **一粒一粒的谎言**。
+
+### 关键矛盾
+
+药瓶半满不是奇迹，是 **两本账**。
+
+### 伏笔解析
+
+1. **半满瓶 vs 两粒/日**——数量矛盾。
+2. **安慰剂替换**——机制。
+3. **批号错位、签字交替**——虚领。
+4. **血检峰值**——致命剂量。
+5. **举报争执**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

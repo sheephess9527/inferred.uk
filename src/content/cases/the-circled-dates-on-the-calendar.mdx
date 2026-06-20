@@ -1,0 +1,130 @@
+---
+title: "日历上被圈的日子"
+caseId: "079"
+status: "unsolved"
+difficulty: 5
+types:
+  - "模式推理"
+  - "叙述性诡计"
+scene:
+  - "山村小学"
+  - "暮秋"
+readingTime: "10-13 分钟"
+clueCount: 7
+publishedAt: "2026-06-20"
+summary: "墙上日历圈了七个日子，像童谣倒数。森村诚一式的恐惧不在圈，在「为何是这七天」。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "校长唐砚死于办公室，勒痕。墙历本月有 **七处红圈**，圈在每周三。", detail: "" },
+  { label: "七处红圈日期对应过去七周周三；唐每周三傍晚独留校对账本。", detail: "" },
+  { label: "代课教师沈闻歌周三必返城取药，校车时刻表与红圈日完全重合。", detail: "" },
+  { label: "沈闻歌右腕旧伤，勒绳打法为 **海事结**；唐三年前否决其转正，沈离村又回。", detail: "" },
+  { label: "办公室窗台有沈常用药瓶标签纤维；勒痕绳为校车备用安全绳同材质。", detail: "" },
+  { label: "红圈用笔为沈教室讲台专用红笔；笔迹压力与沈教案批注一致。", detail: "" },
+  { label: "村民以为红圈是「倒数杀人」恐吓，实为凶手标记 **自己方便到场的日子**。", detail: "" },
+];
+
+## 一、案发
+
+暮秋，山村小学墙历还挂着本月。
+
+校长唐砚死在办公室，颈勒。墙上七处红圈，像童谣里的倒数——人人害怕「下一个是哪日」。
+
+探员看圈：全在周三。
+
+「不是随机恐吓，」他说，「是 **行程表**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="唐砚"
+  role="校长"
+  age="54"
+  relation="死者"
+  alibi="——"
+>
+  每周三傍晚独留；三年前否决沈转正。
+</PersonCard>
+
+<PersonCard
+  name="沈闻歌"
+  role="代课教师"
+  age="32"
+  relation="教师"
+  alibi="称案发日取药未返校"
+>
+  周三返城取药；红笔、绳、纤维指向。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈闻歌" time="问询时">
+  “红圈是恐吓吧？我周三取药，不在学校，与我何干？”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="079" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "七圈皆周三——是倒数恐吓，还是规律行程？",
+    "唐周三独留、沈周三取药，时间窗如何重叠？",
+    "红笔笔迹与沈批注——谁画了圈？",
+    "校车绳与海事结——勒痕与谁的手艺相近？",
+    "森村式恐怖：圈的是「杀谁的日子」，还是「我能到场的日子」？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+<DetectiveNotes caseId="079" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **沈闻歌**。红圈非童谣式倒数，而是标记 **自己每周三取药途经、可杀唐独留** 的日子——模式推理揭穿叙述恐吓。勒绳为校车安全绳，结法海事结；红笔、药瓶纤维、笔迹与沈一致。
+
+否决转正旧怨是动机。村民误读为「倒数杀人」，正是叙述性诡计：**恐惧在误读**。
+
+### 关键矛盾
+
+圈看起来在数「还剩几天」，其实在数 **凶手方便的日子**。
+
+### 伏笔解析
+
+1. **七圈皆周三**——行程规律。
+2. **唐独留与沈取药**——时间重叠。
+3. **红笔笔迹**——画圈者。
+4. **校车绳、海事结**——手法。
+5. **转正旧怨**——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
