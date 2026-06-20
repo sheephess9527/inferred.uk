@@ -40,6 +40,7 @@ const weiboHref =
         生成分享海报
       </button>
     )}
+    <button type="button" class="share__btn share__btn--poster" data-share-poster>生成分享海报</button>
     <button type="button" class="share__btn" data-share-wechat>微信/朋友圈</button>
     {poster && (
       <button type="button" class="share__btn" data-share-xhs>去小红书</button>
@@ -376,7 +377,7 @@ const weiboHref =
         if (ok) return;
       }
       await copyLink();
-      showToast('链接已复制，可在微信中粘贴；发朋友圈建议用「生成分享海报」');
+      showToast('链接已复制。发朋友圈推荐点击「生成分享海报」');
     });
 
     /* ---- 海报弹窗 ---- */
