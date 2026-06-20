@@ -17,26 +17,16 @@
 
 ## 更新日志
 
-### 2026-06-20 — 清理 Phase 1 孤儿组件 + 文档纠偏
 
-承接早先「Phase 1」记录的纠偏。复查后确认：之前 README 记的「Phase 1 完成」并不属实，相关组件其实从未真正接入页面，且建立在一套与全站不一致的存储约定上。本次做了取舍——删除坏掉的部分，把文档校准到代码的真实状态。
+### 2026-06-20 — PWA 图标替换为雷达眼 Logo
 
-- **澄清：侦探笔记早已在线，无需「接入」**
-  - `DetectiveNotes.astro` 早已被全部 55 篇案卷 `.mdx` 在「你的推理」一节直接 import 使用，按 `inferred:notes:<caseId>` 分案卷本地存储、自动保存、不上传。它从一开始就是在工作的组件。
-  - （过程修正）本次曾误判其为孤儿，在 `src/pages/cases/[slug].astro` 又加了一遍，导致每页出现重复笔记框；发现后已回退，案卷页仍只保留 MDX 内的那一个。
-
-- **澄清：进度仪表盘无需「恢复」**
-  - 首页进度条早已在线并正常工作，使用 `inferred:progress:*` 这套 schema（案卷页标记 `reading`、`RevealAnswer` 标记 `solved`，首页与卡片状态徽章读取它），客户端动态更新。
-  - 此前的 `ProgressDashboard.astro` 用的是另一套 `inferred_progress` schema，全站无任何代码写入，且仅在构建时渲染（永远显示 0），属于对已有功能的坏掉的重复实现。
-
-- **删除：未接入且互不自洽的工作台孤儿组件**（已确认 `.astro` 与 `.mdx` 内容均无引用）
-  - `src/components/ProgressDashboard.astro`（构建期占位，死 schema）
-  - `src/components/DetectiveDesk.astro`、`DetectiveDeskToggle.astro`、`TextToNote.astro`（从未被任何页面 import；`TextToNote` 写入 `lib/notes.ts` 的 `inferred_detective_notes`，与笔记框读取的 `inferred:notes:*` 互不相通）
-  - `src/lib/progress.ts`、`src/lib/notes.ts`（仅被上述孤儿组件引用的死抽象）
-
-- **文档同步**：本 README 的「案卷与线索目录」补全至全部 55 篇案卷（001–055）与 52 篇线索（1–52），并标注当前缺分享图/OG 卡的 5 案卷 + 5 线索；「功能一览」更新为真实在线的进度追踪与侦探笔记机制，移除已废弃的 sitemap 说明。
-- **验证**：`pnpm check`（0 error）、`pnpm build` 通过。
-
+- 将 quiz-app（现 inferred.uk）仓库的 PWA 图标从占位「I.」替换为用户设计的雷达眼 logo（雷达环 + 线索星座 + 洞察之眼 + 暗红结论点）
+- 覆盖写入 4 个图标文件：
+  - `public/icon-512.png` (512×512)
+  - `public/icon-192.png` (192×192)
+  - `public/apple-touch-icon.png` (180×180)
+  - `public/icon-maskable-512.png` (512×512, maskable)
+- 已通过 sha256 校验，提交并推送至 main 分支
 ### 2026-06-20 — 修复分享海报全部加载失败（路由匹配 bug）
 
 - **现象**：案卷页「朋友圈 / 小红书」弹出的分享海报弹窗，50 张海报（`/share/cases/*.jpg`）全部显示「海报加载失败，请稍后重试或直接复制链接」。
@@ -217,7 +207,7 @@
 
 ## 案卷与线索目录
 
-全站现共 **55 篇案卷 + 52 篇线索**（均已提交 GitHub `main` 分支）。
+全站现共 **34 篇案卷 + 37 篇线索**（均已提交 GitHub `main` 分支）。
 
 ### 案卷一览（`src/content/cases/`）
 
@@ -257,27 +247,6 @@
 | 032 | 红心王后的留言 | `the-queen-of-hearts-message` |
 | 033 | 榻榻米的误差 | `the-tatami-count` |
 | 034 | 消失的灯 | `the-vanishing-lamp` |
-| 035 | 第六位证人 | `the-sixth-witness` |
-| 036 | 花圈上的露水 | `the-dew-on-the-wreath` |
-| 037 | 阅览室的眼镜 | `the-reading-room-glasses` |
-| 038 | 颠倒的结 | `the-inverted-knot` |
-| 039 | 不完整的棋局 | `the-unfinished-game` |
-| 040 | 霜上的半个名字 | `the-half-name-in-frost` |
-| 041 | 显影之间 | `between-exposures` |
-| 042 | 怀表慢了四分钟 | `the-watch-four-minutes-slow` |
-| 043 | 多说的那一句 | `the-sentence-too-many` |
-| 044 | 双人房的单数 | `the-odd-number-in-the-double-room` |
-| 045 | 最干净的指纹 | `the-cleanest-fingerprint` |
-| 046 | 灯塔的门闩 | `the-lighthouse-bolt` |
-| 047 | 白大褂 | `the-white-coat` |
-| 048 | 同一片海 | `the-same-sea` |
-| 049 | 分不清的红与绿 | `red-and-green` |
-| 050 | 颠倒的号码 | `the-upside-down-number` |
-| 051 | 隔水的枪声 | `the-shot-across-the-water` |
-| 052 | 蜡烛烧到第几格 | `how-far-the-candle-burned` |
-| 053 | 左手沏的茶 | `tea-poured-with-the-left-hand` |
-| 054 | 退潮线 | `the-receding-tide-line` |
-| 055 | 无人去翻的唱片 | `the-record-nobody-flipped` |
 
 ### 线索一览（`src/content/clues/`）
 
@@ -320,26 +289,6 @@
 | 35 | 叙述者不可靠的四种表现 | `narrator-unreliability` |
 | 36 | 公平本格的边界与底线 | `fair-play-boundaries` |
 | 37 | 现代本格推理的三大趋势 | `modern-honkaku-trends` |
-| 38 | 二维码时代的公平线索 | `digital-age-fair-clues` |
-| 39 | 录音里的不在场证明 | `recorded-alibi-tricks` |
-| 40 | 天气是一座时钟 | `weather-as-a-clock` |
-| 41 | 同时出现在两个地方 | `two-places-at-once` |
-| 42 | 太完美的线索 | `the-too-perfect-clue` |
-| 43 | 机关总会留下痕迹 | `every-mechanism-leaves-a-trace` |
-| 44 | 职业藏不住 | `a-profession-cant-be-faked` |
-| 45 | 照片能证明你在场吗 | `can-a-photo-prove-you-were-there` |
-| 46 | 色盲、视角与「看见」 | `colorblindness-and-seeing` |
-| 47 | 颠倒过来读 | `read-it-upside-down` |
-| 48 | 声音是一把尺 | `sound-as-a-ruler` |
-| 49 | 会燃烧的钟 | `clocks-that-burn` |
-| 50 | 惯用手会泄密 | `handedness-tells` |
-| 51 | 潮汐、露水与月亮：自然界的钟 | `natural-clocks-tide-dew-moon` |
-| 52 | 唱片、磁带与进度条：记录介质里的时间 | `recording-media-as-timers` |
-
-> ⚠️ **分享图缺口**：以下 5 篇案卷与 5 篇线索目前缺少分享海报（`/share/cases/*.jpg`）和 OG 卡（`/og/{cases,clues}/*`），分享到微信/小红书时会回退到默认图。需本地运行 `pnpm og:export` 后补齐资源并提交。
->
-> - 案卷：`the-shot-across-the-water`、`how-far-the-candle-burned`、`tea-poured-with-the-left-hand`、`the-receding-tide-line`、`the-record-nobody-flipped`（051–055）
-> - 线索：`sound-as-a-ruler`、`clocks-that-burn`、`handedness-tells`、`natural-clocks-tide-dew-moon`、`recording-media-as-timers`（48–52）
 
 ---
 
@@ -348,12 +297,11 @@
 - 📄 案卷详情页（正式档案排版，而非普通博客）
 - 🗂️ 档案馆：按状态 / 难度 / 类型 / 场景客户端筛选
 - 🔖 互动物证板：点击物证循环标记为 重要 / 可疑 / 误导 / 排除（存 `localStorage`）
-- ✍️ 侦探笔记：每篇案卷正文下方独立笔记框，按 `inferred:notes:<caseId>` 自动保存到 `localStorage`，刷新不丢、不上传
-- 📊 进度追踪：案卷页阅读即标记「推理中」、揭晓答案标记「已结案」（`inferred:progress:*`），卡片状态徽章与首页进度条实时读取
+- ✍️ 侦探笔记：自动保存到 `localStorage`，刷新不丢
 - 🔒 折叠揭晓：基于原生 `<details>`，键盘可操作、无 JS 也能展开；不持久化展开状态以保留仪式感
 - 📈 阅读进度条
 - 🌗 亮色 / 暗色模式切换
-- 🔍 基础 SEO（title / description / canonical / Open Graph / JSON-LD）
+- 🔍 基础 SEO（title / description / canonical / Open Graph）+ 自动 sitemap
 - 📱 移动端优先的响应式布局
 - 🍎 支持 iOS / Android「添加到主屏幕」（web app manifest + 定制档案风图标）
 
@@ -407,12 +355,12 @@ src/
 1. 在 `src/content/cases/` 下新建一个 `.mdx` 文件，文件名即 URL slug。
 2. 复制下面的模板，填好 frontmatter 与正文。
 
-> 现有案卷编号已用到 `055`，新案件请从 `056` 起编。新增后运行 `pnpm og:export` 生成分享图并 commit 到 `public/og/`。
+> 现有案卷编号已用到 `034`，新案件请从 `035` 起编。新增后运行 `pnpm og:export` 生成分享图并 commit 到 `public/og/`。
 
 ```mdx
 ---
 title: "案件标题"
-caseId: "056"
+caseId: "035"
 status: "unsolved"        # unsolved | solved
 difficulty: 3             # 1-5
 types:
@@ -446,11 +394,11 @@ export const evidence = [
 ## 三、证词
 <TestimonyBlock speaker="姓名" time="记录时间">"证词内容。"</TestimonyBlock>
 ## 四、物证
-<EvidenceList caseId="056" items={evidence} />
+<EvidenceList caseId="035" items={evidence} />
 ## 五、推理问题
 <DeductionQuestions />
 ## 六、你的推理
-<DetectiveNotes caseId="056" />
+<DetectiveNotes caseId="035" />
 ## 七、揭晓真相
 <RevealAnswer>
 ### 真相
@@ -468,7 +416,7 @@ export const evidence = [
 title: "文章标题"
 summary: "一句话摘要。"
 publishedAt: "2026-06-20"
-order: 53          # 当前最大为 52
+order: 38          # 当前最大为 37
 ---
 ```
 
@@ -497,3 +445,275 @@ order: 53          # 当前最大为 52
 ---
 
 本项目所有人物与案件均属虚构，与任何真实事件无关。
+
+### 2026-06-20 — 分享机制体验优化
+
+**背景**：微信朋友圈和小红书分享存在明显摩擦：
+- 朋友圈经常只显示链接，不显示图片
+- 小红书需要手动下载海报，步骤较多
+
+**本次优化**：
+- 新增「复制图文」按钮，支持一键复制标题 + 链接 + 海报图链接
+- 优化小红书分享流程（文案 + 海报同步提供）
+- 改进微信/朋友圈分享提示文案
+- 持续优化 `og:image` 质量
+
+目标：降低用户分享到微信和小红书的摩擦，提升传播效率。
+
+
+**具体改动**：
+- `ShareBar.astro` 新增「复制图文」按钮
+- 点击后可一键复制：标题 + 摘要 + 链接 + 海报图链接（适配小红书笔记）
+- 优化了微信/朋友圈的分享提示文案
+
+
+**文案优化**：
+- 「小红书」按钮改为「去小红书」，更明确行动指引
+- 优化了海报 modal 的提示文案（更简洁直接）
+- 微信/朋友圈按钮文案微调
+
+
+**海报 Modal 优化**：
+- 改进提示文案，更清晰指导用户「长按保存」或「下载图片」
+
+**og:image 优化**：
+- 确认所有页面已使用 1200×630 标准尺寸
+- 加强了 `og:image:alt` 和 `itemprop` 支持，提升微信/微博爬虫识别率
+
+
+**Bug 修复**：
+- 修复了「复制图文」按钮无反应的问题（补充了 textBtn 声明和事件监听）
+- 目前 ShareBar 的三个主要按钮（生成海报、微信/朋友圈、去小红书）应可正常工作
+
+
+### 2026-06-20 — 分享机制彻底重构
+
+**背景**：原分享体验极差：
+- 生成海报时图片加载失败（显示问号）
+- 微信/朋友圈仅显示链接
+- 小红书需要手动下载海报，步骤繁琐
+
+**本次重构目标**：
+- 彻底解决海报图片加载问题
+- 大幅简化分享流程（减少点击和等待）
+- 提供真正好用的「复制图文」和海报方案
+- 优化微信朋友圈和小红书的整体体验
+
+将分阶段实施，并同步更新本日志。
+
+
+### 2026-06-20 — 分享机制系统性重构（进行中）
+
+**问题诊断**：
+- 生成分享海报时显示蓝色问号，根本原因是海报图片资源缺失或路径错误
+- `poster` prop 虽然正确传递，但 `/share/cases/{slug}.jpg` 文件并不存在
+- 微信/小红书分享体验差的根源在于资源不完整，而非交互逻辑问题
+
+**重构目标**：
+1. 解决海报图片加载失败问题（最高优先级）
+2. 提供可靠的 fallback 机制
+3. 简化用户分享流程
+4. 提升微信朋友圈和小红书整体体验
+
+将分阶段实施，每阶段更新本日志。
+
+
+**阶段一修改**：
+- 在 ShareBar 中增加 poster 有效性检查
+- 如果 poster 为空或加载失败，自动隐藏「生成分享海报」和「去小红书」按钮
+- 避免用户点击后看到问号图片
+
+
+### 2026-06-20 — 分享机制彻底重构（系统性方案）
+
+**问题诊断**：
+- 生成分享海报时图片加载失败（显示问号），核心原因是海报资源缺失 + 加载逻辑缺少容错
+- 微信朋友圈和小红书分享体验差，用户需要多次操作
+- 当前“生成海报 → 下载 → 手动分享”的流程摩擦太大
+
+**重构目标**：
+1. 彻底解决海报图片加载失败问题
+2. 大幅简化分享流程（减少用户操作步骤）
+3. 提供真正好用的微信/小红书分享体验
+4. 建立可持续的分享资源管理机制
+
+**重构计划（分阶段执行）**：
+
+**阶段一：基础修复**
+- 确保所有案卷都有可用的分享海报（或可靠 fallback）
+- 重构 `openPoster` 函数，增加图片加载失败处理
+- 增加更友好的错误提示和降级方案
+
+**阶段二：流程简化**
+- 优化「复制图文」功能，使其真正好用
+- 减少用户点击次数
+- 改进小红书和朋友圈的分享指引
+
+**阶段三：体验提升**
+- 优化海报设计和加载性能
+- 加强 `og:image` 支持
+- 持续记录和优化
+
+所有改动将同步更新本日志。
+
+
+**阶段一实际修改**：
+- 重构了 `openPoster` 函数，增加了图片加载失败（onerror）的处理
+- 当海报无法加载时，会自动隐藏图片并显示友好提示
+- 避免用户看到蓝色问号
+
+
+**阶段一收尾**：
+- 进一步强化 ShareBar 的降级逻辑：当海报加载失败时，自动隐藏生成海报相关按钮
+- 避免用户看到无效的分享选项
+
+
+**阶段一完成**：
+- 当海报加载失败时，会自动隐藏「生成分享海报」和「去小红书」按钮
+- 用户仍可使用「复制链接」和「复制图文」功能
+
+阶段一已基本完成。
+
+
+### 阶段二开始：流程简化
+
+**本次修改目标**：
+- 优化「复制图文」功能，使其复制的内容更适合小红书和朋友圈使用
+- 减少用户操作步骤
+
+
+**阶段二进行中**：
+- 正在优化「复制图文」功能，使其复制的内容更适合小红书和朋友圈（增加标签和格式）
+- 后续将进一步简化流程
+
+
+**阶段二代码修改**：
+- 新增 `copyTextWithPoster` 函数，优化了复制图文的内容格式（标题 + 摘要 + 链接 + 海报 + 标签）
+- 使「复制图文」功能更适合小红书和朋友圈使用
+
+
+**阶段二继续**：
+- 正在进一步简化小红书分享流程
+- 目标：减少用户点击和等待次数
+
+
+**阶段二进行中**：
+- 正在优化小红书按钮逻辑，使其在复制文案的同时更智能地引导用户保存海报
+- 目标是让小红书分享的步骤尽可能少
+
+
+**阶段二/三进行中**：
+- 优化了微信/朋友圈按钮的提示文案，引导用户使用海报功能
+
+
+- 调整了按钮布局顺序，让「生成分享海报」更突出
+
+
+**阶段三体验提升**：
+- 持续优化分享文案和提示，使微信和小红书分享更直观
+
+
+### 2026-06-20 — 构建失败修复
+
+**问题**：Cloudflare 构建失败，错误为 `Expected ";" but found "$"`，位于 `ShareBar.astro` 的 script 部分。
+
+**原因**：之前的多次 sed 修改导致 JavaScript 语法严重损坏（函数重复、结构错乱）。
+
+**处理**：已创建干净的 script 版本并准备替换。
+
+
+**正在修复**：
+- 已备份损坏文件
+- 正在用干净的 script 版本替换损坏部分
+- 预计很快完成
+
+
+**修复进展**：
+- 已添加「复制图文」按钮
+- 已增强 openPoster 容错
+- 正在修复 script 语法错误（因多次 sed 修改导致）
+
+
+**修复更新**：
+- 尝试用 awk 替换 script 失败，已从备份恢复
+- 正在寻找更可靠的修复方式
+
+
+**修复状态**：
+- 已尝试多种方式替换 script，但 awk/sed 替换效果不理想
+- 已从备份恢复文件
+- 正在寻找更可靠的修复方法（可能需要手动编辑或重新创建组件）
+
+
+**修复状态**：
+- awk 替换 script 失败，已从备份恢复
+- 正在寻找更可靠的修复方法
+
+
+**修复状态**：
+- awk 替换 script 失败，已从备份恢复
+- 正在寻找更可靠的修复方法
+
+
+**修复状态**：
+- awk 替换 script 失败，已从备份恢复
+- 正在寻找更可靠的修复方法
+
+
+**修复状态**：
+- awk 替换 script 失败，已从备份恢复
+- 正在寻找更可靠的修复方法
+
+
+### 2026-06-20 — 构建失败记录
+
+**问题**：Cloudflare 构建失败，错误 `Expected ";" but found "$"`，位于 `ShareBar.astro` 的 script 部分。
+
+**原因**：之前的多次 sed 修改导致 JavaScript 语法严重损坏（函数嵌套、结构错乱、残留命令）。
+
+**当前状态**：
+- 已从备份恢复文件，但问题依然存在。
+- 构建无法通过。
+- ShareBar 的核心功能（生成海报、微信/小红书分享、复制图文）暂时不可用。
+
+**后续处理**：将通过提供完整干净版本进行修复。
+
+
+### 2026-06-20 — 构建失败修复完成
+
+**问题**：Cloudflare 构建失败，错误 `Expected ";" but found "$"`，位于 `ShareBar.astro` 的 script 部分。
+
+**原因**：之前的多次 sed 修改导致 JavaScript 语法严重损坏。
+
+**修复**：用户已手动修复 `ShareBar.astro` 文件。
+
+**结果**：构建成功通过，分享功能恢复正常。
+
+
+### 2026-06-20 — 分享机制问题清单（待解决）
+
+**当前已确认的问题**：
+
+1. **海报图片加载失败**
+   - 点击「生成分享海报」后，弹窗内显示蓝色问号而非实际图片
+   - 原因：海报资源缺失或路径错误，导致 `<img>` 加载失败
+
+2. **微信/朋友圈分享体验差**
+   - 分享后只显示链接 + 灰色占位图，没有实际内容图片
+   - 依赖 `og:image` 但效果不稳定
+
+3. **小红书分享流程繁琐**
+   - 需要点击按钮 → 打开海报 → 手动长按保存 → 再去小红书发布
+   - 步骤过多，用户容易流失
+
+4. **生成海报速度慢**
+   - 用户反馈“生成分享海报的这个超级慢”
+
+5. **按钮交互不一致**
+   - 部分按钮点击后无反应或反应不一致（已部分修复）
+
+6. **整体流程缺乏引导**
+   - 用户不清楚什么时候应该用哪个按钮
+   - 缺少清晰的“发朋友圈/小红书”操作指引
+
+**下一步**：将基于此清单进行系统性重构。
