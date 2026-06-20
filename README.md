@@ -45,6 +45,12 @@
 
 ### 2026-06-20 — Footer 设计优化（减少品牌重复）
 
+### 2026-06-20 — About 页面底部重复内容清理
+
+- 移除 `about.astro` 底部重复的品牌标语块（`Inferred.uk · The truth is never stated...`）
+- 保留优雅的 coda 结束语作为内容收尾
+- 彻底消除与 Footer 的视觉重复
+
 - 大幅简化 `Footer.astro`：移除 Logo + 中英文标语块，消除与 Header 的视觉重复
 - Footer 改为极简居中布局：仅保留导航链接 + 版权法律信息
 - 视觉上让 Footer 更轻、更低调，作为页面收尾而非再次强调品牌
