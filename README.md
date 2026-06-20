@@ -17,24 +17,25 @@
 
 ## 更新日志
 
-### 2026-06-20 — 侦探笔记上线 + 清理 Phase 1 未完成的孤儿组件
+### 2026-06-20 — 清理 Phase 1 孤儿组件 + 文档纠偏
 
-承接早先「Phase 1」记录的纠偏。复查后确认：之前 README 记的「Phase 1 完成」并不属实，相关组件其实从未真正接入页面，且建立在一套与全站不一致的存储约定上。本次做了取舍——保留真正可用的部分，删除坏掉的部分。
+承接早先「Phase 1」记录的纠偏。复查后确认：之前 README 记的「Phase 1 完成」并不属实，相关组件其实从未真正接入页面，且建立在一套与全站不一致的存储约定上。本次做了取舍——删除坏掉的部分，把文档校准到代码的真实状态。
 
-- **新增：案卷页「侦探笔记」**
-  - `src/pages/cases/[slug].astro` 接入 `DetectiveNotes.astro`：每篇案卷正文下方多一个自动保存的推理笔记框。
-  - 笔记按 `inferred:notes:<caseId>` 分案卷独立存储，仅存于浏览器本地、不上传，输入 0.5s 后防抖落盘。
+- **澄清：侦探笔记早已在线，无需「接入」**
+  - `DetectiveNotes.astro` 早已被全部 55 篇案卷 `.mdx` 在「你的推理」一节直接 import 使用，按 `inferred:notes:<caseId>` 分案卷本地存储、自动保存、不上传。它从一开始就是在工作的组件。
+  - （过程修正）本次曾误判其为孤儿，在 `src/pages/cases/[slug].astro` 又加了一遍，导致每页出现重复笔记框；发现后已回退，案卷页仍只保留 MDX 内的那一个。
 
 - **澄清：进度仪表盘无需「恢复」**
   - 首页进度条早已在线并正常工作，使用 `inferred:progress:*` 这套 schema（案卷页标记 `reading`、`RevealAnswer` 标记 `solved`，首页与卡片状态徽章读取它），客户端动态更新。
   - 此前的 `ProgressDashboard.astro` 用的是另一套 `inferred_progress` schema，全站无任何代码写入，且仅在构建时渲染（永远显示 0），属于对已有功能的坏掉的重复实现。
 
-- **删除：未接入且互不自洽的工作台孤儿组件**
+- **删除：未接入且互不自洽的工作台孤儿组件**（已确认 `.astro` 与 `.mdx` 内容均无引用）
   - `src/components/ProgressDashboard.astro`（构建期占位，死 schema）
   - `src/components/DetectiveDesk.astro`、`DetectiveDeskToggle.astro`、`TextToNote.astro`（从未被任何页面 import；`TextToNote` 写入 `lib/notes.ts` 的 `inferred_detective_notes`，与笔记框读取的 `inferred:notes:*` 互不相通）
   - `src/lib/progress.ts`、`src/lib/notes.ts`（仅被上述孤儿组件引用的死抽象）
 
-- **验证**：`pnpm check`（0 error）、`pnpm build` 通过；构建产物中确认案卷页已含 `data-notes`/侦探笔记区块。
+- **文档同步**：本 README 的「案卷与线索目录」补全至全部 55 篇案卷（001–055）与 52 篇线索（1–52），并标注当前缺分享图/OG 卡的 5 案卷 + 5 线索；「功能一览」更新为真实在线的进度追踪与侦探笔记机制，移除已废弃的 sitemap 说明。
+- **验证**：`pnpm check`（0 error）、`pnpm build` 通过。
 
 ### 2026-06-20 — 修复分享海报全部加载失败（路由匹配 bug）
 
@@ -256,6 +257,27 @@
 | 032 | 红心王后的留言 | `the-queen-of-hearts-message` |
 | 033 | 榻榻米的误差 | `the-tatami-count` |
 | 034 | 消失的灯 | `the-vanishing-lamp` |
+| 035 | 第六位证人 | `the-sixth-witness` |
+| 036 | 花圈上的露水 | `the-dew-on-the-wreath` |
+| 037 | 阅览室的眼镜 | `the-reading-room-glasses` |
+| 038 | 颠倒的结 | `the-inverted-knot` |
+| 039 | 不完整的棋局 | `the-unfinished-game` |
+| 040 | 霜上的半个名字 | `the-half-name-in-frost` |
+| 041 | 显影之间 | `between-exposures` |
+| 042 | 怀表慢了四分钟 | `the-watch-four-minutes-slow` |
+| 043 | 多说的那一句 | `the-sentence-too-many` |
+| 044 | 双人房的单数 | `the-odd-number-in-the-double-room` |
+| 045 | 最干净的指纹 | `the-cleanest-fingerprint` |
+| 046 | 灯塔的门闩 | `the-lighthouse-bolt` |
+| 047 | 白大褂 | `the-white-coat` |
+| 048 | 同一片海 | `the-same-sea` |
+| 049 | 分不清的红与绿 | `red-and-green` |
+| 050 | 颠倒的号码 | `the-upside-down-number` |
+| 051 | 隔水的枪声 | `the-shot-across-the-water` |
+| 052 | 蜡烛烧到第几格 | `how-far-the-candle-burned` |
+| 053 | 左手沏的茶 | `tea-poured-with-the-left-hand` |
+| 054 | 退潮线 | `the-receding-tide-line` |
+| 055 | 无人去翻的唱片 | `the-record-nobody-flipped` |
 
 ### 线索一览（`src/content/clues/`）
 
@@ -298,6 +320,26 @@
 | 35 | 叙述者不可靠的四种表现 | `narrator-unreliability` |
 | 36 | 公平本格的边界与底线 | `fair-play-boundaries` |
 | 37 | 现代本格推理的三大趋势 | `modern-honkaku-trends` |
+| 38 | 二维码时代的公平线索 | `digital-age-fair-clues` |
+| 39 | 录音里的不在场证明 | `recorded-alibi-tricks` |
+| 40 | 天气是一座时钟 | `weather-as-a-clock` |
+| 41 | 同时出现在两个地方 | `two-places-at-once` |
+| 42 | 太完美的线索 | `the-too-perfect-clue` |
+| 43 | 机关总会留下痕迹 | `every-mechanism-leaves-a-trace` |
+| 44 | 职业藏不住 | `a-profession-cant-be-faked` |
+| 45 | 照片能证明你在场吗 | `can-a-photo-prove-you-were-there` |
+| 46 | 色盲、视角与「看见」 | `colorblindness-and-seeing` |
+| 47 | 颠倒过来读 | `read-it-upside-down` |
+| 48 | 声音是一把尺 | `sound-as-a-ruler` |
+| 49 | 会燃烧的钟 | `clocks-that-burn` |
+| 50 | 惯用手会泄密 | `handedness-tells` |
+| 51 | 潮汐、露水与月亮：自然界的钟 | `natural-clocks-tide-dew-moon` |
+| 52 | 唱片、磁带与进度条：记录介质里的时间 | `recording-media-as-timers` |
+
+> ⚠️ **分享图缺口**：以下 5 篇案卷与 5 篇线索目前缺少分享海报（`/share/cases/*.jpg`）和 OG 卡（`/og/{cases,clues}/*`），分享到微信/小红书时会回退到默认图。需本地运行 `pnpm og:export` 后补齐资源并提交。
+>
+> - 案卷：`the-shot-across-the-water`、`how-far-the-candle-burned`、`tea-poured-with-the-left-hand`、`the-receding-tide-line`、`the-record-nobody-flipped`（051–055）
+> - 线索：`sound-as-a-ruler`、`clocks-that-burn`、`handedness-tells`、`natural-clocks-tide-dew-moon`、`recording-media-as-timers`（48–52）
 
 ---
 
@@ -306,11 +348,12 @@
 - 📄 案卷详情页（正式档案排版，而非普通博客）
 - 🗂️ 档案馆：按状态 / 难度 / 类型 / 场景客户端筛选
 - 🔖 互动物证板：点击物证循环标记为 重要 / 可疑 / 误导 / 排除（存 `localStorage`）
-- ✍️ 侦探笔记：自动保存到 `localStorage`，刷新不丢
+- ✍️ 侦探笔记：每篇案卷正文下方独立笔记框，按 `inferred:notes:<caseId>` 自动保存到 `localStorage`，刷新不丢、不上传
+- 📊 进度追踪：案卷页阅读即标记「推理中」、揭晓答案标记「已结案」（`inferred:progress:*`），卡片状态徽章与首页进度条实时读取
 - 🔒 折叠揭晓：基于原生 `<details>`，键盘可操作、无 JS 也能展开；不持久化展开状态以保留仪式感
 - 📈 阅读进度条
 - 🌗 亮色 / 暗色模式切换
-- 🔍 基础 SEO（title / description / canonical / Open Graph）+ 自动 sitemap
+- 🔍 基础 SEO（title / description / canonical / Open Graph / JSON-LD）
 - 📱 移动端优先的响应式布局
 - 🍎 支持 iOS / Android「添加到主屏幕」（web app manifest + 定制档案风图标）
 
