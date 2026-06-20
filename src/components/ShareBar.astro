@@ -58,8 +58,195 @@ const weiboHref =
 )}
 
 <style>
-  /* 样式部分保持不变，省略以节省空间 */
-  .share { /* ... 你的原有样式 ... */ }
+  .share {
+    margin-top: var(--space-12);
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+  }
+  .share__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .share__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-left: auto;
+  }
+  .share__btn {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    color: var(--color-paper);
+    background: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.45em 1em;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .share__btn:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  .share__btn--poster {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  }
+  .share__btn--poster:hover {
+    background: color-mix(in srgb, var(--color-gold) 22%, transparent);
+    color: var(--color-paper);
+  }
+  [data-share-wechat] {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, var(--color-line));
+  }
+  [data-share-wechat]:hover {
+    border-color: var(--color-accent);
+    color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  [data-share-xhs]:hover {
+    border-color: #ff2e4d;
+    color: #ff2e4d;
+  }
+  .share__toast {
+    flex-basis: 100%;
+    margin: 0;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--color-gold);
+  }
+
+  @media (max-width: 560px) {
+    .share {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .share__actions {
+      margin-left: 0;
+    }
+    .share__btn {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+    .share__toast {
+      text-align: center;
+    }
+  }
+
+  /* 海报弹窗 */
+  .poster[hidden] {
+    display: none;
+  }
+  .poster {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5);
+  }
+  .poster__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(3px);
+  }
+  .poster__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(92vw, 24rem);
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    animation: poster-in 0.25s ease;
+  }
+  .poster__x {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-paper) 8%, transparent);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .poster__x:hover {
+    color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-paper) 16%, transparent);
+  }
+  .poster__hint {
+    margin: 0;
+    padding-right: 2rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--color-gold);
+  }
+  .poster__frame {
+    overflow: auto;
+    border-radius: calc(var(--radius) - 2px);
+    border: 1px solid var(--color-line);
+    background: #0e0e0c;
+  }
+  .poster__img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .poster__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .poster__dl {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.4em 1em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .poster__dl:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+  .poster__note {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  @keyframes poster-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
 </style>
 
 <script>
