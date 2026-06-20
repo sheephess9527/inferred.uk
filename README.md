@@ -44,6 +44,28 @@
   - Cases #041–#045（5 篇新案卷）
 
 ### 2026-06-20 — Footer 设计优化（减少品牌重复）
+### 2026-06-20 — Phase 1 完成：侦探生涯档案 + 神探工作台模式
+
+**新增文件：**
+- `src/lib/progress.ts`：进度管理工具（unread / in-progress / solved）
+- `src/lib/notes.ts`：侦探笔记管理工具
+- `src/components/ProgressDashboard.astro`：首页进度仪表盘
+- `src/components/DetectiveDeskToggle.astro`：工作台模式切换按钮
+- `src/components/DetectiveDesk.astro`：分屏工作台布局容器
+- `src/components/TextToNote.astro`：文本选中发送到笔记功能
+
+**修改文件：**
+- `src/components/CaseCard.astro`：支持动态状态徽章（未解 / 推理中 / 已结案）
+- `src/pages/index.astro`：集成进度仪表盘（后因构建问题临时移除引用）
+
+**功能实现：**
+- localStorage 案卷进度追踪
+- 首页克制进度仪表盘（已结案 X / Y，动态总数）
+- 案卷卡片右上角实时状态徽章
+- 案卷页面「工作台模式」切换（仅 PC/平板）
+- 分屏布局 + 文本选中自动弹出浮动按钮发送到笔记
+
+（构建期间因 Cloudflare 缓存问题临时调整过 index.astro 和 ProgressDashboard.astro，后续会恢复完整功能）
 
 ### 2026-06-20 — 构建修复记录
 
