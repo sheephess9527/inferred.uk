@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**100 篇案卷**（001–100）+ **52 篇线索**
+- **当前规模**：**100 篇案卷**（001–100）+ **72 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -344,7 +344,7 @@ export const evidence = [
 
 ---
 
-## 线索一览（52 篇）
+## 线索一览（72 篇）
 
 | order | 标题 | slug |
 |-------|------|------|
@@ -400,8 +400,28 @@ export const evidence = [
 | 50 | 惯用手会泄密 | `handedness-tells` |
 | 51 | 潮汐、露水与月亮：自然界的钟 | `natural-clocks-tide-dew-moon` |
 | 52 | 唱片、磁带与进度条：记录介质里的时间 | `recording-media-as-timers` |
+| 53 | 监控循环：录像也能撒谎 | `surveillance-loop-alibis` |
+| 54 | 邮戳、挂号与寄达时间 | `postmark-time-traps` |
+| 55 | 声响掩护：用噪音遮住动作 | `noise-as-cover` |
+| 56 | 墨水干涸：笔尖写下的是时刻 | `ink-drying-clocks` |
+| 57 | 冷热与假密室：温度也在推理 | `heat-cold-locked-rooms` |
+| 58 | 钥匙仪式：展示、托管与调包 | `key-ceremony-tricks` |
+| 59 | 泥土、花粉与「你来过这里」 | `soil-pollen-signatures` |
+| 60 | 拍卖槌落下之后：身份错位 | `auction-estate-identity` |
+| 61 | 滑轮、链条与动线诡计 | `pulley-chain-escapes` |
+| 62 | 茶温与面包皮：餐桌上的钟 | `food-temperature-clocks` |
+| 63 | 叙述省略：他没说的那一小时 | `what-narrator-omitted` |
+| 64 | 拼接与频谱：数字录音的缝 | `splice-spectrum-lies` |
+| 65 | 红鲱鱼审计：五问清单 | `herring-audit-checklist` |
+| 66 | 互锁不在场：一张网，不是一根绳 | `woven-alibi-networks` |
+| 67 | 术语陷阱：专家也会露怯 | `expert-jargon-traps` |
+| 68 | 物证板怎么钉：四类标记法 | `pinning-the-evidence-board` |
+| 69 | 揭晓前重读：与作者的契约 | `reread-before-reveal` |
+| 70 | 误导的三层结构 | `layers-of-misdirection` |
+| 71 | 从古典到案卷：灵感转化法 | `from-classics-to-cases` |
+| 72 | 连读案卷：去重自检法 | `archive-reread-method` |
 
-新增线索：`order` 从 **53** 起，在 `src/content/clues/` 新建 `.md`。
+新增线索：`order` 从 **73** 起，在 `src/content/clues/` 新建 `.md`。
 
 ---
 
@@ -485,6 +505,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — 线索扩充（053–072）
+
+- 新增线索 **20 篇**（order 53–72）：监控循环、邮戳时间、声响掩护、墨水干涸、冷热密室、钥匙仪式、地理痕迹、拍卖身份、滑轮动线、食温时钟、叙述省略、数字拼接、红鲱鱼审计、互锁 alibi、术语陷阱、物证板、揭晓前重读、误导层次、古典转化、连读去重
+- 线索总数 **52 → 72**；README 线索一览表同步更新
 
 ### 2026-06-21 — 全站质量修复（001–100 统一标准）
 
