@@ -1,0 +1,157 @@
+---
+title: "未落完的一手"
+caseId: "063"
+status: "unsolved"
+difficulty: 5
+types:
+  - "棋局推理"
+  - "惯用手"
+scene:
+  - "棋院"
+  - "深夜"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "棋盘上还摆着未落完的一手。国手不会那样落子——那只捏棋的手，不属于死者。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "国手裴默死于棋院对局室，后脑遭棋罐重击。棋盘上是未下完的一局，最后一子捏在死者指间。", detail: "" },
+  { label: "最后一子落在「星位右下」的斜角，落点偏右半格；裴默五十年习惯落子 **居中听响**，从未偏格。", detail: "棋院老谱有其落子影像记录。" },
+  { label: "死者指间那枚黑子底部有新鲜指纹，与裴默档案指纹 **不符**；棋罐沿有另一组清晰指纹。", detail: "" },
+  { label: "对手程弈称两人对弈至裴「突然伏案」；程弈右撇子，裴默亦右撇子。", detail: "" },
+  { label: "棋院学徒沈左生惯用左手取子，近期因裴默否决其晋升与程弈走得很近。", detail: "" },
+  { label: "程弈与裴默因棋院分成谈判破裂；若裴死，程弈可按旧约接管对外赛事权。", detail: "" },
+];
+
+## 一、案发
+
+棋院深夜仍亮一盏灯。
+
+国手裴默伏在棋盘边，后脑一片暗红，身侧棋罐倾过。盘上黑白交错，最后一枚黑子还捏在他指间——像对弈骤止在某一手的呼吸里。
+
+程弈坐在对面，脸色灰白：「我们下到中盘，他突然倒下。那子……是他刚要落的。」
+
+探员看棋盘。星位右下，黑子偏了半格。
+
+「裴国手落子，」老棋师在门外摇头，「一辈子只听正中那一声。偏半格的，不是他的手。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="裴默"
+  role="国手"
+  age="58"
+  relation="死者"
+  alibi="——"
+>
+  右撇子；落子终生居中听响；与程弈有分成纠纷。
+</PersonCard>
+
+<PersonCard
+  name="程弈"
+  role="棋手"
+  age="41"
+  relation="对局对手"
+  alibi="称对弈中盘裴突然伏案"
+>
+  右撇子；若裴死可接管对外赛事权。
+</PersonCard>
+
+<PersonCard
+  name="沈左生"
+  role="学徒"
+  age="26"
+  relation="棋院学徒"
+  alibi="称当晚在库房整理棋谱"
+>
+  惯用左手取子；晋升被裴否决；与程弈近期亲近。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="程弈" time="案发后">
+  “我亲眼看他捏起那子要落——下一瞬人就倒了。棋不会说谎，盘上就是他的手。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="老棋师" time="问询时">
+  “裴默落子，指落星位正中，听一声脆响。盘上那枚偏了半格——五十年，他从未如此。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="沈左生" time="问询时">
+  “我在库房，没进对局室。程老师与裴老师的事，我插不上手。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="063" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "裴默落子偏格、与五十年「居中听响」的习惯是否相容？",
+    "指间黑子底部指纹与死者档案不符——那枚子最后由谁捏过？",
+    "棋罐沿另一组指纹，与击颅凶器方向如何对应？",
+    "左撇子取子、落点偏右半格——哪只手的习惯更像盘上那一手？",
+    "程弈的动机与沈左生的手法，能否在同一场对局里拼成完整链条？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="063" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+裴默死于 **程弈与沈左生合谋**：程弈在对局中制造「突然伏案」的目击，沈左生 **自侧方以棋罐击颅**，再将 **未落完的一手** 捏在死者指间——那枚黑子底部指纹属于沈左生，落点偏格符合 **左手取子、向右落子的习惯**，与裴默终生居中落子截然不同。
+
+棋局不是自杀中断，而是 **死后摆局**。程弈提供动机与赛事权：裴死他接管对外权；沈左生动手：晋升被否决、与程弈亲近。老棋师的「偏半格不是裴默」与指纹、棋罐沿痕迹，把最后一手从死者手里夺还给凶手。
+
+程弈说「亲眼见他要落」——他见的是 **已摆好的手**，不是裴默生前的手。
+
+### 关键矛盾
+
+棋局看似诚实，因为 **盘上的手**，可以是别人的手。
+
+公平本格里，习惯比口供硬：五十年居中听响的国手，不会偏半格；偏了，就是有人在 **替他落完这一手**。
+
+### 伏笔解析
+
+1. **落点偏半格**——与裴默习惯相悖。
+2. **指间棋子指纹不符**——最后捏子者非死者。
+3. **棋罐沿另一组指纹**——击颅者与摆局者同源。
+4. **沈左生左手取子**——解释偏格方向。
+5. **程弈动机与目击**——合谋的两半。
+
+围棋讲「手谈」。这一局，谈的是谁的指纹在子上。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

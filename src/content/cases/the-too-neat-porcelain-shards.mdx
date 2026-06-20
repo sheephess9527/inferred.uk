@@ -1,0 +1,153 @@
+---
+title: "太整齐的碎瓷"
+caseId: "065"
+status: "unsolved"
+difficulty: 4
+types:
+  - "物证栽赃"
+  - "心理误导"
+scene:
+  - "拍卖预展"
+  - "午后"
+readingTime: "9-11 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "地上碎了一地官窑瓷，像激烈挣扎所致。可碎片排布，整齐得像有人一片片摆好。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "鉴定师宋知微死于预展厅，胸口中刀。脚边散落官窑瓷片，像搏斗中打碎重器。", detail: "" },
+  { label: "瓷片大都在同一平面、弧向一致，最大三块呈扇形铺开，无滚落二次碎裂痕。", detail: "真摔碎多呈放射乱态，并伴滚落刮痕。" },
+  { label: "碎片背面价签纸缘平整未皱，标签胶水未因踩踏乳化；地面却有新血滴在标签之上。", detail: "血在标签上，标签却在碎片背面——顺序反常。" },
+  { label: "实习生顾遥与宋因报告署名争执；她当日单独负责该件官窑的搬入登记。", detail: "" },
+  { label: "库房出库记录：该瓷于案发前两小时已因运输微裂入「废片箱」，预展台上实为仿件复粘。", detail: "真品并未上架。" },
+  { label: "仿件复粘用胶为新品，断面干净；现场碎片断面与废片箱内同源瓷胎一致。", detail: "" },
+];
+
+## 一、案发
+
+午后，拍卖行的预展厅静得能听见空调嗡鸣。
+
+鉴定师宋知微倒在展台边，胸口一刀。脚边碎了一地官窑瓷，像有人挣扎时撞翻了重器——场面激烈，足以吓人。
+
+探员却蹲下，看了很久。
+
+「真摔的瓷，」他低声说，「会滚、会刮、会乱。这些片子，倒像 **摆出来的**。」
+
+最大三块，弧向一致，扇形铺开，连二次碎裂都没有。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="宋知微"
+  role="鉴定师"
+  age="45"
+  relation="死者"
+  alibi="——"
+>
+  死于预展厅；与顾遥有署名争执。
+</PersonCard>
+
+<PersonCard
+  name="顾遥"
+  role="实习生"
+  age="27"
+  relation="下属"
+  alibi="称案发时在库房整理单据"
+>
+  当日单独负责该官窑搬入登记。
+</PersonCard>
+
+<PersonCard
+  name="库房主管"
+  role="主管"
+  age="50"
+  relation="雇员"
+  alibi="午后在办公室"
+>
+  掌握废片箱与出库记录。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="顾遥" time="问询时">
+  “我听见厅里响动跑过去，宋老师已经倒了，瓷也碎了。肯定是凶手挣扎时打碎的。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="库房主管" time="问询时">
+  “那件官窑早上就裂了，进废片箱。台上那是仿件复粘，给媒体拍照用的。真货从没出库房。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="065" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "真摔碎的瓷片，通常呈放射乱态还是扇形整齐铺开？",
+    "价签纸缘平整、血却在标签上——碎片是先碎后滴血，还是先滴血后摆碎？",
+    "出库记录说真品早入废片箱——现场碎片的瓷胎应与哪一处同源？",
+    "若台上是仿件，地上「激烈碎瓷」想让你相信什么？",
+    "谁负责搬入登记、又与死者有署名争执，能接触废片箱？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="065" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **顾遥**。她刺杀宋知微后，从 **废片箱** 取已裂官窑瓷片 **人工铺陈** 于地，伪造「搏斗撞碎重器」——碎片扇形整齐、无滚落二次痕，价签平整却有血滴其上，说明 **先摆碎、后滴血**（或血滴在已摆好的标签上）。
+
+台上官窑实为 **仿件复粘** 供拍照，真品两小时前已入废片箱；现场瓷胎与废片箱同源，与「预展重器被打碎」的叙事相反。署名争执是动机；单独搬入登记使她熟悉废片与展台布置。
+
+太完美的激烈，往往是 **演出来的激烈**。
+
+### 关键矛盾
+
+人信眼睛：碎瓷 = 挣扎。物证却说： **挣扎不会摆成扇形**。
+
+公平本格里，「太整齐的碎片」与「血在平整价签上」是同一句话的两面——顺序错了，故事就错了。
+
+### 伏笔解析
+
+1. **扇形整齐、无二次碎裂**——人工铺陈，非真摔。
+2. **价签平整、血在标签上**——摆碎与滴血的顺序矛盾。
+3. **真品入废片箱、台上仿件**——打碎的不是重器，是叙事。
+4. **瓷胎与废片箱同源**——碎片来源。
+5. **顾遥登记权与署名争执**——人与动机。
+
+有些案发现场，碎的不是瓷，是 **你对混乱的想象**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

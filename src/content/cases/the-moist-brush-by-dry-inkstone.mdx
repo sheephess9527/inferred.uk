@@ -1,0 +1,151 @@
+---
+title: "干砚旁的润笔"
+caseId: "069"
+status: "unsolved"
+difficulty: 4
+types:
+  - "自杀伪装"
+  - "时间鉴定"
+scene:
+  - "山居书斋"
+  - "秋晨"
+readingTime: "9-12 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "砚台已干，像昨夜就封笔。可笔锋还润着——写遗书的人，离开得比砚台晚。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "隐士谢樵风死于书斋，腕部割伤，案上遗书墨迹尚新。", detail: "遗书称「债尽身休」，看似自尽。" },
+  { label: "端砚内墨池已干，边缘起细裂纹；书斋湿度记录显示墨池完全干涸需约六小时。", detail: "" },
+  { label: "搁在砚旁的毛笔笔锋仍微润，润度与「一小时内蘸墨书写」相符。", detail: "" },
+  { label: "谢樵风有每日亥时（约 22:00）封笔习惯，佣人作证前夜听其说「今日字毕」；案发在卯正（约 6:00）。", detail: "" },
+  { label: "债主裘厉登门逼债数次，案发前夜曾在院外与谢争吵，邻犬吠至子初。", detail: "" },
+  { label: "遗书纸张纤维压痕显示曾 **折叠入袖**；谢惯用镇纸压平，不平折。", detail: "折痕与袖袋宽度与裘厉常穿外衫一致。" },
+];
+
+## 一、案发
+
+秋晨，山居书斋窗纸透白。
+
+隐士谢樵风倒在案边，腕上一道割伤。遗书摊着，墨迹尚新，写着「债尽身休」——像一笔写尽一生。
+
+「自尽。」最先赶到的人叹气。
+
+探员看砚。墨池干了，边沿细裂纹，像昨夜就封了笔。再看笔——搁在砚旁，笔锋却还带着润。
+
+「墨六小时才干透。」他轻声说，「笔一小时内还润。 **封笔的是砚，没封笔的是人**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="谢樵风"
+  role="隐士"
+  age="59"
+  relation="死者"
+  alibi="——"
+>
+  亥时封笔习惯；遗书看似自尽。
+</PersonCard>
+
+<PersonCard
+  name="裘厉"
+  role="债主"
+  age="46"
+  relation="债权人"
+  alibi="称案发夜未入院，在家"
+>
+  多次逼债；前夜与谢院外争吵；外衫袖袋宽度与遗书折痕一致。
+</PersonCard>
+
+<PersonCard
+  name="佣人"
+  role="佣人"
+  age="38"
+  relation="雇员"
+  alibi="前夜听谢说「今日字毕」"
+>
+  熟悉主人封笔习惯。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="裘厉" time="问询时">
+  “我是讨过债，但没进他书房。遗书自己写的，砚干了，说明他昨夜就写完了——自尽，与我何干？”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="佣人" time="问询时">
+  “先生亥时封笔，雷打不动。前夜他说字毕，砚该早就干了。润笔……不该还润。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="069" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "墨池干涸需约六小时——案发卯正时，墨池干透大致对应何时封笔？",
+    "笔锋一小时内仍润——说明何时还有人蘸墨写字？",
+    "若亥时已封笔、墨已干，卯正的「新遗书」与润笔如何并存？",
+    "遗书折痕入袖、与裘厉外衫袖袋一致——谁可能携带并摆放？",
+    "「债尽身休」的叙事，与逼债争执是否过于顺滑？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="069" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+他杀伪装自尽。 **谢樵风亥时已封笔**，砚台墨池在卯正前早已干涸； **润笔** 却证明 **一小时内仍有人蘸墨** 写遗书——写字时间晚于墨池干涸，说明遗书非封笔时所写，而是 **案发前夕或清晨由他人补写**。
+
+遗书折痕曾入袖，与裘厉外衫袖袋一致；谢惯用镇纸压平，不平折。裘厉逼债、前夜院外争吵至子初，动机充分。他让「债尽身休」读起来像自尽，但 **干砚与润笔** 不会同时说谎：砚说昨夜字毕，笔说 **还有人刚写完**。
+
+### 关键矛盾
+
+自杀叙事最爱用「遗书」封口。
+
+可砚台与毛笔是两种时钟：一个说 **六小时前就不写了**，一个说 **一小时内还在写**。两个时钟打架时，信笔，别信标题。
+
+### 伏笔解析
+
+1. **墨池干涸六小时**——封笔时间早。
+2. **笔锋一小时内仍润**——写字时间晚。
+3. **亥时封笔习惯**——死者节奏。
+4. **遗书折痕与裘厉袖袋**——携带与摆放。
+5. **逼债与子初争吵**——动机。
+
+书法讲「笔意」。这一案的笔意，是 **时间**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

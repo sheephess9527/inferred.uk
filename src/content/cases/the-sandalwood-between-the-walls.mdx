@@ -1,0 +1,153 @@
+---
+title: "双墙间的檀香"
+caseId: "064"
+status: "unsolved"
+difficulty: 5
+types:
+  - "隐藏通道"
+  - "密室"
+scene:
+  - "古寺厢房"
+  - "晨雾"
+readingTime: "10-13 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "厢房从内栓死，窗外无迹。可空气里那一缕檀香，只可能从夹墙里渗出来。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "居士唐远尘死于东厢，喉部勒痕。门从内栓死，窗纸完好，外人视之如密室。", detail: "" },
+  { label: "室内有极淡檀香，浓度东侧壁龛处最高；该壁龛供小佛像，背后墙体敲之声闷，似有空腔。", detail: "" },
+  { label: "西厢早课焚香，香灰盘于卯正（约 6:00）换新；东厢案发约 6:20，檀香应与西厢同源。", detail: "" },
+  { label: "知客僧澄一掌东厢钥匙，且负责西厢晨课香火；他与唐远尘因捐田归属争执。", detail: "" },
+  { label: "寺志载东厢与西厢原为一殿，光绪年间砌墙分隔，旧图注「夹墙通槛，备僧众往来」。", detail: "改建后是否封堵，寺志未载后事。" },
+  { label: "夹墙空腔内侧发现新蹭纤与半枚香灰，与西厢今晨香谱一致。", detail: "" },
+];
+
+## 一、案发
+
+晨雾裹着古寺，东厢像一枚扣上的盒。
+
+居士唐远尘死在榻上，喉间勒痕。门从内栓着，窗纸无破，脚印止于廊外——像是一间 **从里面封死的屋子**。
+
+可探员进门，先皱鼻。
+
+「檀香。」他说，「东厢不供早课香，这味儿从哪儿来？」
+
+他走到东侧壁龛，指尖敲墙，声闷得像敲在空心上。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="唐远尘"
+  role="居士"
+  age="56"
+  relation="死者"
+  alibi="——"
+>
+  死于从内栓死的东厢；与澄一有捐田争执。
+</PersonCard>
+
+<PersonCard
+  name="澄一"
+  role="知客僧"
+  age="43"
+  relation="僧人"
+  alibi="称卯正在西厢主持早课"
+>
+  掌东厢钥匙；负责西厢香火。
+</PersonCard>
+
+<PersonCard
+  name="扫塔僧老桂"
+  role="僧人"
+  age="67"
+  relation="寺志保管者"
+  alibi="晨雾中在塔院"
+>
+  熟悉寺志与旧改建图。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="澄一" time="问询时">
+  “东厢钥匙在我这儿，卯正我在西厢领众诵经。他死在从里栓死的屋里，与我何干？”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="老桂" time="问询时">
+  “东厢西厢本是一殿，夹墙里旧时有通道。后来砌墙，通不通，寺志没写明白。檀香这东西，不会平白飘过墙。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="064" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "东厢不焚香，室内檀香最浓处为何在东侧壁龛墙内？",
+    "西厢卯正换新香——案发 6:20 的檀香能否与此同源？",
+    "寺志「夹墙通槛」与墙体空腔声闷，说明什么建筑可能？",
+    "谁掌东厢钥匙、又掌西厢香火，能同时解释气味与出入？",
+    "夹墙内侧的新蹭纤与香灰，把通道最近被谁使用过？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="064" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **澄一**。东厢并非真密室：东、西厢本为一殿， **夹墙间旧通道未完全封死**。他自西厢早课焚香处经夹墙潜入东厢作案，再原路返回——门仍从内栓死，窗仍完好， **香气却从墙里渗来**。
+
+檀香浓度东侧壁龛最高，与西厢卯正新换的香灰同源；夹墙空腔内侧的新蹭纤与半枚香灰，证明通道刚被使用。澄一掌东厢钥匙与西厢香火，既能开门布置「从内栓死」，又能在早课掩护下进出。捐田争执是动机。
+
+「密室」骗的是眼； **香骗不了鼻**。
+
+### 关键矛盾
+
+门与窗说「无人能进」，檀香却说 **有人从墙里走过**。
+
+改建图注「夹墙通槛」是公平本格的伏笔：读者若只盯门栓，会漏掉 **古寺最老的那条路**。
+
+### 伏笔解析
+
+1. **东厢檀香、东侧壁龛最浓**——气味指向夹墙。
+2. **西厢卯正换香与案发时间**——同源时间链。
+3. **墙体声闷、寺志旧图**——通道存在的可能。
+4. **澄一钥匙与香火**——人与路径。
+5. **夹墙内侧香灰与蹭纤**——通道近期使用物证。
+
+密室有时不在门上，在 **两堵墙之间**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

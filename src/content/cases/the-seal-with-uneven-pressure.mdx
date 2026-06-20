@@ -1,0 +1,149 @@
+---
+title: "印泥深浅不一"
+caseId: "067"
+status: "unsolved"
+difficulty: 4
+types:
+  - "文书鉴定"
+  - "叙述性诡计"
+scene:
+  - "律师事务所"
+  - "黄昏"
+readingTime: "9-12 分钟"
+clueCount: 6
+publishedAt: "2026-06-20"
+summary: "遗嘱上的名章盖得端正。可同一枚印章，深浅却像两个人按过——深的是死者，浅的是凶手。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "律师周砚秋死于事务所档案室，后脑遭钝击。桌上摊开新遗嘱，死者名章已盖。", detail: "" },
+  { label: "名章印泥在「周」字处深、「砚」字浅、「秋」字又略深，呈不均匀压力带。", detail: "同章一次盖下，压力应连续。" },
+  { label: "周砚秋右手腕旧伤，盖章习惯 **重起始、轻收笔**；档案室监控死角处备有印泥与章。", detail: "" },
+  { label: "合伙人贺铭章惯用左手代盖客户章，压力 **左重右轻**；他与周因事务所主导权诉讼在即。", detail: "" },
+  { label: "遗嘱受益条款大幅倾向贺铭章；周近一周多次表示要撤回重拟。", detail: "" },
+  { label: "章面显微有两次接触痕：先浅后深再浅，与「左手代盖后死者补盖」顺序吻合。", detail: "" },
+];
+
+## 一、案发
+
+黄昏，律师事务所的档案室像一口收声的井。
+
+律师周砚秋倒在桌边，后脑钝伤。桌上摊开新遗嘱，他的名章已盖，朱红端正，像一切合法手续都已走完。
+
+探员把遗嘱凑到灯下。同一个「周砚秋」三字，印泥却深浅不一：「周」深，「砚」浅，「秋」又略深。
+
+「一次盖章，」文书鉴定员说，「压力该是一条线。这像 **两个人在抢着按**。」
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="周砚秋"
+  role="律师"
+  age="54"
+  relation="死者"
+  alibi="——"
+>
+  右手腕旧伤，盖章重起始轻收笔；欲撤回新遗嘱。
+</PersonCard>
+
+<PersonCard
+  name="贺铭章"
+  role="合伙人"
+  age="49"
+  relation="合伙人"
+  alibi="称黄昏在法庭准备材料，未进档案室"
+>
+  惯左手代盖，压力左重右轻；与周有主导权诉讼。
+</PersonCard>
+
+<PersonCard
+  name="文书鉴定员"
+  role="鉴定"
+  age="46"
+  relation="专家"
+  alibi="受聘检验印痕"
+>
+  提供压力带与二次接触分析。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="贺铭章" time="问询时">
+  “新遗嘱是他自己拟的，章也是他自己盖的。我在法庭准备案子，没进过档案室。”
+</TestimonyBlock>
+
+<TestimonyBlock speaker="鉴定员" time="问询时">
+  “印泥压力左重右轻，符合左手代盖；后又出现深—浅—深的右手旧伤习惯。顺序是：先浅层，后补深层。”
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="067" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "同章一次盖下，印泥压力应均匀还是呈深浅带？",
+    "左重右轻的压力带，更符合哪只手的代盖习惯？",
+    "周砚秋右手腕旧伤「重起始轻收笔」，能否解释「秋」字略深？",
+    "显微二次接触「先浅后深再浅」——是伪造在前，还是补盖在前？",
+    "谁从遗嘱中获益最大、又与死者有主导权诉讼？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+在打开答案前，写下你的判断。谁在说谎？哪条线索最可疑？真正的真相是什么？
+
+<DetectiveNotes caseId="067" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是 **贺铭章**。他先以 **左手代盖** 名章，留下左重右轻的浅层印泥；周砚秋发现后争执，被贺以钝器击倒。贺并非周本人，却试图让遗嘱看似 **已完成盖章**——若周已死，浅层印像「周自己盖过」；显微却显示 **先浅后深再浅**，符合「贺先盖、周曾欲补盖或挣扎中触章」的压力序列。
+
+新遗嘱大幅倾向贺，周近一周要撤回——贺有动机伪造既成事实。贺称在法庭准备材料，无法解释档案室章面的 **左手压力** 与二次接触。名章端正，故事不端正。
+
+### 关键矛盾
+
+读者默认：章在 = 人认可。
+
+印泥压力却像指纹：**左手、右手各说一半真话**。深的是死者习惯，浅的是凶手代盖——同一枚章，两种手。
+
+### 伏笔解析
+
+1. **深浅不一的压力带**——非一次盖成。
+2. **左手左重右轻 vs 右手重起始**——两种习惯并存。
+3. **显微先浅后深再浅**——时间顺序。
+4. **遗嘱倾向贺、周欲撤回**——动机。
+5. **主导权诉讼**——背景冲突。
+
+文书最会骗人处，常是 **最红的那一方印泥**。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
