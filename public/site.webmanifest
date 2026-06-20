@@ -1,6 +1,6 @@
 {
-  "name": "Inferred — 互动推理案卷",
-  "short_name": "Inferred",
+  "name": "推知 Inferred — 互动推理案卷",
+  "short_name": "推知",
   "description": "真相从不明说，只能被推断。阅读案卷，分析证词，在答案揭晓前推断真相。",
   "lang": "zh-CN",
   "start_url": "/",

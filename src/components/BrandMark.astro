@@ -1,0 +1,57 @@
+---
+/**
+ * 推知 Inferred 品牌标记：雷达环 + 线索星座 + 洞察之眼 + 暗红结论点。
+ * 纯内联 SVG，颜色取自主题变量，自动适配亮/暗模式。
+ */
+interface Props {
+  size?: number;
+  class?: string;
+  title?: string;
+}
+const { size = 28, class: className, title } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 512 512"
+  fill="none"
+  role={title ? 'img' : 'presentation'}
+  aria-hidden={title ? undefined : 'true'}
+  focusable="false"
+>
+  {title && <title>{title}</title>}
+
+  <!-- 雷达双环 -->
+  <circle cx="256" cy="256" r="196" stroke="var(--color-line)" stroke-width="16" />
+  <circle cx="256" cy="256" r="150" stroke="var(--color-line)" stroke-width="4" opacity="0.7" />
+
+  <!-- 线索网络：从眼睛辐射到各节点 -->
+  <g stroke="var(--color-paper)" stroke-width="13" stroke-linecap="round">
+    <line x1="248" y1="250" x2="236" y2="122" />
+    <line x1="248" y1="250" x2="148" y2="168" />
+    <line x1="248" y1="250" x2="150" y2="298" />
+    <line x1="258" y1="258" x2="346" y2="334" />
+  </g>
+
+  <!-- 米白线索节点 -->
+  <g fill="var(--color-paper)">
+    <circle cx="236" cy="122" r="24" />
+    <circle cx="148" cy="168" r="24" />
+    <circle cx="150" cy="298" r="24" />
+  </g>
+
+  <!-- 洞察之眼 -->
+  <path
+    d="M176 250 C212 206 284 206 320 250 C284 294 212 294 176 250 Z"
+    fill="var(--color-bg)"
+    stroke="var(--color-paper)"
+    stroke-width="13"
+  />
+  <circle cx="248" cy="250" r="23" fill="var(--color-paper)" />
+  <circle cx="248" cy="250" r="9" fill="var(--color-bg)" />
+
+  <!-- 暗红结论点 -->
+  <circle cx="346" cy="334" r="27" fill="var(--color-accent)" />
+</svg>
