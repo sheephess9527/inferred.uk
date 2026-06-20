@@ -47,6 +47,13 @@
 - 总计：34 篇案卷 + 40 篇线索
 
 
+### 2026-06-20 — 修复 ShareBar.astro 合并冲突残留
+
+- 清理了 `src/components/ShareBar.astro` 中残留的 Git merge conflict markers（`<<<<<<< Updated upstream`、`=======`、`>>>>>>> Stashed changes`）
+- 保留了上游最新版本（含分享海报生成、微信/小红书/复制图文等完整功能）
+- 确认无冲突标记后，分享组件 JS 语法恢复正常
+- 同时处理了相关的 `.bak` / `.broken` 备份文件影响
+
 ### 2026-06-19 — 关于页面内容更新
 
 - `about.astro`：补充项目起源（为女儿糖糖而建），更新页面文案，保留原有正文结构
