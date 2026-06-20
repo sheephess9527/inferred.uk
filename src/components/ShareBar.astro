@@ -328,6 +328,17 @@ const weiboHref =
     }
 
     async function copyLink() {
+    async function copyTextWithPoster() {
+      let shareContent = `${title}\n\n`;
+      if (text) shareContent += `${text}\n\n`;
+      shareContent += `${url}`;
+      if (poster) {
+        shareContent += `\n\n[分享海报] ${poster}`;
+      }
+      shareContent += `\n\n#推理 #悬疑 #本格推理 #Inferred`;
+      const ok = await copyText(shareContent);
+      showToast(ok ? '图文已复制，可直接粘贴到小红书/朋友圈' : '复制失败');
+    }
       const ok = await copyText(url);
       showToast(ok ? '链接已复制' : '复制失败，请手动复制');
     }
@@ -382,6 +393,8 @@ const weiboHref =
       if (posterImg) {
         posterImg.style.display = 'block';
         posterImg.onerror = () => {
+          if (posterBtn) posterBtn.style.display = 'none';
+          if (xhsBtn) xhsBtn.style.display = 'none';
           posterImg.style.display = 'none';
           if (posterHint) {
             posterHint.textContent = '海报暂时无法显示，请稍后再试或直接复制链接';
@@ -419,22 +432,12 @@ const weiboHref =
 
     // 小红书：无网页分享接口，且笔记不支持外链。
     // 策略：复制一段适配小红书的文案，并打开海报让用户长按保存后发布。
-    textBtn?.addEventListener('click', async () => {
-      let shareContent = `${title}
-
-${url}`;
-      if (text) shareContent = `${title}
-
-${text}
-
-${url}`;
-      if (poster) shareContent += `
-
 [分享海报] ${poster}`;
       const ok = await copyText(shareContent);
       showToast(ok ? '图文已复制，可直接粘贴' : '复制失败');
     });
 
+cat /tmp/new_copy_text.js
     xhsBtn?.addEventListener('click', async () => {
       const caption =
         `${title}\n\n${text}\n\n` +
