@@ -10,6 +10,8 @@ import DifficultyVote from '../../components/DifficultyVote.astro';
 import RelatedCases from '../../components/RelatedCases.astro';
 import CaseSummary from '../../components/CaseSummary.astro';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
   const sorted = [...cases].sort(
