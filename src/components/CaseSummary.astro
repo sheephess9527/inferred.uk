@@ -159,6 +159,28 @@
             <span class="case-summary__row-label">推理判断</span>
             <span class="case-summary__row-stat">${stat}</span>
           </div>`;
+
+          if (deduction.details && deduction.details.length > 0) {
+            const VALID_VERDICTS = new Set(['correct', 'wrong', 'unanswered']);
+            html += '<ol class="case-summary__detail-list">';
+            deduction.details.forEach((d, i) => {
+              const verdict = VALID_VERDICTS.has(d.verdict) ? d.verdict : 'unanswered';
+              const icon = verdict === 'correct' ? '✓' : verdict === 'wrong' ? '✗' : '—';
+              html += `<li class="case-summary__detail-item" data-verdict="${verdict}">
+                <span class="case-summary__detail-icon">${icon}</span>
+                <div class="case-summary__detail-body">
+                  <p class="case-summary__detail-q">Q${i + 1} · ${esc(d.q)}</p>
+                  <p class="case-summary__detail-sel">${d.selectedText ? '你选：' + esc(d.selectedText) : '未作答'}</p>
+                  ${
+                    (verdict === 'wrong' || verdict === 'unanswered') && d.answerText
+                      ? `<p class="case-summary__detail-ans">正确：${esc(d.answerText)}</p>`
+                      : ''
+                  }
+                </div>
+              </li>`;
+            });
+            html += '</ol>';
+          }
         }
 
         rowsEl.innerHTML = html;

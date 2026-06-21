@@ -340,11 +340,13 @@ const weiboHref =
       if (!posterImg?.getAttribute('src')) {
         posterFrame?.setAttribute('data-loading', '');
         if (posterImg) {
-          posterImg.onload  = () => posterFrame?.removeAttribute('data-loading');
+          posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
           posterImg.onerror = () => {
             posterFrame?.removeAttribute('data-loading');
             if (posterSteps) {
-              posterSteps.innerHTML = '<li>海报加载失败，请稍后重试或直接复制链接</li>';
+              const li = document.createElement('li');
+              li.textContent = '海报加载失败，请稍后重试或直接复制链接';
+              posterSteps.replaceChildren(li);
             }
           };
           posterImg.src = poster;
@@ -357,7 +359,13 @@ const weiboHref =
       }
 
       if (posterSteps) {
-        posterSteps.innerHTML = opts.steps.map(s => `<li>${s}</li>`).join('');
+        posterSteps.replaceChildren(
+          ...opts.steps.map((s) => {
+            const li = document.createElement('li');
+            li.textContent = s;
+            return li;
+          })
+        );
       }
 
       if (posterAct) {

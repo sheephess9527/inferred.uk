@@ -10,7 +10,7 @@
 ```
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
-- **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
+- **技术栈**：Astro 6 + MDX + Cloudflare Workers（`@astrojs/cloudflare@13`，SSR）
 - **当前规模**：**105 篇案卷**（001–105）+ **72 篇线索**
 - **最新提交**：见下方更新日志
 
@@ -511,6 +511,21 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — 安全加固 + Astro 6 升级
+
+- **Astro 5 → 6**（`astro@6.4.8`）+ **`@astrojs/cloudflare@13`**（修复多项 CVE）
+  - `astro.config.mjs` 新增 `output: 'server'`（Astro 6 SSR 必填）
+  - `wrangler.jsonc` 去除 `main` 字段（`@cloudflare/vite-plugin@1.42` 改由 adapter 自动注入）
+  - `wrangler` 升至 `^4.103.0`（满足 `@cloudflare/vite-plugin` peer dependency）
+- **HTTP 安全响应头**：新增 `src/middleware.ts`
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`（`frame-ancestors 'none'`）
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+  - `Content-Security-Policy`：`default-src 'self'`，`unsafe-inline` 限于 script/style（Astro `define:vars` / `is:inline` 必需），`img-src data: blob:`（canvas 海报）
+- **修复 XSS 风险**：`ShareBar.astro` 将 `posterSteps.innerHTML = ...` 改为 `replaceChildren` + `createElement` + `textContent`
+- **修复 localStorage 注入风险**：`CaseSummary.astro` 对 `verdict` 字段做白名单校验（`Set(['correct','wrong','unanswered'])`）后再写入 `data-verdict` 属性
 
 ### 2026-06-21 — 线索扩充（053–072）
 
