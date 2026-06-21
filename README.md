@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**100 篇案卷**（001–100）+ **72 篇线索**
+- **当前规模**：**105 篇案卷**（001–105）+ **72 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -110,6 +110,7 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-20 | — | — | `b023f7b` | 三对近邻案卷差异化（无新编号） |
 | 2026-06-20 | 091–100 | 10 | `6bcb3a4` | 监控/邮务/机械诡计批次 |
 | 2026-06-21 | 056–100 | 45 | `e648432` | 扩充人物/证词/红鲱鱼；去除 `**`；修复进度状态显示 |
+| 2026-06-21 | 101–105 | 5 | — | 时间线诡计批次（电钟断电/通话0秒/影子朝向/草籽物证/邮戳悖论） |
 
 **质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
 
@@ -235,7 +236,7 @@ export const evidence = [
 
 ---
 
-## 案卷一览（001–100）
+## 案卷一览（001–105）
 
 | caseId | 标题 | slug | ★ |
 |--------|------|------|---|
@@ -339,6 +340,11 @@ export const evidence = [
 | 098 | 挂钩上的黄铜钥匙 | `the-brass-key-still-on-the-hook` | ★ |
 | 099 | 没有咸味的潮池 | `the-tide-pool-without-salt` | |
 | 100 | 七号座留下的竞拍牌 | `the-paddle-left-at-lot-seven` | ★ |
+| 101 | 断电的七点四十三 | `the-clock-that-stopped-at-seven-forty-three` | |
+| 102 | 未接通的电话 | `the-call-that-never-connected` | |
+| 103 | 午后的阴影 | `the-afternoon-shadow` | |
+| 104 | 鞋底的草籽 | `seeds-in-the-sole` | |
+| 105 | 早了两小时的回信 | `the-reply-that-came-too-early` | |
 
 ★ = `featured: true`
 
