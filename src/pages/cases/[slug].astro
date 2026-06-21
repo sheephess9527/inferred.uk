@@ -96,7 +96,7 @@ const jsonLd = {
 
     <header class="case__header">
       <p class="eyebrow case__eyebrow" data-case-eyebrow data-case-slug={entry.id} data-site-status={data.status}>
-        Case File #{data.caseId} · <span data-case-eyebrow-text>{data.status === 'solved' ? 'Solved' : 'Unsolved'}</span>
+        Case File #{data.caseId} · <span data-case-eyebrow-text>{data.status === 'solved' ? '已解' : '未解'}</span>
       </p>
       <h1 class="case__title">{data.title}</h1>
       <p class="case__summary">{data.summary}</p>
@@ -189,9 +189,9 @@ const jsonLd = {
     if (!text) return;
     try {
       var p = localStorage.getItem('inferred:progress:/cases/' + caseSlug);
-      if (p === 'solved') text.textContent = 'Closed · 已结案';
-      else if (p === 'reading') text.textContent = 'Active · 推理中';
-      else text.textContent = siteStatus === 'solved' ? 'Solved' : 'Unsolved';
+      if (p === 'solved') text.textContent = '已结案';
+      else if (p === 'reading') text.textContent = '推理中';
+      else text.textContent = siteStatus === 'solved' ? '已解' : '未解';
     } catch (_) {}
   }
   try {

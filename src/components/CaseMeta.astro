@@ -138,16 +138,5 @@ const typeEn = types.join(' / ');
   document.querySelectorAll<HTMLElement>('[data-case-progress]').forEach(updateCaseProgressBadge);
   window.addEventListener('inferred:case-solved', () => {
     document.querySelectorAll<HTMLElement>('[data-case-progress]').forEach(updateCaseProgressBadge);
-    document.querySelectorAll<HTMLElement>('[data-progress-badge]').forEach((badge) => {
-      const card = badge.closest<HTMLElement>('[data-case-slug]');
-      if (!card?.dataset.caseSlug) return;
-      try {
-        const progress = localStorage.getItem(`inferred:progress:/cases/${card.dataset.caseSlug}`);
-        if (progress === 'solved') {
-          badge.textContent = '已结案';
-          badge.className = 'tag tag--status-user-solved';
-        }
-      } catch (_) {}
-    });
   });
 </script>
