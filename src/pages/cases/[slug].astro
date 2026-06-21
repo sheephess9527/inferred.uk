@@ -180,7 +180,9 @@ const jsonLd = {
   </article>
 </BaseLayout>
 
-<script is:inline define:vars={{ caseSlug: entry.id, siteStatus: data.status }}>
+<script is:inline define:vars={{ caseSlug: entry.id, siteStatus: data.status, caseQuestions: data.questions ?? null }}>
+  if (caseQuestions) window.__inferredDeductionItems = caseQuestions;
+
   function syncEyebrow() {
     var eyebrow = document.querySelector('[data-case-eyebrow]');
     var text = eyebrow && eyebrow.querySelector('[data-case-eyebrow-text]');
