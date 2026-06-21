@@ -126,8 +126,9 @@ const { caseId } = Astro.props;
     border-left-color: var(--color-line);
   }
   .deduction__choice[data-locked][data-selected]:hover {
-    border-left-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+    border-left: 4px solid #c05555;
+    border-color: color-mix(in srgb, #c05555 40%, var(--color-line));
+    background: color-mix(in srgb, #c05555 18%, var(--color-surface));
   }
   .deduction__choice-key {
     flex-shrink: 0;
@@ -143,11 +144,16 @@ const { caseId } = Astro.props;
 
   /* 已选中 */
   .deduction__choice[data-selected] {
-    border-left-color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+    border-left: 4px solid #c05555;
+    border-color: color-mix(in srgb, #c05555 40%, var(--color-line));
+    background: color-mix(in srgb, #c05555 18%, var(--color-surface));
   }
   .deduction__choice[data-selected] .deduction__choice-key {
-    color: var(--color-accent);
+    color: #c05555;
+    font-weight: 700;
+  }
+  .deduction__choice[data-selected] .deduction__choice-text {
+    color: #d98080;
   }
 
   /* 揭晓后：正确（用户选对） */
