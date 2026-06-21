@@ -1,0 +1,207 @@
+---
+export interface Props {
+  hints: string[];
+}
+const { hints } = Astro.props;
+const hasHints = hints && hints.length > 0;
+---
+
+{hasHints && (
+<aside class="hints" aria-label="推理提示" data-hint-system>
+  <header class="hints__head">
+    <span class="eyebrow">Hints · 推理提示</span>
+    <span class="hints__count mono" data-hint-count aria-live="polite"></span>
+  </header>
+  <p class="hints__desc text-muted">卡住了？按顺序逐步解锁，提示不会透露答案，只给你一个方向。</p>
+  <ol class="hints__list">
+    {hints.map((text, i) => (
+      <li class="hints__item">
+        <details class="hints__detail" data-hint={i}>
+          <summary class="hints__summary">
+            <span class="hints__num mono">提示 {String(i + 1).padStart(2, '0')}</span>
+            <span class="hints__state" data-hint-state={i}>
+              {i === 0 ? '点击查看' : '需先解锁上一个提示'}
+            </span>
+            <span class="hints__chevron" aria-hidden="true">›</span>
+          </summary>
+          <div class="hints__body">
+            <p class="text-muted">{text}</p>
+          </div>
+        </details>
+      </li>
+    ))}
+  </ol>
+</aside>
+)}
+
+<style>
+  .hints {
+    margin: var(--space-6) 0;
+    border: 1px dashed var(--color-line);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+    padding: var(--space-5) var(--space-6);
+  }
+  .hints__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+  .hints__count {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+  .hints__desc {
+    font-size: 0.88rem;
+    margin: 0 0 var(--space-4);
+  }
+  .hints__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .hints__detail {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+    transition: border-color 0.18s ease;
+  }
+  .hints__detail[data-locked] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .hints__detail:not([data-locked]):hover {
+    border-color: color-mix(in srgb, var(--color-gold) 40%, var(--color-line));
+  }
+  .hints__summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .hints__summary::-webkit-details-marker { display: none; }
+  .hints__detail[data-locked] .hints__summary {
+    cursor: not-allowed;
+  }
+  .hints__num {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .hints__detail[data-locked] .hints__num {
+    color: var(--color-muted);
+  }
+  .hints__state {
+    flex: 1;
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+  .hints__detail[open] .hints__state {
+    color: var(--color-gold);
+  }
+  .hints__chevron {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    transition: transform 0.2s ease;
+    line-height: 1;
+  }
+  .hints__detail[open] .hints__chevron {
+    transform: rotate(90deg);
+  }
+  .hints__body {
+    padding: var(--space-1) var(--space-4) var(--space-4);
+    border-top: 1px dashed var(--color-line);
+    animation: hint-fade 0.25s ease;
+  }
+  .hints__body p {
+    margin: var(--space-3) 0 0;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+  @keyframes hint-fade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-hint-system]').forEach((root) => {
+    const details = Array.from(root.querySelectorAll<HTMLDetailsElement>('details[data-hint]'));
+    if (!details.length) return;
+
+    const storageKey = `inferred:hints:${location.pathname}`;
+    const countEl = root.querySelector<HTMLElement>('[data-hint-count]');
+
+    function loadUnlocked(): number[] {
+      try {
+        const raw = localStorage.getItem(storageKey);
+        return raw ? JSON.parse(raw) : [0];
+      } catch { return [0]; }
+    }
+
+    function saveUnlocked(arr: number[]) {
+      try { localStorage.setItem(storageKey, JSON.stringify(arr)); } catch {}
+    }
+
+    function updateCount() {
+      if (!countEl) return;
+      const opened = details.filter(d => d.open).length;
+      countEl.textContent = opened > 0
+        ? `已查看 ${opened} / ${details.length}`
+        : `共 ${details.length} 个提示`;
+    }
+
+    function applyUnlocked(unlocked: number[]) {
+      details.forEach((el, i) => {
+        const isUnlocked = unlocked.includes(i);
+        const stateEl = el.querySelector<HTMLElement>(`[data-hint-state="${i}"]`);
+        if (isUnlocked) {
+          delete el.dataset.locked;
+          if (stateEl && !el.open) stateEl.textContent = '点击查看';
+        } else {
+          el.dataset.locked = '';
+          if (stateEl) stateEl.textContent = '需先解锁上一个提示';
+        }
+      });
+      updateCount();
+    }
+
+    let unlocked = loadUnlocked();
+    applyUnlocked(unlocked);
+
+    details.forEach((el, i) => {
+      el.addEventListener('click', (e) => {
+        if (el.dataset.locked !== undefined) {
+          e.preventDefault();
+        }
+      }, { capture: true });
+
+      el.addEventListener('toggle', () => {
+        const stateEl = el.querySelector<HTMLElement>(`[data-hint-state="${i}"]`);
+        if (el.open) {
+          if (stateEl) stateEl.textContent = '已查看';
+          if (i + 1 < details.length && !unlocked.includes(i + 1)) {
+            unlocked = [...unlocked, i + 1];
+            saveUnlocked(unlocked);
+            applyUnlocked(unlocked);
+          }
+        } else {
+          if (stateEl && unlocked.includes(i)) stateEl.textContent = '点击查看';
+        }
+        updateCount();
+      });
+    });
+  });
+</script>

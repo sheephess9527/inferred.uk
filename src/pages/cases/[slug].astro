@@ -5,23 +5,51 @@ import CaseMeta from '../../components/CaseMeta.astro';
 import Tag from '../../components/Tag.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
 import ShareBar from '../../components/ShareBar.astro';
+import HintSystem from '../../components/HintSystem.astro';
+import DifficultyVote from '../../components/DifficultyVote.astro';
+import RelatedCases from '../../components/RelatedCases.astro';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
   const sorted = [...cases].sort(
     (a, b) => a.data.publishedAt.getTime() - b.data.publishedAt.getTime()
   );
-  return sorted.map((entry, i) => ({
-    params: { slug: entry.id },
-    props: {
-      entry,
-      prev: i > 0 ? sorted[i - 1] : null,
-      next: i < sorted.length - 1 ? sorted[i + 1] : null,
-    },
-  }));
+  return sorted.map((entry, i) => {
+    const related = cases
+      .filter((c) => c.id !== entry.id)
+      .map((c) => ({
+        c,
+        score: c.data.types.filter((t) => entry.data.types.includes(t)).length,
+      }))
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          b.c.data.publishedAt.getTime() - a.c.data.publishedAt.getTime()
+      )
+      .slice(0, 3)
+      .map(({ c }) => ({
+        caseId: c.data.caseId,
+        title: c.data.title,
+        types: c.data.types,
+        difficulty: c.data.difficulty,
+        status: c.data.status,
+        readingTime: c.data.readingTime,
+        slug: c.id,
+      }));
+
+    return {
+      params: { slug: entry.id },
+      props: {
+        entry,
+        prev: i > 0 ? sorted[i - 1] : null,
+        next: i < sorted.length - 1 ? sorted[i + 1] : null,
+        related,
+      },
+    };
+  });
 }
 
-const { entry, prev, next } = Astro.props;
+const { entry, prev, next, related } = Astro.props;
 const { Content } = await render(entry);
 const data = entry.data;
 
@@ -104,9 +132,15 @@ const jsonLd = {
       <p class="case__published mono text-muted">归档于 {dateStr}</p>
     </header>
 
+    {data.hints && data.hints.length > 0 && (
+      <HintSystem hints={data.hints} />
+    )}
+
     <div id="case-body" class="case__body prose">
       <Content />
     </div>
+
+    <DifficultyVote slug={entry.id} officialDifficulty={data.difficulty} />
 
     <ShareBar
       title={data.title}
@@ -114,6 +148,8 @@ const jsonLd = {
       path={`/cases/${entry.id}`}
       poster={`/share/cases/${entry.id}.jpg`}
     />
+
+    <RelatedCases cases={related} />
 
     <nav class="case__nav" aria-label="案卷导航">
       {prev ? (
