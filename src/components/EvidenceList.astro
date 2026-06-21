@@ -351,17 +351,21 @@ const hasAnswers = items.some((item) => item.answer);
     );
   }
 
-  /** 揭晓答案后：显示每条物证的裁决 + 总评分 */
+  /** 揭晓答案后：显示每条物证的裁决 + 总评分，并将结果写入 localStorage 供总结面板读取 */
   function revealFeedback(board: HTMLElement, buttons: NodeListOf<HTMLElement>, animate: boolean) {
     let evaluated = 0;
     let correct = 0;
+    let marked = 0;
 
     buttons.forEach((btn, idx) => {
+      const userState = (btn.dataset.state as State) ?? 'none';
+      if (userState !== 'none') marked++;
+
       const answer = btn.dataset.answer as State | undefined;
+      btn.dataset.locked = ''; // 全部锁定，不论是否有答案
       if (!answer) return;
 
       evaluated++;
-      const userState = (btn.dataset.state as State) ?? 'none';
       const verdictEl = btn.querySelector<HTMLElement>('[data-evidence-verdict]');
       const isCorrect = userState === answer;
       const isUnmarked = userState === 'none';
@@ -371,7 +375,6 @@ const hasAnswers = items.some((item) => item.answer);
       if (verdictEl) {
         if (!animate) verdictEl.style.animation = 'none';
         else {
-          // 逐条延迟出现，营造逐一揭晓感
           verdictEl.style.animationDelay = `${idx * 60}ms`;
         }
         verdictEl.hidden = false;
@@ -386,12 +389,17 @@ const hasAnswers = items.some((item) => item.answer);
           verdictEl.dataset.verdict = 'wrong';
         }
       }
-
-      // 锁定按钮，阻止答案揭晓后继续点击
-      btn.dataset.locked = '';
     });
 
-    // 总评分
+    // 将结果存入 localStorage，供 CaseSummary 读取
+    try {
+      localStorage.setItem(
+        `inferred:reveal:evidence:${location.pathname}`,
+        JSON.stringify({ marked, total: buttons.length, correct, evaluated })
+      );
+    } catch {}
+
+    // 组件内评分横幅
     const scoreEl = board.querySelector<HTMLElement>('[data-evidence-score]');
     if (scoreEl && evaluated > 0) {
       if (!animate) scoreEl.style.animation = 'none';

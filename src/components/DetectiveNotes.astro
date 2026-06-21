@@ -321,7 +321,7 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
     choices: NodeListOf<HTMLButtonElement>,
     animate: boolean
   ) {
-    // Group by question index
+    // 按题目分组
     const byQ = new Map<number, HTMLButtonElement[]>();
     choices.forEach((btn) => {
       const qi = Number(btn.dataset.qi);
@@ -331,18 +331,24 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
 
     let evaluated = 0;
     let correct = 0;
+    let answered = 0;
     let delay = 0;
 
     byQ.forEach((btns) => {
       const answerBtn = btns.find((b) => b.dataset.isAnswer !== undefined);
-      if (!answerBtn) return; // 无答案设定，跳过评分
+      const selectedBtn = btns.find((b) => b.dataset.selected !== undefined);
+
+      if (selectedBtn) answered++;
+
+      // 全部锁定，不论是否设有答案
+      btns.forEach((btn) => { btn.dataset.locked = ''; });
+
+      if (!answerBtn) return; // 无答案设定，跳过评分和裁决
 
       evaluated++;
-      const selectedBtn = btns.find((b) => b.dataset.selected !== undefined);
       if (selectedBtn === answerBtn) correct++;
 
       btns.forEach((btn) => {
-        btn.dataset.locked = '';
         const verdictEl = btn.querySelector<HTMLElement>('[data-choice-verdict]');
         if (!verdictEl) return;
 
@@ -374,7 +380,15 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
       });
     });
 
-    // 有评分才显示总结
+    // 将结果存入 localStorage，供 CaseSummary 读取
+    try {
+      localStorage.setItem(
+        `inferred:reveal:deduction:${location.pathname}`,
+        JSON.stringify({ answered, total: byQ.size, correct, evaluated })
+      );
+    } catch {}
+
+    // 组件内评分横幅（仅在有答案时显示）
     const scoreEl = board.querySelector<HTMLElement>('[data-deduction-score]');
     if (scoreEl && evaluated > 0) {
       if (!animate) scoreEl.style.animation = 'none';
