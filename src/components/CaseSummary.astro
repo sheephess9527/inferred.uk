@@ -1,0 +1,210 @@
+---
+// 案件总结：揭晓答案后展示物证识别与推理判断的综合评价。
+// 数据由 EvidenceList 和 DetectiveNotes 写入 localStorage，此组件负责读取与呈现。
+// 无需 props，路径取自客户端 location.pathname。
+---
+
+<aside
+  class="case-summary"
+  data-case-summary
+  hidden
+  aria-label="案件总结"
+>
+  <p class="eyebrow case-summary__eyebrow">Case Report · 案件总结</p>
+  <div class="case-summary__rows" data-summary-rows></div>
+  <p class="case-summary__verdict text-muted" data-summary-verdict></p>
+</aside>
+
+<style>
+  .case-summary {
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    animation: summary-in 0.5s ease both;
+  }
+  .case-summary__eyebrow {
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+  }
+  .case-summary__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  /* rows injected via JS */
+  .case-summary__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-line);
+    border-left: 3px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+  .case-summary__row-label {
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+  .case-summary__row-stat {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .case-summary__row[data-level='perfect'] {
+    border-left-color: #6abf8a;
+  }
+  .case-summary__row[data-level='perfect'] .case-summary__row-stat {
+    color: #6abf8a;
+  }
+  .case-summary__row[data-level='good'] {
+    border-left-color: var(--color-gold);
+  }
+  .case-summary__row[data-level='good'] .case-summary__row-stat {
+    color: var(--color-gold);
+  }
+  .case-summary__row[data-level='low'] {
+    border-left-color: var(--color-muted);
+  }
+  .case-summary__row[data-level='low'] .case-summary__row-stat {
+    color: var(--color-muted);
+  }
+  .case-summary__row[data-level='info'] .case-summary__row-stat {
+    color: var(--color-muted);
+  }
+  .case-summary__verdict {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    margin: 0;
+    font-style: italic;
+  }
+
+  @keyframes summary-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-summary { animation: none; }
+  }
+</style>
+
+<script>
+  interface ScoreEntry {
+    marked?: number;
+    answered?: number;
+    total: number;
+    correct: number;
+    evaluated: number;
+  }
+
+  const el = document.querySelector<HTMLElement>('[data-case-summary]');
+  if (el) {
+    const path = location.pathname;
+
+    function readScores(): { evidence: ScoreEntry | null; deduction: ScoreEntry | null } {
+      try {
+        const ev = localStorage.getItem(`inferred:reveal:evidence:${path}`);
+        const de = localStorage.getItem(`inferred:reveal:deduction:${path}`);
+        return {
+          evidence: ev ? (JSON.parse(ev) as ScoreEntry) : null,
+          deduction: de ? (JSON.parse(de) as ScoreEntry) : null,
+        };
+      } catch {
+        return { evidence: null, deduction: null };
+      }
+    }
+
+    function scoreLevel(correct: number, evaluated: number): string {
+      if (evaluated === 0) return 'info';
+      const pct = correct / evaluated;
+      if (pct === 1) return 'perfect';
+      if (pct >= 0.5) return 'good';
+      return 'low';
+    }
+
+    function render() {
+      const { evidence, deduction } = readScores();
+      if (!evidence && !deduction) return;
+
+      const rowsEl = el!.querySelector<HTMLElement>('[data-summary-rows]');
+      const verdictEl = el!.querySelector<HTMLElement>('[data-summary-verdict]');
+
+      if (rowsEl) {
+        let html = '';
+
+        if (evidence) {
+          const hasScoring = evidence.evaluated > 0;
+          const level = hasScoring ? scoreLevel(evidence.correct, evidence.evaluated) : 'info';
+          const stat = hasScoring
+            ? `命中 ${evidence.correct} / ${evidence.evaluated} 个`
+            : `标记了 ${evidence.marked ?? 0} / ${evidence.total} 条`;
+          html += `<div class="case-summary__row" data-level="${level}">
+            <span class="case-summary__row-label">物证识别</span>
+            <span class="case-summary__row-stat">${stat}</span>
+          </div>`;
+        }
+
+        if (deduction) {
+          const hasScoring = deduction.evaluated > 0;
+          const level = hasScoring ? scoreLevel(deduction.correct, deduction.evaluated) : 'info';
+          const stat = hasScoring
+            ? `正确 ${deduction.correct} / ${deduction.evaluated} 题`
+            : `作答了 ${deduction.answered ?? 0} / ${deduction.total} 题`;
+          html += `<div class="case-summary__row" data-level="${level}">
+            <span class="case-summary__row-label">推理判断</span>
+            <span class="case-summary__row-stat">${stat}</span>
+          </div>`;
+        }
+
+        rowsEl.innerHTML = html;
+      }
+
+      if (verdictEl) {
+        const evPct = evidence && evidence.evaluated > 0
+          ? evidence.correct / evidence.evaluated : null;
+        const dePct = deduction && deduction.evaluated > 0
+          ? deduction.correct / deduction.evaluated : null;
+
+        let msg: string;
+        if (evPct !== null || dePct !== null) {
+          const scores = [evPct, dePct].filter((x): x is number => x !== null);
+          const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+          if (avg === 1) {
+            msg = '视角精准，细节无漏。你看见了真相从缝隙里漏出来的地方。';
+          } else if (avg >= 0.6) {
+            msg = '推理扎实，思路清晰。你离真相只差一步。';
+          } else if (avg >= 0.3) {
+            msg = '有些线索你抓住了，有些从指间溜走——这就是推理的本质。';
+          } else {
+            msg = '真相从不轻易现身。但你走过了这条路，这就是开始。';
+          }
+        } else {
+          msg = '案件已结。每一次标记与判断，都是你对真相的一次押注。';
+        }
+
+        verdictEl.textContent = msg;
+      }
+
+      el!.hidden = false;
+    }
+
+    function isSolved(): boolean {
+      try { return localStorage.getItem(`inferred:progress:${path}`) === 'solved'; } catch { return false; }
+    }
+
+    // 已结案：等其他组件写入数据后再读取（100ms 足够）
+    if (isSolved()) {
+      setTimeout(render, 100);
+    }
+
+    // 本次揭晓：等揭晓动画和数据写入完成后展示（800ms）
+    window.addEventListener('inferred:case-solved', () => {
+      setTimeout(render, 800);
+    });
+  }
+</script>
