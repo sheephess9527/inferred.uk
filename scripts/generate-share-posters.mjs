@@ -10,7 +10,7 @@ import QRCode from 'qrcode';
 const ROOT = process.cwd();
 const CASES_DIR = path.join(ROOT, 'src/content/cases');
 const OUT_DIR = path.join(ROOT, 'public/share/cases');
-const SITE = 'https://inferred.uk';
+const SITE = 'https://www.inferred.uk';
 
 const W = 1080;
 const H = 1440;
@@ -102,7 +102,7 @@ function posterSvg({ eyebrow, title, summary }) {
   <rect x="88" y="1090" width="262" height="262" rx="14" fill="#E8DFC8"/>
 
   <text x="384" y="1168" font-family="Georgia, 'Songti SC', serif" font-size="38" fill="#E8DFC8">扫码阅读完整案卷</text>
-  <text x="384" y="1226" font-family="'IBM Plex Mono', Consolas, monospace" font-size="28" letter-spacing="2" fill="#8B2E2E">inferred.uk</text>
+  <text x="384" y="1226" font-family="'IBM Plex Mono', Consolas, monospace" font-size="28" letter-spacing="2" fill="#8B2E2E">www.inferred.uk</text>
   <text x="384" y="1286" font-family="Georgia, 'Songti SC', serif" font-size="26" fill="#6E675A">分析证词，找出矛盾，<tspan x="384" dy="38">在答案揭晓前推断真相。</tspan></text>
 </svg>`;
 }
