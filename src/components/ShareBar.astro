@@ -417,7 +417,8 @@ const weiboHref =
 
           const W = c.width;
           const H = c.height;
-          const barH = Math.round(H * 0.24);
+          // 0.16 → 渐变从 84% 处开始，低于二维码底部（约 80%），不遮挡扫码
+          const barH = Math.round(H * 0.16);
           const py = H - barH;
           const px = Math.round(W * 0.055);
 
