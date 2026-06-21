@@ -44,8 +44,9 @@
    - `readingTime` 进阶案卷用 `"12-16 分钟"`
    - 第六节在 `<DetectiveNotes>` 前写一句**推理引导语**（邀请读者先判断再揭晓）
    - 揭晓须说明红鲱鱼为何误导；`伏笔解析` **6–7 条**
-7. **`featured`**：每批约 25–30% 为 `true`；首页精选仅展示最新 10 篇 featured（`index.astro` `.slice(0, 10)`）。**近邻相似案卷只保留一篇 featured**（见下方审计备忘）。
-8. **slug**：文件名即 URL，英文 kebab-case，如 `the-coat-from-yesterdays-reel.mdx` → `/cases/the-coat-from-yesterdays-reel`。
+7. **`questions`**：每案 **3 道**选择题，必须覆盖 Q1 嫌疑人、Q2 手法/物证、Q3 真相方向；`answer` 为 0-based 下标；选项须使用案件内真实人名和物证，并包含有迷惑性的干扰项。YAML 字符串内含双引号时改用中文书名号 `「」` 避免解析错误。
+9. **`featured`**：每批约 25–30% 为 `true`；首页精选仅展示最新 10 篇 featured（`index.astro` `.slice(0, 10)`）。**近邻相似案卷只保留一篇 featured**（见下方审计备忘）。
+10. **slug**：文件名即 URL，英文 kebab-case，如 `the-coat-from-yesterdays-reel.mdx` → `/cases/the-coat-from-yesterdays-reel`。
 
 ### 案卷状态（站点 vs 读者进度）
 
@@ -133,6 +134,28 @@ scene:
   - "场景二"
 readingTime: "12-16 分钟"
 clueCount: 7
+questions:
+  - q: "案件中最核心的嫌疑人是谁？"
+    choices:
+      - text: "人物A"
+      - text: "人物B"
+      - text: "人物C"
+      - text: "人物D"
+    answer: 0
+  - q: "最关键的作案手法或物证是什么？"
+    choices:
+      - text: "手法/物证A"
+      - text: "手法/物证B"
+      - text: "手法/物证C"
+      - text: "手法/物证D"
+    answer: 2
+  - q: "案件的核心真相最接近哪个方向？"
+    choices:
+      - text: "方向A"
+      - text: "方向B"
+      - text: "方向C"
+      - text: "方向D"
+    answer: 1
 publishedAt: "2026-06-20"
 summary: "一句话摘要，点明核心矛盾。"
 featured: false
@@ -229,9 +252,26 @@ export const evidence = [
 | `scene` | string[] | 场景标签，通常 2 个 |
 | `readingTime` | string | 如 `"10-13 分钟"` |
 | `clueCount` | number | 通常 7 |
+| `hints` | string[]? | 折叠提示列表（可选） |
+| `questions` | array? | 推理判断选择题，格式见下（可选，默认使用通用题） |
 | `publishedAt` | date | 发布日期 |
 | `summary` | string | 卡片摘要 |
 | `featured` | boolean | 是否精选 |
+
+#### `questions` 格式
+
+```yaml
+questions:
+  - q: "题目文字"
+    choices:
+      - text: "选项A"
+      - text: "选项B"
+      - text: "选项C"
+      - text: "选项D"
+    answer: 2        # 正确选项的 0-based 下标（0=A, 1=B, 2=C, 3=D）
+```
+
+每案 **3 题**，建议覆盖：Q1 核心嫌疑人、Q2 关键物证/手法、Q3 真相方向。未设 `questions` 时组件回退至 3 道通用题（无答案评分）。
 
 ---
 
@@ -430,8 +470,9 @@ export const evidence = [
 - 案卷详情页（档案风排版）
 - 案卷进度：未解 / 推理中 / 已结案（`localStorage`，揭晓后即时更新）
 - 档案馆：按状态 / 难度 / 类型 / 场景筛选
-- 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`）
-- 侦探笔记（自动保存）
+- 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`；揭晓后自动对比评分）
+- **推理判断**：案卷专属选择题（每案 3 题），揭晓后自动评分并显示正确答案（`DetectiveNotes`）
+- **案件总结**（`CaseSummary`）：揭晓后展示物证识别 + 推理判断综合评分，按表现分 perfect / good / low 三级显示
 - 折叠揭晓（`<details>`，不持久化展开状态）
 - 阅读进度条、亮暗色模式
 - SEO + sitemap + Open Graph
@@ -505,6 +546,15 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — 推理判断交互化 + 案件总结
+
+- **`DetectiveNotes` 重构**：自由文本笔记改为案卷专属选择题；揭晓后自动对比答案，显示「✓ 推断正确」/ 「✗ 推断有误」/ 「← 正确答案」badge，并在组件内显示得分横幅（perfect / good / low 三级）
+- **`CaseSummary` 新增组件**：揭晓后 800ms 淡入，汇总「物证识别」与「推理判断」两项评分，按综合表现显示四级点评文案
+- **`EvidenceList` 评分写入**：揭晓时记录 `{ marked, total, correct, evaluated }` 至 `localStorage`，供 `CaseSummary` 读取
+- **content schema 扩展**：`src/content.config.ts` 新增可选字段 `questions`（含 `q` / `choices` / `answer`）
+- **`[slug].astro` 注入机制**：`is:inline define:vars` 将 frontmatter `questions` 注入 `window.__inferredDeductionItems`，组件优先读取页面注入值，回退通用三题
+- **全库 100 篇案卷**均已在 frontmatter 补写 3 道专属推理选择题（Q1 嫌疑人 / Q2 手法物证 / Q3 真相方向），选项使用案件内真实人名与物证，含迷惑性干扰项
 
 ### 2026-06-21 — 线索扩充（053–072）
 
