@@ -10,7 +10,7 @@
 ```
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
-- **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
+- **技术栈**：Astro 6 + MDX + Cloudflare Workers（`@astrojs/cloudflare@13`，SSR）
 - **当前规模**：**105 篇案卷**（001–105）+ **72 篇线索**
 - **最新提交**：见下方更新日志
 
@@ -41,13 +41,11 @@
    - **5–6 个** `PersonCard`：死者 + 真凶 + **至少 2 个红鲱鱼嫌疑人**（参考 001、091）
    - **4 个** `TestimonyBlock`：互相矛盾、各为其主
    - **禁止 `**` 加粗**：物证 `label` 在 `EvidenceList` 中按纯文本渲染，星号会原样显示
-   - **禁止在 JS 字符串内使用 ASCII 直双引号**：`export const evidence` 块和 `DeductionQuestions` 的 `questions={[...]}` 均为 JavaScript 上下文，字符串由 `"` 界定；若文案内需引用文字，必须改用中文角括号 `「」`，否则 acorn 解析器会将内层 `"` 视为字符串结束符，导致 `pnpm build` 报错（`Could not parse expression with acorn`）。
    - `readingTime` 进阶案卷用 `"12-16 分钟"`
    - 第六节在 `<DetectiveNotes>` 前写一句**推理引导语**（邀请读者先判断再揭晓）
    - 揭晓须说明红鲱鱼为何误导；`伏笔解析` **6–7 条**
-7. **`questions`**：每案 **3 道**选择题，必须覆盖 Q1 嫌疑人、Q2 手法/物证、Q3 真相方向；`answer` 为 0-based 下标；选项须使用案件内真实人名和物证，并包含有迷惑性的干扰项。YAML 字符串内含双引号时改用中文书名号 `「」` 避免解析错误。
-9. **`featured`**：每批约 25–30% 为 `true`；首页精选仅展示最新 10 篇 featured（`index.astro` `.slice(0, 10)`）。**近邻相似案卷只保留一篇 featured**（见下方审计备忘）。
-10. **slug**：文件名即 URL，英文 kebab-case，如 `the-coat-from-yesterdays-reel.mdx` → `/cases/the-coat-from-yesterdays-reel`。
+7. **`featured`**：每批约 25–30% 为 `true`；首页精选仅展示最新 10 篇 featured（`index.astro` `.slice(0, 10)`）。**近邻相似案卷只保留一篇 featured**（见下方审计备忘）。
+8. **slug**：文件名即 URL，英文 kebab-case，如 `the-coat-from-yesterdays-reel.mdx` → `/cases/the-coat-from-yesterdays-reel`。
 
 ### 案卷状态（站点 vs 读者进度）
 
@@ -63,11 +61,10 @@
 1. 打开案卷页 → 若非已结案，写入 `reading`
 2. 展开「揭晓真相」→ 写入 `solved`，并派发 `inferred:case-solved` 事件
 
-**显示位置**（`e648432` + `9b2bc04` 修复）：
+**显示位置**（`e648432` 修复）：
 
 - 列表卡片 `CaseCard.astro`：`data-progress-badge`
-- 详情页眉：`data-case-eyebrow-text`，初始渲染中文「未解/已解」，JS 根据 localStorage 同步为「推理中/已结案」
-- `CaseMeta.astro`：读取同一 `localStorage` 键，揭晓后即时更新（已移除 `data-progress-badge` 无效逻辑）
+- 详情页眉 + `CaseMeta.astro`：读取同一 `localStorage` 键，揭晓后即时更新
 
 新增案卷 `status` 保持 `"unsolved"` 即可；读者进度由前端自动管理。
 
@@ -137,28 +134,6 @@ scene:
   - "场景二"
 readingTime: "12-16 分钟"
 clueCount: 7
-questions:
-  - q: "案件中最核心的嫌疑人是谁？"
-    choices:
-      - text: "人物A"
-      - text: "人物B"
-      - text: "人物C"
-      - text: "人物D"
-    answer: 0
-  - q: "最关键的作案手法或物证是什么？"
-    choices:
-      - text: "手法/物证A"
-      - text: "手法/物证B"
-      - text: "手法/物证C"
-      - text: "手法/物证D"
-    answer: 2
-  - q: "案件的核心真相最接近哪个方向？"
-    choices:
-      - text: "方向A"
-      - text: "方向B"
-      - text: "方向C"
-      - text: "方向D"
-    answer: 1
 publishedAt: "2026-06-20"
 summary: "一句话摘要，点明核心矛盾。"
 featured: false
@@ -243,10 +218,6 @@ export const evidence = [
 </RevealAnswer>
 ```
 
-### Astro 组件开发注意事项
-
-**`<style is:global>` 陷阱**：Astro `<style>` 块编译后会给选择器附加 `[data-astro-cid-xxx]` 属性限定符。但通过 `innerHTML` 或 `document.createElement` 在客户端脚本里动态创建的元素**不携带**该属性，导致 scoped 样式静默失效。凡是组件通过 JS 构建 DOM（如 `DetectiveNotes`、`CaseSummary`），必须使用 `<style is:global>`，并确保 class 名称唯一（`deduction__`、`case-summary__` 前缀已足够唯一）。
-
 ### frontmatter 字段（`src/content.config.ts`）
 
 | 字段 | 类型 | 说明 |
@@ -259,26 +230,9 @@ export const evidence = [
 | `scene` | string[] | 场景标签，通常 2 个 |
 | `readingTime` | string | 如 `"10-13 分钟"` |
 | `clueCount` | number | 通常 7 |
-| `hints` | string[]? | 折叠提示列表（可选） |
-| `questions` | array? | 推理判断选择题，格式见下（可选，默认使用通用题） |
 | `publishedAt` | date | 发布日期 |
 | `summary` | string | 卡片摘要 |
 | `featured` | boolean | 是否精选 |
-
-#### `questions` 格式
-
-```yaml
-questions:
-  - q: "题目文字"
-    choices:
-      - text: "选项A"
-      - text: "选项B"
-      - text: "选项C"
-      - text: "选项D"
-    answer: 2        # 正确选项的 0-based 下标（0=A, 1=B, 2=C, 3=D）
-```
-
-每案 **3 题**，建议覆盖：Q1 核心嫌疑人、Q2 关键物证/手法、Q3 真相方向。未设 `questions` 时组件回退至 3 道通用题（无答案评分）。
 
 ---
 
@@ -482,13 +436,11 @@ questions:
 - 案卷详情页（档案风排版）
 - 案卷进度：未解 / 推理中 / 已结案（`localStorage`，揭晓后即时更新）
 - 档案馆：按状态 / 难度 / 类型 / 场景筛选
-- 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`；揭晓后自动对比评分）
-- **推理判断**：案卷专属选择题（每案 3 题），选项带圆形 radio 指示器（选中→红色实心），揭晓后自动评分并按题显示✓/✗/答案（`DetectiveNotes`）
-- **案件总结**（`CaseSummary`）：揭晓后展示物证识别 + 推理判断综合评分（perfect / good / low 三级）及逐题选择明细（你选了X / 正确答案Y）
+- 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`）
+- 侦探笔记（自动保存）
 - 折叠揭晓（`<details>`，不持久化展开状态）
 - 阅读进度条、亮暗色模式
-- SEO + sitemap（带 lastmod / changefreq / priority 加权）+ Open Graph + JSON-LD
-- 搜索引擎站点验证（Google / Bing / 百度，验证码填于 `src/siteConfig.ts`）
+- SEO + sitemap + Open Graph
 - 分享：`ShareBar`（海报 / 微信 / 小红书 / 复制图文）
 - PWA：雷达眼 logo 图标（512/192/apple-touch/maskable）
 - 响应式布局，支持「添加到主屏幕」
@@ -560,51 +512,20 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
-### 2026-06-21 — 分享海报叠加成绩
+### 2026-06-21 — 安全加固 + Astro 6 升级
 
-- **成绩海报**：`ShareBar` 点击「朋友圈」/「小红书」时，先读 `localStorage['inferred:reveal:deduction:/cases/{slug}']`（揭晓答案时写入）；若有判断题成绩（`evaluated > 0`），则用 Canvas 在原静态海报底部叠加渐变遮罩 + 成绩文字（"全部命中 · N 题全对" 或 "推断命中 X/N 题"）+ 邀请语，导出 `image/jpeg` data URL 替换原图；下载文件名改为 `inferred-score.jpg`
-- **降级**：Canvas 失败或用户尚未揭晓时，沿用静态 `/share/cases/{slug}.jpg`
-- **缓存**：`_scoredSrc` 变量缓存首次生成结果，同一页面内第二次点击无需重复绘制
-- **纯客户端**：不需要服务端，无额外网络请求
-
-### 2026-06-21 — 首页快速入口 + Prettier
-
-- **首页三入口**：Hero 正下方新增 `<section class="quickstart">` 横排卡片组，三张卡片全由客户端 JS 驱动：
-  - **继续推理**（accent 边框）：读取 localStorage `inferred:progress:/cases/{slug}` = `'reading'` 的记录，找到则显示标题并链接，否则隐藏（`hidden` 属性）
-  - **今日推荐**：`Math.floor(Date.now() / 86400000) % caseIndex.length` 取每日固定推荐，刷新不换（同一天同一本）
-  - **随机开案**（`<button>`）：点击跳转 `caseIndex` 中随机案卷
-  - `caseIndex`（`slug` + `title` 数组）通过 `define:vars` 从服务端注入，无额外请求
-- **Prettier 格式化**：新增 `.prettierrc`（`prettier-plugin-astro`）和 `.prettierignore`；`package.json` 加 `format` 脚本；对全部 `src/**` 已做一次统一格式化
-
-### 2026-06-21 — SEO 收录强化
-
-- **搜索引擎站点验证**：新增 `src/siteConfig.ts` 集中管理 Google / Bing / 百度验证码；`BaseLayout` 按需输出 `google-site-verification` / `msvalidate.01` / `baidu-site-verification` 三个 `<meta>`，字段留空则不输出。拿到验证码填入对应字段提交即可
-- **sitemap 加权**：`astro.config.mjs` 为 `@astrojs/sitemap` 配置 `serialize`，按页面类型输出 `lastmod` / `changefreq` / `priority`：
-  - 首页 1.0、列表/档案/线索目录页 0.9（daily）
-  - 案卷详情：精选 `featured` 0.8、普通 0.7（monthly）
-  - 线索详情 0.6、其余静态页 0.5
-  - 案卷/线索 `lastmod` 取各自 frontmatter `publishedAt`（构建时用轻量正则读取，失败安全降级）
-- **类型安全**：`changefreq` 使用 `@astrojs/sitemap` 重导出的 `ChangeFreqEnum` 枚举成员（非字符串字面量），`pnpm check` 0 error
-- **实测**：构建后 `sitemap-0.xml` 仍含全部 177 条 URL，各条目带正确的 lastmod / changefreq / priority
-
-> 收录操作：Google Search Console 添加网域 → DNS 加 TXT 验证 → 提交 `sitemap-index.xml` → 用「网址检查」对首页与精选案卷「请求编入索引」。Bing/百度同理，验证码填入 `src/siteConfig.ts`。
-
-### 2026-06-21 — 交互优化与状态修复
-
-- **`DetectiveNotes` 选项可见性**：每个选项前新增 12px 圆形 radio 指示器（空心→填充红 `#c05555`），选中项同时加粗边框、浅玫瑰色背景，揭晓后绿色/琥珀色反馈；彻底解决「看不出自己选了什么」问题
-- **Astro 作用域 CSS 陷阱修复**：`<style>` 编译后选择器带 `[data-astro-cid-xxx]` 属性限定，`innerHTML` 注入的元素没有此属性，导致动态按钮样式静默失效；改为 `<style is:global>` 后所有 `deduction__` 样式正常应用（类名足够唯一，全局无冲突）
-- **`CaseSummary` 逐题详情**：`DetectiveNotes` 揭晓时将每题 `{ q, selectedText, answerText, verdict }` 写入 `localStorage` 的 `details[]`；`CaseSummary` 读取后渲染 ✓/✗/— 列表，显示「你选：X」和「正确：Y」，让复盘一目了然
-- **状态文案统一**：`[slug].astro` 页眉初始渲染改为中文「未解/已解」（原为英文），JS 同步函数与之对齐：`推理中 / 已结案 / 已解 / 未解` 四态均使用中文，全站状态标签一致
-- **`CaseMeta` 无效代码移除**：`inferred:case-solved` 监听器中移除了针对 `[data-progress-badge]` 的更新逻辑（该选择器在案卷详情页不存在），消除静默无效操作
-
-### 2026-06-21 — 推理判断交互化 + 案件总结
-
-- **`DetectiveNotes` 重构**：自由文本笔记改为案卷专属选择题；揭晓后自动对比答案，显示「✓ 推断正确」/ 「✗ 推断有误」/ 「← 正确答案」badge，并在组件内显示得分横幅（perfect / good / low 三级）
-- **`CaseSummary` 新增组件**：揭晓后 800ms 淡入，汇总「物证识别」与「推理判断」两项评分，按综合表现显示四级点评文案
-- **`EvidenceList` 评分写入**：揭晓时记录 `{ marked, total, correct, evaluated }` 至 `localStorage`，供 `CaseSummary` 读取
-- **content schema 扩展**：`src/content.config.ts` 新增可选字段 `questions`（含 `q` / `choices` / `answer`）
-- **`[slug].astro` 注入机制**：`is:inline define:vars` 将 frontmatter `questions` 注入 `window.__inferredDeductionItems`，组件优先读取页面注入值，回退通用三题
-- **全库 100 篇案卷**均已在 frontmatter 补写 3 道专属推理选择题（Q1 嫌疑人 / Q2 手法物证 / Q3 真相方向），选项使用案件内真实人名与物证，含迷惑性干扰项
+- **Astro 5 → 6**（`astro@6.4.8`）+ **`@astrojs/cloudflare@13`**（修复多项 CVE）
+  - `astro.config.mjs` 新增 `output: 'server'`（Astro 6 SSR 必填）
+  - `wrangler.jsonc` 去除 `main` 字段（`@cloudflare/vite-plugin@1.42` 改由 adapter 自动注入）
+  - `wrangler` 升至 `^4.103.0`（满足 `@cloudflare/vite-plugin` peer dependency）
+- **HTTP 安全响应头**：新增 `src/middleware.ts`
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`（`frame-ancestors 'none'`）
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+  - `Content-Security-Policy`：`default-src 'self'`，`unsafe-inline` 限于 script/style（Astro `define:vars` / `is:inline` 必需），`img-src data: blob:`（canvas 海报）
+- **修复 XSS 风险**：`ShareBar.astro` 将 `posterSteps.innerHTML = ...` 改为 `replaceChildren` + `createElement` + `textContent`
+- **修复 localStorage 注入风险**：`CaseSummary.astro` 对 `verdict` 字段做白名单校验（`Set(['correct','wrong','unanswered'])`）后再写入 `data-verdict` 属性
 
 ### 2026-06-21 — 线索扩充（053–072）
 
