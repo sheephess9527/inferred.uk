@@ -417,15 +417,15 @@ const weiboHref =
 
           const W = c.width;
           const H = c.height;
-          // 0.16 → 渐变从 84% 处开始，低于二维码底部（约 80%），不遮挡扫码
-          const barH = Math.round(H * 0.16);
+          // 渐变从 91% 处开始，二维码底部约在 88%，留出安全间距
+          const barH = Math.round(H * 0.09);
           const py = H - barH;
           const px = Math.round(W * 0.055);
 
-          // 渐变遮罩
+          // 渐变遮罩（仅覆盖二维码以下的窄条带）
           const grad = ctx.createLinearGradient(0, py, 0, H);
           grad.addColorStop(0, 'rgba(14,14,12,0)');
-          grad.addColorStop(0.28, 'rgba(14,14,12,0.88)');
+          grad.addColorStop(0.35, 'rgba(14,14,12,0.9)');
           grad.addColorStop(1, 'rgba(14,14,12,0.96)');
           ctx.fillStyle = grad;
           ctx.fillRect(0, py, W, barH);
@@ -438,15 +438,15 @@ const weiboHref =
           ctx.textAlign = 'left';
           ctx.textBaseline = 'alphabetic';
 
-          // 成绩行
-          ctx.font = `600 ${Math.round(W * 0.05)}px "Helvetica Neue",Arial,sans-serif`;
+          // 成绩行（字号略减以适配更窄条带）
+          ctx.font = `600 ${Math.round(W * 0.043)}px "Helvetica Neue",Arial,sans-serif`;
           ctx.fillStyle = isPerfect ? '#D4A853' : '#E8E2D2';
-          ctx.fillText(scoreText, px, H - Math.round(barH * 0.4));
+          ctx.fillText(scoreText, px, Math.round(H * 0.951));
 
           // 邀请行
-          ctx.font = `${Math.round(W * 0.032)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.font = `${Math.round(W * 0.028)}px "Helvetica Neue",Arial,sans-serif`;
           ctx.fillStyle = 'rgba(232,226,210,0.52)';
-          ctx.fillText('你能看破真相吗？→ inferred.uk', px, H - Math.round(barH * 0.14));
+          ctx.fillText('你能看破真相吗？→ inferred.uk', px, Math.round(H * 0.984));
 
           try {
             resolve(c.toDataURL('image/jpeg', 0.9));
