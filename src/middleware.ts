@@ -23,14 +23,13 @@ const SECURITY_HEADERS: Record<string, string> = {
   ].join('; '),
 };
 
-export const onRequest = defineMiddleware((_ctx, next) => {
-  return next().then((response) => {
-    const ct = response.headers.get('content-type') ?? '';
-    if (!ct.startsWith('text/html')) return response;
-    const headers = new Headers(response.headers);
-    for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
-      headers.set(k, v);
-    }
-    return new Response(response.body, { status: response.status, headers });
-  });
+export const onRequest = defineMiddleware(async (_ctx, next) => {
+  const response = await next();
+  const ct = response.headers.get('content-type') ?? '';
+  if (!ct.startsWith('text/html')) return response;
+  const headers = new Headers(response.headers);
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
+    headers.set(k, v);
+  }
+  return new Response(response.body, { status: response.status, headers });
 });
