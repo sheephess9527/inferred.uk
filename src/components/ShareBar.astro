@@ -396,27 +396,113 @@ const weiboHref =
       return ok;
     }
 
-    function openPoster(opts: { steps: string[]; actionHref?: string }) {
+    // 在原海报上叠加判断题成绩条，返回 data URL；失败返回 null
+    function buildScoredPosterDataUrl(
+      baseUrl: string,
+      score: { correct: number; evaluated: number }
+    ): Promise<string | null> {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth || 1200;
+          c.height = img.naturalHeight || 630;
+          const ctx = c.getContext('2d');
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(img, 0, 0);
+
+          const W = c.width;
+          const H = c.height;
+          const barH = Math.round(H * 0.24);
+          const py = H - barH;
+          const px = Math.round(W * 0.055);
+
+          // 渐变遮罩
+          const grad = ctx.createLinearGradient(0, py, 0, H);
+          grad.addColorStop(0, 'rgba(14,14,12,0)');
+          grad.addColorStop(0.28, 'rgba(14,14,12,0.88)');
+          grad.addColorStop(1, 'rgba(14,14,12,0.96)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, py, W, barH);
+
+          const isPerfect = score.evaluated > 0 && score.correct === score.evaluated;
+          const scoreText = isPerfect
+            ? `全部命中 · 推断了所有 ${score.evaluated} 道题`
+            : `推断命中 ${score.correct} / ${score.evaluated} 题`;
+
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'alphabetic';
+
+          // 成绩行
+          ctx.font = `600 ${Math.round(W * 0.05)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.fillStyle = isPerfect ? '#D4A853' : '#E8E2D2';
+          ctx.fillText(scoreText, px, H - Math.round(barH * 0.4));
+
+          // 邀请行
+          ctx.font = `${Math.round(W * 0.032)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.fillStyle = 'rgba(232,226,210,0.52)';
+          ctx.fillText('你能看破真相吗？→ inferred.uk', px, H - Math.round(barH * 0.14));
+
+          try {
+            resolve(c.toDataURL('image/jpeg', 0.9));
+          } catch {
+            resolve(null);
+          }
+        };
+        img.onerror = () => resolve(null);
+        img.src = baseUrl;
+      });
+    }
+
+    // 有成绩时返回叠加后的 data URL，否则返回原静态 URL（结果缓存一次）
+    let _scoredSrc: string | null | undefined;
+    async function getEffectivePosterSrc(): Promise<string> {
+      if (!poster) return poster;
+      if (_scoredSrc !== undefined) return _scoredSrc ?? poster;
+      try {
+        const raw = localStorage.getItem(`inferred:reveal:deduction:${location.pathname}`);
+        if (raw) {
+          const data = JSON.parse(raw) as { correct: number; evaluated: number };
+          if (data.evaluated > 0) {
+            _scoredSrc = await buildScoredPosterDataUrl(poster, data);
+            return _scoredSrc ?? poster;
+          }
+        }
+      } catch {}
+      _scoredSrc = null;
+      return poster;
+    }
+
+    function openPoster(opts: { steps: string[]; actionHref?: string; src?: string }) {
       if (!modal || !poster) return;
 
-      // 只在第一次打开时设置 src（预加载已把图片放进缓存，几乎瞬间完成）
-      if (!posterImg?.getAttribute('src')) {
+      const effectiveSrc = opts.src ?? poster;
+
+      // src 变化时重新加载（首次或切换成绩版/静态版）
+      if (posterImg && posterImg.getAttribute('src') !== effectiveSrc) {
         posterFrame?.setAttribute('data-loading', '');
-        if (posterImg) {
-          posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
-          posterImg.onerror = () => {
-            posterFrame?.removeAttribute('data-loading');
-            if (posterSteps) {
-              posterSteps.innerHTML = '<li>海报加载失败，请稍后重试或直接复制链接</li>';
-            }
-          };
-          posterImg.src = poster;
-        }
+        posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
+        posterImg.onerror = () => {
+          posterFrame?.removeAttribute('data-loading');
+          if (posterSteps) {
+            posterSteps.innerHTML = '<li>海报加载失败，请稍后重试或直接复制链接</li>';
+          }
+        };
+        posterImg.src = effectiveSrc;
       }
 
       if (posterDl) {
-        posterDl.href = poster;
-        posterDl.setAttribute('download', poster.split('/').pop() || 'inferred.jpg');
+        posterDl.href = effectiveSrc;
+        posterDl.setAttribute(
+          'download',
+          effectiveSrc.startsWith('data:')
+            ? 'inferred-score.jpg'
+            : (effectiveSrc.split('/').pop() || 'inferred.jpg')
+        );
       }
 
       if (posterSteps) {
@@ -468,9 +554,11 @@ const weiboHref =
       showToast(ok ? '链接已复制' : '复制失败，请手动复制');
     });
 
-    // 朋友圈：打开海报 + 三步微信指引
-    wechatBtn?.addEventListener('click', () => {
+    // 朋友圈：有成绩则叠加成绩条，否则用静态海报
+    wechatBtn?.addEventListener('click', async () => {
+      const src = await getEffectivePosterSrc();
       openPoster({
+        src,
         steps: [
           '长按图片 → 保存到相册',
           '打开微信 → 发现 → 朋友圈',
@@ -479,14 +567,15 @@ const weiboHref =
       });
     });
 
-    // 小红书：先复制文案，再打开海报 + 三步引导 + 跳转按鈕
+    // 小红书：先复制文案，再打开（有成绩时展示叠加版）
     xhsBtn?.addEventListener('click', async () => {
       const caption = [title, text, url, '#推理 #悬疑 #解谜 #本格推理 #Inferred']
         .filter(Boolean)
         .join('\n\n');
-      const copied = await copyText(caption);
+      const [copied, src] = await Promise.all([copyText(caption), getEffectivePosterSrc()]);
 
       openPoster({
+        src,
         steps: [
           copied ? '✓ 文案已自动复制' : '手动复制文案（稍后粘贴）',
           '长按图片 → 保存到相册',

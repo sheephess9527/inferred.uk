@@ -553,6 +553,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-06-21 — 分享海报叠加成绩
+
+- **成绩海报**：`ShareBar` 点击「朋友圈」/「小红书」时，先读 `localStorage['inferred:reveal:deduction:/cases/{slug}']`（揭晓答案时写入）；若有判断题成绩（`evaluated > 0`），则用 Canvas 在原静态海报底部叠加渐变遮罩 + 成绩文字（"全部命中 · N 题全对" 或 "推断命中 X/N 题"）+ 邀请语，导出 `image/jpeg` data URL 替换原图；下载文件名改为 `inferred-score.jpg`
+- **降级**：Canvas 失败或用户尚未揭晓时，沿用静态 `/share/cases/{slug}.jpg`
+- **缓存**：`_scoredSrc` 变量缓存首次生成结果，同一页面内第二次点击无需重复绘制
+- **纯客户端**：不需要服务端，无额外网络请求
+
 ### 2026-06-21 — 首页快速入口 + Prettier
 
 - **首页三入口**：Hero 正下方新增 `<section class="quickstart">` 横排卡片组，三张卡片全由客户端 JS 驱动：
