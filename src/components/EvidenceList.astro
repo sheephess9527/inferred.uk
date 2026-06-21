@@ -35,9 +35,7 @@ const hasAnswers = items.some((item) => item.answer);
       <span class="dot dot--misleading"></span>误导 ·
       <span class="dot dot--excluded"></span>排除。标记会保存在本设备上。
     </p>
-    {hasAnswers && (
-      <p class="evidence__score mono" data-evidence-score hidden></p>
-    )}
+    {hasAnswers && <p class="evidence__score mono" data-evidence-score hidden />}
   </header>
 
   <ol class="evidence__list">
@@ -63,7 +61,12 @@ const hasAnswers = items.some((item) => item.answer);
               未标记
             </span>
             {item.answer && (
-              <span class="evidence__verdict mono" data-evidence-verdict hidden aria-hidden="true"></span>
+              <span
+                class="evidence__verdict mono"
+                data-evidence-verdict
+                hidden
+                aria-hidden="true"
+              />
             )}
           </button>
         </li>
@@ -95,10 +98,18 @@ const hasAnswers = items.some((item) => item.answer);
     margin: 0 0.2em 0 0.5em;
     vertical-align: baseline;
   }
-  .dot--important { background: var(--color-gold); }
-  .dot--suspicious { background: var(--color-accent); }
-  .dot--misleading { background: var(--color-accent-cold); }
-  .dot--excluded { background: var(--color-muted); }
+  .dot--important {
+    background: var(--color-gold);
+  }
+  .dot--suspicious {
+    background: var(--color-accent);
+  }
+  .dot--misleading {
+    background: var(--color-accent-cold);
+  }
+  .dot--excluded {
+    background: var(--color-muted);
+  }
 
   /* 评分总结 */
   .evidence__score {
@@ -148,7 +159,9 @@ const hasAnswers = items.some((item) => item.answer);
     color: var(--color-paper);
     cursor: pointer;
     font: inherit;
-    transition: border-color 0.18s ease, background 0.18s ease;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease;
   }
   .evidence__btn:hover {
     background: var(--color-surface-2);
@@ -190,17 +203,23 @@ const hasAnswers = items.some((item) => item.answer);
   }
 
   /* 各标记状态：左边框 + 标签着色 */
-  .evidence__btn[data-state='important'] { border-left-color: var(--color-gold); }
+  .evidence__btn[data-state='important'] {
+    border-left-color: var(--color-gold);
+  }
   .evidence__btn[data-state='important'] .evidence__mark {
     color: var(--color-gold);
     border-color: var(--color-gold);
   }
-  .evidence__btn[data-state='suspicious'] { border-left-color: var(--color-accent); }
+  .evidence__btn[data-state='suspicious'] {
+    border-left-color: var(--color-accent);
+  }
   .evidence__btn[data-state='suspicious'] .evidence__mark {
     color: var(--color-accent);
     border-color: var(--color-accent);
   }
-  .evidence__btn[data-state='misleading'] { border-left-color: var(--color-accent-cold); }
+  .evidence__btn[data-state='misleading'] {
+    border-left-color: var(--color-accent-cold);
+  }
   .evidence__btn[data-state='misleading'] .evidence__mark {
     color: var(--color-accent-cold);
     border-color: var(--color-accent-cold);
@@ -258,17 +277,31 @@ const hasAnswers = items.some((item) => item.answer);
   }
 
   @keyframes verdict-in {
-    from { opacity: 0; transform: scale(0.85); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @keyframes score-in {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .evidence__verdict,
-    .evidence__score { animation: none; }
+    .evidence__score {
+      animation: none;
+    }
   }
 </style>
 
@@ -302,10 +335,7 @@ const hasAnswers = items.some((item) => item.answer);
   }
 
   /** 将旧版按数组下标的标记迁移到按物证内容 hash 存储 */
-  function migrateLegacy(
-    caseId: string,
-    buttons: NodeListOf<HTMLElement>
-  ): Record<string, State> {
+  function migrateLegacy(caseId: string, buttons: NodeListOf<HTMLElement>): Record<string, State> {
     const current = load(caseId);
     if (Object.keys(current).length > 0) return current;
 
@@ -345,10 +375,7 @@ const hasAnswers = items.some((item) => item.answer);
     const label = LABELS[state];
     if (mark) mark.textContent = label;
     const text = btn.querySelector('.evidence__label')?.textContent ?? '';
-    btn.setAttribute(
-      'aria-label',
-      `物证：${text}。当前标记：${label}。点击切换标记。`
-    );
+    btn.setAttribute('aria-label', `物证：${text}。当前标记：${label}。点击切换标记。`);
   }
 
   /** 揭晓答案后：显示每条物证的裁决 + 总评分，并将结果写入 localStorage 供总结面板读取 */

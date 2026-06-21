@@ -19,24 +19,26 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
   <p class="diff-vote__prompt">这道题，你觉得实际有多难？</p>
 
   <div class="diff-vote__stars" data-vote-stars role="radiogroup" aria-label="选择难度星级">
-    {[1, 2, 3, 4, 5].map((n) => (
-      <button
-        type="button"
-        class="diff-vote__star"
-        data-vote-n={n}
-        aria-label={`${n} 星`}
-        aria-pressed="false"
-      >★</button>
-    ))}
+    {
+      [1, 2, 3, 4, 5].map((n) => (
+        <button
+          type="button"
+          class="diff-vote__star"
+          data-vote-n={n}
+          aria-label={`${n} 星`}
+          aria-pressed="false"
+        >
+          ★
+        </button>
+      ))
+    }
   </div>
 
   <p class="diff-vote__ref mono text-muted">
     官方设定：<span class="diff-vote__official">{officialStars}</span>
   </p>
 
-  <p class="diff-vote__thanks mono" data-vote-thanks hidden>
-    已记录，感谢反馈。
-  </p>
+  <p class="diff-vote__thanks mono" data-vote-thanks hidden>已记录，感谢反馈。</p>
 </aside>
 
 <style>
@@ -70,7 +72,10 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
     width: 2.5rem;
     height: 2.5rem;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background 0.15s ease;
     line-height: 1;
     padding: 0;
   }
@@ -101,8 +106,14 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
     color: var(--color-gold);
   }
   @keyframes vote-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
 
@@ -116,11 +127,19 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
     const thanksEl = el.querySelector<HTMLElement>('[data-vote-thanks]');
 
     function isSolved(): boolean {
-      try { return localStorage.getItem(progressKey) === 'solved'; } catch { return false; }
+      try {
+        return localStorage.getItem(progressKey) === 'solved';
+      } catch {
+        return false;
+      }
     }
 
     function savedRating(): number {
-      try { return Number(localStorage.getItem(storageKey)) || 0; } catch { return 0; }
+      try {
+        return Number(localStorage.getItem(storageKey)) || 0;
+      } catch {
+        return 0;
+      }
     }
 
     function paintStars(selected: number) {
@@ -159,7 +178,9 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
       btn.addEventListener('click', () => {
         const n = Number(btn.dataset.voteN);
         paintStars(n);
-        try { localStorage.setItem(storageKey, String(n)); } catch {}
+        try {
+          localStorage.setItem(storageKey, String(n));
+        } catch {}
         if (thanksEl) thanksEl.hidden = false;
       });
     });

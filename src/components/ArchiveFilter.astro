@@ -31,78 +31,156 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     <div class="archive__group">
       <span class="archive__group-label">进度</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="progress" data-value="" type="button" aria-pressed="true">全部</button>
-        <button class="chip" data-filter="progress" data-value="fresh" type="button" aria-pressed="false">未解</button>
-        <button class="chip" data-filter="progress" data-value="reading" type="button" aria-pressed="false">推理中</button>
-        <button class="chip" data-filter="progress" data-value="closed" type="button" aria-pressed="false">已结案</button>
-        <button class="chip" data-filter="progress" data-value="site-solved" type="button" aria-pressed="false">已解</button>
+        <button
+          class="chip is-on"
+          data-filter="progress"
+          data-value=""
+          type="button"
+          aria-pressed="true">全部</button
+        >
+        <button
+          class="chip"
+          data-filter="progress"
+          data-value="fresh"
+          type="button"
+          aria-pressed="false">未解</button
+        >
+        <button
+          class="chip"
+          data-filter="progress"
+          data-value="reading"
+          type="button"
+          aria-pressed="false">推理中</button
+        >
+        <button
+          class="chip"
+          data-filter="progress"
+          data-value="closed"
+          type="button"
+          aria-pressed="false">已结案</button
+        >
+        <button
+          class="chip"
+          data-filter="progress"
+          data-value="site-solved"
+          type="button"
+          aria-pressed="false">已解</button
+        >
       </div>
     </div>
 
     <div class="archive__group">
       <span class="archive__group-label">难度</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="difficulty" data-value="" type="button" aria-pressed="true">全部</button>
-        {difficulties.map((d) => (
-          <button class="chip mono" data-filter="difficulty" data-value={String(d)} type="button" aria-pressed="false">
-            {stars(d)}
-          </button>
-        ))}
+        <button
+          class="chip is-on"
+          data-filter="difficulty"
+          data-value=""
+          type="button"
+          aria-pressed="true">全部</button
+        >
+        {
+          difficulties.map((d) => (
+            <button
+              class="chip mono"
+              data-filter="difficulty"
+              data-value={String(d)}
+              type="button"
+              aria-pressed="false"
+            >
+              {stars(d)}
+            </button>
+          ))
+        }
       </div>
     </div>
 
     <div class="archive__group">
       <span class="archive__group-label">类型</span>
       <div class="archive__chips">
-        <button class="chip is-on" data-filter="type" data-value="" type="button" aria-pressed="true">全部</button>
-        {allTypes.map((t) => (
-          <button class="chip" data-filter="type" data-value={t} type="button" aria-pressed="false">{t}</button>
-        ))}
+        <button
+          class="chip is-on"
+          data-filter="type"
+          data-value=""
+          type="button"
+          aria-pressed="true">全部</button
+        >
+        {
+          allTypes.map((t) => (
+            <button
+              class="chip"
+              data-filter="type"
+              data-value={t}
+              type="button"
+              aria-pressed="false"
+            >
+              {t}
+            </button>
+          ))
+        }
       </div>
     </div>
 
-    {allScenes.length > 0 && (
-      <div class="archive__group">
-        <span class="archive__group-label">场景</span>
-        <div class="archive__chips">
-          <button class="chip is-on" data-filter="scene" data-value="" type="button" aria-pressed="true">全部</button>
-          {allScenes.map((s) => (
-            <button class="chip" data-filter="scene" data-value={s} type="button" aria-pressed="false">{s}</button>
-          ))}
+    {
+      allScenes.length > 0 && (
+        <div class="archive__group">
+          <span class="archive__group-label">场景</span>
+          <div class="archive__chips">
+            <button
+              class="chip is-on"
+              data-filter="scene"
+              data-value=""
+              type="button"
+              aria-pressed="true"
+            >
+              全部
+            </button>
+            {allScenes.map((s) => (
+              <button
+                class="chip"
+                data-filter="scene"
+                data-value={s}
+                type="button"
+                aria-pressed="false"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
   </div>
 
   <p class="archive__count text-muted" data-archive-count aria-live="polite"></p>
 
   <ul class="archive__grid">
-    {cases.map((c) => (
-      <li
-        data-archive-item
-        data-case-slug={c.slug}
-        data-types={c.types.join('|')}
-        data-scene={c.scene.join('|')}
-        data-difficulty={String(c.difficulty)}
-        data-site-status={c.status}
-      >
-        <CaseCard
-          caseId={c.caseId}
-          title={c.title}
-          summary={c.summary}
-          difficulty={c.difficulty}
-          types={c.types}
-          readingTime={c.readingTime}
-          status={c.status}
-          slug={c.slug}
-        />
-      </li>
-    ))}
+    {
+      cases.map((c) => (
+        <li
+          data-archive-item
+          data-case-slug={c.slug}
+          data-types={c.types.join('|')}
+          data-scene={c.scene.join('|')}
+          data-difficulty={String(c.difficulty)}
+          data-site-status={c.status}
+        >
+          <CaseCard
+            caseId={c.caseId}
+            title={c.title}
+            summary={c.summary}
+            difficulty={c.difficulty}
+            types={c.types}
+            readingTime={c.readingTime}
+            status={c.status}
+            slug={c.slug}
+          />
+        </li>
+      ))
+    }
   </ul>
 
-  <p class="archive__empty text-muted" data-archive-empty hidden>
-    没有符合当前筛选条件的案卷。
-  </p>
+  <p class="archive__empty text-muted" data-archive-empty hidden>没有符合当前筛选条件的案卷。</p>
 </div>
 
 <style>
@@ -142,7 +220,10 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     background: transparent;
     color: var(--color-muted);
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background 0.15s ease;
   }
   .chip:hover {
     color: var(--color-paper);
@@ -211,22 +292,18 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         if (state.progress === 'site-solved' && site !== 'solved') return false;
       }
       if (state.difficulty && el.dataset.difficulty !== state.difficulty) return false;
-      if (state.type && !(el.dataset.types ?? '').split('|').includes(state.type))
-        return false;
-      if (state.scene && !(el.dataset.scene ?? '').split('|').includes(state.scene))
-        return false;
+      if (state.type && !(el.dataset.types ?? '').split('|').includes(state.type)) return false;
+      if (state.scene && !(el.dataset.scene ?? '').split('|').includes(state.scene)) return false;
       return true;
     };
 
     const setChip = (group: string, value: string) => {
       state[group] = value;
-      root
-        .querySelectorAll<HTMLButtonElement>(`.chip[data-filter="${group}"]`)
-        .forEach((c) => {
-          const on = (c.dataset.value ?? '') === value;
-          c.classList.toggle('is-on', on);
-          c.setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
+      root.querySelectorAll<HTMLButtonElement>(`.chip[data-filter="${group}"]`).forEach((c) => {
+        const on = (c.dataset.value ?? '') === value;
+        c.classList.toggle('is-on', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
     };
 
     const syncUrl = () => {

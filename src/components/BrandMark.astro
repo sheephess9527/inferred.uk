@@ -24,22 +24,23 @@ const { size = 28, class: className, title } = Astro.props;
   {title && <title>{title}</title>}
 
   <!-- 雷达双环 -->
-  <circle cx="256" cy="256" r="196" stroke="var(--color-line)" stroke-width="16" />
-  <circle cx="256" cy="256" r="150" stroke="var(--color-line)" stroke-width="4" opacity="0.7" />
+  <circle cx="256" cy="256" r="196" stroke="var(--color-line)" stroke-width="16"></circle>
+  <circle cx="256" cy="256" r="150" stroke="var(--color-line)" stroke-width="4" opacity="0.7"
+  ></circle>
 
   <!-- 线索网络：从眼睛辐射到各节点 -->
   <g stroke="var(--color-paper)" stroke-width="13" stroke-linecap="round">
-    <line x1="248" y1="250" x2="236" y2="122" />
-    <line x1="248" y1="250" x2="148" y2="168" />
-    <line x1="248" y1="250" x2="150" y2="298" />
-    <line x1="258" y1="258" x2="346" y2="334" />
+    <line x1="248" y1="250" x2="236" y2="122"></line>
+    <line x1="248" y1="250" x2="148" y2="168"></line>
+    <line x1="248" y1="250" x2="150" y2="298"></line>
+    <line x1="258" y1="258" x2="346" y2="334"></line>
   </g>
 
   <!-- 米白线索节点 -->
   <g fill="var(--color-paper)">
-    <circle cx="236" cy="122" r="24" />
-    <circle cx="148" cy="168" r="24" />
-    <circle cx="150" cy="298" r="24" />
+    <circle cx="236" cy="122" r="24"></circle>
+    <circle cx="148" cy="168" r="24"></circle>
+    <circle cx="150" cy="298" r="24"></circle>
   </g>
 
   <!-- 洞察之眼 -->
@@ -47,11 +48,10 @@ const { size = 28, class: className, title } = Astro.props;
     d="M176 250 C212 206 284 206 320 250 C284 294 212 294 176 250 Z"
     fill="var(--color-bg)"
     stroke="var(--color-paper)"
-    stroke-width="13"
-  />
-  <circle cx="248" cy="250" r="23" fill="var(--color-paper)" />
-  <circle cx="248" cy="250" r="9" fill="var(--color-bg)" />
+    stroke-width="13"></path>
+  <circle cx="248" cy="250" r="23" fill="var(--color-paper)"></circle>
+  <circle cx="248" cy="250" r="9" fill="var(--color-bg)"></circle>
 
   <!-- 暗红结论点 -->
-  <circle cx="346" cy="334" r="27" fill="var(--color-accent)" />
+  <circle cx="346" cy="334" r="27" fill="var(--color-accent)"></circle>
 </svg>

@@ -3,13 +3,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArchiveFilter from '../components/ArchiveFilter.astro';
 
-const cases = (await getCollection('cases')).sort(
-  (a, b) => {
-    const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
-    if (dateDiff !== 0) return dateDiff;
-    return b.data.caseId.localeCompare(a.data.caseId);
-  }
-);
+const cases = (await getCollection('cases')).sort((a, b) => {
+  const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+  if (dateDiff !== 0) return dateDiff;
+  return b.data.caseId.localeCompare(a.data.caseId);
+});
 
 const items = cases.map((c) => ({
   caseId: c.data.caseId,

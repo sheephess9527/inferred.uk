@@ -4,12 +4,7 @@
 // 无需 props，路径取自客户端 location.pathname。
 ---
 
-<aside
-  class="case-summary"
-  data-case-summary
-  hidden
-  aria-label="案件总结"
->
+<aside class="case-summary" data-case-summary hidden aria-label="案件总结">
   <p class="eyebrow case-summary__eyebrow">Case Report · 案件总结</p>
   <div class="case-summary__rows" data-summary-rows></div>
   <p class="case-summary__verdict text-muted" data-summary-verdict></p>
@@ -117,9 +112,15 @@
     width: 1em;
     text-align: center;
   }
-  .case-summary__detail-item[data-verdict='correct'] .case-summary__detail-icon { color: #6abf8a; }
-  .case-summary__detail-item[data-verdict='wrong'] .case-summary__detail-icon { color: #e8a84c; }
-  .case-summary__detail-item[data-verdict='unanswered'] .case-summary__detail-icon { color: var(--color-muted); }
+  .case-summary__detail-item[data-verdict='correct'] .case-summary__detail-icon {
+    color: #6abf8a;
+  }
+  .case-summary__detail-item[data-verdict='wrong'] .case-summary__detail-icon {
+    color: #e8a84c;
+  }
+  .case-summary__detail-item[data-verdict='unanswered'] .case-summary__detail-icon {
+    color: var(--color-muted);
+  }
   .case-summary__detail-body {
     flex: 1;
     min-width: 0;
@@ -135,9 +136,16 @@
     margin: 0;
     line-height: 1.4;
   }
-  .case-summary__detail-item[data-verdict='correct'] .case-summary__detail-sel { color: #6abf8a; }
-  .case-summary__detail-item[data-verdict='wrong'] .case-summary__detail-sel { color: #e8a84c; }
-  .case-summary__detail-item[data-verdict='unanswered'] .case-summary__detail-sel { color: var(--color-muted); font-style: italic; }
+  .case-summary__detail-item[data-verdict='correct'] .case-summary__detail-sel {
+    color: #6abf8a;
+  }
+  .case-summary__detail-item[data-verdict='wrong'] .case-summary__detail-sel {
+    color: #e8a84c;
+  }
+  .case-summary__detail-item[data-verdict='unanswered'] .case-summary__detail-sel {
+    color: var(--color-muted);
+    font-style: italic;
+  }
   .case-summary__detail-ans {
     font-size: 0.78rem;
     margin: var(--space-1) 0 0;
@@ -145,11 +153,19 @@
   }
 
   @keyframes summary-in {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .case-summary { animation: none; }
+    .case-summary {
+      animation: none;
+    }
   }
 </style>
 
@@ -170,7 +186,11 @@
   }
 
   function esc(s: string): string {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   const el = document.querySelector<HTMLElement>('[data-case-summary]');
@@ -240,9 +260,11 @@
                 <div class="case-summary__detail-body">
                   <p class="case-summary__detail-q">Q${i + 1} · ${esc(d.q)}</p>
                   <p class="case-summary__detail-sel">${d.selectedText ? '你选：' + esc(d.selectedText) : '未作答'}</p>
-                  ${(d.verdict === 'wrong' || d.verdict === 'unanswered') && d.answerText
-                    ? `<p class="case-summary__detail-ans">正确：${esc(d.answerText)}</p>`
-                    : ''}
+                  ${
+                    (d.verdict === 'wrong' || d.verdict === 'unanswered') && d.answerText
+                      ? `<p class="case-summary__detail-ans">正确：${esc(d.answerText)}</p>`
+                      : ''
+                  }
                 </div>
               </li>`;
             });
@@ -254,10 +276,10 @@
       }
 
       if (verdictEl) {
-        const evPct = evidence && evidence.evaluated > 0
-          ? evidence.correct / evidence.evaluated : null;
-        const dePct = deduction && deduction.evaluated > 0
-          ? deduction.correct / deduction.evaluated : null;
+        const evPct =
+          evidence && evidence.evaluated > 0 ? evidence.correct / evidence.evaluated : null;
+        const dePct =
+          deduction && deduction.evaluated > 0 ? deduction.correct / deduction.evaluated : null;
 
         let msg: string;
         if (evPct !== null || dePct !== null) {
@@ -283,7 +305,11 @@
     }
 
     function isSolved(): boolean {
-      try { return localStorage.getItem(`inferred:progress:${path}`) === 'solved'; } catch { return false; }
+      try {
+        return localStorage.getItem(`inferred:progress:${path}`) === 'solved';
+      } catch {
+        return false;
+      }
     }
 
     // 已结案：等其他组件写入数据后再读取（100ms 足够）

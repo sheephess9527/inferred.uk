@@ -15,7 +15,8 @@
     "verify:og": "node scripts/verify-og.mjs",
     "og:export": "node scripts/export-og.mjs && node scripts/generate-share-images.mjs && node scripts/generate-share-posters.mjs",
     "deploy": "pnpm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "format": "prettier --write 'src/**/*.{astro,ts,js,mjs}' 'astro.config.mjs' '*.{ts,js,mjs}'"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -28,6 +29,8 @@
     "typescript": "^5.9.0"
   },
   "devDependencies": {
+    "prettier": "^3.8.4",
+    "prettier-plugin-astro": "^0.14.1",
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
     "wrangler": "^4.102.0"

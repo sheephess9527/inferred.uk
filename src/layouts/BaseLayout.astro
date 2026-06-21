@@ -76,15 +76,17 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- 搜索引擎站点验证（验证码填于 src/siteConfig.ts，留空则不输出） -->
-    {siteVerification.google && (
-      <meta name="google-site-verification" content={siteVerification.google} />
-    )}
-    {siteVerification.bing && (
-      <meta name="msvalidate.01" content={siteVerification.bing} />
-    )}
-    {siteVerification.baidu && (
-      <meta name="baidu-site-verification" content={siteVerification.baidu} />
-    )}
+    {
+      siteVerification.google && (
+        <meta name="google-site-verification" content={siteVerification.google} />
+      )
+    }
+    {siteVerification.bing && <meta name="msvalidate.01" content={siteVerification.bing} />}
+    {
+      siteVerification.baidu && (
+        <meta name="baidu-site-verification" content={siteVerification.baidu} />
+      )
+    }
 
     <!-- Open Graph / 微信·微博链接卡片 -->
     <meta property="og:type" content={ogType} />
@@ -113,9 +115,7 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    {jsonLd && (
-      <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    )}
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <!-- 主题在首帧前确定，避免闪烁；同步浏览器/PWA 顶栏颜色 -->
     <script is:inline>

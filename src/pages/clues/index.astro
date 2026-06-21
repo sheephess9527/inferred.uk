@@ -17,30 +17,30 @@ const articles = (await getCollection('clues')).sort((a, b) => {
   <section class="container page-head">
     <p class="eyebrow">Clues · 线索</p>
     <h1>线索</h1>
-    <p class="page-head__lead text-muted">
-      推理是可以练习的。这里收录帮助你更会读案卷的技巧。
-    </p>
+    <p class="page-head__lead text-muted">推理是可以练习的。这里收录帮助你更会读案卷的技巧。</p>
   </section>
 
   <section class="container clues-section">
     <ul class="clue-list">
-      {articles.map((a) => {
-        const dateStr = a.data.publishedAt.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        });
-        return (
-          <li>
-            <a class="clue-card" href={`/clues/${a.id}`}>
-              <h2 class="clue-card__title">{a.data.title}</h2>
-              <p class="clue-card__summary text-muted">{a.data.summary}</p>
-              <span class="clue-card__meta mono text-muted">{dateStr}</span>
-              <span class="clue-card__cta mono">阅读 →</span>
-            </a>
-          </li>
-        );
-      })}
+      {
+        articles.map((a) => {
+          const dateStr = a.data.publishedAt.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          return (
+            <li>
+              <a class="clue-card" href={`/clues/${a.id}`}>
+                <h2 class="clue-card__title">{a.data.title}</h2>
+                <p class="clue-card__summary text-muted">{a.data.summary}</p>
+                <span class="clue-card__meta mono text-muted">{dateStr}</span>
+                <span class="clue-card__cta mono">阅读 →</span>
+              </a>
+            </li>
+          );
+        })
+      }
     </ul>
   </section>
 </BaseLayout>
@@ -75,7 +75,9 @@ const articles = (await getCollection('clues')).sort((a, b) => {
     border-radius: var(--radius);
     background: var(--color-surface);
     color: inherit;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
   .clue-card:hover {
     border-color: color-mix(in srgb, var(--color-gold) 40%, var(--color-line));

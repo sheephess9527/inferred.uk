@@ -5,13 +5,14 @@ import CaseList from '../components/CaseList.astro';
 import NewsletterBox from '../components/NewsletterBox.astro';
 import BrandMark from '../components/BrandMark.astro';
 
-const allCases = (await getCollection('cases')).sort(
-  (a, b) => {
-    const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
-    if (dateDiff !== 0) return dateDiff;
-    return b.data.caseId.localeCompare(a.data.caseId);
-  }
-);
+const allCases = (await getCollection('cases')).sort((a, b) => {
+  const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+  if (dateDiff !== 0) return dateDiff;
+  return b.data.caseId.localeCompare(a.data.caseId);
+});
+
+// 供客户端脚本使用：slug + title
+const caseIndex = allCases.map((c) => ({ slug: c.id, title: c.data.title }));
 
 const featuredCases = allCases.filter((c) => c.data.featured);
 const showcase = featuredCases.length ? featuredCases : allCases;
@@ -84,6 +85,25 @@ const caseTypes = [
     <div class="hero__rule" aria-hidden="true"></div>
   </section>
 
+  <!-- 快速入口 -->
+  <section class="container quickstart" aria-label="快速入口">
+    <a class="qs-card qs-card--resume" href="#" data-qs-resume hidden>
+      <span class="qs-card__tag mono">继续推理</span>
+      <span class="qs-card__title" data-qs-resume-title>—</span>
+      <span class="qs-card__arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="qs-card qs-card--daily" href="#" data-qs-daily>
+      <span class="qs-card__tag mono">今日推荐</span>
+      <span class="qs-card__title" data-qs-daily-title>—</span>
+      <span class="qs-card__arrow" aria-hidden="true">→</span>
+    </a>
+    <button class="qs-card qs-card--random" type="button" data-qs-random>
+      <span class="qs-card__tag mono">随机开案</span>
+      <span class="qs-card__title">随缘，就这本</span>
+      <span class="qs-card__arrow" aria-hidden="true">→</span>
+    </button>
+  </section>
+
   <!-- 介绍 -->
   <section class="container intro">
     <p class="intro__text">
@@ -126,13 +146,15 @@ const caseTypes = [
         </div>
       </header>
       <ol class="how__steps">
-        {steps.map((s) => (
-          <li class="how__step">
-            <span class="how__num mono">{s.n}</span>
-            <h3 class="how__step-title">{s.title}</h3>
-            <p class="how__step-body text-muted">{s.body}</p>
-          </li>
-        ))}
+        {
+          steps.map((s) => (
+            <li class="how__step">
+              <span class="how__num mono">{s.n}</span>
+              <h3 class="how__step-title">{s.title}</h3>
+              <p class="how__step-body text-muted">{s.body}</p>
+            </li>
+          ))
+        }
       </ol>
     </div>
   </section>
@@ -147,14 +169,16 @@ const caseTypes = [
       <a class="section__more" href="/archive">按类型浏览 →</a>
     </header>
     <ul class="types">
-      {caseTypes.map((t) => (
-        <li class="types__item">
-          <a class="types__link" href={`/archive?type=${encodeURIComponent(t.label)}`}>
-            <span class="types__label">{t.label}</span>
-            <span class="types__desc text-muted">{t.desc}</span>
-          </a>
-        </li>
-      ))}
+      {
+        caseTypes.map((t) => (
+          <li class="types__item">
+            <a class="types__link" href={`/archive?type=${encodeURIComponent(t.label)}`}>
+              <span class="types__label">{t.label}</span>
+              <span class="types__desc text-muted">{t.desc}</span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </section>
 
@@ -227,12 +251,7 @@ const caseTypes = [
   .hero__rule {
     margin-top: var(--space-16);
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      var(--color-accent),
-      var(--color-line) 40%,
-      transparent
-    );
+    background: linear-gradient(90deg, var(--color-accent), var(--color-line) 40%, transparent);
   }
 
   .btn {
@@ -244,7 +263,10 @@ const caseTypes = [
     padding: 0.8em 1.6em;
     border-radius: var(--radius);
     border: 1px solid transparent;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
   }
   .btn--primary {
     background: var(--color-accent);
@@ -407,7 +429,111 @@ const caseTypes = [
     border-radius: 2px;
     transition: width 0.4s ease;
   }
+
+  /* 快速入口 */
+  .quickstart {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-3);
+    padding-block: var(--space-8);
+  }
+  .qs-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    text-decoration: none;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease;
+  }
+  .qs-card:hover {
+    border-color: var(--color-gold);
+    background: var(--color-surface-2);
+    color: inherit;
+  }
+  .qs-card__tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+  .qs-card__title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--color-paper);
+    flex: 1;
+    line-height: 1.4;
+  }
+  .qs-card__arrow {
+    font-size: 1.1rem;
+    color: var(--color-gold);
+    align-self: flex-end;
+  }
+  .qs-card--resume {
+    border-color: var(--color-accent);
+  }
+  .qs-card--resume .qs-card__tag {
+    color: var(--color-accent);
+  }
+  .qs-card--random .qs-card__title {
+    color: var(--color-muted);
+  }
 </style>
+
+<script define:vars={{ caseIndex }}>
+  // 继续上次推理
+  const resumeCard = document.querySelector('[data-qs-resume]');
+  const resumeTitle = document.querySelector('[data-qs-resume-title]');
+  if (resumeCard && resumeTitle) {
+    try {
+      let lastSlug = null;
+      let lastTitle = null;
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k?.startsWith('inferred:progress:') && localStorage.getItem(k) === 'reading') {
+          const casePath = k.replace('inferred:progress:', '');
+          const slug = casePath.replace(/^\/cases\//, '');
+          const match = caseIndex.find((c) => c.slug === slug);
+          if (match) {
+            lastSlug = slug;
+            lastTitle = match.title;
+          }
+        }
+      }
+      if (lastSlug && lastTitle) {
+        resumeCard.setAttribute('href', `/cases/${lastSlug}`);
+        resumeTitle.textContent = lastTitle;
+        resumeCard.removeAttribute('hidden');
+      }
+    } catch (_) {}
+  }
+
+  // 今日推荐
+  const dailyCard = document.querySelector('[data-qs-daily]');
+  const dailyTitle = document.querySelector('[data-qs-daily-title]');
+  if (dailyCard && dailyTitle && caseIndex.length > 0) {
+    const dayIndex = Math.floor(Date.now() / 86400000) % caseIndex.length;
+    const pick = caseIndex[dayIndex];
+    dailyCard.setAttribute('href', `/cases/${pick.slug}`);
+    dailyTitle.textContent = pick.title;
+  }
+
+  // 随机开案
+  const randomBtn = document.querySelector('[data-qs-random]');
+  if (randomBtn && caseIndex.length > 0) {
+    randomBtn.addEventListener('click', () => {
+      const pick = caseIndex[Math.floor(Math.random() * caseIndex.length)];
+      window.location.href = `/cases/${pick.slug}`;
+    });
+  }
+</script>
 
 <script>
   const el = document.querySelector<HTMLElement>('[data-user-progress]');
@@ -430,9 +556,10 @@ const caseTypes = [
       const label = el.querySelector('[data-progress-label]');
       const fill = el.querySelector<HTMLElement>('[data-progress-fill]');
       if (label) {
-        label.textContent = solved > 0
-          ? `已结案 ${solved}${reading > 0 ? ` · 推理中 ${reading}` : ''} / ${total}`
-          : `推理中 ${reading} / ${total}`;
+        label.textContent =
+          solved > 0
+            ? `已结案 ${solved}${reading > 0 ? ` · 推理中 ${reading}` : ''} / ${total}`
+            : `推理中 ${reading} / ${total}`;
       }
       if (fill) {
         fill.style.width = `${Math.min(100, Math.round((solved / total) * 100))}%`;

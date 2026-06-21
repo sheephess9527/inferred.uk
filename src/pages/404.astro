@@ -11,9 +11,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="container notfound">
     <p class="eyebrow">Error 404 · 线索中断</p>
     <h1 class="notfound__title">这条线索<br />没有指向任何案卷。</h1>
-    <p class="notfound__lead text-muted">
-      你要找的页面不存在，或者已被归档到别处。
-    </p>
+    <p class="notfound__lead text-muted">你要找的页面不存在，或者已被归档到别处。</p>
     <div class="notfound__actions">
       <a class="btn" href="/">返回首页</a>
       <a class="btn btn--ghost" href="/cases">查看案卷</a>
@@ -50,7 +48,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: 1px solid var(--color-accent);
     background: var(--color-accent);
     color: var(--color-paper);
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
   .btn:not(.btn--ghost):hover {
     background: color-mix(in srgb, var(--color-accent) 80%, black);

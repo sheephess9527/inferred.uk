@@ -3,13 +3,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseList from '../../components/CaseList.astro';
 
-const cases = (await getCollection('cases')).sort(
-  (a, b) => {
+const cases = (await getCollection('cases')).sort((a, b) => {
   const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
   if (dateDiff !== 0) return dateDiff;
   return b.data.caseId.localeCompare(a.data.caseId);
-}
-);
+});
 
 const items = cases.map((c) => ({
   caseId: c.data.caseId,
@@ -31,9 +29,7 @@ const items = cases.map((c) => ({
   <section class="container page-head">
     <p class="eyebrow">Cases · 案卷</p>
     <h1>案卷列表</h1>
-    <p class="page-head__lead text-muted">
-      一份份案卷，有的已解，有的仍待推断。挑一桩，开始阅读。
-    </p>
+    <p class="page-head__lead text-muted">一份份案卷，有的已解，有的仍待推断。挑一桩，开始阅读。</p>
   </section>
 
   <section class="container">

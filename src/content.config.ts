@@ -15,12 +15,16 @@ const cases = defineCollection({
     readingTime: z.string(),
     clueCount: z.number().int().nonnegative().default(0),
     hints: z.array(z.string()).optional(),
-    questions: z.array(z.object({
-      q: z.string(),
-      choices: z.array(z.object({ text: z.string() })),
-      /** 正确选项的 0-based 下标 */
-      answer: z.number().int().min(0).optional(),
-    })).optional(),
+    questions: z
+      .array(
+        z.object({
+          q: z.string(),
+          choices: z.array(z.object({ text: z.string() })),
+          /** 正确选项的 0-based 下标 */
+          answer: z.number().int().min(0).optional(),
+        })
+      )
+      .optional(),
     publishedAt: z.coerce.date(),
     summary: z.string(),
     featured: z.boolean().default(false),

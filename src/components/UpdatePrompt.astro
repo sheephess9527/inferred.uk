@@ -2,12 +2,14 @@
 import { BUILD_ID } from '../buildInfo';
 ---
 
-{/*
+{
+  /*
   仅在“添加到主屏幕”的独立 App 模式下出现的悬浮按钮。
   - 平时是一个小的刷新键（iOS 独立模式没有地址栏 / 刷新按钮，容易卡在旧版本）。
   - 检测到站点有新版本时，变成醒目的“有新内容 · 更新”，点按即重载到最新。
   浏览器普通标签页中不显示（由脚本判断后移除）。
-*/}
+*/
+}
 <button
   id="update-prompt"
   class="update-prompt"
@@ -47,8 +49,12 @@ import { BUILD_ID } from '../buildInfo';
     letter-spacing: 0.04em;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease,
-      width 0.25s ease, padding 0.25s ease;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease,
+      width 0.25s ease,
+      padding 0.25s ease;
   }
 
   .update-prompt:hover {
@@ -67,7 +73,10 @@ import { BUILD_ID } from '../buildInfo';
     overflow: hidden;
     white-space: nowrap;
     opacity: 0;
-    transition: max-width 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+    transition:
+      max-width 0.25s ease,
+      opacity 0.2s ease,
+      margin 0.25s ease;
   }
 
   /* 检测到新版本：展开成带文字的胶囊，并以暗红强调 */
@@ -162,8 +171,11 @@ import { BUILD_ID } from '../buildInfo';
     });
 
     // 长时间停留时定期轮询。
-    setInterval(() => {
-      if (!updateReady) checkForUpdate();
-    }, 5 * 60 * 1000);
+    setInterval(
+      () => {
+        if (!updateReady) checkForUpdate();
+      },
+      5 * 60 * 1000
+    );
   })();
 </script>

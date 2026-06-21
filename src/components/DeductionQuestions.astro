@@ -24,20 +24,24 @@ const {
     <span class="questions__progress mono" data-q-progress aria-live="polite"></span>
   </header>
   <ol class="questions__list">
-    {questions.map((q, i) => (
-      <li class="questions__item" data-q-item={i}>
-        <span class="questions__text">{q}</span>
-        <button
-          class="questions__check"
-          data-q-check={i}
-          aria-pressed="false"
-          title="标记为已思考"
-          aria-label={`标记「${q}」为已思考`}
-        >
-          <span class="questions__icon" aria-hidden="true">○</span>
-        </button>
-      </li>
-    ))}
+    {
+      questions.map((q, i) => (
+        <li class="questions__item" data-q-item={i}>
+          <span class="questions__text">{q}</span>
+          <button
+            class="questions__check"
+            data-q-check={i}
+            aria-pressed="false"
+            title="标记为已思考"
+            aria-label={`标记「${q}」为已思考`}
+          >
+            <span class="questions__icon" aria-hidden="true">
+              ○
+            </span>
+          </button>
+        </li>
+      ))
+    }
   </ol>
 </aside>
 
@@ -100,7 +104,9 @@ const {
   }
   .questions__text {
     flex: 1;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease;
   }
   .questions__item.is-done .questions__text {
     color: var(--color-muted);
@@ -117,7 +123,9 @@ const {
     font-size: 0.85rem;
     line-height: 1;
     border-radius: 3px;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
     margin-left: auto;
   }
   .questions__check:hover {
@@ -146,12 +154,14 @@ const {
     function updateProgress() {
       if (!progressEl) return;
       const done = checks.filter((btn) => {
-        try { return localStorage.getItem(key(Number(btn.dataset.qCheck))) === '1'; }
-        catch (_) { return false; }
+        try {
+          return localStorage.getItem(key(Number(btn.dataset.qCheck))) === '1';
+        } catch (_) {
+          return false;
+        }
       }).length;
-      progressEl.textContent = done > 0
-        ? `${done} / ${checks.length} 已思考`
-        : `${checks.length} 题待推理`;
+      progressEl.textContent =
+        done > 0 ? `${done} / ${checks.length} 已思考` : `${checks.length} 题待推理`;
     }
 
     function applyState(btn: HTMLButtonElement, done: boolean) {
@@ -163,8 +173,9 @@ const {
 
     checks.forEach((btn) => {
       const i = Number(btn.dataset.qCheck);
-      try { applyState(btn, localStorage.getItem(key(i)) === '1'); }
-      catch (_) {}
+      try {
+        applyState(btn, localStorage.getItem(key(i)) === '1');
+      } catch (_) {}
     });
     updateProgress();
 

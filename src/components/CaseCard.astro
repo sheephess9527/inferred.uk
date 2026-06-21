@@ -12,8 +12,7 @@ export interface Props {
   status: 'unsolved' | 'solved';
   slug: string;
 }
-const { caseId, title, summary, difficulty, types, readingTime, status, slug } =
-  Astro.props;
+const { caseId, title, summary, difficulty, types, readingTime, status, slug } = Astro.props;
 const href = `/cases/${slug}`;
 const statusCn = status === 'solved' ? '已解' : '未解';
 ---
@@ -29,7 +28,13 @@ const statusCn = status === 'solved' ? '已解' : '未解';
     <p class="case-card__summary">{summary}</p>
 
     <ul class="case-card__types">
-      {types.map((t) => <li><Tag label={t} /></li>)}
+      {
+        types.map((t) => (
+          <li>
+            <Tag label={t} />
+          </li>
+        ))
+      }
     </ul>
 
     <footer class="case-card__foot">
@@ -58,7 +63,10 @@ const statusCn = status === 'solved' ? '已解' : '未解';
     border-radius: var(--radius);
     color: inherit;
     position: relative;
-    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      background 0.2s ease;
   }
   .case-card__link::before {
     content: '';

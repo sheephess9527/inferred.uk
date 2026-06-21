@@ -112,7 +112,9 @@ const { caseId } = Astro.props;
     cursor: pointer;
     font: inherit;
     font-size: 0.95rem;
-    transition: border-color 0.15s ease, background 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease;
   }
   .deduction__choice:hover {
     background: var(--color-surface-2);
@@ -137,7 +139,10 @@ const { caseId } = Astro.props;
     height: 12px;
     border-radius: 50%;
     border: 1.5px solid var(--color-muted);
-    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
   }
   .deduction__choice:hover .deduction__choice-indicator {
     border-color: #c05555;
@@ -193,7 +198,9 @@ const { caseId } = Astro.props;
     border-left-color: #6abf8a;
     background: color-mix(in srgb, #6abf8a 8%, var(--color-surface));
   }
-  .deduction__choice[data-verdict='correct'] .deduction__choice-key { color: #6abf8a; }
+  .deduction__choice[data-verdict='correct'] .deduction__choice-key {
+    color: #6abf8a;
+  }
 
   /* 揭晓后：选错 */
   .deduction__choice[data-verdict='wrong'] {
@@ -201,14 +208,18 @@ const { caseId } = Astro.props;
     background: color-mix(in srgb, #e8a84c 6%, var(--color-surface));
     opacity: 0.8;
   }
-  .deduction__choice[data-verdict='wrong'] .deduction__choice-key { color: #e8a84c; }
+  .deduction__choice[data-verdict='wrong'] .deduction__choice-key {
+    color: #e8a84c;
+  }
 
   /* 揭晓后：正确答案（用户未选） */
   .deduction__choice[data-verdict='answer'] {
     border-left-color: #6abf8a;
     background: color-mix(in srgb, #6abf8a 5%, var(--color-surface));
   }
-  .deduction__choice[data-verdict='answer'] .deduction__choice-key { color: #6abf8a; }
+  .deduction__choice[data-verdict='answer'] .deduction__choice-key {
+    color: #6abf8a;
+  }
 
   /* 裁决 badge */
   .deduction__choice-verdict {
@@ -236,21 +247,37 @@ const { caseId } = Astro.props;
   }
 
   @keyframes dverdict-in {
-    from { opacity: 0; transform: scale(0.85); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @keyframes dscore-in {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .deduction__choice-verdict,
-    .deduction__score { animation: none; }
+    .deduction__score {
+      animation: none;
+    }
   }
 </style>
 
 <script>
-  interface Choice { text: string }
+  interface Choice {
+    text: string;
+  }
   interface DeductionItem {
     q: string;
     choices: Choice[];
@@ -289,19 +316,25 @@ const { caseId } = Astro.props;
   ];
 
   function esc(s: string): string {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   function buildList(board: HTMLElement, items: DeductionItem[]) {
     const listEl = board.querySelector<HTMLElement>('[data-deduction-list]');
     if (!listEl) return;
 
-    listEl.innerHTML = items.map((item, qi) => {
-      const hasAnswer = item.answer !== undefined;
-      const num = String(qi + 1).padStart(2, '0');
-      const choicesHtml = item.choices.map((c, ci) => {
-        const isAnswer = item.answer === ci;
-        return `<button
+    listEl.innerHTML = items
+      .map((item, qi) => {
+        const hasAnswer = item.answer !== undefined;
+        const num = String(qi + 1).padStart(2, '0');
+        const choicesHtml = item.choices
+          .map((c, ci) => {
+            const isAnswer = item.answer === ci;
+            return `<button
           type="button"
           class="deduction__choice"
           data-deduction-choice
@@ -312,25 +345,32 @@ const { caseId } = Astro.props;
         ><span class="deduction__choice-indicator" aria-hidden="true"></span
         ><span class="deduction__choice-key mono" aria-hidden="true">${String.fromCharCode(65 + ci)}</span
         ><span class="deduction__choice-text">${esc(c.text)}</span
-        >${hasAnswer ? '<span class="deduction__choice-verdict" data-choice-verdict hidden aria-hidden="true"></span>' : ''
+        >${
+          hasAnswer
+            ? '<span class="deduction__choice-verdict" data-choice-verdict hidden aria-hidden="true"></span>'
+            : ''
         }</button>`;
-      }).join('');
+          })
+          .join('');
 
-      return `<li class="deduction__item">
+        return `<li class="deduction__item">
         <p class="deduction__q">
           <span class="deduction__q-num mono">${num}</span>
           <span class="deduction__q-text">${esc(item.q)}</span>
         </p>
         <div class="deduction__choices" role="group" aria-label="第 ${qi + 1} 题">${choicesHtml}</div>
       </li>`;
-    }).join('');
+      })
+      .join('');
   }
 
   function load(caseId: string): Selections {
     try {
       const raw = localStorage.getItem(`inferred:deduction:${caseId}`);
       return raw ? JSON.parse(raw) : {};
-    } catch { return {}; }
+    } catch {
+      return {};
+    }
   }
 
   function save(caseId: string, data: Selections) {
@@ -366,7 +406,9 @@ const { caseId } = Astro.props;
     let answered = 0;
     let delay = 0;
     const details: Array<{
-      q: string; selectedText: string | null; answerText: string;
+      q: string;
+      selectedText: string | null;
+      answerText: string;
       verdict: 'correct' | 'wrong' | 'unanswered';
     }> = [];
 
@@ -375,7 +417,9 @@ const { caseId } = Astro.props;
       const selectedBtn = btns.find((b) => b.dataset.selected !== undefined);
 
       if (selectedBtn) answered++;
-      btns.forEach((btn) => { btn.dataset.locked = ''; });
+      btns.forEach((btn) => {
+        btn.dataset.locked = '';
+      });
 
       if (!answerBtn) return;
 
@@ -385,10 +429,15 @@ const { caseId } = Astro.props;
 
       const li = btns[0]?.closest<HTMLElement>('.deduction__item');
       const qText = li?.querySelector<HTMLElement>('.deduction__q-text')?.textContent?.trim() ?? '';
-      const answerText = answerBtn.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ?? '';
-      const selectedText = selectedBtn?.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ?? null;
+      const answerText =
+        answerBtn.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ?? '';
+      const selectedText =
+        selectedBtn?.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ??
+        null;
       details.push({
-        q: qText, selectedText, answerText,
+        q: qText,
+        selectedText,
+        answerText,
         verdict: !selectedBtn ? 'unanswered' : isCorrect ? 'correct' : 'wrong',
       });
 
@@ -487,12 +536,20 @@ const { caseId } = Astro.props;
 
     try {
       if (localStorage.getItem(`inferred:progress:${location.pathname}`) === 'solved') {
-        revealFeedback(board, board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'), false);
+        revealFeedback(
+          board,
+          board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'),
+          false
+        );
       }
     } catch {}
 
     window.addEventListener('inferred:case-solved', () => {
-      revealFeedback(board, board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'), true);
+      revealFeedback(
+        board,
+        board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'),
+        true
+      );
     });
   });
 </script>

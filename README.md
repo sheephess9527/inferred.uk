@@ -553,6 +553,15 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-06-21 — 首页快速入口 + Prettier
+
+- **首页三入口**：Hero 正下方新增 `<section class="quickstart">` 横排卡片组，三张卡片全由客户端 JS 驱动：
+  - **继续推理**（accent 边框）：读取 localStorage `inferred:progress:/cases/{slug}` = `'reading'` 的记录，找到则显示标题并链接，否则隐藏（`hidden` 属性）
+  - **今日推荐**：`Math.floor(Date.now() / 86400000) % caseIndex.length` 取每日固定推荐，刷新不换（同一天同一本）
+  - **随机开案**（`<button>`）：点击跳转 `caseIndex` 中随机案卷
+  - `caseIndex`（`slug` + `title` 数组）通过 `define:vars` 从服务端注入，无额外请求
+- **Prettier 格式化**：新增 `.prettierrc`（`prettier-plugin-astro`）和 `.prettierignore`；`package.json` 加 `format` 脚本；对全部 `src/**` 已做一次统一格式化
+
 ### 2026-06-21 — SEO 收录强化
 
 - **搜索引擎站点验证**：新增 `src/siteConfig.ts` 集中管理 Google / Bing / 百度验证码；`BaseLayout` 按需输出 `google-site-verification` / `msvalidate.01` / `baidu-site-verification` 三个 `<meta>`，字段留空则不输出。拿到验证码填入对应字段提交即可

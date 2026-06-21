@@ -71,22 +71,26 @@ const jsonLd = {
     <ShareBar title={entry.data.title} text={entry.data.summary} path={`/clues/${entry.id}`} />
 
     <nav class="clue__nav" aria-label="线索导航">
-      {prev ? (
-        <a class="clue__nav-link" href={`/clues/${prev.id}`}>
-          <span class="clue__nav-dir mono">上一篇</span>
-          <span class="clue__nav-title">{prev.data.title}</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
-      {next ? (
-        <a class="clue__nav-link clue__nav-link--next" href={`/clues/${next.id}`}>
-          <span class="clue__nav-dir mono">下一篇</span>
-          <span class="clue__nav-title">{next.data.title}</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
+      {
+        prev ? (
+          <a class="clue__nav-link" href={`/clues/${prev.id}`}>
+            <span class="clue__nav-dir mono">上一篇</span>
+            <span class="clue__nav-title">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a class="clue__nav-link clue__nav-link--next" href={`/clues/${next.id}`}>
+            <span class="clue__nav-dir mono">下一篇</span>
+            <span class="clue__nav-title">{next.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
     </nav>
 
     <footer class="clue__footer">

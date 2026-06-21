@@ -18,40 +18,77 @@ const weiboHref =
   encodeURIComponent(`${title}｜Inferred`);
 ---
 
-<aside class="share" data-share data-url={url} data-title={title} data-text={text} data-poster={posterUrl} aria-label="分享这篇文章">
+<aside
+  class="share"
+  data-share
+  data-url={url}
+  data-title={title}
+  data-text={text}
+  data-poster={posterUrl}
+  aria-label="分享这篇文章"
+>
   <span class="share__label mono">分享 · SHARE</span>
 
   <div class="share__actions">
-    {poster && (
-      <button type="button" class="share__btn share__btn--wechat" data-share-wechat>朋友圈</button>
-    )}
-    {poster && (
-      <button type="button" class="share__btn share__btn--xhs" data-share-xhs>小红书</button>
-    )}
-    <a class="share__btn" href={weiboHref} target="_blank" rel="noopener noreferrer" data-share-weibo>微博</a>
+    {
+      poster && (
+        <button type="button" class="share__btn share__btn--wechat" data-share-wechat>
+          朋友圈
+        </button>
+      )
+    }
+    {
+      poster && (
+        <button type="button" class="share__btn share__btn--xhs" data-share-xhs>
+          小红书
+        </button>
+      )
+    }
+    <a
+      class="share__btn"
+      href={weiboHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-weibo>微博</a
+    >
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
-    <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button>
+    <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button
+    >
   </div>
 
   <p class="share__toast mono" data-share-toast hidden aria-live="polite"></p>
 </aside>
 
-{poster && (
-  <div class="poster" data-poster-modal hidden aria-hidden="true">
-    <div class="poster__backdrop" data-poster-close></div>
-    <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
-      <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
-      <ol class="poster__steps mono" data-poster-steps aria-label="操作步骤"></ol>
-      <div class="poster__frame" data-poster-frame>
-        <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
-      </div>
-      <div class="poster__foot">
-        <a class="poster__dl" data-poster-dl download>↓ 下载图片</a>
-        <a class="poster__action" data-poster-action target="_blank" rel="noopener noreferrer" hidden>去小红书</a>
+{
+  poster && (
+    <div class="poster" data-poster-modal hidden aria-hidden="true">
+      <div class="poster__backdrop" data-poster-close />
+      <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
+        <button type="button" class="poster__x" data-poster-close aria-label="关闭">
+          ✕
+        </button>
+        <ol class="poster__steps mono" data-poster-steps aria-label="操作步骤" />
+        <div class="poster__frame" data-poster-frame>
+          <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
+        </div>
+        <div class="poster__foot">
+          <a class="poster__dl" data-poster-dl download>
+            ↓ 下载图片
+          </a>
+          <a
+            class="poster__action"
+            data-poster-action
+            target="_blank"
+            rel="noopener noreferrer"
+            hidden
+          >
+            去小红书
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-)}
+  )
+}
 
 <style>
   .share {
@@ -88,7 +125,10 @@ const weiboHref =
     padding: 0.45em 1em;
     cursor: pointer;
     text-decoration: none;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    transition:
+      color 0.18s ease,
+      border-color 0.18s ease,
+      background 0.18s ease;
   }
   .share__btn:hover {
     border-color: var(--color-gold);
@@ -135,7 +175,9 @@ const weiboHref =
   }
 
   /* 海报弹窗 */
-  .poster[hidden] { display: none; }
+  .poster[hidden] {
+    display: none;
+  }
   .poster {
     position: fixed;
     inset: 0;
@@ -177,7 +219,9 @@ const weiboHref =
     color: var(--color-muted);
     font-size: 0.9rem;
     cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
   }
   .poster__x:hover {
     color: var(--color-paper);
@@ -239,7 +283,9 @@ const weiboHref =
     border-radius: 999px;
     padding: 0.4em 1em;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
   }
   .poster__dl:hover {
     border-color: var(--color-gold);
@@ -258,35 +304,45 @@ const weiboHref =
   .poster__action:hover {
     background: color-mix(in srgb, #ff2e4d 15%, transparent);
   }
-  .poster__action[hidden] { display: none; }
+  .poster__action[hidden] {
+    display: none;
+  }
 
   @keyframes poster-in {
-    from { opacity: 0; transform: translateY(6px) scale(0.98); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-share]').forEach((root) => {
-    const url    = root.dataset.url    ?? location.href;
-    const title  = root.dataset.title  ?? document.title;
-    const text   = root.dataset.text   ?? '';
+    const url = root.dataset.url ?? location.href;
+    const title = root.dataset.title ?? document.title;
+    const text = root.dataset.text ?? '';
     const poster = root.dataset.poster ?? '';
 
-    const toast     = root.querySelector<HTMLElement>('[data-share-toast]');
+    const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
-    const copyBtn   = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
-    const xhsBtn    = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
+    const xhsBtn = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
 
-    const modal       = document.querySelector<HTMLElement>('[data-poster-modal]');
-    const posterImg   = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
+    const modal = document.querySelector<HTMLElement>('[data-poster-modal]');
+    const posterImg = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
     const posterFrame = modal?.querySelector<HTMLElement>('[data-poster-frame]');
-    const posterDl    = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
-    const posterAct   = modal?.querySelector<HTMLAnchorElement>('[data-poster-action]');
+    const posterDl = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
+    const posterAct = modal?.querySelector<HTMLAnchorElement>('[data-poster-action]');
     const posterSteps = modal?.querySelector<HTMLElement>('[data-poster-steps]');
     let lastFocus: HTMLElement | null = null;
 
@@ -300,7 +356,9 @@ const weiboHref =
       if (!toast) return;
       toast.textContent = msg;
       toast.hidden = false;
-      window.setTimeout(() => { if (toast) toast.hidden = true; }, 3000);
+      window.setTimeout(() => {
+        if (toast) toast.hidden = true;
+      }, 3000);
     }
 
     async function copyText(value: string): Promise<boolean> {
@@ -323,8 +381,13 @@ const weiboHref =
       let ok = false;
       try {
         // Fallback for in-app browsers without Clipboard API
-        if (typeof document.queryCommandSupported === 'function' && document.queryCommandSupported('copy')) {
-          ok = Boolean((document as Document & { execCommand(commandId: string): boolean }).execCommand('copy'));
+        if (
+          typeof document.queryCommandSupported === 'function' &&
+          document.queryCommandSupported('copy')
+        ) {
+          ok = Boolean(
+            (document as Document & { execCommand(commandId: string): boolean }).execCommand('copy')
+          );
         }
       } catch {
         ok = false;
@@ -340,7 +403,7 @@ const weiboHref =
       if (!posterImg?.getAttribute('src')) {
         posterFrame?.setAttribute('data-loading', '');
         if (posterImg) {
-          posterImg.onload  = () => posterFrame?.removeAttribute('data-loading');
+          posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
           posterImg.onerror = () => {
             posterFrame?.removeAttribute('data-loading');
             if (posterSteps) {
@@ -357,7 +420,7 @@ const weiboHref =
       }
 
       if (posterSteps) {
-        posterSteps.innerHTML = opts.steps.map(s => `<li>${s}</li>`).join('');
+        posterSteps.innerHTML = opts.steps.map((s) => `<li>${s}</li>`).join('');
       }
 
       if (posterAct) {
@@ -384,10 +447,10 @@ const weiboHref =
     }
 
     if (modal) {
-      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach(el =>
-        el.addEventListener('click', closePoster)
-      );
-      document.addEventListener('keydown', e => {
+      modal
+        .querySelectorAll<HTMLElement>('[data-poster-close]')
+        .forEach((el) => el.addEventListener('click', closePoster));
+      document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !modal.hidden) closePoster();
       });
     }

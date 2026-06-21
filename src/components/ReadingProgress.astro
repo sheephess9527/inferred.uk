@@ -42,10 +42,7 @@ const { target = '#case-body' } = Astro.props;
         ratio = Math.min(1, Math.max(0, targetScrolled / targetScrollable));
       } else {
         const docScrollable = document.documentElement.scrollHeight - window.innerHeight;
-        ratio =
-          docScrollable > 0
-            ? Math.min(1, Math.max(0, window.scrollY / docScrollable))
-            : 1;
+        ratio = docScrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / docScrollable)) : 1;
       }
       bar.style.width = `${ratio * 100}%`;
     };

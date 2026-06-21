@@ -24,10 +24,9 @@ const typeEn = types.join(' / ');
   <div class="case-meta__row">
     <dt>状态</dt>
     <dd data-case-progress data-case-slug={slug} data-site-status={status}>
-      <span
-        class:list={['mono', 'case-meta__status', `is-${status}`]}
-        data-case-progress-en
-      >{statusEn}</span>
+      <span class:list={['mono', 'case-meta__status', `is-${status}`]} data-case-progress-en
+        >{statusEn}</span
+      >
       <span class="text-muted" data-case-progress-cn>· {statusCn}</span>
     </dd>
   </div>

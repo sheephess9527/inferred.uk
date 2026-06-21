@@ -1,7 +1,13 @@
 ---
 export interface Props {
   label: string;
-  variant?: 'type' | 'scene' | 'status-unsolved' | 'status-solved' | 'status-reading' | 'status-user-solved';
+  variant?:
+    | 'type'
+    | 'scene'
+    | 'status-unsolved'
+    | 'status-solved'
+    | 'status-reading'
+    | 'status-user-solved';
   href?: string;
 }
 const { label, variant = 'type', href } = Astro.props;

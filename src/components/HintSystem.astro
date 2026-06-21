@@ -6,33 +6,39 @@ const { hints } = Astro.props;
 const hasHints = hints && hints.length > 0;
 ---
 
-{hasHints && (
-<aside class="hints" aria-label="推理提示" data-hint-system>
-  <header class="hints__head">
-    <span class="eyebrow">Hints · 推理提示</span>
-    <span class="hints__count mono" data-hint-count aria-live="polite"></span>
-  </header>
-  <p class="hints__desc text-muted">卡住了？按顺序逐步解锁，提示不会透露答案，只给你一个方向。</p>
-  <ol class="hints__list">
-    {hints.map((text, i) => (
-      <li class="hints__item">
-        <details class="hints__detail" data-hint={i}>
-          <summary class="hints__summary">
-            <span class="hints__num mono">提示 {String(i + 1).padStart(2, '0')}</span>
-            <span class="hints__state" data-hint-state={i}>
-              {i === 0 ? '点击查看' : '需先解锁上一个提示'}
-            </span>
-            <span class="hints__chevron" aria-hidden="true">›</span>
-          </summary>
-          <div class="hints__body">
-            <p class="text-muted">{text}</p>
-          </div>
-        </details>
-      </li>
-    ))}
-  </ol>
-</aside>
-)}
+{
+  hasHints && (
+    <aside class="hints" aria-label="推理提示" data-hint-system>
+      <header class="hints__head">
+        <span class="eyebrow">Hints · 推理提示</span>
+        <span class="hints__count mono" data-hint-count aria-live="polite" />
+      </header>
+      <p class="hints__desc text-muted">
+        卡住了？按顺序逐步解锁，提示不会透露答案，只给你一个方向。
+      </p>
+      <ol class="hints__list">
+        {hints.map((text, i) => (
+          <li class="hints__item">
+            <details class="hints__detail" data-hint={i}>
+              <summary class="hints__summary">
+                <span class="hints__num mono">提示 {String(i + 1).padStart(2, '0')}</span>
+                <span class="hints__state" data-hint-state={i}>
+                  {i === 0 ? '点击查看' : '需先解锁上一个提示'}
+                </span>
+                <span class="hints__chevron" aria-hidden="true">
+                  ›
+                </span>
+              </summary>
+              <div class="hints__body">
+                <p class="text-muted">{text}</p>
+              </div>
+            </details>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  )
+}
 
 <style>
   .hints {
@@ -89,7 +95,9 @@ const hasHints = hints && hints.length > 0;
     list-style: none;
     user-select: none;
   }
-  .hints__summary::-webkit-details-marker { display: none; }
+  .hints__summary::-webkit-details-marker {
+    display: none;
+  }
   .hints__detail[data-locked] .hints__summary {
     cursor: not-allowed;
   }
@@ -131,8 +139,14 @@ const hasHints = hints && hints.length > 0;
     line-height: 1.75;
   }
   @keyframes hint-fade {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
 
@@ -148,19 +162,22 @@ const hasHints = hints && hints.length > 0;
       try {
         const raw = localStorage.getItem(storageKey);
         return raw ? JSON.parse(raw) : [0];
-      } catch { return [0]; }
+      } catch {
+        return [0];
+      }
     }
 
     function saveUnlocked(arr: number[]) {
-      try { localStorage.setItem(storageKey, JSON.stringify(arr)); } catch {}
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(arr));
+      } catch {}
     }
 
     function updateCount() {
       if (!countEl) return;
-      const opened = details.filter(d => d.open).length;
-      countEl.textContent = opened > 0
-        ? `已查看 ${opened} / ${details.length}`
-        : `共 ${details.length} 个提示`;
+      const opened = details.filter((d) => d.open).length;
+      countEl.textContent =
+        opened > 0 ? `已查看 ${opened} / ${details.length}` : `共 ${details.length} 个提示`;
     }
 
     function applyUnlocked(unlocked: number[]) {
@@ -182,11 +199,15 @@ const hasHints = hints && hints.length > 0;
     applyUnlocked(unlocked);
 
     details.forEach((el, i) => {
-      el.addEventListener('click', (e) => {
-        if (el.dataset.locked !== undefined) {
-          e.preventDefault();
-        }
-      }, { capture: true });
+      el.addEventListener(
+        'click',
+        (e) => {
+          if (el.dataset.locked !== undefined) {
+            e.preventDefault();
+          }
+        },
+        { capture: true }
+      );
 
       el.addEventListener('toggle', () => {
         const stateEl = el.querySelector<HTMLElement>(`[data-hint-state="${i}"]`);

@@ -15,9 +15,36 @@ const { name, role, age, relation, alibi } = Astro.props;
     {role && <span class="person-card__role mono">{role}</span>}
   </header>
   <dl class="person-card__facts">
-    {age && (<><dt>年龄</dt><dd>{age}</dd></>)}
-    {relation && (<><dt>与死者关系</dt><dd>{relation}</dd></>)}
-    {alibi && (<><dt>案发时声称</dt><dd>{alibi}</dd></>)}
+    {
+      age && (
+        <>
+          <>
+            <dt>年龄</dt>
+            <dd>{age}</dd>
+          </>
+        </>
+      )
+    }
+    {
+      relation && (
+        <>
+          <>
+            <dt>与死者关系</dt>
+            <dd>{relation}</dd>
+          </>
+        </>
+      )
+    }
+    {
+      alibi && (
+        <>
+          <>
+            <dt>案发时声称</dt>
+            <dd>{alibi}</dd>
+          </>
+        </>
+      )
+    }
   </dl>
   <div class="person-card__extra"><slot /></div>
 </article>

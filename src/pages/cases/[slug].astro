@@ -24,8 +24,7 @@ export async function getStaticPaths() {
       }))
       .sort(
         (a, b) =>
-          b.score - a.score ||
-          b.c.data.publishedAt.getTime() - a.c.data.publishedAt.getTime()
+          b.score - a.score || b.c.data.publishedAt.getTime() - a.c.data.publishedAt.getTime()
       )
       .slice(0, 3)
       .map(({ c }) => ({
@@ -95,30 +94,34 @@ const jsonLd = {
     <ReadingProgress target="#case-body" />
 
     <header class="case__header">
-      <p class="eyebrow case__eyebrow" data-case-eyebrow data-case-slug={entry.id} data-site-status={data.status}>
-        Case File #{data.caseId} · <span data-case-eyebrow-text>{data.status === 'solved' ? '已解' : '未解'}</span>
+      <p
+        class="eyebrow case__eyebrow"
+        data-case-eyebrow
+        data-case-slug={entry.id}
+        data-site-status={data.status}
+      >
+        Case File #{data.caseId} · <span data-case-eyebrow-text
+          >{data.status === 'solved' ? '已解' : '未解'}</span
+        >
       </p>
       <h1 class="case__title">{data.title}</h1>
       <p class="case__summary">{data.summary}</p>
 
       <ul class="case__tags">
-        {data.types.map((t) => (
-          <li>
-            <Tag
-              label={t}
-              href={`/archive?type=${encodeURIComponent(t)}`}
-            />
-          </li>
-        ))}
-        {data.scene.map((s) => (
-          <li>
-            <Tag
-              label={s}
-              variant="scene"
-              href={`/archive?scene=${encodeURIComponent(s)}`}
-            />
-          </li>
-        ))}
+        {
+          data.types.map((t) => (
+            <li>
+              <Tag label={t} href={`/archive?type=${encodeURIComponent(t)}`} />
+            </li>
+          ))
+        }
+        {
+          data.scene.map((s) => (
+            <li>
+              <Tag label={s} variant="scene" href={`/archive?scene=${encodeURIComponent(s)}`} />
+            </li>
+          ))
+        }
       </ul>
 
       <CaseMeta
@@ -133,9 +136,7 @@ const jsonLd = {
       <p class="case__published mono text-muted">归档于 {dateStr}</p>
     </header>
 
-    {data.hints && data.hints.length > 0 && (
-      <HintSystem hints={data.hints} />
-    )}
+    {data.hints && data.hints.length > 0 && <HintSystem hints={data.hints} />}
 
     <div id="case-body" class="case__body prose">
       <Content />
@@ -155,22 +156,26 @@ const jsonLd = {
     <RelatedCases cases={related} />
 
     <nav class="case__nav" aria-label="案卷导航">
-      {prev ? (
-        <a class="case__nav-link" href={`/cases/${prev.id}`}>
-          <span class="case__nav-dir mono">上一篇</span>
-          <span class="case__nav-title">{prev.data.title}</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
-      {next ? (
-        <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}`}>
-          <span class="case__nav-dir mono">下一篇</span>
-          <span class="case__nav-title">{next.data.title}</span>
-        </a>
-      ) : (
-        <span></span>
-      )}
+      {
+        prev ? (
+          <a class="case__nav-link" href={`/cases/${prev.id}`}>
+            <span class="case__nav-dir mono">上一篇</span>
+            <span class="case__nav-title">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}`}>
+            <span class="case__nav-dir mono">下一篇</span>
+            <span class="case__nav-title">{next.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
     </nav>
 
     <footer class="case__footer">
@@ -180,7 +185,14 @@ const jsonLd = {
   </article>
 </BaseLayout>
 
-<script is:inline define:vars={{ caseSlug: entry.id, siteStatus: data.status, caseQuestions: data.questions ?? null }}>
+<script
+  is:inline
+  define:vars={{
+    caseSlug: entry.id,
+    siteStatus: data.status,
+    caseQuestions: data.questions ?? null,
+  }}
+>
   if (caseQuestions) window.__inferredDeductionItems = caseQuestions;
 
   function syncEyebrow() {

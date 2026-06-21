@@ -5,7 +5,7 @@ import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import cloudflare from "@astrojs/cloudflare";
+import cloudflare from '@astrojs/cloudflare';
 
 // 读取某个内容目录下每篇的 frontmatter，提取 sitemap 需要的元信息：
 // publishedAt 作为 lastmod、featured 用于提升精选案卷的 priority。
@@ -105,8 +105,8 @@ export default defineConfig({
           { pattern: '/share/cases/*' },
           { pattern: '/og/cases/*' },
           { pattern: '/og/clues/*' },
-        ]
-      }
-    }
+        ],
+      },
+    },
   }),
 });
