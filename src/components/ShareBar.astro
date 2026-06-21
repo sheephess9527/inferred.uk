@@ -417,18 +417,19 @@ const weiboHref =
 
           const W = c.width;
           const H = c.height;
-          // 渐变从 91% 处开始，二维码底部约在 88%，留出安全间距
-          const barH = Math.round(H * 0.09);
-          const py = H - barH;
           const px = Math.round(W * 0.055);
 
-          // 渐变遮罩（仅覆盖二维码以下的窄条带）
-          const grad = ctx.createLinearGradient(0, py, 0, H);
+          // 成绩放在摘要文字（~57%）与二维码（~70%）之间的空白暗区
+          // 用淡入淡出渐变，不遮挡二维码
+          const gradTop = Math.round(H * 0.555);
+          const gradH = Math.round(H * 0.175);
+          const grad = ctx.createLinearGradient(0, gradTop, 0, gradTop + gradH);
           grad.addColorStop(0, 'rgba(14,14,12,0)');
-          grad.addColorStop(0.35, 'rgba(14,14,12,0.9)');
-          grad.addColorStop(1, 'rgba(14,14,12,0.96)');
+          grad.addColorStop(0.22, 'rgba(14,14,12,0.92)');
+          grad.addColorStop(0.78, 'rgba(14,14,12,0.92)');
+          grad.addColorStop(1, 'rgba(14,14,12,0)');
           ctx.fillStyle = grad;
-          ctx.fillRect(0, py, W, barH);
+          ctx.fillRect(0, gradTop, W, gradH);
 
           const isPerfect = score.evaluated > 0 && score.correct === score.evaluated;
           const scoreText = isPerfect
@@ -438,15 +439,15 @@ const weiboHref =
           ctx.textAlign = 'left';
           ctx.textBaseline = 'alphabetic';
 
-          // 成绩行（字号略减以适配更窄条带）
-          ctx.font = `600 ${Math.round(W * 0.043)}px "Helvetica Neue",Arial,sans-serif`;
+          // 成绩行（字更大，占满暗区）
+          ctx.font = `600 ${Math.round(W * 0.056)}px "Helvetica Neue",Arial,sans-serif`;
           ctx.fillStyle = isPerfect ? '#D4A853' : '#E8E2D2';
-          ctx.fillText(scoreText, px, Math.round(H * 0.951));
+          ctx.fillText(scoreText, px, Math.round(H * 0.647));
 
           // 邀请行
-          ctx.font = `${Math.round(W * 0.028)}px "Helvetica Neue",Arial,sans-serif`;
-          ctx.fillStyle = 'rgba(232,226,210,0.52)';
-          ctx.fillText('你能看破真相吗？→ inferred.uk', px, Math.round(H * 0.984));
+          ctx.font = `${Math.round(W * 0.034)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.fillStyle = 'rgba(232,226,210,0.5)';
+          ctx.fillText('你能看破真相吗？→ inferred.uk', px, Math.round(H * 0.697));
 
           try {
             resolve(c.toDataURL('image/jpeg', 0.9));
