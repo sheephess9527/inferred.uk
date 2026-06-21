@@ -1,9 +1,12 @@
 ---
 // 互动物证板：点击每条物证可循环标记为 重要 / 可疑 / 误导 / 排除。
 // 标记状态按 caseId 存入 localStorage，刷新后保留。
+// 案卷揭晓后，对比作者预设的正确分类，给出每条物证的裁决与总评分。
 export interface EvidenceItem {
   label: string;
   detail?: string;
+  /** 作者设定的正确分类，不填则该物证不参与评分 */
+  answer?: 'important' | 'suspicious' | 'misleading' | 'excluded';
 }
 export interface Props {
   caseId: string;
@@ -19,6 +22,8 @@ function evidenceKey(label: string): string {
   }
   return 'e' + (h >>> 0).toString(36);
 }
+
+const hasAnswers = items.some((item) => item.answer);
 ---
 
 <section class="evidence" data-evidence aria-labelledby={`evidence-${caseId}`}>
@@ -30,6 +35,9 @@ function evidenceKey(label: string): string {
       <span class="dot dot--misleading"></span>误导 ·
       <span class="dot dot--excluded"></span>排除。标记会保存在本设备上。
     </p>
+    {hasAnswers && (
+      <p class="evidence__score mono" data-evidence-score hidden></p>
+    )}
   </header>
 
   <ol class="evidence__list">
@@ -43,6 +51,7 @@ function evidenceKey(label: string): string {
             data-index={i}
             data-evidence-key={evidenceKey(item.label)}
             data-case={caseId}
+            data-answer={item.answer ?? undefined}
             aria-pressed="false"
           >
             <span class="evidence__num mono">{String(i + 1).padStart(2, '0')}</span>
@@ -53,6 +62,9 @@ function evidenceKey(label: string): string {
             <span class="evidence__mark mono" data-evidence-mark aria-hidden="true">
               未标记
             </span>
+            {item.answer && (
+              <span class="evidence__verdict mono" data-evidence-verdict hidden aria-hidden="true"></span>
+            )}
           </button>
         </li>
       ))
@@ -88,6 +100,31 @@ function evidenceKey(label: string): string {
   .dot--misleading { background: var(--color-accent-cold); }
   .dot--excluded { background: var(--color-muted); }
 
+  /* 评分总结 */
+  .evidence__score {
+    margin-top: var(--space-3);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+    animation: score-in 0.4s ease;
+  }
+  .evidence__score[data-level='perfect'] {
+    color: #6abf8a;
+    background: color-mix(in srgb, #6abf8a 10%, transparent);
+    border-color: color-mix(in srgb, #6abf8a 35%, var(--color-line));
+  }
+  .evidence__score[data-level='good'] {
+    color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+    border-color: color-mix(in srgb, var(--color-gold) 35%, var(--color-line));
+  }
+  .evidence__score[data-level='low'] {
+    color: var(--color-muted);
+    background: transparent;
+  }
+
   .evidence__list {
     list-style: none;
     margin: 0;
@@ -115,6 +152,13 @@ function evidenceKey(label: string): string {
   }
   .evidence__btn:hover {
     background: var(--color-surface-2);
+  }
+  /* 锁定后禁止交互与 hover 效果 */
+  .evidence__btn[data-locked] {
+    cursor: default;
+  }
+  .evidence__btn[data-locked]:hover {
+    background: var(--color-surface);
   }
   .evidence__num {
     color: var(--color-muted);
@@ -169,6 +213,30 @@ function evidenceKey(label: string): string {
     text-decoration: line-through;
   }
 
+  /* 揭晓后裁决 badge */
+  .evidence__verdict {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    padding: 0.3em 0.55em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    white-space: nowrap;
+    animation: verdict-in 0.3s ease both;
+  }
+  .evidence__verdict[data-verdict='correct'] {
+    color: #6abf8a;
+    border-color: color-mix(in srgb, #6abf8a 45%, var(--color-line));
+  }
+  .evidence__verdict[data-verdict='wrong'] {
+    color: #e8a84c;
+    border-color: color-mix(in srgb, #e8a84c 45%, var(--color-line));
+  }
+  .evidence__verdict[data-verdict='unmarked'] {
+    color: var(--color-muted);
+  }
+
   .evidence__reset {
     margin-top: var(--space-4);
     background: transparent;
@@ -183,6 +251,24 @@ function evidenceKey(label: string): string {
   .evidence__reset:hover {
     color: var(--color-paper);
     border-color: var(--color-gold);
+  }
+  /* 揭晓后隐藏清除按钮 */
+  .evidence[data-revealed] .evidence__reset {
+    display: none;
+  }
+
+  @keyframes verdict-in {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes score-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .evidence__verdict,
+    .evidence__score { animation: none; }
   }
 </style>
 
@@ -265,6 +351,63 @@ function evidenceKey(label: string): string {
     );
   }
 
+  /** 揭晓答案后：显示每条物证的裁决 + 总评分 */
+  function revealFeedback(board: HTMLElement, buttons: NodeListOf<HTMLElement>, animate: boolean) {
+    let evaluated = 0;
+    let correct = 0;
+
+    buttons.forEach((btn, idx) => {
+      const answer = btn.dataset.answer as State | undefined;
+      if (!answer) return;
+
+      evaluated++;
+      const userState = (btn.dataset.state as State) ?? 'none';
+      const verdictEl = btn.querySelector<HTMLElement>('[data-evidence-verdict]');
+      const isCorrect = userState === answer;
+      const isUnmarked = userState === 'none';
+
+      if (isCorrect) correct++;
+
+      if (verdictEl) {
+        if (!animate) verdictEl.style.animation = 'none';
+        else {
+          // 逐条延迟出现，营造逐一揭晓感
+          verdictEl.style.animationDelay = `${idx * 60}ms`;
+        }
+        verdictEl.hidden = false;
+        if (isCorrect) {
+          verdictEl.textContent = '✓ 正确';
+          verdictEl.dataset.verdict = 'correct';
+        } else if (isUnmarked) {
+          verdictEl.textContent = `应为 ${LABELS[answer]}`;
+          verdictEl.dataset.verdict = 'unmarked';
+        } else {
+          verdictEl.textContent = `→ 实为 ${LABELS[answer]}`;
+          verdictEl.dataset.verdict = 'wrong';
+        }
+      }
+
+      // 锁定按钮，阻止答案揭晓后继续点击
+      btn.dataset.locked = '';
+    });
+
+    // 总评分
+    const scoreEl = board.querySelector<HTMLElement>('[data-evidence-score]');
+    if (scoreEl && evaluated > 0) {
+      if (!animate) scoreEl.style.animation = 'none';
+      scoreEl.hidden = false;
+      if (correct === evaluated) {
+        scoreEl.textContent = `全部命中 · 准确识别了所有 ${evaluated} 个关键物证`;
+        scoreEl.dataset.level = 'perfect';
+      } else {
+        scoreEl.textContent = `命中 ${correct} / ${evaluated} 个关键物证`;
+        scoreEl.dataset.level = correct >= evaluated / 2 ? 'good' : 'low';
+      }
+    }
+
+    board.dataset.revealed = '';
+  }
+
   document.querySelectorAll<HTMLElement>('[data-evidence]').forEach((board) => {
     const buttons = board.querySelectorAll<HTMLElement>('[data-evidence-item]');
     const caseId = buttons[0]?.dataset.case;
@@ -275,6 +418,7 @@ function evidenceKey(label: string): string {
       const id = btn.dataset.evidenceKey!;
       paint(btn, stored[id] ?? 'none');
       btn.addEventListener('click', () => {
+        if (btn.dataset.locked !== undefined) return; // 揭晓后锁定
         const current = (btn.dataset.state as State) ?? 'none';
         const next = ORDER[(ORDER.indexOf(current) + 1) % ORDER.length];
         paint(btn, next);
@@ -292,5 +436,18 @@ function evidenceKey(label: string): string {
         save(caseId, {});
         buttons.forEach((btn) => paint(btn, 'none'));
       });
+
+    // 如果案卷已经在之前的访问中揭晓，立即显示裁决（无动画）
+    try {
+      const progressKey = `inferred:progress:${location.pathname}`;
+      if (localStorage.getItem(progressKey) === 'solved') {
+        revealFeedback(board, buttons, false);
+      }
+    } catch (_) {}
+
+    // 本次揭晓：有动画
+    window.addEventListener('inferred:case-solved', () => {
+      revealFeedback(board, buttons, true);
+    });
   });
 </script>
