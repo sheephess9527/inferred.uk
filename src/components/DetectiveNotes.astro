@@ -1,116 +1,441 @@
 ---
-// 侦探笔记：用户写下推理，自动保存到 localStorage（每个 caseId 独立）。
+// 推理判断：用户在揭晓前选择答案，揭晓后对比得分。
+// 默认内置三道通用题（适配所有案卷，无需改 MDX）；
+// 可通过 items 传入案卷专属题目+正确答案，启用精确评分。
+export interface Choice {
+  text: string;
+}
+export interface DeductionItem {
+  q: string;
+  choices: Choice[];
+  /** 正确选项的 0-based 下标；不填则不参与评分 */
+  answer?: number;
+}
 export interface Props {
   caseId: string;
+  items?: DeductionItem[];
 }
-const { caseId } = Astro.props;
-const placeholder = `写下你的推理：
-谁在说谎？
-关键矛盾是什么？
-真正的真相是什么？`;
+const { caseId, items: customItems } = Astro.props;
+
+const DEFAULT_ITEMS: DeductionItem[] = [
+  {
+    q: '你认为案件的核心矛盾在哪里？',
+    choices: [
+      { text: '时间线上有说不通的地方' },
+      { text: '某人的证词与物证相矛盾' },
+      { text: '现场有不该出现或缺失的东西' },
+      { text: '动机与表面行为对不上' },
+    ],
+  },
+  {
+    q: '你最怀疑谁的说法？',
+    choices: [
+      { text: '第一个出现在案发现场附近的人' },
+      { text: '主动提供线索、指向别人的人' },
+      { text: '不在场证明最完整的人' },
+      { text: '看起来最无关紧要的人' },
+    ],
+  },
+  {
+    q: '你对真相的判断，最接近哪个方向？',
+    choices: [
+      { text: '有人蓄意策划，现场是布置好的' },
+      { text: '事出意外，不存在完整的预谋' },
+      { text: '受害者或失踪者自己参与其中' },
+      { text: '表面现象是误导，真相指向另一个方向' },
+    ],
+  },
+];
+
+const items = customItems && customItems.length > 0 ? customItems : DEFAULT_ITEMS;
+const hasAnswers = items.some((it) => it.answer !== undefined);
 ---
 
-<section class="notes" data-notes data-case={caseId} aria-labelledby={`notes-${caseId}`}>
-  <header class="notes__head">
-    <h3 class="notes__title" id={`notes-${caseId}`}>侦探笔记</h3>
-    <span class="notes__status mono" data-notes-status aria-live="polite"></span>
+<section
+  class="deduction"
+  data-deduction
+  data-case={caseId}
+  aria-labelledby={`deduction-${caseId}`}
+>
+  <header class="deduction__head">
+    <p class="eyebrow" id={`deduction-${caseId}`}>Your Call · 你的判断</p>
+    <p class="deduction__hint text-muted">
+      在打开答案前，先选出你的推断。揭晓后自动对比，看你推对了几条。
+    </p>
+    {hasAnswers && (
+      <p class="deduction__score mono" data-deduction-score hidden></p>
+    )}
   </header>
-  <textarea
-    class="notes__input"
-    data-notes-input
-    rows="6"
-    placeholder={placeholder}
-    aria-label="侦探笔记：写下你的推理"
-    aria-describedby={`notes-hint-${caseId}`}
-    spellcheck="false"></textarea>
-  <p class="notes__hint text-muted" id={`notes-hint-${caseId}`}>笔记只保存在你的浏览器里，不会上传。</p>
+
+  <ol class="deduction__list">
+    {items.map((item, qi) => (
+      <li class="deduction__item">
+        <p class="deduction__q">
+          <span class="deduction__q-num mono">{String(qi + 1).padStart(2, '0')}</span>
+          <span class="deduction__q-text">{item.q}</span>
+        </p>
+        <div class="deduction__choices" role="group" aria-label={`第 ${qi + 1} 题`}>
+          {item.choices.map((c, ci) => (
+            <button
+              type="button"
+              class="deduction__choice"
+              data-deduction-choice
+              data-qi={qi}
+              data-ci={ci}
+              data-is-answer={item.answer === ci ? '' : undefined}
+              aria-pressed="false"
+            >
+              <span class="deduction__choice-key mono" aria-hidden="true">
+                {String.fromCharCode(65 + ci)}
+              </span>
+              <span class="deduction__choice-text">{c.text}</span>
+              {item.answer !== undefined && (
+                <span
+                  class="deduction__choice-verdict"
+                  data-choice-verdict
+                  hidden
+                  aria-hidden="true"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      </li>
+    ))}
+  </ol>
 </section>
 
 <style>
-  .notes {
+  .deduction {
     margin: var(--space-6) 0;
-    padding: var(--space-6);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    background: var(--color-surface);
-    background-image: repeating-linear-gradient(
-      transparent,
-      transparent 1.79rem,
-      color-mix(in srgb, var(--color-line) 40%, transparent) 1.8rem
-    );
   }
-  .notes__head {
+  .deduction__head {
+    margin-bottom: var(--space-5);
+  }
+  .deduction__hint {
+    font-size: 0.85rem;
+    margin: var(--space-2) 0 0;
+  }
+
+  /* 评分总结 */
+  .deduction__score {
+    margin-top: var(--space-3);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+    animation: dscore-in 0.4s ease;
+  }
+  .deduction__score[data-level='perfect'] {
+    color: #6abf8a;
+    background: color-mix(in srgb, #6abf8a 10%, transparent);
+    border-color: color-mix(in srgb, #6abf8a 35%, var(--color-line));
+  }
+  .deduction__score[data-level='good'] {
+    color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+    border-color: color-mix(in srgb, var(--color-gold) 35%, var(--color-line));
+  }
+  .deduction__score[data-level='low'] {
+    color: var(--color-muted);
+    background: transparent;
+  }
+
+  /* 题目列表 */
+  .deduction__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .deduction__q {
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
     gap: var(--space-3);
-    margin-bottom: var(--space-3);
-  }
-  .notes__title {
+    margin: 0 0 var(--space-3);
     font-family: var(--font-display);
-    font-size: 1.2rem;
-    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
   }
-  .notes__status {
-    font-size: 0.7rem;
+  .deduction__q-num {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .deduction__q-text {
+    flex: 1;
+  }
+
+  /* 选项按钮 */
+  .deduction__choices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .deduction__choice {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-left: 3px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-paper);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .deduction__choice:hover {
+    background: var(--color-surface-2);
+    border-left-color: var(--color-accent);
+  }
+  .deduction__choice[data-locked] {
+    cursor: default;
+  }
+  .deduction__choice[data-locked]:hover {
+    background: var(--color-surface);
+    border-left-color: var(--color-line);
+  }
+  .deduction__choice[data-locked][data-selected]:hover {
+    border-left-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+  }
+  .deduction__choice-key {
+    flex-shrink: 0;
+    font-size: 0.72rem;
     letter-spacing: 0.1em;
     color: var(--color-muted);
+    width: 1.2em;
   }
-  .notes__input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: var(--color-paper);
-    font-family: var(--font-serif-cn);
-    font-size: 1rem;
-    line-height: 1.8;
-    resize: vertical;
-    padding: 0;
+  .deduction__choice-text {
+    flex: 1;
+    line-height: 1.5;
   }
-  .notes__input:focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+
+  /* 已选中 */
+  .deduction__choice[data-selected] {
+    border-left-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
   }
-  .notes__input::placeholder {
-    color: var(--color-muted);
-    opacity: 0.7;
+  .deduction__choice[data-selected] .deduction__choice-key {
+    color: var(--color-accent);
   }
-  .notes__hint {
-    margin: var(--space-3) 0 0;
-    font-size: 0.78rem;
+
+  /* 揭晓后：正确（用户选对） */
+  .deduction__choice[data-verdict='correct'] {
+    border-left-color: #6abf8a;
+    background: color-mix(in srgb, #6abf8a 8%, var(--color-surface));
+  }
+  .deduction__choice[data-verdict='correct'] .deduction__choice-key { color: #6abf8a; }
+
+  /* 揭晓后：选错 */
+  .deduction__choice[data-verdict='wrong'] {
+    border-left-color: #e8a84c;
+    background: color-mix(in srgb, #e8a84c 6%, var(--color-surface));
+    opacity: 0.8;
+  }
+  .deduction__choice[data-verdict='wrong'] .deduction__choice-key { color: #e8a84c; }
+
+  /* 揭晓后：正确答案（用户未选） */
+  .deduction__choice[data-verdict='answer'] {
+    border-left-color: #6abf8a;
+    background: color-mix(in srgb, #6abf8a 5%, var(--color-surface));
+  }
+  .deduction__choice[data-verdict='answer'] .deduction__choice-key { color: #6abf8a; }
+
+  /* 裁决 badge */
+  .deduction__choice-verdict {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    padding: 0.3em 0.55em;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    white-space: nowrap;
+    animation: dverdict-in 0.3s ease both;
+  }
+  .deduction__choice[data-verdict='correct'] .deduction__choice-verdict {
+    color: #6abf8a;
+    border-color: color-mix(in srgb, #6abf8a 45%, var(--color-line));
+  }
+  .deduction__choice[data-verdict='wrong'] .deduction__choice-verdict {
+    color: #e8a84c;
+    border-color: color-mix(in srgb, #e8a84c 45%, var(--color-line));
+  }
+  .deduction__choice[data-verdict='answer'] .deduction__choice-verdict {
+    color: #6abf8a;
+    border-color: color-mix(in srgb, #6abf8a 35%, var(--color-line));
+  }
+
+  @keyframes dverdict-in {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes dscore-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deduction__choice-verdict,
+    .deduction__score { animation: none; }
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-notes]').forEach((root) => {
-    const caseId = root.dataset.case;
-    if (!caseId) return;
-    const input = root.querySelector<HTMLTextAreaElement>('[data-notes-input]');
-    const status = root.querySelector<HTMLElement>('[data-notes-status]');
-    if (!input) return;
-    const key = `inferred:notes:${caseId}`;
+  type Selections = Record<number, number>; // qi → ci
 
+  function load(caseId: string): Selections {
     try {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        input.value = saved;
-        if (status) status.textContent = '已保存';
-      }
-    } catch (e) {}
+      const raw = localStorage.getItem(`inferred:deduction:${caseId}`);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  }
 
-    let timer: number | undefined;
-    input.addEventListener('input', () => {
-      if (status) status.textContent = '正在输入…';
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        try {
-          if (input.value.trim()) localStorage.setItem(key, input.value);
-          else localStorage.removeItem(key);
-          if (status) status.textContent = '已保存';
-        } catch (e) {
-          if (status) status.textContent = '保存失败';
+  function save(caseId: string, data: Selections) {
+    try {
+      localStorage.setItem(`inferred:deduction:${caseId}`, JSON.stringify(data));
+    } catch {}
+  }
+
+  function paintChoice(btn: HTMLButtonElement, selected: boolean) {
+    if (selected) {
+      btn.dataset.selected = '';
+      btn.setAttribute('aria-pressed', 'true');
+    } else {
+      delete btn.dataset.selected;
+      btn.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  function revealFeedback(
+    board: HTMLElement,
+    choices: NodeListOf<HTMLButtonElement>,
+    animate: boolean
+  ) {
+    // Group by question index
+    const byQ = new Map<number, HTMLButtonElement[]>();
+    choices.forEach((btn) => {
+      const qi = Number(btn.dataset.qi);
+      if (!byQ.has(qi)) byQ.set(qi, []);
+      byQ.get(qi)!.push(btn);
+    });
+
+    let evaluated = 0;
+    let correct = 0;
+    let delay = 0;
+
+    byQ.forEach((btns) => {
+      const answerBtn = btns.find((b) => b.dataset.isAnswer !== undefined);
+      if (!answerBtn) return; // 无答案设定，跳过评分
+
+      evaluated++;
+      const selectedBtn = btns.find((b) => b.dataset.selected !== undefined);
+      if (selectedBtn === answerBtn) correct++;
+
+      btns.forEach((btn) => {
+        btn.dataset.locked = '';
+        const verdictEl = btn.querySelector<HTMLElement>('[data-choice-verdict]');
+        if (!verdictEl) return;
+
+        const isAnswer = btn.dataset.isAnswer !== undefined;
+        const isSelected = btn.dataset.selected !== undefined;
+
+        if (!animate) {
+          verdictEl.style.animation = 'none';
+        } else {
+          verdictEl.style.animationDelay = `${delay * 80}ms`;
         }
-      }, 500);
+
+        if (isAnswer && isSelected) {
+          btn.dataset.verdict = 'correct';
+          verdictEl.hidden = false;
+          verdictEl.textContent = '✓ 推断正确';
+          delay++;
+        } else if (!isAnswer && isSelected) {
+          btn.dataset.verdict = 'wrong';
+          verdictEl.hidden = false;
+          verdictEl.textContent = '✗ 推断有误';
+          delay++;
+        } else if (isAnswer && !isSelected) {
+          btn.dataset.verdict = 'answer';
+          verdictEl.hidden = false;
+          verdictEl.textContent = selectedBtn ? '← 正确答案' : '未选 · 正确答案';
+          delay++;
+        }
+      });
+    });
+
+    // 有评分才显示总结
+    const scoreEl = board.querySelector<HTMLElement>('[data-deduction-score]');
+    if (scoreEl && evaluated > 0) {
+      if (!animate) scoreEl.style.animation = 'none';
+      scoreEl.hidden = false;
+      if (correct === evaluated) {
+        scoreEl.textContent = `全部命中 · 推断了所有 ${evaluated} 道关键问题`;
+        scoreEl.dataset.level = 'perfect';
+      } else {
+        scoreEl.textContent = `推断正确 ${correct} / ${evaluated} 题`;
+        scoreEl.dataset.level = correct >= Math.ceil(evaluated / 2) ? 'good' : 'low';
+      }
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-deduction]').forEach((board) => {
+    const caseId = board.dataset.case;
+    if (!caseId) return;
+
+    const choices = board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]');
+    let stored = load(caseId);
+
+    // 恢复已保存的选择
+    choices.forEach((btn) => {
+      const qi = Number(btn.dataset.qi);
+      const ci = Number(btn.dataset.ci);
+      paintChoice(btn, stored[qi] === ci);
+    });
+
+    // 点击选择（同题单选，再点取消）
+    choices.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.locked !== undefined) return;
+        const qi = Number(btn.dataset.qi);
+        const ci = Number(btn.dataset.ci);
+
+        // 同题其他选项取消
+        board
+          .querySelectorAll<HTMLButtonElement>(`[data-deduction-choice][data-qi="${qi}"]`)
+          .forEach((b) => paintChoice(b, false));
+
+        const wasSelected = stored[qi] === ci;
+        if (wasSelected) {
+          delete stored[qi];
+        } else {
+          stored[qi] = ci;
+          paintChoice(btn, true);
+        }
+        save(caseId, stored);
+      });
+    });
+
+    // 已结案：立即展示（无动画）
+    try {
+      if (localStorage.getItem(`inferred:progress:${location.pathname}`) === 'solved') {
+        revealFeedback(board, choices, false);
+      }
+    } catch {}
+
+    // 本次揭晓：有动画
+    window.addEventListener('inferred:case-solved', () => {
+      revealFeedback(board, choices, true);
     });
   });
 </script>
