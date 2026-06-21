@@ -11,7 +11,7 @@ export const siteVerification = {
   /** <meta name="google-site-verification" content="..."> */
   google: '',
   /** <meta name="msvalidate.01" content="..."> */
-  bing: '',
+  bing: '877CF3677E0C08A6443342CE11C95E22',
   /** <meta name="baidu-site-verification" content="..."> */
   baidu: '',
 };
