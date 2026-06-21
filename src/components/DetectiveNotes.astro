@@ -130,6 +130,38 @@ const { caseId } = Astro.props;
     border-color: color-mix(in srgb, #c05555 40%, var(--color-line));
     background: color-mix(in srgb, #c05555 18%, var(--color-surface));
   }
+  /* 选中圆形指示器 */
+  .deduction__choice-indicator {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-muted);
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .deduction__choice:hover .deduction__choice-indicator {
+    border-color: #c05555;
+  }
+  .deduction__choice[data-selected] .deduction__choice-indicator {
+    border-color: #c05555;
+    background: #c05555;
+    box-shadow: 0 0 0 3px color-mix(in srgb, #c05555 22%, transparent);
+  }
+  .deduction__choice[data-verdict='correct'] .deduction__choice-indicator {
+    border-color: #6abf8a;
+    background: #6abf8a;
+    box-shadow: none;
+  }
+  .deduction__choice[data-verdict='wrong'] .deduction__choice-indicator {
+    border-color: #e8a84c;
+    background: #e8a84c;
+    box-shadow: none;
+  }
+  .deduction__choice[data-verdict='answer']:not([data-selected]) .deduction__choice-indicator {
+    border-color: #6abf8a;
+    box-shadow: none;
+  }
+
   .deduction__choice-key {
     flex-shrink: 0;
     font-size: 0.72rem;
@@ -277,6 +309,7 @@ const { caseId } = Astro.props;
           data-ci="${ci}"
           ${isAnswer ? 'data-is-answer=""' : ''}
           aria-pressed="false"
+        ><span class="deduction__choice-indicator" aria-hidden="true"></span
         ><span class="deduction__choice-key mono" aria-hidden="true">${String.fromCharCode(65 + ci)}</span
         ><span class="deduction__choice-text">${esc(c.text)}</span
         >${hasAnswer ? '<span class="deduction__choice-verdict" data-choice-verdict hidden aria-hidden="true"></span>' : ''
@@ -332,6 +365,10 @@ const { caseId } = Astro.props;
     let correct = 0;
     let answered = 0;
     let delay = 0;
+    const details: Array<{
+      q: string; selectedText: string | null; answerText: string;
+      verdict: 'correct' | 'wrong' | 'unanswered';
+    }> = [];
 
     byQ.forEach((btns) => {
       const answerBtn = btns.find((b) => b.dataset.isAnswer !== undefined);
@@ -343,7 +380,17 @@ const { caseId } = Astro.props;
       if (!answerBtn) return;
 
       evaluated++;
-      if (selectedBtn === answerBtn) correct++;
+      const isCorrect = selectedBtn === answerBtn;
+      if (isCorrect) correct++;
+
+      const li = btns[0]?.closest<HTMLElement>('.deduction__item');
+      const qText = li?.querySelector<HTMLElement>('.deduction__q-text')?.textContent?.trim() ?? '';
+      const answerText = answerBtn.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ?? '';
+      const selectedText = selectedBtn?.querySelector<HTMLElement>('.deduction__choice-text')?.textContent?.trim() ?? null;
+      details.push({
+        q: qText, selectedText, answerText,
+        verdict: !selectedBtn ? 'unanswered' : isCorrect ? 'correct' : 'wrong',
+      });
 
       btns.forEach((btn) => {
         const verdictEl = btn.querySelector<HTMLElement>('[data-choice-verdict]');
@@ -378,7 +425,7 @@ const { caseId } = Astro.props;
     try {
       localStorage.setItem(
         `inferred:reveal:deduction:${location.pathname}`,
-        JSON.stringify({ answered, total: byQ.size, correct, evaluated })
+        JSON.stringify({ answered, total: byQ.size, correct, evaluated, details })
       );
     } catch {}
 
