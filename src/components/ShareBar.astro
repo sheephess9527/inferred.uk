@@ -18,40 +18,77 @@ const weiboHref =
   encodeURIComponent(`${title}｜Inferred`);
 ---
 
-<aside class="share" data-share data-url={url} data-title={title} data-text={text} data-poster={posterUrl} aria-label="分享这篇文章">
+<aside
+  class="share"
+  data-share
+  data-url={url}
+  data-title={title}
+  data-text={text}
+  data-poster={posterUrl}
+  aria-label="分享这篇文章"
+>
   <span class="share__label mono">分享 · SHARE</span>
 
   <div class="share__actions">
-    {poster && (
-      <button type="button" class="share__btn share__btn--wechat" data-share-wechat>朋友圈</button>
-    )}
-    {poster && (
-      <button type="button" class="share__btn share__btn--xhs" data-share-xhs>小红书</button>
-    )}
-    <a class="share__btn" href={weiboHref} target="_blank" rel="noopener noreferrer" data-share-weibo>微博</a>
+    {
+      poster && (
+        <button type="button" class="share__btn share__btn--wechat" data-share-wechat>
+          朋友圈
+        </button>
+      )
+    }
+    {
+      poster && (
+        <button type="button" class="share__btn share__btn--xhs" data-share-xhs>
+          小红书
+        </button>
+      )
+    }
+    <a
+      class="share__btn"
+      href={weiboHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-weibo>微博</a
+    >
     <button type="button" class="share__btn" data-share-copy>复制链接</button>
-    <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button>
+    <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button
+    >
   </div>
 
   <p class="share__toast mono" data-share-toast hidden aria-live="polite"></p>
 </aside>
 
-{poster && (
-  <div class="poster" data-poster-modal hidden aria-hidden="true">
-    <div class="poster__backdrop" data-poster-close></div>
-    <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
-      <button type="button" class="poster__x" data-poster-close aria-label="关闭">✕</button>
-      <ol class="poster__steps mono" data-poster-steps aria-label="操作步骤"></ol>
-      <div class="poster__frame" data-poster-frame>
-        <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
-      </div>
-      <div class="poster__foot">
-        <a class="poster__dl" data-poster-dl download>↓ 下载图片</a>
-        <a class="poster__action" data-poster-action target="_blank" rel="noopener noreferrer" hidden>去小红书</a>
+{
+  poster && (
+    <div class="poster" data-poster-modal hidden aria-hidden="true">
+      <div class="poster__backdrop" data-poster-close />
+      <div class="poster__dialog" role="dialog" aria-modal="true" aria-label="分享海报">
+        <button type="button" class="poster__x" data-poster-close aria-label="关闭">
+          ✕
+        </button>
+        <ol class="poster__steps mono" data-poster-steps aria-label="操作步骤" />
+        <div class="poster__frame" data-poster-frame>
+          <img class="poster__img" data-poster-img alt={`${title} 分享海报`} />
+        </div>
+        <div class="poster__foot">
+          <a class="poster__dl" data-poster-dl download>
+            ↓ 下载图片
+          </a>
+          <a
+            class="poster__action"
+            data-poster-action
+            target="_blank"
+            rel="noopener noreferrer"
+            hidden
+          >
+            去小红书
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-)}
+  )
+}
 
 <style>
   .share {
@@ -88,7 +125,10 @@ const weiboHref =
     padding: 0.45em 1em;
     cursor: pointer;
     text-decoration: none;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    transition:
+      color 0.18s ease,
+      border-color 0.18s ease,
+      background 0.18s ease;
   }
   .share__btn:hover {
     border-color: var(--color-gold);
@@ -135,7 +175,9 @@ const weiboHref =
   }
 
   /* 海报弹窗 */
-  .poster[hidden] { display: none; }
+  .poster[hidden] {
+    display: none;
+  }
   .poster {
     position: fixed;
     inset: 0;
@@ -177,7 +219,9 @@ const weiboHref =
     color: var(--color-muted);
     font-size: 0.9rem;
     cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
   }
   .poster__x:hover {
     color: var(--color-paper);
@@ -239,7 +283,9 @@ const weiboHref =
     border-radius: 999px;
     padding: 0.4em 1em;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
   }
   .poster__dl:hover {
     border-color: var(--color-gold);
@@ -258,35 +304,45 @@ const weiboHref =
   .poster__action:hover {
     background: color-mix(in srgb, #ff2e4d 15%, transparent);
   }
-  .poster__action[hidden] { display: none; }
+  .poster__action[hidden] {
+    display: none;
+  }
 
   @keyframes poster-in {
-    from { opacity: 0; transform: translateY(6px) scale(0.98); }
-    to   { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-share]').forEach((root) => {
-    const url    = root.dataset.url    ?? location.href;
-    const title  = root.dataset.title  ?? document.title;
-    const text   = root.dataset.text   ?? '';
+    const url = root.dataset.url ?? location.href;
+    const title = root.dataset.title ?? document.title;
+    const text = root.dataset.text ?? '';
     const poster = root.dataset.poster ?? '';
 
-    const toast     = root.querySelector<HTMLElement>('[data-share-toast]');
+    const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
-    const copyBtn   = root.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
     const wechatBtn = root.querySelector<HTMLButtonElement>('[data-share-wechat]');
-    const xhsBtn    = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
+    const xhsBtn = root.querySelector<HTMLButtonElement>('[data-share-xhs]');
 
-    const modal       = document.querySelector<HTMLElement>('[data-poster-modal]');
-    const posterImg   = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
+    const modal = document.querySelector<HTMLElement>('[data-poster-modal]');
+    const posterImg = modal?.querySelector<HTMLImageElement>('[data-poster-img]');
     const posterFrame = modal?.querySelector<HTMLElement>('[data-poster-frame]');
-    const posterDl    = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
-    const posterAct   = modal?.querySelector<HTMLAnchorElement>('[data-poster-action]');
+    const posterDl = modal?.querySelector<HTMLAnchorElement>('[data-poster-dl]');
+    const posterAct = modal?.querySelector<HTMLAnchorElement>('[data-poster-action]');
     const posterSteps = modal?.querySelector<HTMLElement>('[data-poster-steps]');
     let lastFocus: HTMLElement | null = null;
 
@@ -300,7 +356,9 @@ const weiboHref =
       if (!toast) return;
       toast.textContent = msg;
       toast.hidden = false;
-      window.setTimeout(() => { if (toast) toast.hidden = true; }, 3000);
+      window.setTimeout(() => {
+        if (toast) toast.hidden = true;
+      }, 3000);
     }
 
     async function copyText(value: string): Promise<boolean> {
@@ -323,8 +381,13 @@ const weiboHref =
       let ok = false;
       try {
         // Fallback for in-app browsers without Clipboard API
-        if (typeof document.queryCommandSupported === 'function' && document.queryCommandSupported('copy')) {
-          ok = Boolean((document as Document & { execCommand(commandId: string): boolean }).execCommand('copy'));
+        if (
+          typeof document.queryCommandSupported === 'function' &&
+          document.queryCommandSupported('copy')
+        ) {
+          ok = Boolean(
+            (document as Document & { execCommand(commandId: string): boolean }).execCommand('copy')
+          );
         }
       } catch {
         ok = false;
@@ -333,29 +396,117 @@ const weiboHref =
       return ok;
     }
 
-    function openPoster(opts: { steps: string[]; actionHref?: string }) {
+    // 在原海报上叠加判断题成绩条，返回 data URL；失败返回 null
+    function buildScoredPosterDataUrl(
+      baseUrl: string,
+      score: { correct: number; evaluated: number }
+    ): Promise<string | null> {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth || 1200;
+          c.height = img.naturalHeight || 630;
+          const ctx = c.getContext('2d');
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(img, 0, 0);
+
+          const W = c.width;
+          const H = c.height;
+          const px = Math.round(W * 0.055);
+
+          // 成绩放在摘要文字（~57%）与二维码（~70%）之间的空白暗区
+          // 用淡入淡出渐变，不遮挡二维码
+          const gradTop = Math.round(H * 0.555);
+          const gradH = Math.round(H * 0.175);
+          const grad = ctx.createLinearGradient(0, gradTop, 0, gradTop + gradH);
+          grad.addColorStop(0, 'rgba(14,14,12,0)');
+          grad.addColorStop(0.22, 'rgba(14,14,12,0.92)');
+          grad.addColorStop(0.78, 'rgba(14,14,12,0.92)');
+          grad.addColorStop(1, 'rgba(14,14,12,0)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, gradTop, W, gradH);
+
+          const isPerfect = score.evaluated > 0 && score.correct === score.evaluated;
+          const scoreText = isPerfect
+            ? `全部命中 · 推断了所有 ${score.evaluated} 道题`
+            : `推断命中 ${score.correct} / ${score.evaluated} 题`;
+
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'alphabetic';
+
+          // 成绩行（字更大，占满暗区）
+          ctx.font = `600 ${Math.round(W * 0.056)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.fillStyle = isPerfect ? '#D4A853' : '#E8E2D2';
+          ctx.fillText(scoreText, px, Math.round(H * 0.647));
+
+          // 邀请行
+          ctx.font = `${Math.round(W * 0.034)}px "Helvetica Neue",Arial,sans-serif`;
+          ctx.fillStyle = 'rgba(232,226,210,0.5)';
+          ctx.fillText('你能看破真相吗？→ www.inferred.uk', px, Math.round(H * 0.697));
+
+          try {
+            resolve(c.toDataURL('image/jpeg', 0.9));
+          } catch {
+            resolve(null);
+          }
+        };
+        img.onerror = () => resolve(null);
+        img.src = baseUrl;
+      });
+    }
+
+    // 有成绩时返回叠加后的 data URL，否则返回原静态 URL（结果缓存一次）
+    let _scoredSrc: string | null | undefined;
+    async function getEffectivePosterSrc(): Promise<string> {
+      if (!poster) return poster;
+      if (_scoredSrc !== undefined) return _scoredSrc ?? poster;
+      try {
+        const raw = localStorage.getItem(`inferred:reveal:deduction:${location.pathname}`);
+        if (raw) {
+          const data = JSON.parse(raw) as { correct: number; evaluated: number };
+          if (data.evaluated > 0) {
+            _scoredSrc = await buildScoredPosterDataUrl(poster, data);
+            return _scoredSrc ?? poster;
+          }
+        }
+      } catch {}
+      _scoredSrc = null;
+      return poster;
+    }
+
+    function openPoster(opts: { steps: string[]; actionHref?: string; src?: string }) {
       if (!modal || !poster) return;
 
-      // 只在第一次打开时设置 src（预加载已把图片放进缓存，几乎瞬间完成）
-      if (!posterImg?.getAttribute('src')) {
+      const effectiveSrc = opts.src ?? poster;
+
+      // src 变化时重新加载（首次或切换成绩版/静态版）
+      if (posterImg && posterImg.getAttribute('src') !== effectiveSrc) {
         posterFrame?.setAttribute('data-loading', '');
-        if (posterImg) {
-          posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
-          posterImg.onerror = () => {
-            posterFrame?.removeAttribute('data-loading');
-            if (posterSteps) {
-              const li = document.createElement('li');
-              li.textContent = '海报加载失败，请稍后重试或直接复制链接';
-              posterSteps.replaceChildren(li);
-            }
-          };
-          posterImg.src = poster;
-        }
+        posterImg.onload = () => posterFrame?.removeAttribute('data-loading');
+        posterImg.onerror = () => {
+          posterFrame?.removeAttribute('data-loading');
+          if (posterSteps) {
+            const li = document.createElement('li');
+            li.textContent = '海报加载失败，请稍后重试或直接复制链接';
+            posterSteps.replaceChildren(li);
+          }
+        };
+        posterImg.src = effectiveSrc;
       }
 
       if (posterDl) {
-        posterDl.href = poster;
-        posterDl.setAttribute('download', poster.split('/').pop() || 'inferred.jpg');
+        posterDl.href = effectiveSrc;
+        posterDl.setAttribute(
+          'download',
+          effectiveSrc.startsWith('data:')
+            ? 'inferred-score.jpg'
+            : (effectiveSrc.split('/').pop() || 'inferred.jpg')
+        );
       }
 
       if (posterSteps) {
@@ -392,10 +543,10 @@ const weiboHref =
     }
 
     if (modal) {
-      modal.querySelectorAll<HTMLElement>('[data-poster-close]').forEach(el =>
-        el.addEventListener('click', closePoster)
-      );
-      document.addEventListener('keydown', e => {
+      modal
+        .querySelectorAll<HTMLElement>('[data-poster-close]')
+        .forEach((el) => el.addEventListener('click', closePoster));
+      document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !modal.hidden) closePoster();
       });
     }
@@ -413,9 +564,11 @@ const weiboHref =
       showToast(ok ? '链接已复制' : '复制失败，请手动复制');
     });
 
-    // 朋友圈：打开海报 + 三步微信指引
-    wechatBtn?.addEventListener('click', () => {
+    // 朋友圈：有成绩则叠加成绩条，否则用静态海报
+    wechatBtn?.addEventListener('click', async () => {
+      const src = await getEffectivePosterSrc();
       openPoster({
+        src,
         steps: [
           '长按图片 → 保存到相册',
           '打开微信 → 发现 → 朋友圈',
@@ -424,14 +577,15 @@ const weiboHref =
       });
     });
 
-    // 小红书：先复制文案，再打开海报 + 三步引导 + 跳转按鈕
+    // 小红书：先复制文案，再打开（有成绩时展示叠加版）
     xhsBtn?.addEventListener('click', async () => {
       const caption = [title, text, url, '#推理 #悬疑 #解谜 #本格推理 #Inferred']
         .filter(Boolean)
         .join('\n\n');
-      const copied = await copyText(caption);
+      const [copied, src] = await Promise.all([copyText(caption), getEffectivePosterSrc()]);
 
       openPoster({
+        src,
         steps: [
           copied ? '✓ 文案已自动复制' : '手动复制文案（稍后粘贴）',
           '长按图片 → 保存到相册',

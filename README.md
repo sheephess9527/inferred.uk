@@ -512,6 +512,14 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-06-21 — 修复合并回退：恢复分享海报成绩条
+
+- **回归修复**：Astro 6 安全合并（`6024389`）解决 `ShareBar.astro` 冲突时误取了 feature 分支旧版，**丢失了 canvas 成绩叠加功能**（`733b5f1` 起在 main 主线实现）。已从 stash 提交 `c6ab30d` 恢复「canvas 成绩条 + 安全修复」合并版。
+- **功能说明**（约定，勿再丢失）：点「朋友圈 / 小红书」时，`ShareBar` 读取 `localStorage` 的 `inferred:reveal:deduction:{path}`；若已答题（`evaluated > 0`），用 `<canvas>` 在静态海报暗区（约 55–73% 高度，避开二维码）叠加「推断命中 X / N 题」成绩条，`toDataURL` 导出替换原图供保存分享；未答题则沿用静态海报。
+  - 关键函数：`buildScoredPosterDataUrl()`（canvas 绘制）、`getEffectivePosterSrc()`（读成绩 → 决定用成绩版还是静态版，结果缓存一次）
+  - 依赖 CSP `img-src 'self' data: blob:`（canvas data URL）——已在 `src/middleware.ts` 放行
+  - 此为**共享组件逻辑**，对全部 105 篇案卷生效；案卷只需有带 `answer` 的 `questions` frontmatter 即可触发评分
+
 ### 2026-06-21 — 安全加固 + Astro 6 升级
 
 - **Astro 5 → 6**（`astro@6.4.8`）+ **`@astrojs/cloudflare@13`**（修复多项 CVE）
