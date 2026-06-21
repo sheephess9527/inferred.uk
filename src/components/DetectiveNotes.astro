@@ -1,54 +1,10 @@
 ---
-// 推理判断：用户在揭晓前选择答案，揭晓后对比得分。
-// 默认内置三道通用题（适配所有案卷，无需改 MDX）；
-// 可通过 items 传入案卷专属题目+正确答案，启用精确评分。
-export interface Choice {
-  text: string;
-}
-export interface DeductionItem {
-  q: string;
-  choices: Choice[];
-  /** 正确选项的 0-based 下标；不填则不参与评分 */
-  answer?: number;
-}
+// 推理判断：题目从 window.__inferredDeductionItems 读取（由页面模板从 frontmatter 注入）；
+// 若未设定则使用三道通用默认题。揭晓后锁定并对比结果，写入 localStorage 供总结面板读取。
 export interface Props {
   caseId: string;
-  items?: DeductionItem[];
 }
-const { caseId, items: customItems } = Astro.props;
-
-const DEFAULT_ITEMS: DeductionItem[] = [
-  {
-    q: '你认为案件的核心矛盾在哪里？',
-    choices: [
-      { text: '时间线上有说不通的地方' },
-      { text: '某人的证词与物证相矛盾' },
-      { text: '现场有不该出现或缺失的东西' },
-      { text: '动机与表面行为对不上' },
-    ],
-  },
-  {
-    q: '你最怀疑谁的说法？',
-    choices: [
-      { text: '第一个出现在案发现场附近的人' },
-      { text: '主动提供线索、指向别人的人' },
-      { text: '不在场证明最完整的人' },
-      { text: '看起来最无关紧要的人' },
-    ],
-  },
-  {
-    q: '你对真相的判断，最接近哪个方向？',
-    choices: [
-      { text: '有人蓄意策划，现场是布置好的' },
-      { text: '事出意外，不存在完整的预谋' },
-      { text: '受害者或失踪者自己参与其中' },
-      { text: '表面现象是误导，真相指向另一个方向' },
-    ],
-  },
-];
-
-const items = customItems && customItems.length > 0 ? customItems : DEFAULT_ITEMS;
-const hasAnswers = items.some((it) => it.answer !== undefined);
+const { caseId } = Astro.props;
 ---
 
 <section
@@ -62,47 +18,9 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
     <p class="deduction__hint text-muted">
       在打开答案前，先选出你的推断。揭晓后自动对比，看你推对了几条。
     </p>
-    {hasAnswers && (
-      <p class="deduction__score mono" data-deduction-score hidden></p>
-    )}
+    <p class="deduction__score mono" data-deduction-score hidden></p>
   </header>
-
-  <ol class="deduction__list">
-    {items.map((item, qi) => (
-      <li class="deduction__item">
-        <p class="deduction__q">
-          <span class="deduction__q-num mono">{String(qi + 1).padStart(2, '0')}</span>
-          <span class="deduction__q-text">{item.q}</span>
-        </p>
-        <div class="deduction__choices" role="group" aria-label={`第 ${qi + 1} 题`}>
-          {item.choices.map((c, ci) => (
-            <button
-              type="button"
-              class="deduction__choice"
-              data-deduction-choice
-              data-qi={qi}
-              data-ci={ci}
-              data-is-answer={item.answer === ci ? '' : undefined}
-              aria-pressed="false"
-            >
-              <span class="deduction__choice-key mono" aria-hidden="true">
-                {String.fromCharCode(65 + ci)}
-              </span>
-              <span class="deduction__choice-text">{c.text}</span>
-              {item.answer !== undefined && (
-                <span
-                  class="deduction__choice-verdict"
-                  data-choice-verdict
-                  hidden
-                  aria-hidden="true"
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      </li>
-    ))}
-  </ol>
+  <ol class="deduction__list" data-deduction-list></ol>
 </section>
 
 <style>
@@ -150,6 +68,9 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
+  }
+  .deduction__item {
+    /* no extra styles needed */
   }
   .deduction__q {
     display: flex;
@@ -291,7 +212,80 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
 </style>
 
 <script>
-  type Selections = Record<number, number>; // qi → ci
+  interface Choice { text: string }
+  interface DeductionItem {
+    q: string;
+    choices: Choice[];
+    answer?: number;
+  }
+  type Selections = Record<number, number>;
+
+  const DEFAULT_ITEMS: DeductionItem[] = [
+    {
+      q: '你认为案件的核心矛盾在哪里？',
+      choices: [
+        { text: '时间线上有说不通的地方' },
+        { text: '某人的证词与物证相矛盾' },
+        { text: '现场有不该出现或缺失的东西' },
+        { text: '动机与表面行为对不上' },
+      ],
+    },
+    {
+      q: '你最怀疑谁的说法？',
+      choices: [
+        { text: '第一个出现在案发现场附近的人' },
+        { text: '主动提供线索、指向别人的人' },
+        { text: '不在场证明最完整的人' },
+        { text: '看起来最无关紧要的人' },
+      ],
+    },
+    {
+      q: '你对真相的判断，最接近哪个方向？',
+      choices: [
+        { text: '有人蓄意策划，现场是布置好的' },
+        { text: '事出意外，不存在完整的预谋' },
+        { text: '受害者或失踪者自己参与其中' },
+        { text: '表面现象是误导，真相指向另一个方向' },
+      ],
+    },
+  ];
+
+  function esc(s: string): string {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function buildList(board: HTMLElement, items: DeductionItem[]) {
+    const listEl = board.querySelector<HTMLElement>('[data-deduction-list]');
+    if (!listEl) return;
+
+    listEl.innerHTML = items.map((item, qi) => {
+      const hasAnswer = item.answer !== undefined;
+      const num = String(qi + 1).padStart(2, '0');
+      const choicesHtml = item.choices.map((c, ci) => {
+        const isAnswer = item.answer === ci;
+        return `<button
+          type="button"
+          class="deduction__choice"
+          data-deduction-choice
+          data-qi="${qi}"
+          data-ci="${ci}"
+          ${isAnswer ? 'data-is-answer=""' : ''}
+          aria-pressed="false"
+        ><span class="deduction__choice-key mono" aria-hidden="true">${String.fromCharCode(65 + ci)}</span
+        ><span class="deduction__choice-text">${esc(c.text)}</span
+        >${hasAnswer ? '<span class="deduction__choice-verdict" data-choice-verdict hidden aria-hidden="true"></span>' : ''
+        }</button>`;
+      }).join('');
+
+      return `<li class="deduction__item">
+        <p class="deduction__q">
+          <span class="deduction__q-num mono">${num}</span>
+          <span class="deduction__q-text">${esc(item.q)}</span>
+        </p>
+        <div class="deduction__choices" role="group" aria-label="第 ${qi + 1} 题">${choicesHtml}</div>
+      </li>`;
+    }).join('');
+  }
 
   function load(caseId: string): Selections {
     try {
@@ -321,7 +315,6 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
     choices: NodeListOf<HTMLButtonElement>,
     animate: boolean
   ) {
-    // 按题目分组
     const byQ = new Map<number, HTMLButtonElement[]>();
     choices.forEach((btn) => {
       const qi = Number(btn.dataset.qi);
@@ -339,11 +332,9 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
       const selectedBtn = btns.find((b) => b.dataset.selected !== undefined);
 
       if (selectedBtn) answered++;
-
-      // 全部锁定，不论是否设有答案
       btns.forEach((btn) => { btn.dataset.locked = ''; });
 
-      if (!answerBtn) return; // 无答案设定，跳过评分和裁决
+      if (!answerBtn) return;
 
       evaluated++;
       if (selectedBtn === answerBtn) correct++;
@@ -355,11 +346,8 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
         const isAnswer = btn.dataset.isAnswer !== undefined;
         const isSelected = btn.dataset.selected !== undefined;
 
-        if (!animate) {
-          verdictEl.style.animation = 'none';
-        } else {
-          verdictEl.style.animationDelay = `${delay * 80}ms`;
-        }
+        if (!animate) verdictEl.style.animation = 'none';
+        else verdictEl.style.animationDelay = `${delay * 80}ms`;
 
         if (isAnswer && isSelected) {
           btn.dataset.verdict = 'correct';
@@ -380,7 +368,6 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
       });
     });
 
-    // 将结果存入 localStorage，供 CaseSummary 读取
     try {
       localStorage.setItem(
         `inferred:reveal:deduction:${location.pathname}`,
@@ -388,7 +375,6 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
       );
     } catch {}
 
-    // 组件内评分横幅（仅在有答案时显示）
     const scoreEl = board.querySelector<HTMLElement>('[data-deduction-score]');
     if (scoreEl && evaluated > 0) {
       if (!animate) scoreEl.style.animation = 'none';
@@ -407,24 +393,28 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
     const caseId = board.dataset.case;
     if (!caseId) return;
 
+    // 优先使用页面注入的案卷专属题目，否则回退默认题
+    const items: DeductionItem[] =
+      (window as unknown as Record<string, DeductionItem[]>).__inferredDeductionItems ??
+      DEFAULT_ITEMS;
+
+    buildList(board, items);
+
     const choices = board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]');
     let stored = load(caseId);
 
-    // 恢复已保存的选择
     choices.forEach((btn) => {
       const qi = Number(btn.dataset.qi);
       const ci = Number(btn.dataset.ci);
       paintChoice(btn, stored[qi] === ci);
     });
 
-    // 点击选择（同题单选，再点取消）
     choices.forEach((btn) => {
       btn.addEventListener('click', () => {
         if (btn.dataset.locked !== undefined) return;
         const qi = Number(btn.dataset.qi);
         const ci = Number(btn.dataset.ci);
 
-        // 同题其他选项取消
         board
           .querySelectorAll<HTMLButtonElement>(`[data-deduction-choice][data-qi="${qi}"]`)
           .forEach((b) => paintChoice(b, false));
@@ -440,16 +430,14 @@ const hasAnswers = items.some((it) => it.answer !== undefined);
       });
     });
 
-    // 已结案：立即展示（无动画）
     try {
       if (localStorage.getItem(`inferred:progress:${location.pathname}`) === 'solved') {
-        revealFeedback(board, choices, false);
+        revealFeedback(board, board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'), false);
       }
     } catch {}
 
-    // 本次揭晓：有动画
     window.addEventListener('inferred:case-solved', () => {
-      revealFeedback(board, choices, true);
+      revealFeedback(board, board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'), true);
     });
   });
 </script>
