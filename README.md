@@ -62,10 +62,11 @@
 1. 打开案卷页 → 若非已结案，写入 `reading`
 2. 展开「揭晓真相」→ 写入 `solved`，并派发 `inferred:case-solved` 事件
 
-**显示位置**（`e648432` 修复）：
+**显示位置**（`e648432` + `9b2bc04` 修复）：
 
 - 列表卡片 `CaseCard.astro`：`data-progress-badge`
-- 详情页眉 + `CaseMeta.astro`：读取同一 `localStorage` 键，揭晓后即时更新
+- 详情页眉：`data-case-eyebrow-text`，初始渲染中文「未解/已解」，JS 根据 localStorage 同步为「推理中/已结案」
+- `CaseMeta.astro`：读取同一 `localStorage` 键，揭晓后即时更新（已移除 `data-progress-badge` 无效逻辑）
 
 新增案卷 `status` 保持 `"unsolved"` 即可；读者进度由前端自动管理。
 
@@ -239,6 +240,10 @@ export const evidence = [
 
 </RevealAnswer>
 ```
+
+### Astro 组件开发注意事项
+
+**`<style is:global>` 陷阱**：Astro `<style>` 块编译后会给选择器附加 `[data-astro-cid-xxx]` 属性限定符。但通过 `innerHTML` 或 `document.createElement` 在客户端脚本里动态创建的元素**不携带**该属性，导致 scoped 样式静默失效。凡是组件通过 JS 构建 DOM（如 `DetectiveNotes`、`CaseSummary`），必须使用 `<style is:global>`，并确保 class 名称唯一（`deduction__`、`case-summary__` 前缀已足够唯一）。
 
 ### frontmatter 字段（`src/content.config.ts`）
 
@@ -471,8 +476,8 @@ questions:
 - 案卷进度：未解 / 推理中 / 已结案（`localStorage`，揭晓后即时更新）
 - 档案馆：按状态 / 难度 / 类型 / 场景筛选
 - 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`；揭晓后自动对比评分）
-- **推理判断**：案卷专属选择题（每案 3 题），揭晓后自动评分并显示正确答案（`DetectiveNotes`）
-- **案件总结**（`CaseSummary`）：揭晓后展示物证识别 + 推理判断综合评分，按表现分 perfect / good / low 三级显示
+- **推理判断**：案卷专属选择题（每案 3 题），选项带圆形 radio 指示器（选中→红色实心），揭晓后自动评分并按题显示✓/✗/答案（`DetectiveNotes`）
+- **案件总结**（`CaseSummary`）：揭晓后展示物证识别 + 推理判断综合评分（perfect / good / low 三级）及逐题选择明细（你选了X / 正确答案Y）
 - 折叠揭晓（`<details>`，不持久化展开状态）
 - 阅读进度条、亮暗色模式
 - SEO + sitemap + Open Graph
@@ -546,6 +551,14 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — 交互优化与状态修复
+
+- **`DetectiveNotes` 选项可见性**：每个选项前新增 12px 圆形 radio 指示器（空心→填充红 `#c05555`），选中项同时加粗边框、浅玫瑰色背景，揭晓后绿色/琥珀色反馈；彻底解决「看不出自己选了什么」问题
+- **Astro 作用域 CSS 陷阱修复**：`<style>` 编译后选择器带 `[data-astro-cid-xxx]` 属性限定，`innerHTML` 注入的元素没有此属性，导致动态按钮样式静默失效；改为 `<style is:global>` 后所有 `deduction__` 样式正常应用（类名足够唯一，全局无冲突）
+- **`CaseSummary` 逐题详情**：`DetectiveNotes` 揭晓时将每题 `{ q, selectedText, answerText, verdict }` 写入 `localStorage` 的 `details[]`；`CaseSummary` 读取后渲染 ✓/✗/— 列表，显示「你选：X」和「正确：Y」，让复盘一目了然
+- **状态文案统一**：`[slug].astro` 页眉初始渲染改为中文「未解/已解」（原为英文），JS 同步函数与之对齐：`推理中 / 已结案 / 已解 / 未解` 四态均使用中文，全站状态标签一致
+- **`CaseMeta` 无效代码移除**：`inferred:case-solved` 监听器中移除了针对 `[data-progress-badge]` 的更新逻辑（该选择器在案卷详情页不存在），消除静默无效操作
 
 ### 2026-06-21 — 推理判断交互化 + 案件总结
 
