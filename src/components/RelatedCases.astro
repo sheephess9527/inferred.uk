@@ -1,0 +1,130 @@
+---
+import DifficultyStars from './DifficultyStars.astro';
+
+export interface RelatedCase {
+  caseId: string;
+  title: string;
+  types: string[];
+  difficulty: number;
+  status: 'unsolved' | 'solved';
+  readingTime: string;
+  slug: string;
+}
+
+export interface Props {
+  cases: RelatedCase[];
+}
+
+const { cases } = Astro.props;
+---
+
+{cases.length > 0 && (
+<section class="related" aria-labelledby="related-heading">
+  <header class="related__head">
+    <p class="eyebrow">Related · 相关案卷</p>
+    <h2 class="related__title" id="related-heading">你可能还会喜欢</h2>
+  </header>
+  <ul class="related__list">
+    {cases.map((c) => (
+      <li>
+        <a
+          class="related__card"
+          href={`/cases/${c.slug}`}
+          data-case-slug={c.slug}
+          data-site-status={c.status}
+        >
+          <span class="related__card-id mono">#{c.caseId}</span>
+          <span class="related__card-title">{c.title}</span>
+          <span class="related__card-types text-muted">{c.types.join(' · ')}</span>
+          <span class="related__card-foot">
+            <DifficultyStars value={c.difficulty} />
+            <span class="related__card-time mono">{c.readingTime}</span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+)}
+
+<style>
+  .related {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+  .related__head {
+    margin-bottom: var(--space-6);
+  }
+  .related__title {
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    margin: var(--space-2) 0 0;
+  }
+  .related__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .related__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: inherit;
+    height: 100%;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+    position: relative;
+  }
+  .related__card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--color-accent);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .related__card:hover {
+    border-color: color-mix(in srgb, var(--color-gold) 40%, var(--color-line));
+    transform: translateY(-2px);
+    color: inherit;
+  }
+  .related__card:hover::before {
+    opacity: 1;
+  }
+  .related__card-id {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+  .related__card-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    line-height: 1.35;
+    color: var(--color-paper);
+  }
+  .related__card-types {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .related__card-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--color-line);
+  }
+  .related__card-time {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    margin-left: auto;
+  }
+</style>

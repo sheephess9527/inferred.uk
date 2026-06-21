@@ -1,0 +1,173 @@
+---
+export interface Props {
+  slug: string;
+  officialDifficulty: number;
+}
+const { slug, officialDifficulty } = Astro.props;
+const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - officialDifficulty);
+---
+
+<aside
+  class="diff-vote"
+  data-diff-vote
+  data-slug={slug}
+  data-official={officialDifficulty}
+  hidden
+  aria-label="难度评价"
+>
+  <p class="eyebrow diff-vote__eyebrow">Rate · 难度评价</p>
+  <p class="diff-vote__prompt">这道题，你觉得实际有多难？</p>
+
+  <div class="diff-vote__stars" data-vote-stars role="radiogroup" aria-label="选择难度星级">
+    {[1, 2, 3, 4, 5].map((n) => (
+      <button
+        type="button"
+        class="diff-vote__star"
+        data-vote-n={n}
+        aria-label={`${n} 星`}
+        aria-pressed="false"
+      >★</button>
+    ))}
+  </div>
+
+  <p class="diff-vote__ref mono text-muted">
+    官方设定：<span class="diff-vote__official">{officialStars}</span>
+  </p>
+
+  <p class="diff-vote__thanks mono" data-vote-thanks hidden>
+    已记录，感谢反馈。
+  </p>
+</aside>
+
+<style>
+  .diff-vote {
+    margin-top: var(--space-8);
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    animation: vote-in 0.35s ease;
+  }
+  .diff-vote__eyebrow {
+    margin-bottom: var(--space-2);
+  }
+  .diff-vote__prompt {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    margin: 0 0 var(--space-4);
+  }
+  .diff-vote__stars {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .diff-vote__star {
+    background: none;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: var(--color-line);
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    line-height: 1;
+    padding: 0;
+  }
+  .diff-vote__star:hover,
+  .diff-vote__star[data-hovered] {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+  }
+  .diff-vote__star[aria-pressed='true'] {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 15%, transparent);
+  }
+  .diff-vote__ref {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    margin: 0;
+  }
+  .diff-vote__official {
+    color: var(--color-gold);
+    letter-spacing: 0.06em;
+  }
+  .diff-vote__thanks {
+    margin: var(--space-3) 0 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+  }
+  @keyframes vote-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-diff-vote]');
+  if (el) {
+    const slug = el.dataset.slug ?? '';
+    const storageKey = `inferred:myrating:/cases/${slug}`;
+    const progressKey = `inferred:progress:/cases/${slug}`;
+    const stars = Array.from(el.querySelectorAll<HTMLButtonElement>('[data-vote-n]'));
+    const thanksEl = el.querySelector<HTMLElement>('[data-vote-thanks]');
+
+    function isSolved(): boolean {
+      try { return localStorage.getItem(progressKey) === 'solved'; } catch { return false; }
+    }
+
+    function savedRating(): number {
+      try { return Number(localStorage.getItem(storageKey)) || 0; } catch { return 0; }
+    }
+
+    function paintStars(selected: number) {
+      stars.forEach((btn) => {
+        const n = Number(btn.dataset.voteN);
+        const on = n <= selected;
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    function show() {
+      el!.hidden = false;
+      const rating = savedRating();
+      if (rating > 0) {
+        paintStars(rating);
+        if (thanksEl) thanksEl.hidden = false;
+      }
+    }
+
+    // Star hover: highlight 1→n
+    stars.forEach((btn) => {
+      btn.addEventListener('mouseenter', () => {
+        const n = Number(btn.dataset.voteN);
+        stars.forEach((s) => {
+          if (Number(s.dataset.voteN) <= n) s.dataset.hovered = '';
+          else delete s.dataset.hovered;
+        });
+      });
+      btn.addEventListener('mouseleave', () => {
+        stars.forEach((s) => delete s.dataset.hovered);
+      });
+    });
+
+    // Star click
+    stars.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const n = Number(btn.dataset.voteN);
+        paintStars(n);
+        try { localStorage.setItem(storageKey, String(n)); } catch {}
+        if (thanksEl) thanksEl.hidden = false;
+      });
+    });
+
+    // Show immediately if already solved
+    if (isSolved()) show();
+
+    // Show when solved this session
+    window.addEventListener('inferred:case-solved', show);
+  }
+</script>

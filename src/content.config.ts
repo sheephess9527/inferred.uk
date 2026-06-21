@@ -14,6 +14,7 @@ const cases = defineCollection({
     scene: z.array(z.string()).default([]),
     readingTime: z.string(),
     clueCount: z.number().int().nonnegative().default(0),
+    hints: z.array(z.string()).optional(),
     publishedAt: z.coerce.date(),
     summary: z.string(),
     featured: z.boolean().default(false),
