@@ -7,6 +7,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import UpdatePrompt from '../components/UpdatePrompt.astro';
+import { siteVerification } from '../siteConfig';
 
 export interface Props {
   title: string;
@@ -73,6 +74,17 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- 搜索引擎站点验证（验证码填于 src/siteConfig.ts，留空则不输出） -->
+    {siteVerification.google && (
+      <meta name="google-site-verification" content={siteVerification.google} />
+    )}
+    {siteVerification.bing && (
+      <meta name="msvalidate.01" content={siteVerification.bing} />
+    )}
+    {siteVerification.baidu && (
+      <meta name="baidu-site-verification" content={siteVerification.baidu} />
+    )}
 
     <!-- Open Graph / 微信·微博链接卡片 -->
     <meta property="og:type" content={ogType} />

@@ -480,7 +480,8 @@ questions:
 - **案件总结**（`CaseSummary`）：揭晓后展示物证识别 + 推理判断综合评分（perfect / good / low 三级）及逐题选择明细（你选了X / 正确答案Y）
 - 折叠揭晓（`<details>`，不持久化展开状态）
 - 阅读进度条、亮暗色模式
-- SEO + sitemap + Open Graph
+- SEO + sitemap（带 lastmod / changefreq / priority 加权）+ Open Graph + JSON-LD
+- 搜索引擎站点验证（Google / Bing / 百度，验证码填于 `src/siteConfig.ts`）
 - 分享：`ShareBar`（海报 / 微信 / 小红书 / 复制图文）
 - PWA：雷达眼 logo 图标（512/192/apple-touch/maskable）
 - 响应式布局，支持「添加到主屏幕」
@@ -551,6 +552,19 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-21 — SEO 收录强化
+
+- **搜索引擎站点验证**：新增 `src/siteConfig.ts` 集中管理 Google / Bing / 百度验证码；`BaseLayout` 按需输出 `google-site-verification` / `msvalidate.01` / `baidu-site-verification` 三个 `<meta>`，字段留空则不输出。拿到验证码填入对应字段提交即可
+- **sitemap 加权**：`astro.config.mjs` 为 `@astrojs/sitemap` 配置 `serialize`，按页面类型输出 `lastmod` / `changefreq` / `priority`：
+  - 首页 1.0、列表/档案/线索目录页 0.9（daily）
+  - 案卷详情：精选 `featured` 0.8、普通 0.7（monthly）
+  - 线索详情 0.6、其余静态页 0.5
+  - 案卷/线索 `lastmod` 取各自 frontmatter `publishedAt`（构建时用轻量正则读取，失败安全降级）
+- **类型安全**：`changefreq` 使用 `@astrojs/sitemap` 重导出的 `ChangeFreqEnum` 枚举成员（非字符串字面量），`pnpm check` 0 error
+- **实测**：构建后 `sitemap-0.xml` 仍含全部 177 条 URL，各条目带正确的 lastmod / changefreq / priority
+
+> 收录操作：Google Search Console 添加网域 → DNS 加 TXT 验证 → 提交 `sitemap-index.xml` → 用「网址检查」对首页与精选案卷「请求编入索引」。Bing/百度同理，验证码填入 `src/siteConfig.ts`。
 
 ### 2026-06-21 — 交互优化与状态修复
 
