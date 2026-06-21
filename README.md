@@ -41,6 +41,7 @@
    - **5–6 个** `PersonCard`：死者 + 真凶 + **至少 2 个红鲱鱼嫌疑人**（参考 001、091）
    - **4 个** `TestimonyBlock`：互相矛盾、各为其主
    - **禁止 `**` 加粗**：物证 `label` 在 `EvidenceList` 中按纯文本渲染，星号会原样显示
+   - **禁止在 JS 字符串内使用 ASCII 直双引号**：`export const evidence` 块和 `DeductionQuestions` 的 `questions={[...]}` 均为 JavaScript 上下文，字符串由 `"` 界定；若文案内需引用文字，必须改用中文角括号 `「」`，否则 acorn 解析器会将内层 `"` 视为字符串结束符，导致 `pnpm build` 报错（`Could not parse expression with acorn`）。
    - `readingTime` 进阶案卷用 `"12-16 分钟"`
    - 第六节在 `<DetectiveNotes>` 前写一句**推理引导语**（邀请读者先判断再揭晓）
    - 揭晓须说明红鲱鱼为何误导；`伏笔解析` **6–7 条**
