@@ -50,6 +50,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: 1px solid var(--color-accent);
     background: var(--color-accent);
     color: var(--color-paper);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .btn:not(.btn--ghost):hover {
+    background: color-mix(in srgb, var(--color-accent) 80%, black);
+    border-color: color-mix(in srgb, var(--color-accent) 80%, black);
   }
   .btn--ghost {
     background: transparent;
