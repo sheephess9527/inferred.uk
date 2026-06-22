@@ -560,6 +560,26 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-06-22 — 线索文章优化：清除混入英文、扩充短文
+
+**清除混入英文词汇**（共 14 个文件，20 处替换）：
+
+| 原词 | 替换为 | 涉及文件 |
+|------|--------|----------|
+| `alibi` | `不在场证明` | `woven-alibi-networks`、`pinning-the-evidence-board`、`ink-drying-clocks`、`pulley-chain-escapes`、`postmark-time-traps`、`from-classics-to-cases`、`splice-spectrum-lies`、`false-alibi-techniques` |
+| `shortcut` | `捷径` | `expert-jargon-traps` |
+| `briefly` | `短暂` | `auction-estate-identity` |
+| `physically` | `亲自` | `auction-estate-identity` |
+| `ticker` | `字幕条` | `splice-spectrum-lies` |
+| `brochure` | `宣传册` | `tatami-arithmetic` |
+| `noir` | `硬汉派`（光影篇）/ `黑色电影`（蛇蝎美人篇、硬汉派谎言篇） | `light-shadow-clues`、`femme-fatale-or-herring`、`hardboiled-lie-tells` |
+
+**扩充内容严重不足的三篇线索文章**：
+
+- **`mechanical-delay-tricks.md`**（order 28）：原为 5 条无结构列表（515 字节）→ 扩充为标准四节正文 + `五、怎么用` + 结尾金句（含冰块融化、定时灯、延迟录音、定时发送四类机制详解）
+- **`word-play-mysteries.md`**（order 30）：原为 5 条无结构列表（697 字节）→ 扩充为双关语、倒读、首字母、谐音四节深度解析 + `五、怎么用` + 结尾金句
+- **`modern-honkaku-trends.md`**（order 37）：原为 3 条单句列表（515 字节）→ 扩充为心理深度、社会议题、叙述实验三大趋势详析 + 不变底线节 + `五、怎么用` + 结尾金句
+
 ### 2026-06-22 — 回退中英文切换功能（完整）
 
 - 已完整移除 `EN / 中` 语言切换按钮及全部相关改动，恢复至纯中文界面（对应 `0db07e9`）
