@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**120 篇案卷**（001–120）+ **92 篇线索**
+- **当前规模**：**120 篇案卷**（001–120）+ **84 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -413,7 +413,7 @@ questions:
 
 ---
 
-## 线索一览（92 篇）
+## 线索一览（84 篇）
 
 | order | 标题 | slug |
 |-------|------|------|
@@ -425,7 +425,6 @@ questions:
 | 6 | 当「超自然」成为布景 | `staged-supernatural` |
 | 7 | 暴风雪山庄：为什么每个人都可疑 | `closed-circle-mystery` |
 | 8 | 公平本格：作者对你负有什么义务 | `fair-play-promise` |
-| 9 | 密室诡计的五种基本构造 | `locked-room-basics` |
 | 10 | 氛围即证词：法国心理悬疑在读什么 | `atmosphere-as-evidence` |
 | 11 | 临终留言的七种经典手法 | `dying-message-tricks` |
 | 12 | 梅格雷式细节：从一杯咖啡到一封信 | `daily-detail-inference` |
@@ -445,14 +444,9 @@ questions:
 | 26 | 镜像诡计：上下楼梯，可能不是同一段 | `mirror-reflection-tricks` |
 | 27 | 读脚印之前，先问三个问题 | `reading-footprints` |
 | 28 | 机械延迟诡计的五种设计 | `mechanical-delay-tricks` |
-| 29 | 桥牌诡计的六种常见手法 | `bridge-card-tricks` |
+| 29 | 桥牌诡计：牌桌上的双重叙事 | `bridge-card-tricks` |
 | 30 | 文字游戏谜题的五种类型 | `word-play-mysteries` |
-| 31 | 隐藏通道的七种经典设计 | `hidden-passage-designs` |
-| 32 | 虚假不在场证明的八种制造方法 | `false-alibi-techniques` |
-| 33 | 心理误导的六种常见技巧 | `psychological-misdirection` |
-| 34 | 物证栽赃的五种经典手法 | `evidence-planting-methods` |
-| 35 | 叙述者不可靠的四种表现 | `narrator-unreliability` |
-| 36 | 公平本格的边界与底线 | `fair-play-boundaries` |
+| 32 | 不在场证明的四个破绽方向 | `false-alibi-techniques` |
 | 37 | 现代本格推理的三大趋势 | `modern-honkaku-trends` |
 | 38 | 二维码时代的公平线索 | `digital-age-fair-clues` |
 | 39 | 录音里的不在场证明 | `recorded-alibi-tricks` |
@@ -507,10 +501,8 @@ questions:
 | 88 | 现场热力图：温度也是证人 | `heat-map-at-crime-scenes` |
 | 89 | 改派单：排班表上的时间缝 | `schedule-tampering-windows` |
 | 90 | 持钥配偶：最先该查也最该疑 | `spouse-with-keys-herring` |
-| 91 | 最小子集：谁能单独解释硬物证 | `edge-suspect-minimal-set` |
-| 92 | 批次诡计去重：连读后的自检 | `batch-technique-dedup` |
 
-新增线索：`order` 从 **93** 起，在 `src/content/clues/` 新建 `.md`。
+新增线索：`order` 从 **91** 起，在 `src/content/clues/` 新建 `.md`。
 
 ---
 
@@ -596,6 +588,40 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-22 — 线索全面质量审校（第二轮）
+
+**删除低质量/重复文章**（共 8 篇，线索总数 92 → 84）：
+
+| order | 文件 | 原因 |
+|-------|------|------|
+| 9 | `locked-room-basics.md` | 内容完全覆盖于 order 2，「隐藏通道型」已并入 |
+| 31 | `hidden-passage-designs.md` | 与 order 19 高度重复 |
+| 33 | `psychological-misdirection.md` | 全为单句列表，无实质内容 |
+| 34 | `evidence-planting-methods.md` | 极度简化且与 order 42 重叠 |
+| 35 | `narrator-unreliability.md` | 全库最短，无独立价值 |
+| 36 | `fair-play-boundaries.md` | 重复 order 8 与 order 17 |
+| 91 | `edge-suspect-minimal-set.md` | 用户请求删除 |
+| 92 | `batch-technique-dedup.md` | 用户请求删除 |
+
+**全面重写结构不完整的旧文章**（共 7 篇）：
+
+| order | 文件 | 改动 |
+|-------|------|------|
+| 2 | `five-types-of-locked-room.md` | 合并 order 9「隐藏通道型」，改为标准四节结构，新增「五、怎么用」与结尾句 |
+| 11 | `dying-message-tricks.md` | 从 7 条单行列表扩充为四节深度分析（指向/读法/真假遗言/公平线索），新增「五、怎么用」 |
+| 12 | `daily-detail-inference.md` | 从 2 个无编号节扩充为四节，新增细节与谎言关系分析、气氛陷阱辨别节、「五、怎么用」 |
+| 18 | `light-shadow-clues.md` | 从 3 个迷你节扩充为四节（霓虹/燃烧/舞台灯/光时间表），新增「五、怎么用」与结尾句 |
+| 20 | `femme-fatale-or-herring.md` | 扩充为四节，新增物证优先原则节与「五、怎么用」 |
+| 29 | `bridge-card-tricks.md` | 从 6 条单行列表扩充为四节（术语双关/时间证明/计分操控/临终线索），标题更新 |
+| 32 | `false-alibi-techniques.md` | 从「八种制造方法」列表改写为读者视角「四个破绽方向」（时间可信度/证人可靠性/物理可能性/结构完整性），标题更新 |
+
+**修复近期文章（order 79、81–90）可读性问题**：
+
+- 核心问题：每句话有 4–7 处粗体标记，阅读时视线无法休息
+- 修复方式：每条要点只保留最关键的 1 个粗体词，将说明性内容改为自然散句
+
+---
 
 ### 2026-06-22 — 线索文章优化：清除混入英文、扩充短文
 
