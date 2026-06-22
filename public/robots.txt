@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.inferred.uk/sitemap-index.xml
+Sitemap: https://inferred.uk/sitemap-index.xml
