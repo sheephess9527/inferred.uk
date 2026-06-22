@@ -18,7 +18,7 @@ const statusCn = status === 'solved' ? '已解' : '未解';
 ---
 
 <article class="case-card" data-case-slug={slug} data-site-status={status}>
-  <a class="case-card__link" href={href} aria-label={`打开案卷 ${title}`} data-case-title={title}>
+  <a class="case-card__link" href={href} aria-label={`打开案卷 ${title}`}>
     <header class="case-card__head">
       <span class="case-card__id mono">Case #{caseId}</span>
       <span class:list={['tag', `tag--status-${status}`]} data-progress-badge>{statusCn}</span>
@@ -40,7 +40,7 @@ const statusCn = status === 'solved' ? '已解' : '未解';
     <footer class="case-card__foot">
       <DifficultyStars value={difficulty} />
       <span class="case-card__time mono">{readingTime}</span>
-      <span class="case-card__cta"><span class="i18n-zh">打开案卷 →</span><span class="i18n-en">Open case →</span></span>
+      <span class="case-card__cta">打开案卷 →</span>
     </footer>
   </a>
 </article>
@@ -183,33 +183,25 @@ const statusCn = status === 'solved' ? '已解' : '未解';
 </style>
 
 <script>
-  function isEn() {
-    return document.documentElement.getAttribute('data-lang') === 'en';
-  }
-
   function updateProgressBadges() {
-    const en = isEn();
     document.querySelectorAll<HTMLElement>('[data-case-slug]').forEach((card) => {
       const slug = card.dataset.caseSlug;
       const badge = card.querySelector<HTMLElement>('[data-progress-badge]');
-      const link = card.querySelector<HTMLElement>('[data-case-title]');
       if (!badge || !slug) return;
       const siteStatus = card.dataset.siteStatus === 'solved' ? 'solved' : 'unsolved';
-      const title = link?.dataset.caseTitle ?? '';
-      if (link) link.setAttribute('aria-label', en ? `Open case: ${title}` : `打开案卷 ${title}`);
       try {
         const progress = localStorage.getItem(`inferred:progress:/cases/${slug}`);
         if (progress === 'solved') {
-          badge.textContent = en ? 'CLOSED' : '已结案';
+          badge.textContent = '已结案';
           badge.className = 'tag tag--status-user-solved';
         } else if (progress === 'reading') {
-          badge.textContent = en ? 'ACTIVE' : '推理中';
+          badge.textContent = '推理中';
           badge.className = 'tag tag--status-reading';
         } else if (siteStatus === 'solved') {
-          badge.textContent = en ? 'SOLVED' : '已解';
+          badge.textContent = '已解';
           badge.className = 'tag tag--status-solved';
         } else {
-          badge.textContent = en ? 'UNSOLVED' : '未解';
+          badge.textContent = '未解';
           badge.className = 'tag tag--status-unsolved';
         }
       } catch (_) {}
@@ -217,5 +209,4 @@ const statusCn = status === 'solved' ? '已解' : '未解';
   }
   updateProgressBadges();
   window.addEventListener('inferred:case-solved', updateProgressBadges);
-  document.addEventListener('inferred:lang-changed', updateProgressBadges);
 </script>

@@ -16,10 +16,7 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
   aria-label="难度评价"
 >
   <p class="eyebrow diff-vote__eyebrow">Rate · 难度评价</p>
-  <p class="diff-vote__prompt">
-    <span class="i18n-zh">这道题，你觉得实际有多难？</span>
-    <span class="i18n-en">How hard do you think this case actually is?</span>
-  </p>
+  <p class="diff-vote__prompt">这道题，你觉得实际有多难？</p>
 
   <div class="diff-vote__stars" data-vote-stars role="radiogroup" aria-label="选择难度星级">
     {
@@ -38,13 +35,10 @@ const officialStars = '★'.repeat(officialDifficulty) + '☆'.repeat(5 - offici
   </div>
 
   <p class="diff-vote__ref mono text-muted">
-    <span class="i18n-zh">官方设定：</span><span class="i18n-en">Official: </span><span class="diff-vote__official">{officialStars}</span>
+    官方设定：<span class="diff-vote__official">{officialStars}</span>
   </p>
 
-  <p class="diff-vote__thanks mono" data-vote-thanks hidden>
-    <span class="i18n-zh">已记录，感谢反馈。</span>
-    <span class="i18n-en">Recorded — thank you for your feedback.</span>
-  </p>
+  <p class="diff-vote__thanks mono" data-vote-thanks hidden>已记录，感谢反馈。</p>
 </aside>
 
 <style>

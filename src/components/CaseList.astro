@@ -14,21 +14,14 @@ export interface CaseItem {
 
 export interface Props {
   cases: CaseItem[];
-  emptyText?: string | undefined;
+  emptyText?: string;
 }
-const { cases, emptyText } = Astro.props;
+const { cases, emptyText = '此分类下暂无案卷。' } = Astro.props;
 ---
 
 {
   cases.length === 0 ? (
-    emptyText ? (
-      <p class="case-list__empty text-muted">{emptyText}</p>
-    ) : (
-      <p class="case-list__empty text-muted">
-        <span class="i18n-zh">此分类下暂无案卷。</span>
-        <span class="i18n-en">No cases in this category.</span>
-      </p>
-    )
+    <p class="case-list__empty text-muted">{emptyText}</p>
   ) : (
     <ul class="case-list">
       {cases.map((c) => (

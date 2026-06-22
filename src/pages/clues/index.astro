@@ -16,11 +16,8 @@ const articles = (await getCollection('clues')).sort((a, b) => {
 >
   <section class="container page-head">
     <p class="eyebrow">Clues · 线索</p>
-    <h1><span class="i18n-zh">线索</span><span class="i18n-en">Clues</span></h1>
-    <p class="page-head__lead text-muted">
-      <span class="i18n-zh">推理是可以练习的。这里收录帮助你更会读案卷的技巧。</span>
-      <span class="i18n-en">Reasoning is a skill you can practice. Here are techniques to help you read cases better.</span>
-    </p>
+    <h1>线索</h1>
+    <p class="page-head__lead text-muted">推理是可以练习的。这里收录帮助你更会读案卷的技巧。</p>
   </section>
 
   <section class="container clues-section">
@@ -38,7 +35,7 @@ const articles = (await getCollection('clues')).sort((a, b) => {
                 <h2 class="clue-card__title">{a.data.title}</h2>
                 <p class="clue-card__summary text-muted">{a.data.summary}</p>
                 <span class="clue-card__meta mono text-muted">{dateStr}</span>
-                <span class="clue-card__cta mono"><span class="i18n-zh">阅读 →</span><span class="i18n-en">Read →</span></span>
+                <span class="clue-card__cta mono">阅读 →</span>
               </a>
             </li>
           );

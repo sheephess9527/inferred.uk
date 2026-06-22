@@ -20,10 +20,7 @@ import { BUILD_ID } from '../buildInfo';
   hidden
 >
   <span class="update-prompt__icon" aria-hidden="true">↻</span>
-  <span class="update-prompt__label">
-    <span class="i18n-zh">有新内容 · 更新</span>
-    <span class="i18n-en">New content · Update</span>
-  </span>
+  <span class="update-prompt__label">有新内容 · 更新</span>
 </button>
 
 <style>
@@ -147,9 +144,8 @@ import { BUILD_ID } from '../buildInfo';
         if (data.version && currentVersion && data.version !== currentVersion) {
           updateReady = true;
           el!.classList.add('has-update');
-          const isEn = document.documentElement.getAttribute('data-lang') === 'en';
-          el!.setAttribute('aria-label', isEn ? 'New content — click to update' : '有新内容，点击更新');
-          el!.setAttribute('title', isEn ? 'New content — click to update' : '有新内容，点击更新');
+          el!.setAttribute('aria-label', '有新内容，点击更新');
+          el!.setAttribute('title', '有新内容，点击更新');
         }
       } catch {
         /* 离线或网络异常时静默忽略，下次再试 */

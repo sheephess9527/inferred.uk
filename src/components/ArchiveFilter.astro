@@ -29,55 +29,55 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 <div class="archive" data-archive>
   <div class="archive__filters" role="group" aria-label="筛选案卷">
     <div class="archive__group">
-      <span class="archive__group-label"><span class="i18n-zh">进度</span><span class="i18n-en">Status</span></span>
+      <span class="archive__group-label">进度</span>
       <div class="archive__chips">
         <button
           class="chip is-on"
           data-filter="progress"
           data-value=""
           type="button"
-          aria-pressed="true"><span class="i18n-zh">全部</span><span class="i18n-en">All</span></button
+          aria-pressed="true">全部</button
         >
         <button
           class="chip"
           data-filter="progress"
           data-value="fresh"
           type="button"
-          aria-pressed="false"><span class="i18n-zh">未解</span><span class="i18n-en">Unsolved</span></button
+          aria-pressed="false">未解</button
         >
         <button
           class="chip"
           data-filter="progress"
           data-value="reading"
           type="button"
-          aria-pressed="false"><span class="i18n-zh">推理中</span><span class="i18n-en">Active</span></button
+          aria-pressed="false">推理中</button
         >
         <button
           class="chip"
           data-filter="progress"
           data-value="closed"
           type="button"
-          aria-pressed="false"><span class="i18n-zh">已结案</span><span class="i18n-en">Closed</span></button
+          aria-pressed="false">已结案</button
         >
         <button
           class="chip"
           data-filter="progress"
           data-value="site-solved"
           type="button"
-          aria-pressed="false"><span class="i18n-zh">已解</span><span class="i18n-en">Solved</span></button
+          aria-pressed="false">已解</button
         >
       </div>
     </div>
 
     <div class="archive__group">
-      <span class="archive__group-label"><span class="i18n-zh">难度</span><span class="i18n-en">Difficulty</span></span>
+      <span class="archive__group-label">难度</span>
       <div class="archive__chips">
         <button
           class="chip is-on"
           data-filter="difficulty"
           data-value=""
           type="button"
-          aria-pressed="true"><span class="i18n-zh">全部</span><span class="i18n-en">All</span></button
+          aria-pressed="true">全部</button
         >
         {
           difficulties.map((d) => (
@@ -96,14 +96,14 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     </div>
 
     <div class="archive__group">
-      <span class="archive__group-label"><span class="i18n-zh">类型</span><span class="i18n-en">Type</span></span>
+      <span class="archive__group-label">类型</span>
       <div class="archive__chips">
         <button
           class="chip is-on"
           data-filter="type"
           data-value=""
           type="button"
-          aria-pressed="true"><span class="i18n-zh">全部</span><span class="i18n-en">All</span></button
+          aria-pressed="true">全部</button
         >
         {
           allTypes.map((t) => (
@@ -124,7 +124,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     {
       allScenes.length > 0 && (
         <div class="archive__group">
-          <span class="archive__group-label"><span class="i18n-zh">场景</span><span class="i18n-en">Scene</span></span>
+          <span class="archive__group-label">场景</span>
           <div class="archive__chips">
             <button
               class="chip is-on"
@@ -133,7 +133,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
               type="button"
               aria-pressed="true"
             >
-              <span class="i18n-zh">全部</span><span class="i18n-en">All</span>
+              全部
             </button>
             {allScenes.map((s) => (
               <button
@@ -180,10 +180,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
     }
   </ul>
 
-  <p class="archive__empty text-muted" data-archive-empty hidden>
-    <span class="i18n-zh">没有符合当前筛选条件的案卷。</span>
-    <span class="i18n-en">No cases match the current filters.</span>
-  </p>
+  <p class="archive__empty text-muted" data-archive-empty hidden>没有符合当前筛选条件的案卷。</p>
 </div>
 
 <style>
@@ -319,10 +316,6 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       history.replaceState(null, '', next);
     };
 
-    function isEn() {
-      return document.documentElement.getAttribute('data-lang') === 'en';
-    }
-
     const apply = () => {
       let visible = 0;
       items.forEach((el) => {
@@ -330,7 +323,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         el.hidden = !ok;
         if (ok) visible++;
       });
-      if (countEl) countEl.textContent = isEn() ? `${visible} cases` : `共 ${visible} 份案卷`;
+      if (countEl) countEl.textContent = `共 ${visible} 份案卷`;
       if (emptyEl) emptyEl.hidden = visible !== 0;
     };
 
@@ -342,8 +335,6 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         apply();
       });
     });
-
-    document.addEventListener('inferred:lang-changed', apply);
 
     const params = new URLSearchParams(location.search);
     // 兼容旧链接 ?status=unsolved|solved

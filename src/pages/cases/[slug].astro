@@ -135,10 +135,7 @@ const jsonLd = {
         readingTime={data.readingTime}
         clueCount={data.clueCount}
       />
-      <p class="case__published mono text-muted">
-        <span class="i18n-zh">归档于 {dateStr}</span>
-        <span class="i18n-en">Filed {dateStr}</span>
-      </p>
+      <p class="case__published mono text-muted">归档于 {dateStr}</p>
     </header>
 
     {data.hints && data.hints.length > 0 && <HintSystem hints={data.hints} />}
@@ -164,7 +161,7 @@ const jsonLd = {
       {
         prev ? (
           <a class="case__nav-link" href={`/cases/${prev.id}`}>
-            <span class="case__nav-dir mono"><span class="i18n-zh">上一篇</span><span class="i18n-en">Previous</span></span>
+            <span class="case__nav-dir mono">上一篇</span>
             <span class="case__nav-title">{prev.data.title}</span>
           </a>
         ) : (
@@ -174,7 +171,7 @@ const jsonLd = {
       {
         next ? (
           <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}`}>
-            <span class="case__nav-dir mono"><span class="i18n-zh">下一篇</span><span class="i18n-en">Next</span></span>
+            <span class="case__nav-dir mono">下一篇</span>
             <span class="case__nav-title">{next.data.title}</span>
           </a>
         ) : (
@@ -184,8 +181,8 @@ const jsonLd = {
     </nav>
 
     <footer class="case__footer">
-      <a class="case__back" href="/cases"><span class="i18n-zh">← 返回案卷列表</span><span class="i18n-en">← Back to Cases</span></a>
-      <a class="case__back" href="/archive"><span class="i18n-zh">进入档案馆 →</span><span class="i18n-en">Browse Archive →</span></a>
+      <a class="case__back" href="/cases">← 返回案卷列表</a>
+      <a class="case__back" href="/archive">进入档案馆 →</a>
     </footer>
   </article>
 </BaseLayout>
@@ -200,17 +197,15 @@ const jsonLd = {
 >
   if (caseQuestions) window.__inferredDeductionItems = caseQuestions;
 
-  var EN = document.documentElement.getAttribute('data-lang') === 'en';
   function syncEyebrow() {
     var eyebrow = document.querySelector('[data-case-eyebrow]');
     var text = eyebrow && eyebrow.querySelector('[data-case-eyebrow-text]');
     if (!text) return;
-    EN = document.documentElement.getAttribute('data-lang') === 'en';
     try {
       var p = localStorage.getItem('inferred:progress:/cases/' + caseSlug);
-      if (p === 'solved') text.textContent = EN ? 'CLOSED' : '已结案';
-      else if (p === 'reading') text.textContent = EN ? 'ACTIVE' : '推理中';
-      else text.textContent = siteStatus === 'solved' ? (EN ? 'SOLVED' : '已解') : (EN ? 'UNSOLVED' : '未解');
+      if (p === 'solved') text.textContent = '已结案';
+      else if (p === 'reading') text.textContent = '推理中';
+      else text.textContent = siteStatus === 'solved' ? '已解' : '未解';
     } catch (_) {}
   }
   try {
@@ -221,7 +216,6 @@ const jsonLd = {
   } catch (_) {}
   syncEyebrow();
   window.addEventListener('inferred:case-solved', syncEyebrow);
-  document.addEventListener('inferred:lang-changed', syncEyebrow);
 </script>
 
 <style>

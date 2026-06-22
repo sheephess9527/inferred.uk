@@ -33,7 +33,7 @@ const weiboHref =
     {
       poster && (
         <button type="button" class="share__btn share__btn--wechat" data-share-wechat>
-          <span class="i18n-zh">朋友圈</span><span class="i18n-en">WeChat</span>
+          朋友圈
         </button>
       )
     }
@@ -51,12 +51,9 @@ const weiboHref =
       rel="noopener noreferrer"
       data-share-weibo>微博</a
     >
-    <button type="button" class="share__btn" data-share-copy>
-      <span class="i18n-zh">复制链接</span><span class="i18n-en">Copy Link</span>
-    </button>
-    <button type="button" class="share__btn share__btn--more" data-share-native hidden>
-      <span class="i18n-zh">更多…</span><span class="i18n-en">More…</span>
-    </button>
+    <button type="button" class="share__btn" data-share-copy>复制链接</button>
+    <button type="button" class="share__btn share__btn--more" data-share-native hidden>更多…</button
+    >
   </div>
 
   <p class="share__toast mono" data-share-toast hidden aria-live="polite"></p>
@@ -76,7 +73,7 @@ const weiboHref =
         </div>
         <div class="poster__foot">
           <a class="poster__dl" data-poster-dl download>
-            <span class="i18n-zh">↓ 下载图片</span><span class="i18n-en">↓ Download</span>
+            ↓ 下载图片
           </a>
           <a
             class="poster__action"
@@ -85,7 +82,7 @@ const weiboHref =
             rel="noopener noreferrer"
             hidden
           >
-            <span class="i18n-zh">去小红书</span><span class="i18n-en">Open 小红书</span>
+            去小红书
           </a>
         </div>
       </div>
@@ -335,13 +332,6 @@ const weiboHref =
     const text = root.dataset.text ?? '';
     const poster = root.dataset.poster ?? '';
 
-    function isEn() {
-      return document.documentElement.getAttribute('data-lang') === 'en';
-    }
-    function t(zh: string, en: string) {
-      return isEn() ? en : zh;
-    }
-
     const toast = root.querySelector<HTMLElement>('[data-share-toast]');
     const nativeBtn = root.querySelector<HTMLButtonElement>('[data-share-native]');
     const copyBtn = root.querySelector<HTMLButtonElement>('[data-share-copy]');
@@ -442,10 +432,9 @@ const weiboHref =
           ctx.fillRect(0, gradTop, W, gradH);
 
           const isPerfect = score.evaluated > 0 && score.correct === score.evaluated;
-          const en = document.documentElement.getAttribute('data-lang') === 'en';
           const scoreText = isPerfect
-            ? en ? `All correct · solved all ${score.evaluated} questions` : `全部命中 · 推断了所有 ${score.evaluated} 道题`
-            : en ? `Deduced ${score.correct} / ${score.evaluated} correctly` : `推断命中 ${score.correct} / ${score.evaluated} 题`;
+            ? `全部命中 · 推断了所有 ${score.evaluated} 道题`
+            : `推断命中 ${score.correct} / ${score.evaluated} 题`;
 
           ctx.textAlign = 'left';
           ctx.textBaseline = 'alphabetic';
@@ -458,7 +447,7 @@ const weiboHref =
           // 邀请行
           ctx.font = `${Math.round(W * 0.034)}px "Helvetica Neue",Arial,sans-serif`;
           ctx.fillStyle = 'rgba(232,226,210,0.5)';
-          ctx.fillText(en ? 'Can you see through the truth? → www.inferred.uk' : '你能看破真相吗？→ www.inferred.uk', px, Math.round(H * 0.697));
+          ctx.fillText('你能看破真相吗？→ www.inferred.uk', px, Math.round(H * 0.697));
 
           try {
             resolve(c.toDataURL('image/jpeg', 0.9));
@@ -503,7 +492,7 @@ const weiboHref =
           posterFrame?.removeAttribute('data-loading');
           if (posterSteps) {
             const li = document.createElement('li');
-            li.textContent = t('海报加载失败，请稍后重试或直接复制链接', 'Poster failed to load — try copying the link instead');
+            li.textContent = '海报加载失败，请稍后重试或直接复制链接';
             posterSteps.replaceChildren(li);
           }
         };
@@ -572,7 +561,7 @@ const weiboHref =
 
     copyBtn?.addEventListener('click', async () => {
       const ok = await copyText(url);
-      showToast(ok ? t('链接已复制', 'Link copied') : t('复制失败，请手动复制', 'Copy failed — please copy manually'));
+      showToast(ok ? '链接已复制' : '复制失败，请手动复制');
     });
 
     // 朋友圈：有成绩则叠加成绩条，否则用静态海报
@@ -581,9 +570,9 @@ const weiboHref =
       openPoster({
         src,
         steps: [
-          t('长按图片 → 保存到相册', 'Long-press image → Save to album'),
-          t('打开微信 → 发现 → 朋友圈', 'Open WeChat → Discover → Moments'),
-          t('点「相册」选刚保存的图，直接发布', 'Tap "Album", select the saved image, post'),
+          '长按图片 → 保存到相册',
+          '打开微信 → 发现 → 朋友圈',
+          '点「相册」选刚保存的图，直接发布',
         ],
       });
     });
@@ -598,9 +587,9 @@ const weiboHref =
       openPoster({
         src,
         steps: [
-          copied ? t('✓ 文案已自动复制', '✓ Caption copied') : t('手动复制文案（稍后粘贴）', 'Copy caption manually (paste later)'),
-          t('长按图片 → 保存到相册', 'Long-press image → Save to album'),
-          t('去小红书 → 新建笔记 → 选图 → 粘贴文案', 'Open 小红书 → New note → Select image → Paste'),
+          copied ? '✓ 文案已自动复制' : '手动复制文案（稍后粘贴）',
+          '长按图片 → 保存到相册',
+          '去小红书 → 新建笔记 → 选图 → 粘贴文案',
         ],
         actionHref: 'https://www.xiaohongshu.com',
       });
