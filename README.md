@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**110 篇案卷**（001–110）+ **72 篇线索**
+- **当前规模**：**120 篇案卷**（001–120）+ **72 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -23,7 +23,7 @@
 ### 案卷生成规则（硬性）
 
 1. **`publishedAt`**：取**创建当天**日期（`YYYY-MM-DD`）。同批次可相同。
-2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"110"`，下一篇从 `"111"` 起。
+2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"120"`，下一篇从 `"121"` 起。
 3. **正文结构**：严格七段式 MDX，标题固定：
    - `## 一、案发`
    - `## 二、人物`
@@ -115,6 +115,7 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-21 | 056–100 | 45 | `e648432` | 扩充人物/证词/红鲱鱼；去除 `**`；修复进度状态显示 |
 | 2026-06-21 | 101–105 | 5 | — | 时间线诡计批次（电钟断电/通话0秒/影子朝向/草籽物证/邮戳悖论） |
 | 2026-06-22 | 106–110 | 5 | — | 红鲱鱼证人批次（检修井保洁/笔录书记员/温控供应商/邮差动线/保险估价） |
+| 2026-06-22 | 111–120 | 10 | — | 日常边缘角色批次（账册整理/渡轮检票/望远镜讲解/面包屑伙计/印泥复印/电梯检修/棋钟记录/雨量志愿者/窗镜保洁/图书馆上架） |
 
 **质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
 
@@ -397,6 +398,16 @@ questions:
 | 108 | 温室读数偏高一度 | `the-greenhouse-reading-one-degree-high` | ★ |
 | 109 | 送错楼层的包裹 | `the-parcel-left-on-the-wrong-floor` | |
 | 110 | 干得过慢的罩光漆 | `the-varnish-that-dried-too-slow` | ★ |
+| 111 | 翻过两次的账页 | `the-ledger-page-turned-twice` | ★ |
+| 112 | 低了半音的汽笛 | `the-ferry-whistle-half-a-tone-low` | |
+| 113 | 对准错楼层的望远镜 | `the-telescope-on-the-wrong-floor` | |
+| 114 | 向里延伸的面包屑 | `the-breadcrumb-trail-leading-inward` | |
+| 115 | 左边未干的印泥 | `the-stamp-pad-wet-on-the-left` | ★ |
+| 116 | 停在两层之间的电梯 | `the-elevator-stopped-between-two-floors` | |
+| 117 | 被偷走的棋钟分钟 | `the-chess-clock-with-stolen-minutes` | ★ |
+| 118 | 暴雨前被倒空的雨量筒 | `the-rain-gauge-emptied-before-the-storm` | |
+| 119 | 只起雾一侧的镜子 | `the-mirror-fogged-on-one-side-only` | |
+| 120 | 早一天还回来的馆藏书 | `the-library-book-returned-one-day-early` | ★ |
 
 ★ = `featured: true`
 
@@ -565,6 +576,12 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-22 — 案卷扩充（111–120）
+
+- 新增案卷 **10 篇**（caseId 111–120）：日常边缘角色批次，凶手为实习整理员、检票员、讲解员、早班伙计、复印员、电梯检修员、棋钟记录员、气象志愿者、外包保洁员、夜班上架员
+- 每案 **5 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；约 30% `featured`
+- 案卷总数 **110 → 120**；README 一览表与批次记录同步
 
 ### 2026-06-22 — 案卷扩充（106–110）
 

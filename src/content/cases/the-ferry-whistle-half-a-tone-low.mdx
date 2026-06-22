@@ -1,0 +1,184 @@
+---
+title: "低了半音的汽笛"
+caseId: "112"
+status: "unsolved"
+difficulty: 4
+types:
+  - "声学诡计"
+  - "不在场证明"
+scene:
+  - "江渡夜航船"
+  - "大雾"
+readingTime: "11-14 分钟"
+clueCount: 7
+questions:
+  - q: "多名乘客听见「离港汽笛」，与命案时间冲突，说明什么？"
+    choices:
+      - text: "汽笛确在离港时鸣响，证明凶手在岸上"
+      - text: "有人用截短汽笛管手动鸣响，模拟离港，实际船未动"
+      - text: "雾中听错方向"
+      - text: "录音播放"
+    answer: 1
+  - q: "船长蔚深称「整晚在驾驶台」，矛盾点在哪？"
+    choices:
+      - text: "驾驶台无他人证"
+      - text: "驾驶台日志 23:20 有离港记录，但缆绳摩擦痕显示系泊未解"
+      - text: "船长与死者有旧怨"
+      - text: "船长饮酒"
+    answer: 1
+  - q: "检票员温渠背包缺一段铜管，关联什么？"
+    choices:
+      - text: "与汽笛备用管同口径，截面新鲜"
+      - text: "与船锚有关"
+      - text: "与死者口袋一致"
+      - text: "无关"
+    answer: 0
+  - q: "为何大副霍杉不是凶手？"
+    choices:
+      - text: "霍杉无动机"
+      - text: "霍杉 23:00–23:40 在机舱检修，多人签字，且不懂汽笛调音"
+      - text: "霍杉与死者友好"
+      - text: "霍杉已离船"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "船长蔚深——航线分红"
+      - text: "大副霍杉——晋升受阻"
+      - text: "检票员温渠——私售船票被揭发，假鸣笛制造在岸不在场"
+      - text: "乘客姚筝——行李纠纷"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "大雾里人人都听见汽笛。缆绳却说：船一整夜都没离开码头。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "客运主任宋泊死于船员休息室，锐器伤。雾夜航班延误，船系泊未离港。", detail: "" },
+  { label: "多名乘客称 23:25 听见离港汽笛，音调略低；驾驶台日志同步记录离港。", detail: "" },
+  { label: "主缆绳摩擦痕仅单侧磨损，系泊结未解；吃水线与前日一致，无离港吃水变化。", detail: "" },
+  { label: "船长蔚深称全程在驾驶台；与宋泊有分红争执。", detail: "日志可伪造，物理系泊更难。" },
+  { label: "大副霍杉 23:00–23:40 机舱检修单三人签字。", detail: "" },
+  { label: "检票员温渠背包缺一段汽笛备用铜管，截面新；其私售船票账本被宋泊查获。", detail: "" },
+  { label: "手动短管鸣响试验音频频谱偏低半音，与乘客描述吻合。", detail: "" },
+];
+
+## 一、案发
+
+江渡夜航船困在大雾里，像停在一口灰锅里。
+
+客运主任宋泊死在休息室，胸前锐口。乘客说：「23:25 汽笛响了，船该走了。」
+
+船长蔚深脸色铁青：「我在驾驶台，宋泊要查我分红，但我没下舱。」
+
+探员摸主缆——系泊结干燥紧实，吃水没变。
+
+「汽笛响了，」他说，「船却没动。」
+
+---
+
+## 二、人物
+
+<PersonCard name="宋泊" role="客运主任" age="47" relation="死者" alibi="——">
+  查获检票员私售船票，准备到港即报公司。
+</PersonCard>
+
+<PersonCard name="蔚深" role="船长" age="50" relation="上级" alibi="称在驾驶台">
+  分红纠纷；驾驶台离港记录与物理系泊矛盾。
+</PersonCard>
+
+<PersonCard name="霍杉" role="大副" age="44" relation="同事" alibi="机舱检修">
+  晋升候补，动机次之，有检修签字。
+</PersonCard>
+
+<PersonCard name="温渠" role="检票员" age="32" relation="下属" alibi="称在客舱查票">
+  私售船票；背包缺汽笛短管。
+</PersonCard>
+
+<PersonCard name="姚筝" role="乘客" age="29" relation="旅客" alibi="客舱座位">
+  行李纠纷激烈，但缺舱内作案时间链。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="蔚深" time="第一次问询">
+  「汽笛是我让鸣的，雾散了就走。宋泊死在下面，与我无关。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="霍杉" time="第一次问询">
+  「我在机舱，三人都签字。汽笛调音？那是船长的事。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="温渠" time="第一次问询">
+  「查票而已。铜管？工具丢了很正常。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="姚筝" time="第二次问询">
+  「我听见汽笛，以为船开了——若真开走，凶手该在岸上吧？」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="112" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "众人听见汽笛，缆绳却未解——两种证据谁更可靠？",
+    "音调偏低半音，暗示怎样的鸣响方式？",
+    "驾驶台离港日志与系泊状态矛盾，说明什么？",
+    "温渠缺铜管与私售账本如何连成动机？",
+    "谁需要「船已离港」的听觉假象？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+雾会模糊视线，也会模糊声音。系泊的缆绳，往往比汽笛更诚实。
+
+<DetectiveNotes caseId="112" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是检票员温渠。他私售船票被宋泊掌握，案发前偷截汽笛备用铜管，在休息室附近手动鸣响，音调偏低半音，让乘客以为船已离港、凶手在岸上。他趁机刺死宋泊，再潜回客舱查票位。
+
+蔚深与宋泊分红争执真实，霍杉检修签字成立；姚筝争吵激烈却无连贯动线。假汽笛制造集体错觉，真破绽是缆绳与吃水。
+
+### 关键矛盾
+
+人人都听见离港汽笛——缆绳却说船从未离港。
+
+### 伏笔解析
+
+1. 汽笛低半音——短管手动鸣响。
+2. 缆绳未解——未离港铁证。
+3. 吃水不变——佐证。
+4. 驾驶台日志——可伪造。
+5. 霍杉检修签字——不在场。
+6. 温渠缺铜管——工具吻合。
+7. 私售账本——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

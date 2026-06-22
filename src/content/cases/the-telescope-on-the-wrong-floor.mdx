@@ -1,0 +1,184 @@
+---
+title: "对准错楼层的望远镜"
+caseId: "113"
+status: "unsolved"
+difficulty: 5
+types:
+  - "视角诡计"
+  - "红鲱鱼证人"
+scene:
+  - "旧城天文台"
+  - "日食前夜"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "邻居称「看见凶手持刀」，为何可能与实际楼层不符？"
+    choices:
+      - text: "邻居视力差"
+      - text: "望远镜目镜刻度被调至对面楼更低一层，目击者误把下层人影当作案发层"
+      - text: "邻居故意诬陷"
+      - text: "雾太大"
+    answer: 1
+  - q: "讲解员祁雾袖口红漆，说明什么？"
+    choices:
+      - text: "祁雾当晚给圆顶重漆，红漆新鲜，与死者伤口旁栏杆新漆同批"
+      - text: "祁雾常涂口红"
+      - text: "红漆有毒"
+      - text: "与案件无关"
+    answer: 0
+  - q: "研究员越澄的不在场为何站不住？"
+    choices:
+      - text: "越澄无动机"
+      - text: "越澄称在暗房冲洗底片，但暗房计时器 21:10 才启动，晚于案发窗"
+      - text: "越澄有证人"
+      - text: "越澄已离城"
+    answer: 1
+  - q: "目镜刻度错位由谁最有权限调整？"
+    choices:
+      - text: "越澄——课题负责人"
+      - text: "祁雾——日常维护目镜与公众讲解设备"
+      - text: "邻居——私人物业"
+      - text: "死者本人"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "研究员越澄——论文署名争端"
+      - text: "邻居白执——噪音投诉"
+      - text: "讲解员祁雾——挪用观测捐赠款，调镜误导目击并补漆掩盖栏杆血迹"
+      - text: "保安杜简——巡逻迟到"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "望远镜里看见的行凶者，也许只是更低一层窗前的影子。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "天文台台长沈珩死于圆顶平台，锐器伤。对面居民楼有人报警称「看见持刀人影」。", detail: "" },
+  { label: "公用望远镜目镜刻度指针对准低 1.2 层，与默认对准案发层不符；调节螺丝有新鲜拧痕。", detail: "" },
+  { label: "对面住户白执称 21:05 见人行凶；案发层 21:05 灯光熄灭，低层 21:04 有人拉窗帘。", detail: "" },
+  { label: "研究员越澄与沈珩争署名；越澄称 21:00 后在暗房，计时器 21:10 启动。", detail: "" },
+  { label: "讲解员祁雾袖口新鲜红漆，与平台栏杆补漆同批；捐赠款账目缺一笔。", detail: "" },
+  { label: "栏杆补漆覆盖浅褐血迹，漆层未干；祁雾维护日志 20:50 登记「栏杆补漆」。", detail: "" },
+  { label: "保安杜简 21:15 才到圆顶，此前在门卫室打盹。", detail: "" },
+];
+
+## 一、案发
+
+日食前夜，旧城天文台圆顶敞开。
+
+台长沈珩倒在栏杆旁。对面楼有人喊：「我望远镜里看见了，有人持刀！」
+
+研究员越澄从暗房冲出：「署名可以谈，我没上过圆顶。」
+
+讲解员祁雾擦袖口红漆：「栏杆旧了，我补漆而已。」
+
+探员看目镜刻度——指针停在更低一层。
+
+---
+
+## 二、人物
+
+<PersonCard name="沈珩" role="台长" age="55" relation="死者" alibi="——">
+  准备公布捐赠款审计，质疑讲解员账目。
+</PersonCard>
+
+<PersonCard name="越澄" role="研究员" age="38" relation="同事" alibi="称在暗房">
+  署名争端激烈；暗房计时器晚于案发。
+</PersonCard>
+
+<PersonCard name="祁雾" role="讲解员" age="34" relation="下属" alibi="称在展厅准备讲解">
+  维护目镜与栏杆；红漆与补漆登记吻合。
+</PersonCard>
+
+<PersonCard name="白执" role="对面住户" age="41" relation="目击证人" alibi="家中观望">
+  坚称看见行凶，引导调查指向对面层。
+</PersonCard>
+
+<PersonCard name="杜简" role="保安" age="45" relation="安保" alibi="称巡逻迟到">
+  21:15 才至圆顶，无法提供早前动线。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="越澄" time="第一次问询">
+  「暗房计时器晚几分钟，我在调配方。沈台长抢署名，但我不会动手。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="祁雾" time="第一次问询">
+  「目镜是公众用的，谁都能拧。补漆是例行。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="白执" time="第一次问询">
+  「我看得清楚，就是那一层！」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="杜简" time="第二次问询">
+  「我打盹不对，但圆顶里还有别人。红漆味很重那晚。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="113" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "目镜对准低 1.2 层——目击者可能看错什么？",
+    "案发层熄灯与低层拉窗帘，如何拆穿「看见行凶」？",
+    "越澄暗房计时器晚启动，说明什么？",
+    "祁雾补漆与红漆袖口，指向怎样的掩盖？",
+    "谁有动机让目击指向错误楼层？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+镜头对准哪里，看见的就可能是另一个故事。刻度一寸错，凶手就可能差一整层。
+
+<DetectiveNotes caseId="113" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是讲解员祁雾。她挪用捐赠款被沈珩察觉，日食前夜约其上圆顶对质，争执中锐器伤人，再以新鲜红漆覆盖栏杆血迹。事前将公用望远镜目镜下调 1.2 层，诱使白执「看见行凶」却指错楼层，把调查引向对面低层影子。
+
+越澄署名争端、白执目击皆成红鲱鱼。暗房计时器晚启动打破越澄不在场，但真凶是唯一能合法补漆并调目镜者。
+
+### 关键矛盾
+
+望远镜里看见凶手——镜头却对准了更低的楼层。
+
+### 伏笔解析
+
+1. 目镜刻度错位——视角诡计核心。
+2. 低层拉窗帘 vs 案发层熄灯——目击层错误。
+3. 越澄计时器 21:10——晚于案发窗。
+4. 祁雾红漆袖口——接触补漆。
+5. 栏杆未干漆层——当晚掩盖。
+6. 维护日志 20:50——提前准备。
+7. 捐赠款缺口——动机。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

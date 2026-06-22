@@ -1,0 +1,180 @@
+---
+title: "向里延伸的面包屑"
+caseId: "114"
+status: "unsolved"
+difficulty: 4
+types:
+  - "动线推理"
+  - "物证误导"
+scene:
+  - "河畔面包坊"
+  - "清晨"
+readingTime: "10-13 分钟"
+clueCount: 7
+questions:
+  - q: "地面面包屑由门外向里延伸，直觉会推断什么？"
+    choices:
+      - text: "凶手从外闯入"
+      - text: "凶手从室内撒屑向外走，制造闯入假象"
+      - text: "死者自己洒落"
+      - text: "老鼠拖行"
+    answer: 1
+  - q: "房客黎乔鞋底沾糠，能否定罪？"
+    choices:
+      - text: "能，糠仅面包坊有"
+      - text: "不能，楼上住客每日买面包，鞋底沾糠常见"
+      - text: "能，糠含血"
+      - text: "不能，黎乔无钥匙"
+    answer: 1
+  - q: "早班伙计唐麦缺一袋糠粉，关联什么？"
+    choices:
+      - text: "与地上屑粒同批，袋口有死者指纹与唐麦手套纤维"
+      - text: "与老鼠有关"
+      - text: "与黎乔争吵有关"
+      - text: "无关"
+    answer: 0
+  - q: "送货单 05:20 记录为何重要？"
+    choices:
+      - text: "证明店主活着"
+      - text: "证明唐麦 05:20 仍在店，有充足时间布置现场后再报警"
+      - text: "证明黎乔在场"
+      - text: "送货单伪造"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "房客黎乔——租金纠纷"
+      - text: "早班伙计唐麦——挪用原料款，撒屑伪造成外人闯入"
+      - text: "供货商——催款"
+      - text: "隔壁店主——竞争"
+    answer: 1
+publishedAt: "2026-06-22"
+summary: "面包屑一路通向里屋。脚印却记得，撒屑的人是从里面走出来的。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "面包坊主裘禾死于里屋，钝器伤。门外无撬痕，门从内反锁。", detail: "" },
+  { label: "地面糠屑由外向内渐密，尽头于死者脚边；鞋印仅单向，由里向外。", detail: "" },
+  { label: "房客黎乔鞋底沾糠，与楼上常购面包一致；她称清晨未下楼。", detail: "住客鞋底沾糠常见。" },
+  { label: "早班伙计唐麦缺一袋糠粉，袋口有裘禾指纹与唐麦手套纤维。", detail: "" },
+  { label: "送货单 05:20 唐麦签收，同分钟里屋监控死角有声响记录。", detail: "" },
+  { label: "唐麦账户近期挪用原料款，裘禾昨夜留言要对账。", detail: "" },
+  { label: "里屋窗台无外力泥印，外人难从外入内而不留痕。", detail: "" },
+];
+
+## 一、案发
+
+清晨面包香里混着铁锈味。
+
+店主裘禾倒在里屋，门从内反锁。地上糠屑像一条细线，从门外引进来。
+
+楼上房客黎乔喊：「他涨租，但我没下来！」
+
+早班伙计唐麦举着送货单：「我 05:20 才签收，进来就见他倒了。」
+
+探员看鞋印——只有从里向外的。
+
+---
+
+## 二、人物
+
+<PersonCard name="裘禾" role="店主" age="49" relation="死者" alibi="——">
+  发现伙计挪用原料款，准备清晨对账。
+</PersonCard>
+
+<PersonCard name="黎乔" role="楼上房客" age="36" relation="租户" alibi="称未下楼">
+  租金纠纷；鞋底糠屑可疑。
+</PersonCard>
+
+<PersonCard name="唐麦" role="早班伙计" age="28" relation="员工" alibi="称 05:20 签收后才发现">
+  挪用款；缺糠粉袋与单向鞋印指向他。
+</PersonCard>
+
+<PersonCard name="邵叔" role="隔壁店主" age="52" relation="竞争者" alibi="称在自家生火">
+  竞争激烈，但无店内权限。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="黎乔" time="第一次问询">
+  「我听见响声，但没下楼。糠屑？我天天买面包。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="唐麦" time="第一次问询">
+  「屑是从外面进来的，凶手肯定从外面。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="邵叔" time="第一次问询">
+  「竞争归竞争，我不碰他的门。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="唐麦" time="第二次问询">
+  「袋子里指纹？我帮他搬过货。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="114" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "糠屑由外向内渐密——这与单向鞋印如何互相印证？",
+    "黎乔鞋底糠屑为何不足以定罪？",
+    "唐麦 05:20 签收与里屋声响如何重叠？",
+    "缺糠粉袋上的指纹与纤维说明什么？",
+    "谁最需要从内部制造「外人闯入」？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+面包屑会骗人，鞋印较少骗人。方向若只有一种，故事往往写反了。
+
+<DetectiveNotes caseId="114" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是早班伙计唐麦。挪用原料款将被揭，清晨提前入店争执，钝器击打裘禾后，从内向外撒糠屑、留单向鞋印，制造外人闯入路径，再签 05:20 送货单并报警。
+
+黎乔鞋底糠屑、邵叔竞争皆红鲱鱼。屑密于死者脚边而非门口，是「向内撒」而非「闯入洒」。
+
+### 关键矛盾
+
+面包屑通向里屋——鞋印却只记得有人从里面走出来。
+
+### 伏笔解析
+
+1. 屑由外向内渐密——撒屑方向反常识。
+2. 单向鞋印——由内向外。
+3. 黎乔鞋底糠——住客常态。
+4. 缺袋指纹纤维——唐麦接触。
+5. 05:20 签收与声响——时间重叠。
+6. 挪用款——动机。
+7. 窗台无外力——假闯入。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

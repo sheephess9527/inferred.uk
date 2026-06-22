@@ -1,0 +1,184 @@
+---
+title: "翻过两次的账页"
+caseId: "111"
+status: "unsolved"
+difficulty: 5
+types:
+  - "文书诡计"
+  - "时间线伪造"
+scene:
+  - "老字号茶庄"
+  - "腊月夜"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "账册第 88 页右上角折痕有新旧两层，说明什么？"
+    choices:
+      - text: "页被翻过两次，有人先查阅再伪造当日流水"
+      - text: "折痕系装订老化"
+      - text: "折痕证明庄主本人当晚记账"
+      - text: "折痕与凶案无关"
+    answer: 0
+  - q: "合伙人顾衡称「整晚在酒楼应酬」，破绽在哪？"
+    choices:
+      - text: "酒楼无监控"
+      - text: "酒楼账单 22:10 结账，而茶庄后门 22:18 有他的员工卡刷卡记录"
+      - text: "顾衡酒量好不可能早退"
+      - text: "顾衡与死者无财务纠纷"
+    answer: 1
+  - q: "学徒裴棠袖口茶渍，能否定罪？"
+    choices:
+      - text: "能，茶渍含毒"
+      - text: "不能，前厅沏茶人人沾渍，属常态"
+      - text: "能，茶渍与死者血型一致"
+      - text: "不能，裴棠无动机"
+    answer: 1
+  - q: "缺页的进货单副本为何关键？"
+    choices:
+      - text: "副本证明虚报进货"
+      - text: "副本泥印与实习整理员陆绡鞋底同批，且仅档案室可接触"
+      - text: "副本系死者伪造"
+      - text: "副本日期错误"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "合伙人顾衡——分红争执"
+      - text: "学徒裴棠——被斥学艺不精"
+      - text: "实习整理员陆绡——伪造账页掩盖挪用，事败后灭口"
+      - text: "供货商韩野——催款激烈"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "账册那一页被翻过两次。第一次查账，第二次伪造——中间少了一行人命。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "茶庄庄主程栎死于账房，钝器击打。账册摊开第 88 页，折角有新旧双层折痕。", detail: "" },
+  { label: "第 88 页当日流水墨迹较新，纸纤维吸墨慢于相邻页；同页铅笔底稿被橡皮轻擦。", detail: "" },
+  { label: "合伙人顾衡酒楼账单 22:10 结账；茶庄后门 22:18 刷顾衡员工卡，22:35 离开。", detail: "" },
+  { label: "学徒裴棠袖口茶渍，与前厅常用茶汤一致；他称 22:00 后只在前厅练沏茶。", detail: "前厅常态沾染，不足以定罪。" },
+  { label: "供货商韩野称 21:30 催款后离店；街口监控 21:45 见其乘车东行。", detail: "" },
+  { label: "档案室缺进货单副本，泥印与陆绡鞋底同批；陆绡工单 22:00–23:00 整理账册。", detail: "" },
+  { label: "陆绡抽屉藏空白账页与同款铅笔橡皮；指尖有陈旧墨渍与新墨层。", detail: "" },
+];
+
+## 一、案发
+
+腊月夜，老字号茶庄账房只亮一盏油灯。
+
+程栎倒在账案旁，账册翻到第 88 页。合伙人顾衡从酒楼赶回，袖口酒气：「应酬到半夜，回来就出事。」
+
+学徒裴棠端茶的手发抖：「师父骂我笨，可我只会沏茶。」
+
+供货商韩野在门外嚷：「欠款不至于要命！」
+
+探员用指节轻弹纸页——折角有两层，像被翻过两次。
+
+---
+
+## 二、人物
+
+<PersonCard name="程栎" role="庄主" age="58" relation="死者" alibi="——">
+  发现账目被挪用，准备腊月后向全店公布审计结果。
+</PersonCard>
+
+<PersonCard name="顾衡" role="合伙人" age="52" relation="合伙人" alibi="称在酒楼应酬">
+  分红纠纷公开；后门刷卡使其高度可疑。
+</PersonCard>
+
+<PersonCard name="裴棠" role="学徒" age="22" relation="徒弟" alibi="称在前厅练茶">
+  当日下午被当众斥责，袖口茶渍醒目。
+</PersonCard>
+
+<PersonCard name="韩野" role="供货商" age="45" relation="债权人" alibi="称 21:45 前离店">
+  催款激烈，但监控显示较早离店。
+</PersonCard>
+
+<PersonCard name="陆绡" role="实习整理员" age="26" relation="员工" alibi="称在档案室理账">
+  工单覆盖案发时段；鞋底泥印与缺页副本吻合。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="顾衡" time="第一次问询">
+  「分红可以谈，何必杀人？后门刷卡？我卡丢了半个月，谁都能捡。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="裴棠" time="第一次问询">
+  「我只会泡茶。茶渍？店里谁没有。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韩野" time="第一次问询">
+  「我催款是规矩，不是催命。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="陆绡" time="第二次问询">
+  「整理旧账而已。缺页？档案室乱，常有找不到的。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="111" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "双层折痕与新旧墨迹——第 88 页经历了哪两次操作？",
+    "顾衡酒楼结账与后门刷卡，如何同时成立又不等于行凶？",
+    "裴棠茶渍为何是红鲱鱼？",
+    "缺页副本泥印指向谁的动线？",
+    "谁既能改账页，又最害怕审计公布？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+账页会记住翻它的人。折一次是查，折两次往往是改。
+
+<DetectiveNotes caseId="111" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是实习整理员陆绡。她挪用进货款，在副本账页做手脚。程栎腊月夜突查第 88 页，先翻一次核对，陆绡躲在档案室隔窗看见，趁其背对账房再次入室内伪造流水并击打程栎，再翻回伪造页制造「当夜正常记账」假象。
+
+顾衡后门刷卡属实，但时间窗短且未见血迹；裴棠、韩野动机强却缺账房改写权限。双层折痕与铅笔底稿暴露「先查后改」。
+
+### 关键矛盾
+
+账页被翻过两次——第一次查账，第二次灭口。
+
+### 伏笔解析
+
+1. 双层折角——两次翻阅。
+2. 墨迹吸墨慢——后补记。
+3. 铅笔底稿擦痕——伪造痕迹。
+4. 顾衡刷卡——红鲱鱼，卡可拾得。
+5. 裴棠茶渍——前厅常态。
+6. 韩野监控东行——较早离店。
+7. 陆绡鞋底泥印与缺页——档案室到账房动线。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

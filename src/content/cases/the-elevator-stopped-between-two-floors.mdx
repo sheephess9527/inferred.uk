@@ -1,0 +1,180 @@
+---
+title: "停在两层之间的电梯"
+caseId: "116"
+status: "unsolved"
+difficulty: 5
+types:
+  - "机械诡计"
+  - "动线推理"
+scene:
+  - "商务大厦"
+  - "深夜"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "电梯停在 12–13 层之间，对凶手动线意味着什么？"
+    choices:
+      - text: "凶手必须熟悉检修通道，可从层间进入轿厢"
+      - text: "死者自己进入"
+      - text: "电梯随机故障"
+      - text: "与凶案无关"
+    answer: 0
+  - q: "副总裁韩溯称「整晚在酒会」，破绽在哪？"
+    choices:
+      - text: "酒会无证人"
+      - text: "酒会 23:00 结束，大厦 23:12 韩溯员工卡刷入地下停车场"
+      - text: "韩溯与死者合作愉快"
+      - text: "韩溯不会用电梯"
+    answer: 1
+  - q: "秘书沈荔监控截图，为何误导？"
+    choices:
+      - text: "截图显示沈荔进轿厢，但时间戳可被管理员回拨"
+      - text: "截图系伪造"
+      - text: "沈荔有铁证不在场"
+      - text: "监控损坏"
+    answer: 0
+  - q: "检修员顾绳工具包缺层间撬棍，说明什么？"
+    choices:
+      - text: "与轿厢顶检修口新鲜划痕吻合"
+      - text: "与韩溯有关"
+      - text: "与秘书有关"
+      - text: "无关"
+    answer: 0
+  - q: "谁是凶手？"
+    choices:
+      - text: "副总裁韩溯——并购分歧"
+      - text: "秘书沈荔——情感纠纷"
+      - text: "检修员顾绳——伪造故障困杀，再调监控嫁祸"
+      - text: "保安——巡逻疏忽"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "电梯卡在两层之间。熟悉检修通道的人，不必从大堂进出。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "法务总监程岐死于电梯轿厢，锐器伤。轿厢停 12–13 层间，门无法常开。", detail: "" },
+  { label: "轿厢顶检修口螺丝有新鲜拧痕；层间通道泥印与顾绳工靴同纹。", detail: "" },
+  { label: "副总裁韩溯酒会 23:00 结束；23:12 刷入大厦停车场，23:40 离开。", detail: "" },
+  { label: "秘书沈荔称未进大厦；监控截图显示其 23:05 进轿厢，时间戳比系统日志早 8 分钟。", detail: "时间戳可被管理员回拨。" },
+  { label: "检修员顾绳工单 22:30–24:00 维保；工具包缺层间撬棍。", detail: "" },
+  { label: "程岐掌握顾绳外包合同回扣证据，准备解约。", detail: "" },
+  { label: "监控管理员密码 23:02 有顾绳工牌刷卡记录。", detail: "" },
+];
+
+## 一、案发
+
+深夜大厦，电梯指示灯卡在 12 与 13 之间。
+
+法务总监程岐倒在轿厢，胸前锐口。消防从层间破开检修门才进入。
+
+副总裁韩溯说：「酒会结束我就回家，没进楼。」
+
+秘书沈荔递截图：「你看，我没进轿厢——不对，这图怎么像我？」
+
+探员看检修口螺丝——新拧过的。
+
+---
+
+## 二、人物
+
+<PersonCard name="程岐" role="法务总监" age="46" relation="死者" alibi="——">
+  掌握检修外包回扣，准备解约并报案。
+</PersonCard>
+
+<PersonCard name="韩溯" role="副总裁" age="49" relation="高层" alibi="酒会">
+  并购方案与程岐冲突；停车场刷卡可疑。
+</PersonCard>
+
+<PersonCard name="沈荔" role="秘书" age="32" relation="同事" alibi="称未进大厦">
+  情感纠纷流言；监控截图被嫁祸。
+</PersonCard>
+
+<PersonCard name="顾绳" role="检修员" age="41" relation="外包商" alibi="维保工单">
+  熟悉层间通道；缺撬棍与回拨监控权限。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="韩溯" time="第一次问询">
+  「停车场刷卡？我取忘在车里的文件，没上电梯。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="沈荔" time="第一次问询">
+  「截图是假的，我当晚在家。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="顾绳" time="第一次问询">
+  「故障困人常有。撬棍？工地丢的。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="保安" time="第二次问询">
+  「监控密码区 23:02 有顾绳工牌，他说查日志。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="116" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "轿厢停层间——凶手如何从常规监控外进入？",
+    "检修口新拧痕与工靴泥印如何指向维保人员？",
+    "沈荔截图时间戳早 8 分钟，暗示什么操作？",
+    "韩溯停车场刷卡是否等于行凶？",
+    "谁既有层间权限，又有动机让程岐「困死在电梯」？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+电梯卡在两层之间时，大堂监控往往什么都看不见。层间的风，却记得检修通道。
+
+<DetectiveNotes caseId="116" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是检修员顾绳。他伪造故障将轿厢停层间，经检修口进入勒死程岐，再回拨监控把沈荔影像嵌入 23:05 轿厢记录嫁祸。韩溯停车场刷卡取文件，时间窗短。
+
+层间是唯一合理动线，顾绳工单与回扣解约动机闭合。
+
+### 关键矛盾
+
+电梯停在两层之间——凶手不必从大堂进出。
+
+### 伏笔解析
+
+1. 层间停梯——特殊动线。
+2. 检修口新痕——非法进入。
+3. 工靴泥印——顾绳路径。
+4. 截图时间戳异常——回拨嫁祸。
+5. 韩溯 23:12 刷卡——红鲱鱼。
+6. 缺撬棍——工具吻合。
+7. 23:02 监控密码刷卡——顾绳权限。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
