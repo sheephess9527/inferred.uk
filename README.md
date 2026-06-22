@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**120 篇案卷**（001–120）+ **72 篇线索**
+- **当前规模**：**120 篇案卷**（001–120）+ **92 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -413,7 +413,7 @@ questions:
 
 ---
 
-## 线索一览（72 篇）
+## 线索一览（92 篇）
 
 | order | 标题 | slug |
 |-------|------|------|
@@ -489,8 +489,28 @@ questions:
 | 70 | 误导的三层结构 | `layers-of-misdirection` |
 | 71 | 从古典到案卷：灵感转化法 | `from-classics-to-cases` |
 | 72 | 连读案卷：去重自检法 | `archive-reread-method` |
+| 73 | 折痕与翻页：纸记得被摸过几次 | `paper-fold-turn-count` |
+| 74 | 音程当作钟：校准过的谎言 | `pitch-as-mechanical-clock` |
+| 75 | 视差与对准：镜头也会指错 | `parallax-and-wrong-alignment` |
+| 76 | 碎屑路径：向内延伸的最后一米 | `crumb-trail-direction` |
+| 77 | 印泥湿度：印章记得哪只手 | `stamp-pad-pressure-tells` |
+| 78 | 层间停靠：两层之间的空档 | `elevator-between-floors-gap` |
+| 79 | 棋钟与读秒：被偷走的是回合 | `chess-clock-stolen-time` |
+| 80 | 雨量筒被倒空：旱地也能伪造 | `emptied-rain-gauge-tricks` |
+| 81 | 镜面雾气：体温画出的站位图 | `mirror-fog-body-heat` |
+| 82 | 流通记录：闭馆后的手工缝隙 | `circulation-record-gaps` |
+| 83 | 边缘岗位的改写权 | `marginal-role-edit-rights` |
+| 84 | 备用钥匙：例行访问里的非常时刻 | `contractor-spare-key-access` |
+| 85 | 手工账与系统日志 | `manual-ledger-vs-system-log` |
+| 86 | 替换装与撕标：耗材里的动机 | `swapped-consumable-labels` |
+| 87 | 班组胶带：同源纤维 | `workplace-tape-fiber-match` |
+| 88 | 现场热力图：温度也是证人 | `heat-map-at-crime-scenes` |
+| 89 | 改派单：排班表上的时间缝 | `schedule-tampering-windows` |
+| 90 | 持钥配偶：最先该查也最该疑 | `spouse-with-keys-herring` |
+| 91 | 最小子集：谁能单独解释硬物证 | `edge-suspect-minimal-set` |
+| 92 | 批次诡计去重：连读后的自检 | `batch-technique-dedup` |
 
-新增线索：`order` 从 **73** 起，在 `src/content/clues/` 新建 `.md`。
+新增线索：`order` 从 **93** 起，在 `src/content/clues/` 新建 `.md`。
 
 ---
 
@@ -576,6 +596,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-22 — 线索扩充（073–092）
+
+- 新增线索 **20 篇**（order 73–92）：折痕翻页、音程时钟、视差对准、碎屑方向、印泥湿度、层间电梯、棋钟读秒、雨量筒、镜面雾气、流通记录、边缘岗位、备用钥匙、手工账对日志、耗材撕标、班组胶带、现场热力图、改派单、持钥配偶、最小子集、批次去重
+- 线索总数 **72 → 92**；README 线索一览表同步更新
 
 ### 2026-06-22 — 案卷扩充（111–120）
 
