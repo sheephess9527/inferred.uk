@@ -18,34 +18,34 @@ const typeEn = types.join(' / ');
 
 <dl class="case-meta">
   <div class="case-meta__row">
-    <dt>案卷编号</dt>
+    <dt><span class="i18n-zh">案卷编号</span><span class="i18n-en">Case</span></dt>
     <dd class="mono">CASE FILE #{caseId}</dd>
   </div>
   <div class="case-meta__row">
-    <dt>状态</dt>
+    <dt><span class="i18n-zh">状态</span><span class="i18n-en">Status</span></dt>
     <dd data-case-progress data-case-slug={slug} data-site-status={status}>
       <span class:list={['mono', 'case-meta__status', `is-${status}`]} data-case-progress-en
         >{statusEn}</span
       >
-      <span class="text-muted" data-case-progress-cn>· {statusCn}</span>
+      <span class="text-muted i18n-zh" data-case-progress-cn>· {statusCn}</span>
     </dd>
   </div>
   <div class="case-meta__row">
-    <dt>难度</dt>
+    <dt><span class="i18n-zh">难度</span><span class="i18n-en">Difficulty</span></dt>
     <dd><DifficultyStars value={difficulty} showLabel /></dd>
   </div>
   <div class="case-meta__row">
-    <dt>类型</dt>
+    <dt><span class="i18n-zh">类型</span><span class="i18n-en">Type</span></dt>
     <dd>{typeEn}</dd>
   </div>
   <div class="case-meta__row">
-    <dt>推理时间</dt>
+    <dt><span class="i18n-zh">推理时间</span><span class="i18n-en">Est. Time</span></dt>
     <dd class="mono">{readingTime}</dd>
   </div>
   {
     typeof clueCount === 'number' && clueCount > 0 && (
       <div class="case-meta__row">
-        <dt>线索数量</dt>
+        <dt><span class="i18n-zh">线索数量</span><span class="i18n-en">Clues</span></dt>
         <dd class="mono">{clueCount}</dd>
       </div>
     )

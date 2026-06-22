@@ -31,28 +31,28 @@ const latest = showcase.slice(0, 10).map((c) => ({
 const steps = [
   {
     n: '01',
-    title: '阅读案卷',
-    body: '查看人物、证词、物证和时间线。',
+    cn: { title: '阅读案卷', body: '查看人物、证词、物证和时间线。' },
+    en: { title: 'Read the File', body: 'Study the characters, testimonies, evidence, and timeline.' },
   },
   {
     n: '02',
-    title: '找出矛盾',
-    body: '注意那些被轻轻带过，却不该出现的细节。',
+    cn: { title: '找出矛盾', body: '注意那些被轻轻带过，却不该出现的细节。' },
+    en: { title: 'Find the Contradiction', body: 'Notice the details that slip by — details that shouldn\'t exist.' },
   },
   {
     n: '03',
-    title: '推断真相',
-    body: '在答案揭晓前，写下你的判断。',
+    cn: { title: '推断真相', body: '在答案揭晓前，写下你的判断。' },
+    en: { title: 'Infer the Truth', body: 'Commit to your verdict before the answer is revealed.' },
   },
 ];
 
 const caseTypes = [
-  { label: '密室', desc: '门窗反锁，凶手却已离开。' },
-  { label: '不在场证明', desc: '每个人都说自己当时在别处。' },
-  { label: '时间线诡计', desc: '真相藏在事件发生的顺序里。' },
-  { label: '证词矛盾', desc: '有人多说了一个不该知道的细节。' },
-  { label: '叙述性诡计', desc: '你读到的，未必是事情的全貌。' },
-  { label: '物证误导', desc: '最显眼的线索，往往是设给你的。' },
+  { label: '密室', enLabel: 'Locked Room', desc: '门窗反锁，凶手却已离开。', enDesc: 'Doors locked from inside — yet the killer is gone.' },
+  { label: '不在场证明', enLabel: 'Alibi', desc: '每个人都说自己当时在别处。', enDesc: 'Everyone claims to have been somewhere else.' },
+  { label: '时间线诡计', enLabel: 'Timeline Trick', desc: '真相藏在事件发生的顺序里。', enDesc: 'The truth hides in the order events occurred.' },
+  { label: '证词矛盾', enLabel: 'Conflicting Testimony', desc: '有人多说了一个不该知道的细节。', enDesc: 'Someone mentioned a detail they shouldn\'t know.' },
+  { label: '叙述性诡计', enLabel: 'Narrative Trick', desc: '你读到的，未必是事情的全貌。', enDesc: 'What you read may not be the whole picture.' },
+  { label: '物证误导', enLabel: 'Misleading Evidence', desc: '最显眼的线索，往往是设给你的。', enDesc: 'The most obvious clue is often planted for you.' },
 ];
 ---
 
@@ -71,15 +71,27 @@ const caseTypes = [
           <span class="hero__brand-en">Inferred</span>
         </span>
       </div>
-      <p class="eyebrow hero__eyebrow">The truth is never stated. It is inferred.</p>
-      <h1 class="hero__title">真相从不明说，<br />只能被推断。</h1>
+      <p class="eyebrow hero__eyebrow">
+        <span class="i18n-zh">The truth is never stated. It is inferred.</span>
+        <span class="i18n-en">真相从不明说，只能被推断。</span>
+      </p>
+      <h1 class="hero__title">
+        <span class="i18n-zh">真相从不明说，<br />只能被推断。</span>
+        <span class="i18n-en">The truth is never stated.<br />It is inferred.</span>
+      </h1>
       <p class="hero__subtitle">
-        不是被告知，而是自己看见。<br />
-        阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。
+        <span class="i18n-zh">不是被告知，而是自己看见。<br />阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。</span>
+        <span class="i18n-en">Not told. Seen.<br />Read the case, analyse the evidence, spot the contradictions, and name the truth before the answer is revealed.</span>
       </p>
       <div class="hero__actions">
-        <a class="btn btn--primary" href="/cases">开始推理</a>
-        <a class="btn btn--ghost" href="/archive">进入档案馆</a>
+        <a class="btn btn--primary" href="/cases">
+          <span class="i18n-zh">开始推理</span>
+          <span class="i18n-en">Start Deducing</span>
+        </a>
+        <a class="btn btn--ghost" href="/archive">
+          <span class="i18n-zh">进入档案馆</span>
+          <span class="i18n-en">Browse Archive</span>
+        </a>
       </div>
     </div>
     <div class="hero__rule" aria-hidden="true"></div>
@@ -88,18 +100,18 @@ const caseTypes = [
   <!-- 快速入口 -->
   <section class="container quickstart" aria-label="快速入口">
     <a class="qs-card qs-card--resume" href="#" data-qs-resume hidden>
-      <span class="qs-card__tag mono">继续推理</span>
+      <span class="qs-card__tag mono"><span class="i18n-zh">继续推理</span><span class="i18n-en">Resume</span></span>
       <span class="qs-card__title" data-qs-resume-title>—</span>
       <span class="qs-card__arrow" aria-hidden="true">→</span>
     </a>
     <a class="qs-card qs-card--daily" href="#" data-qs-daily>
-      <span class="qs-card__tag mono">今日推荐</span>
+      <span class="qs-card__tag mono"><span class="i18n-zh">今日推荐</span><span class="i18n-en">Today's Pick</span></span>
       <span class="qs-card__title" data-qs-daily-title>—</span>
       <span class="qs-card__arrow" aria-hidden="true">→</span>
     </a>
     <button class="qs-card qs-card--random" type="button" data-qs-random>
-      <span class="qs-card__tag mono">随机开案</span>
-      <span class="qs-card__title">随缘，就这本</span>
+      <span class="qs-card__tag mono"><span class="i18n-zh">随机开案</span><span class="i18n-en">Random Case</span></span>
+      <span class="qs-card__title"><span class="i18n-zh">随缘，就这本</span><span class="i18n-en">Surprise me</span></span>
       <span class="qs-card__arrow" aria-hidden="true">→</span>
     </button>
   </section>
@@ -107,11 +119,20 @@ const caseTypes = [
   <!-- 介绍 -->
   <section class="container intro">
     <p class="intro__text">
-      一份份悬疑案卷。<br />
-      一段段彼此矛盾的证词。<br />
-      一些看似无关的线索。<br />
-      你要做的，不是阅读故事。<br />
-      你要做的，<strong>是推断它们之间真正的关系。</strong>
+      <span class="i18n-zh">
+        一份份悬疑案卷。<br />
+        一段段彼此矛盾的证词。<br />
+        一些看似无关的线索。<br />
+        你要做的，不是阅读故事。<br />
+        你要做的，<strong>是推断它们之间真正的关系。</strong>
+      </span>
+      <span class="i18n-en">
+        Suspicious case files.<br />
+        Contradicting testimonies.<br />
+        Apparently unrelated clues.<br />
+        Your task is not to read a story.<br />
+        Your task is to <strong>infer what really connects them.</strong>
+      </span>
     </p>
   </section>
 
@@ -120,8 +141,11 @@ const caseTypes = [
     <header class="section__head">
       <div>
         <p class="eyebrow">Featured Cases</p>
-        <h2 class="section__title">精选案卷</h2>
-        <p class="section__count text-muted mono">共 {showcaseCount} 份</p>
+        <h2 class="section__title"><span class="i18n-zh">精选案卷</span><span class="i18n-en">Featured Cases</span></h2>
+        <p class="section__count text-muted mono">
+          <span class="i18n-zh">共 {showcaseCount} 份</span>
+          <span class="i18n-en">{showcaseCount} cases</span>
+        </p>
       </div>
       <div class="section__head-right">
         <div class="user-progress" data-user-progress data-total={allCases.length} hidden>
@@ -130,7 +154,7 @@ const caseTypes = [
             <div class="user-progress__fill" data-progress-fill></div>
           </div>
         </div>
-        <a class="section__more" href="/cases">查看全部 →</a>
+        <a class="section__more" href="/cases"><span class="i18n-zh">查看全部 →</span><span class="i18n-en">View All →</span></a>
       </div>
     </header>
     <CaseList cases={latest} />
@@ -142,7 +166,7 @@ const caseTypes = [
       <header class="section__head">
         <div>
           <p class="eyebrow">How It Works</p>
-          <h2 class="section__title">三步，从线索到真相</h2>
+          <h2 class="section__title"><span class="i18n-zh">三步，从线索到真相</span><span class="i18n-en">Three Steps to the Truth</span></h2>
         </div>
       </header>
       <ol class="how__steps">
@@ -150,8 +174,14 @@ const caseTypes = [
           steps.map((s) => (
             <li class="how__step">
               <span class="how__num mono">{s.n}</span>
-              <h3 class="how__step-title">{s.title}</h3>
-              <p class="how__step-body text-muted">{s.body}</p>
+              <h3 class="how__step-title">
+                <span class="i18n-zh">{s.cn.title}</span>
+                <span class="i18n-en">{s.en.title}</span>
+              </h3>
+              <p class="how__step-body text-muted">
+                <span class="i18n-zh">{s.cn.body}</span>
+                <span class="i18n-en">{s.en.body}</span>
+              </p>
             </li>
           ))
         }
@@ -164,17 +194,17 @@ const caseTypes = [
     <header class="section__head">
       <div>
         <p class="eyebrow">Case Types</p>
-        <h2 class="section__title">你会遇到的诡计</h2>
+        <h2 class="section__title"><span class="i18n-zh">你会遇到的诡计</span><span class="i18n-en">Types of Trickery</span></h2>
       </div>
-      <a class="section__more" href="/archive">按类型浏览 →</a>
+      <a class="section__more" href="/archive"><span class="i18n-zh">按类型浏览 →</span><span class="i18n-en">Browse by Type →</span></a>
     </header>
     <ul class="types">
       {
         caseTypes.map((t) => (
           <li class="types__item">
             <a class="types__link" href={`/archive?type=${encodeURIComponent(t.label)}`}>
-              <span class="types__label">{t.label}</span>
-              <span class="types__desc text-muted">{t.desc}</span>
+              <span class="types__label"><span class="i18n-zh">{t.label}</span><span class="i18n-en">{t.enLabel}</span></span>
+              <span class="types__desc text-muted"><span class="i18n-zh">{t.desc}</span><span class="i18n-en">{t.enDesc}</span></span>
             </a>
           </li>
         ))
