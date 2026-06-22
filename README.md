@@ -589,9 +589,6 @@ Cloudflare Workers Git 集成，跟踪 `main`：
   - `DeductionQuestions.astro`：进度计数（X / N 已思考 / X / N answered）；JS 监听语言切换
   - `ArchiveFilter.astro`：筛选分组标签（进度/Status、难度/Difficulty、类型/Type、场景/Scene）、各选项（全部/All、未解/Unsolved 等）、案卷计数、空态提示；JS 监听语言切换
   - `CaseList.astro`：空态文字（此分类下暂无案卷。/ No cases in this category.）
-- **翻译范围说明**（设计决定）：
-  - ✅ **切换**：所有 UI 框架文字——导航、按钮、状态徽章、标签名称、提示语、进度计数、弹窗步骤、toast 消息等
-  - ❌ **不切换**：案卷正文内容——标题、摘要、类型标签、场景标签、案卷体（MDX 故事）均为中文故事内容，翻译需为每篇案卷单独添加 `titleEn`/`summaryEn` 字段，属独立大工程
 
 ### 2026-06-21 — 修复合并回退：恢复成绩海报 + 结案报告
 
