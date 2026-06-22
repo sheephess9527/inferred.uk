@@ -308,6 +308,7 @@ const isActive = (href: string) => current === href || current.startsWith(href +
     try {
       localStorage.setItem('inferred:lang', next);
     } catch (e) {}
+    document.dispatchEvent(new CustomEvent('inferred:lang-changed', { detail: { lang: next } }));
   });
 
   // Theme toggle

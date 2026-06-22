@@ -151,6 +151,10 @@ const {
     const checks = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-q-check]'));
     const progressEl = root.querySelector<HTMLElement>('[data-q-progress]');
 
+    function isEn() {
+      return document.documentElement.getAttribute('data-lang') === 'en';
+    }
+
     function updateProgress() {
       if (!progressEl) return;
       const done = checks.filter((btn) => {
@@ -160,8 +164,9 @@ const {
           return false;
         }
       }).length;
-      progressEl.textContent =
-        done > 0 ? `${done} / ${checks.length} 已思考` : `${checks.length} 题待推理`;
+      progressEl.textContent = isEn()
+        ? done > 0 ? `${done} / ${checks.length} answered` : `${checks.length} questions`
+        : done > 0 ? `${done} / ${checks.length} 已思考` : `${checks.length} 题待推理`;
     }
 
     function applyState(btn: HTMLButtonElement, done: boolean) {
@@ -191,5 +196,7 @@ const {
         updateProgress();
       });
     });
+
+    document.addEventListener('inferred:lang-changed', updateProgress);
   });
 </script>

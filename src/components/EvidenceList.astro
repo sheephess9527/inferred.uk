@@ -30,10 +30,8 @@ const hasAnswers = items.some((item) => item.answer);
   <header class="evidence__head">
     <p class="eyebrow" id={`evidence-${caseId}`}>物证 · Evidence</p>
     <p class="evidence__hint text-muted">
-      点击任一物证为它贴上标签：<span class="dot dot--important"></span>重要 ·
-      <span class="dot dot--suspicious"></span>可疑 ·
-      <span class="dot dot--misleading"></span>误导 ·
-      <span class="dot dot--excluded"></span>排除。标记会保存在本设备上。
+      <span class="i18n-zh">点击任一物证为它贴上标签：<span class="dot dot--important"></span>重要 · <span class="dot dot--suspicious"></span>可疑 · <span class="dot dot--misleading"></span>误导 · <span class="dot dot--excluded"></span>排除。标记会保存在本设备上。</span>
+      <span class="i18n-en">Click any evidence to tag it: <span class="dot dot--important"></span>Important · <span class="dot dot--suspicious"></span>Suspicious · <span class="dot dot--misleading"></span>Misleading · <span class="dot dot--excluded"></span>Excluded. Tags are saved on this device.</span>
     </p>
     {hasAnswers && <p class="evidence__score mono" data-evidence-score hidden />}
   </header>
@@ -58,7 +56,7 @@ const hasAnswers = items.some((item) => item.answer);
               {item.detail && <span class="evidence__detail text-muted">{item.detail}</span>}
             </span>
             <span class="evidence__mark mono" data-evidence-mark aria-hidden="true">
-              未标记
+              <span class="i18n-zh">未标记</span><span class="i18n-en">Unmarked</span>
             </span>
             {item.answer && (
               <span
@@ -75,7 +73,8 @@ const hasAnswers = items.some((item) => item.answer);
   </ol>
 
   <button type="button" class="evidence__reset mono" data-evidence-reset data-case={caseId}>
-    清除本案标记
+    <span class="i18n-zh">清除本案标记</span>
+    <span class="i18n-en">Clear all marks</span>
   </button>
 </section>
 
@@ -308,13 +307,15 @@ const hasAnswers = items.some((item) => item.answer);
 <script>
   type State = 'none' | 'important' | 'suspicious' | 'misleading' | 'excluded';
   const ORDER: State[] = ['none', 'important', 'suspicious', 'misleading', 'excluded'];
-  const LABELS: Record<State, string> = {
-    none: '未标记',
-    important: '重要',
-    suspicious: '可疑',
-    misleading: '误导',
-    excluded: '排除',
+  const LABELS_ZH: Record<State, string> = {
+    none: '未标记', important: '重要', suspicious: '可疑', misleading: '误导', excluded: '排除',
   };
+  const LABELS_EN: Record<State, string> = {
+    none: 'Unmarked', important: 'Important', suspicious: 'Suspicious', misleading: 'Misleading', excluded: 'Excluded',
+  };
+  function isEn() { return document.documentElement.getAttribute('data-lang') === 'en'; }
+  function LABELS() { return isEn() ? LABELS_EN : LABELS_ZH; }
+  function t(zh: string, en: string) { return isEn() ? en : zh; }
 
   const keyFor = (caseId: string) => `inferred:evidence:${caseId}`;
   const legacyKeyFor = (caseId: string) => `inferred:clues:${caseId}`;
@@ -372,10 +373,13 @@ const hasAnswers = items.some((item) => item.answer);
       btn.dataset.state = state;
       btn.setAttribute('aria-pressed', 'true');
     }
-    const label = LABELS[state];
+    const label = LABELS()[state];
     if (mark) mark.textContent = label;
     const text = btn.querySelector('.evidence__label')?.textContent ?? '';
-    btn.setAttribute('aria-label', `物证：${text}。当前标记：${label}。点击切换标记。`);
+    btn.setAttribute('aria-label', t(
+      `物证：${text}。当前标记：${label}。点击切换标记。`,
+      `Evidence: ${text}. Current tag: ${label}. Click to cycle.`
+    ));
   }
 
   /** 揭晓答案后：显示每条物证的裁决 + 总评分，并将结果写入 localStorage 供总结面板读取 */
@@ -406,13 +410,13 @@ const hasAnswers = items.some((item) => item.answer);
         }
         verdictEl.hidden = false;
         if (isCorrect) {
-          verdictEl.textContent = '✓ 正确';
+          verdictEl.textContent = t('✓ 正确', '✓ Correct');
           verdictEl.dataset.verdict = 'correct';
         } else if (isUnmarked) {
-          verdictEl.textContent = `应为 ${LABELS[answer]}`;
+          verdictEl.textContent = t(`应为 ${LABELS_ZH[answer]}`, `Should be: ${LABELS_EN[answer]}`);
           verdictEl.dataset.verdict = 'unmarked';
         } else {
-          verdictEl.textContent = `→ 实为 ${LABELS[answer]}`;
+          verdictEl.textContent = t(`→ 实为 ${LABELS_ZH[answer]}`, `→ Should be: ${LABELS_EN[answer]}`);
           verdictEl.dataset.verdict = 'wrong';
         }
       }
@@ -432,10 +436,16 @@ const hasAnswers = items.some((item) => item.answer);
       if (!animate) scoreEl.style.animation = 'none';
       scoreEl.hidden = false;
       if (correct === evaluated) {
-        scoreEl.textContent = `全部命中 · 准确识别了所有 ${evaluated} 个关键物证`;
+        scoreEl.textContent = t(
+          `全部命中 · 准确识别了所有 ${evaluated} 个关键物证`,
+          `Perfect — all ${evaluated} key evidence correctly tagged`
+        );
         scoreEl.dataset.level = 'perfect';
       } else {
-        scoreEl.textContent = `命中 ${correct} / ${evaluated} 个关键物证`;
+        scoreEl.textContent = t(
+          `命中 ${correct} / ${evaluated} 个关键物证`,
+          `Tagged ${correct} / ${evaluated} key evidence correctly`
+        );
         scoreEl.dataset.level = correct >= evaluated / 2 ? 'good' : 'low';
       }
     }
@@ -467,22 +477,36 @@ const hasAnswers = items.some((item) => item.answer);
     board
       .querySelector<HTMLButtonElement>('[data-evidence-reset]')
       ?.addEventListener('click', () => {
-        if (!confirm('确定要清除本案所有物证标记吗？此操作无法撤销。')) return;
+        if (!confirm(t('确定要清除本案所有物证标记吗？此操作无法撤销。', 'Clear all evidence tags for this case? This cannot be undone.'))) return;
         save(caseId, {});
         buttons.forEach((btn) => paint(btn, 'none'));
       });
+
+    let isRevealed = false;
 
     // 如果案卷已经在之前的访问中揭晓，立即显示裁决（无动画）
     try {
       const progressKey = `inferred:progress:${location.pathname}`;
       if (localStorage.getItem(progressKey) === 'solved') {
         revealFeedback(board, buttons, false);
+        isRevealed = true;
       }
     } catch (_) {}
 
     // 本次揭晓：有动画
     window.addEventListener('inferred:case-solved', () => {
       revealFeedback(board, buttons, true);
+      isRevealed = true;
+    });
+
+    // 语言切换：重新绘制标签，如已揭晓则重新绘制裁决
+    document.addEventListener('inferred:lang-changed', () => {
+      const stored = load(caseId);
+      buttons.forEach((btn) => {
+        const id = btn.dataset.evidenceKey!;
+        paint(btn, stored[id] ?? 'none');
+      });
+      if (isRevealed) revealFeedback(board, buttons, false);
     });
   });
 </script>
