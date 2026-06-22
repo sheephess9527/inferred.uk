@@ -38,7 +38,7 @@ const buildLastmod = new Date().toISOString();
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://inferred.uk',
+  site: 'https://www.inferred.uk',
   output: 'server',
   integrations: [
     mdx(),
