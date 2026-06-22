@@ -84,6 +84,12 @@ git push origin main
 
 Cloudflare 监听 `main` 自动构建部署。
 
+### 域名跳转
+
+`www.tuilis.com` → `www.inferred.uk`（301 永久跳转）通过 `src/middleware.ts` 实现：检测 `host` 头为 `tuilis.com` 或 `www.tuilis.com` 时直接返回 301，路径与查询参数保留。
+
+**仪表板操作（一次性）**：Cloudflare 仪表板 → Workers → `inferred` → Settings → Domains & Routes → Add Custom Domain → 填入 `www.tuilis.com` → Save。Cloudflare 会自动签发证书、配置 DNS，无需手动添加 A/AAAA 记录。
+
 ### Windows 环境备忘
 
 - PowerShell 执行策略可能阻止 `pnpm.ps1`，用 **`pnpm.cmd`** 代替 `pnpm`。

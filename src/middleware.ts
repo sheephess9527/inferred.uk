@@ -24,6 +24,14 @@ const SECURITY_HEADERS: Record<string, string> = {
 };
 
 export const onRequest = defineMiddleware(async (_ctx, next) => {
+  const host = _ctx.request.headers.get('host') ?? '';
+  if (host === 'www.tuilis.com' || host === 'tuilis.com') {
+    const url = new URL(_ctx.request.url);
+    url.hostname = 'www.inferred.uk';
+    url.protocol = 'https:';
+    return Response.redirect(url.toString(), 301);
+  }
+
   const response = await next();
   const ct = response.headers.get('content-type') ?? '';
   if (!ct.startsWith('text/html')) return response;
