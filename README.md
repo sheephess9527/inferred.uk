@@ -560,11 +560,19 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
-### 2026-06-22 — 回退中英文切换功能
+### 2026-06-22 — 回退中英文切换功能（完整）
 
-- 已移除 `EN / 中` 语言切换按钮及全部相关改动，恢复至纯中文界面（对应 `0db07e9`）
-- 回退范围：`Header.astro`、`Footer.astro`、`BaseLayout.astro`、`global.css`、22 个组件/页面的所有 i18n 改动
-- 通过 `git revert` 保留历史，未破坏提交记录
+- 已完整移除 `EN / 中` 语言切换按钮及全部相关改动，恢复至纯中文界面（对应 `0db07e9`）
+- **回退文件**（共 28 个）：
+  - `src/components/Header.astro`：移除 `lang-toggle` 按钮与 `.header-controls` 包裹层，恢复单独主题切换按钮
+  - `src/layouts/BaseLayout.astro`：移除语言偏好初始化内联脚本
+  - `src/styles/global.css`：移除 `.i18n-zh` / `.i18n-en` 工具类及 `[data-lang="en"]` 联动规则
+  - `src/components/Footer.astro`、`CaseMeta.astro`：移除 i18n spans，恢复纯中文标签
+  - `src/pages/index.astro`：恢复纯中文 Hero / 玩法说明 / 案件类型
+  - `src/pages/cases/index.astro`、`archive.astro`、`clues/index.astro`、`clues/[slug].astro`、`cases/[slug].astro`：恢复纯中文页面标题与导航
+  - `src/pages/404.astro`、`about.astro`：恢复纯中文页面
+  - `src/components/CaseCard.astro`、`RelatedCases.astro`、`RevealAnswer.astro`、`DifficultyVote.astro`、`NewsletterBox.astro`、`UpdatePrompt.astro`、`HintSystem.astro`、`CaseSummary.astro`、`EvidenceList.astro`、`ShareBar.astro`、`DeductionQuestions.astro`、`ArchiveFilter.astro`、`CaseList.astro`：移除所有 i18n spans 与 `t()` 辅助函数
+- 操作：先 `git revert` 合并提交，再 `git checkout 0db07e9 --` 补全首批残留文件，两步合计提交 `299893e` + `46570ba`
 
 ### 2026-06-22 — 中英文界面切换（已回退）
 
