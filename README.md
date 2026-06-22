@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**105 篇案卷**（001–105）+ **72 篇线索**
+- **当前规模**：**120 篇案卷**（001–120）+ **92 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -23,7 +23,7 @@
 ### 案卷生成规则（硬性）
 
 1. **`publishedAt`**：取**创建当天**日期（`YYYY-MM-DD`）。同批次可相同。
-2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"100"`，下一篇从 `"101"` 起。
+2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"120"`，下一篇从 `"121"` 起。
 3. **正文结构**：严格七段式 MDX，标题固定：
    - `## 一、案发`
    - `## 二、人物`
@@ -114,6 +114,8 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-20 | 091–100 | 10 | `6bcb3a4` | 监控/邮务/机械诡计批次 |
 | 2026-06-21 | 056–100 | 45 | `e648432` | 扩充人物/证词/红鲱鱼；去除 `**`；修复进度状态显示 |
 | 2026-06-21 | 101–105 | 5 | — | 时间线诡计批次（电钟断电/通话0秒/影子朝向/草籽物证/邮戳悖论） |
+| 2026-06-22 | 106–110 | 5 | — | 红鲱鱼证人批次（检修井保洁/笔录书记员/温控供应商/邮差动线/保险估价） |
+| 2026-06-22 | 111–120 | 10 | — | 日常边缘角色批次（账册整理/渡轮检票/望远镜讲解/面包屑伙计/印泥复印/电梯检修/棋钟记录/雨量志愿者/窗镜保洁/图书馆上架） |
 
 **质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
 
@@ -282,7 +284,7 @@ questions:
 
 ---
 
-## 案卷一览（001–105）
+## 案卷一览（001–110）
 
 | caseId | 标题 | slug | ★ |
 |--------|------|------|---|
@@ -391,12 +393,27 @@ questions:
 | 103 | 午后的阴影 | `the-afternoon-shadow` | |
 | 104 | 鞋底的草籽 | `seeds-in-the-sole` | |
 | 105 | 早了两小时的回信 | `the-reply-that-came-too-early` | |
+| 106 | 从未关严的通风口 | `the-vent-that-was-never-closed` | ★ |
+| 107 | 少了一行的庭审笔录 | `the-transcript-with-one-less-line` | |
+| 108 | 温室读数偏高一度 | `the-greenhouse-reading-one-degree-high` | ★ |
+| 109 | 送错楼层的包裹 | `the-parcel-left-on-the-wrong-floor` | |
+| 110 | 干得过慢的罩光漆 | `the-varnish-that-dried-too-slow` | ★ |
+| 111 | 翻过两次的账页 | `the-ledger-page-turned-twice` | ★ |
+| 112 | 低了半音的汽笛 | `the-ferry-whistle-half-a-tone-low` | |
+| 113 | 对准错楼层的望远镜 | `the-telescope-on-the-wrong-floor` | |
+| 114 | 向里延伸的面包屑 | `the-breadcrumb-trail-leading-inward` | |
+| 115 | 左边未干的印泥 | `the-stamp-pad-wet-on-the-left` | ★ |
+| 116 | 停在两层之间的电梯 | `the-elevator-stopped-between-two-floors` | |
+| 117 | 被偷走的棋钟分钟 | `the-chess-clock-with-stolen-minutes` | ★ |
+| 118 | 暴雨前被倒空的雨量筒 | `the-rain-gauge-emptied-before-the-storm` | |
+| 119 | 只起雾一侧的镜子 | `the-mirror-fogged-on-one-side-only` | |
+| 120 | 早一天还回来的馆藏书 | `the-library-book-returned-one-day-early` | ★ |
 
 ★ = `featured: true`
 
 ---
 
-## 线索一览（72 篇）
+## 线索一览（92 篇）
 
 | order | 标题 | slug |
 |-------|------|------|
@@ -472,8 +489,28 @@ questions:
 | 70 | 误导的三层结构 | `layers-of-misdirection` |
 | 71 | 从古典到案卷：灵感转化法 | `from-classics-to-cases` |
 | 72 | 连读案卷：去重自检法 | `archive-reread-method` |
+| 73 | 折痕与翻页：纸记得被摸过几次 | `paper-fold-turn-count` |
+| 74 | 音程当作钟：校准过的谎言 | `pitch-as-mechanical-clock` |
+| 75 | 视差与对准：镜头也会指错 | `parallax-and-wrong-alignment` |
+| 76 | 碎屑路径：向内延伸的最后一米 | `crumb-trail-direction` |
+| 77 | 印泥湿度：印章记得哪只手 | `stamp-pad-pressure-tells` |
+| 78 | 层间停靠：两层之间的空档 | `elevator-between-floors-gap` |
+| 79 | 棋钟与读秒：被偷走的是回合 | `chess-clock-stolen-time` |
+| 80 | 雨量筒被倒空：旱地也能伪造 | `emptied-rain-gauge-tricks` |
+| 81 | 镜面雾气：体温画出的站位图 | `mirror-fog-body-heat` |
+| 82 | 流通记录：闭馆后的手工缝隙 | `circulation-record-gaps` |
+| 83 | 边缘岗位的改写权 | `marginal-role-edit-rights` |
+| 84 | 备用钥匙：例行访问里的非常时刻 | `contractor-spare-key-access` |
+| 85 | 手工账与系统日志 | `manual-ledger-vs-system-log` |
+| 86 | 替换装与撕标：耗材里的动机 | `swapped-consumable-labels` |
+| 87 | 班组胶带：同源纤维 | `workplace-tape-fiber-match` |
+| 88 | 现场热力图：温度也是证人 | `heat-map-at-crime-scenes` |
+| 89 | 改派单：排班表上的时间缝 | `schedule-tampering-windows` |
+| 90 | 持钥配偶：最先该查也最该疑 | `spouse-with-keys-herring` |
+| 91 | 最小子集：谁能单独解释硬物证 | `edge-suspect-minimal-set` |
+| 92 | 批次诡计去重：连读后的自检 | `batch-technique-dedup` |
 
-新增线索：`order` 从 **73** 起，在 `src/content/clues/` 新建 `.md`。
+新增线索：`order` 从 **93** 起，在 `src/content/clues/` 新建 `.md`。
 
 ---
 
@@ -579,6 +616,23 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 - **`mechanical-delay-tricks.md`**（order 28）：原为 5 条无结构列表（515 字节）→ 扩充为标准四节正文 + `五、怎么用` + 结尾金句（含冰块融化、定时灯、延迟录音、定时发送四类机制详解）
 - **`word-play-mysteries.md`**（order 30）：原为 5 条无结构列表（697 字节）→ 扩充为双关语、倒读、首字母、谐音四节深度解析 + `五、怎么用` + 结尾金句
 - **`modern-honkaku-trends.md`**（order 37）：原为 3 条单句列表（515 字节）→ 扩充为心理深度、社会议题、叙述实验三大趋势详析 + 不变底线节 + `五、怎么用` + 结尾金句
+
+### 2026-06-22 — 线索扩充（073–092）
+
+- 新增线索 **20 篇**（order 73–92）：折痕翻页、音程时钟、视差对准、碎屑方向、印泥湿度、层间电梯、棋钟读秒、雨量筒、镜面雾气、流通记录、边缘岗位、备用钥匙、手工账对日志、耗材撕标、班组胶带、现场热力图、改派单、持钥配偶、最小子集、批次去重
+- 线索总数 **72 → 92**；README 线索一览表同步更新
+
+### 2026-06-22 — 案卷扩充（111–120）
+
+- 新增案卷 **10 篇**（caseId 111–120）：日常边缘角色批次，凶手为实习整理员、检票员、讲解员、早班伙计、复印员、电梯检修员、棋钟记录员、气象志愿者、外包保洁员、夜班上架员
+- 每案 **5 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；约 30% `featured`
+- 案卷总数 **110 → 120**；README 一览表与批次记录同步
+
+### 2026-06-22 — 案卷扩充（106–110）
+
+- 新增案卷 **5 篇**（caseId 106–110）：红鲱鱼证人批次，凶手均为日常边缘角色（夜班保洁、书记员、设备供应商、临时邮差、保险估价员）
+- 每案 **5 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5
+- 案卷总数 **105 → 110**；README 一览表与批次记录同步
 
 ### 2026-06-22 — 回退中英文切换功能（完整）
 

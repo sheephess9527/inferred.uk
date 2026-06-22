@@ -1,0 +1,182 @@
+---
+title: "暴雨前被倒空的雨量筒"
+caseId: "118"
+status: "unsolved"
+difficulty: 4
+types:
+  - "气象物证"
+  - "地点伪证"
+scene:
+  - "山村气象站"
+  - "雷雨前"
+readingTime: "11-14 分钟"
+clueCount: 7
+questions:
+  - q: "雨量筒空无一滴，天空却将暴雨，说明什么？"
+    choices:
+      - text: "仪器损坏"
+      - text: "有人刚倒空雨量筒，企图否定「案发时正在降雨」的现场条件"
+      - text: "从未下雨"
+      - text: "风力吹干"
+    answer: 1
+  - q: "村民石夯称「死者死于旱地」，与何物证冲突？"
+    choices:
+      - text: "死者鞋底泥印含水量高，成分为雷雨前典型红壤"
+      - text: "死者无外伤"
+      - text: "石夯有动机"
+      - text: "旱地有监控"
+    answer: 0
+  - q: "站长韩岭的不在场为何薄弱？"
+    choices:
+      - text: "韩岭无动机"
+      - text: "韩岭称在镇医院陪护，但陪护签到 19:00 结束，案发窗 19:30–20:00"
+      - text: "韩岭有证人"
+      - text: "韩岭不懂雨量筒"
+    answer: 1
+  - q: "志愿者陆汀背包有雨量筒内壁水渍，意味什么？"
+    choices:
+      - text: "陆汀刚倒空过雨量筒"
+      - text: "陆汀测量准确"
+      - text: "与石夯有关"
+      - text: "无关"
+    answer: 0
+  - q: "谁是凶手？"
+    choices:
+      - text: "村民石夯——林地纠纷"
+      - text: "站长韩岭——数据造假"
+      - text: "志愿者陆汀——伪造旱地现场，倒空雨量筒否定降雨足迹"
+      - text: "过路司机——车祸"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "暴雨将至，雨量筒却是空的。有人想让别人相信：案发那一刻，地面是干的。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "气象站观测员宋沅死于站旁林地，钝器伤。头顶雷雨云聚集，雨量筒却空。", detail: "" },
+  { label: "雨量筒内壁干燥，外沿有刚擦拭水痕；站日志 19:35 记录「降雨 0 mm」被人为修改。", detail: "" },
+  { label: "死者鞋底红壤泥印含水量 18%，与雷雨前土样一致；石夯称林地干旱。", detail: "" },
+  { label: "村民石夯与宋沅林地纠纷激烈，但 19:20 在小卖部监控。", detail: "" },
+  { label: "站长韩岭陪护签到 19:00 结束；19:40 有其在镇口买烟记录。", detail: "" },
+  { label: "志愿者陆汀背包内壁水渍与雨量筒残留一致；其虚报降雨数据被宋沅揭发。", detail: "" },
+  { label: "陆汀手套沾红壤，与林地泥印矿物匹配。", detail: "" },
+];
+
+## 一、案发
+
+雷雨前的山村，闷得像扣着铁盆。
+
+观测员宋沅倒在林地边。村民石夯喊：「旱天杀人，别赖雨！」
+
+站长韩岭从镇口赶回：「我在医院陪护母亲。」
+
+志愿者陆汀提着空雨量筒：「可能坏了。」
+
+探员看宋沅鞋底——湿泥很新。
+
+「雨量筒是空的，」他说，「地面却不是。」
+
+---
+
+## 二、人物
+
+<PersonCard name="宋沅" role="观测员" age="42" relation="死者" alibi="——">
+  揭发志愿者虚报降雨数据，影响补贴分配。
+</PersonCard>
+
+<PersonCard name="石夯" role="村民" age="50" relation="纠纷方" alibi="小卖部监控">
+  林地权属争端；旱天说法与泥印矛盾。
+</PersonCard>
+
+<PersonCard name="韩岭" role="站长" age="47" relation="上级" alibi="医院陪护">
+  数据造假连带责任；陪护早结束。
+</PersonCard>
+
+<PersonCard name="陆汀" role="志愿者" age="29" relation="助手" alibi="称在站内">
+  虚报数据；背包水渍与手套泥印。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="石夯" time="第一次问询">
+  「旱天走路，鞋底也有土。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韩岭" time="第一次问询">
+  「陪护结束我立刻回站，没进林地。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="陆汀" time="第一次问询">
+  「雨量筒老化。我帮倒过一次水，例行维护。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="小卖部店主" time="第二次问询">
+  「石夯 19:20 在我这，雷还没下来。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="118" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "雨量筒空而鞋底湿泥——哪个更接近案发时天气？",
+    "倒空雨量筒想否定什么现场条件？",
+    "石夯小卖部监控如何限制其嫌疑？",
+    "陆汀背包水渍与手套泥印如何串联？",
+    "谁最怕真实降雨数据被核对？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+雨还没落下来之前，雨量筒可以被人先清空。鞋底泥印，却常常比仪器更诚实。
+
+<DetectiveNotes caseId="118" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是志愿者陆汀。他虚报降雨骗取补贴，宋沅要上报。雷雨前约宋沅至林地争执，钝器击打后倒空雨量筒、改日志为 0 mm，制造「旱地行凶」假象。
+
+石夯纠纷、韩岭造假皆红鲱鱼。鞋底含水量与红壤成分击穿旱地叙事。
+
+### 关键矛盾
+
+暴雨将至，雨量筒却是空的——有人想让人相信地面是干的。
+
+### 伏笔解析
+
+1. 雨量筒擦拭痕——人为倒空。
+2. 日志被改——伪造数据。
+3. 鞋底湿泥——真实天气。
+4. 石夯监控——不在场。
+5. 韩岭陪护结束——时间窗外。
+6. 背包水渍——倒空接触。
+7. 手套红壤——林地行凶。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

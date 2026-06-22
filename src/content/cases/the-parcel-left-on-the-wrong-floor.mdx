@@ -1,0 +1,220 @@
+---
+title: "送错楼层的包裹"
+caseId: "109"
+status: "unsolved"
+difficulty: 4
+types:
+  - "动线推理"
+  - "签名诡计"
+scene:
+  - "老式公寓楼"
+  - "雨夜"
+readingTime: "11-14 分钟"
+clueCount: 7
+questions:
+  - q: "访客簿 20:45 签名「林伯」笔迹与死者不符，说明什么？"
+    choices:
+      - text: "林伯当晚确实到访"
+      - text: "有人模仿林伯签名，制造老人曾上楼的假象"
+      - text: "访客簿页码被撕毁"
+      - text: "签名系死者本人所留"
+    answer: 1
+  - q: "楼梯间水渍从四楼向下延伸，与谁的说法矛盾？"
+    choices:
+      - text: "与租户白棠称「整晚未出门」矛盾——水渍方向显示有人从五楼向下离开"
+      - text: "与邮差无关"
+      - text: "与雨水无关"
+      - text: "证明死者自己下楼"
+    answer: 0
+  - q: "包裹面单显示 20:30 投递五楼，为何成为关键？"
+    choices:
+      - text: "面单证明邮差未上楼"
+      - text: "面单地址被改贴，原收件为四楼白棠，说明投递员熟悉两户并故意错投引开视线"
+      - text: "面单系伪造"
+      - text: "包裹为空"
+    answer: 1
+  - q: "林伯的铜钥匙为何洗不清嫌疑？"
+    choices:
+      - text: "钥匙能打开五楼门"
+      - text: "钥匙只能开一楼信箱，无法解释五楼室内行凶"
+      - text: "钥匙沾血"
+      - text: "钥匙丢失"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "老租户林伯——与死者有租金纠纷"
+      - text: "楼下租户白棠——被死者举报违规转租"
+      - text: "临时邮差韩渠——改贴面单、仿签访客簿，借送包裹进入五楼"
+      - text: "物业周管——持有万能钥匙"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "包裹本不该出现在五楼。签名本不该是林伯的字。雨夜楼梯上的水渍，却记得有人向下走。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "五楼住户程砚死于客厅，锐器伤。门从内侧链锁，无强行痕迹。", detail: "" },
+  { label: "访客簿 20:45 签名「林伯」，笔迹与林伯平时签字差异大，压力点偏左。", detail: "" },
+  { label: "楼梯间水渍 20:50 前后形成，自五楼向下至四楼平台，呈拖曳状。", detail: "" },
+  { label: "包裹面单原收件为四楼白棠，现改贴五楼程砚；改贴胶带下缘有双层胶痕。", detail: "" },
+  { label: "老租户林伯称 20:40 在一楼信箱取报，无上楼；信箱钥匙仅开一楼。", detail: "林伯钥匙无法开五楼门链。" },
+  { label: "租户白棠称整晚未出门；四楼门口地垫湿，与楼梯水渍矿物成分一致。", detail: "" },
+  { label: "临时邮差韩渠 20:25 登记入楼；其签字笔与访客簿仿签笔压一致；背包缺一包改贴用胶带。", detail: "" },
+];
+
+## 一、案发
+
+雨敲铁窗，老公寓五楼灯灭。
+
+程砚倒在客厅，门链仍挂着。邻居听见短促争吵，下楼看时，访客簿上多了一行：20:45，林伯。
+
+「林伯？」物业周管皱眉，「他腿脚不好，十年没上过五楼。」
+
+四楼白棠探出头：「我整晚在家。程老师举报我转租，但我没上去。」
+
+楼梯间水渍亮晶晶，从五楼向下淌。
+
+探员拾起门口包裹：面单写着五楼，胶带下却露出另一个名字——白棠。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="程砚"
+  role="五楼住户"
+  age="62"
+  relation="死者"
+  alibi="——"
+>
+  退休编辑，掌握四楼违规转租证据，准备下周向房管办提交。
+</PersonCard>
+
+<PersonCard
+  name="林伯"
+  role="老租户"
+  age="78"
+  relation="邻居"
+  alibi="称 20:40 在一楼取报"
+>
+  与程砚有旧租金分摊争执；访客簿签名将其推上嫌疑席。
+</PersonCard>
+
+<PersonCard
+  name="白棠"
+  role="四楼租户"
+  age="35"
+  relation="被举报人"
+  alibi="称整晚未出门"
+>
+  转租被程砚掌握，动机明显；四楼地垫湿痕可疑。
+</PersonCard>
+
+<PersonCard
+  name="韩渠"
+  role="临时邮差"
+  age="29"
+  relation="投递员"
+  alibi="称 20:30 投递后已离楼"
+>
+  20:25 登记入楼；改贴面单与仿签工具与其装备吻合。
+</PersonCard>
+
+<PersonCard
+  name="周管"
+  role="物业管理员"
+  age="50"
+  relation="管理人员"
+  alibi="值班室监控 20:00–21:00"
+>
+  持有备用钥匙，但门链从内挂起，无法解释室内行凶。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="林伯" time="第一次问询">
+  「我取个报而已。那字不是我写的。我上楼？膝盖不允许。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="白棠" time="第一次问询">
+  「程老师要毁我租约，但我没上去。包裹？我订的是养生茶，没收到。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韩渠" time="第一次问询">
+  「按面单投五楼，敲门没人应，就放门口。雨大，我很快就走了。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="周管" time="第二次问询">
+  「这楼包裹常送错层。韩渠是临时工，登记倒是乖。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="109" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "访客簿「林伯」签名与本人笔迹不符——这行字想让人相信什么？",
+    "包裹改贴：原收件白棠、现收件程砚——投递员在掩盖哪条动线？",
+    "水渍自五楼向下——谁更像从案发层离开的人？",
+    "林伯钥匙仅开信箱，能否解释五楼室内的链锁现场？",
+    "谁既能入楼登记，又能接触两家面单，又有时间仿签？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+包裹会走错楼层，签名也会。楼梯上的水渍，往往比访客簿更诚实。
+
+<DetectiveNotes caseId="109" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是临时邮差韩渠。他本应将包裹投四楼白棠，却改贴为五楼程砚——他熟知两户纠纷，故意错投以引程砚开门。
+
+20:35 程砚开门查包裹，韩渠以「核对改投原因」进入，争执中锐器刺击。程砚链锁尚未完全挂上，凶手从内逃出前挂链制造「室内遇害」印象。20:45 韩渠在访客簿仿签「林伯」，利用老人与程砚旧怨转移视线。水渍是他持包裹下楼时滴落。
+
+白棠地垫湿痕来自楼梯延续，非其出门；林伯钥匙开不了五楼。周管备用钥匙无法解释内链。
+
+韩渠动机：程砚上月发现他私拆住户信件倒卖信息，准备报警，断其灰色收入。
+
+### 关键矛盾
+
+包裹本投四楼，却出现在五楼——有人需要程砚开门。
+
+### 伏笔解析
+
+1. 仿签笔压与韩渠签字笔一致——访客簿造假。
+2. 面单双层胶痕——改贴行为成立。
+3. 水渍向下拖曳——凶手离开方向非上楼。
+4. 林伯钥匙权限——无法开五楼链锁。
+5. 白棠地垫成分——楼梯延续，非行凶起点。
+6. 韩渠 20:25 入楼——时间覆盖案发窗。
+7. 背包缺改贴胶带——与面单处理吻合。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

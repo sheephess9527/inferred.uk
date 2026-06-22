@@ -1,0 +1,182 @@
+---
+title: "只起雾一侧的镜子"
+caseId: "119"
+status: "unsolved"
+difficulty: 4
+types:
+  - "现场重建"
+  - "物证误导"
+scene:
+  - "公寓浴室"
+  - "冬夜"
+readingTime: "11-14 分钟"
+clueCount: 7
+questions:
+  - q: "浴室镜只在上半部起雾、下半无雾，最支持什么？"
+    choices:
+      - text: "有人刚在镜前站立，体温加热了贴近镜面的一侧"
+      - text: "镜子镀膜老化"
+      - text: "湿度均匀上升，与凶案无关"
+      - text: "死者洗澡后自然起雾"
+    answer: 0
+  - q: "镜缘指纹集中在起雾侧下缘，说明什么？"
+    choices:
+      - text: "指纹属死者，证明其生前对镜梳妆"
+      - text: "有人弯腰贴近起雾侧镜面，与站立高度吻合"
+      - text: "指纹来自保洁例行擦拭，不能定罪"
+      - text: "指纹在镜背，与现场无关"
+    answer: 1
+  - q: "配偶沈嫁有钥匙，为何仍可排除？"
+    choices:
+      - text: "沈嫁当晚在娘家，高铁票与视频通话记录吻合"
+      - text: "沈嫁无动机"
+      - text: "沈嫁体型与脚印不符"
+      - text: "沈嫁有完美不在场证人"
+    answer: 0
+  - q: "物业保洁记录显示「提前一天上门且备注镜面除雾」，意味什么？"
+    choices:
+      - text: "正常排班调整"
+      - text: "有人利用备用钥匙在死者预期外的时间进入现场"
+      - text: "死者自己预约"
+      - text: "记录系系统错误"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "配偶沈嫁——夫妻争吵"
+      - text: "邻居——误听争吵"
+      - text: "外包窗镜保洁员韩璃——掩盖耗材回扣，用劣质除雾剂削弱死者后扼颈"
+      - text: "物业主管——派单失误"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "镜子上半部起雾、下半无雾，像一张体温地图。有人刚在镜前站过——而死者倒在无雾那一侧。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者倒在浴室无雾一侧地砖，颈扼。窗关，湿度高，镜面上半起雾、下半无雾，无雾区有拖拽擦痕。", detail: "" },
+  { label: "起雾侧镜缘下缘三枚指纹，属外包窗镜保洁员韩璃；对应站立高度，与弯腰对镜动作吻合。", detail: "" },
+  { label: "浴室除雾剂瓶标签被撕，化验含强刺激挥发物，与韩璃虚报的进口配方不符。", detail: "" },
+  { label: "物业记录韩璃持备用钥匙；系统显示本周四上门，被人改为周三并备注「镜面除雾」。", detail: "" },
+  { label: "韩璃耗材发票虚报进口除雾剂，实购廉价替代品，差价流入其账户。", detail: "" },
+  { label: "配偶沈嫁当晚在娘家过夜，高铁票 18:20 出站、23:10 视频通话记录吻合。", detail: "沈嫁有钥匙却不在场，是首要红鲱鱼。" },
+  { label: "死者笔记写着周四向物业举报耗材回扣；邻居听见女声喊「别换那瓶」。", detail: "" },
+];
+
+## 一、案发
+
+冬夜，公寓浴室只亮一盏暖灯。
+
+死者倒在镜子无雾那一侧，颈有扼痕。镜面上半部蒙着白雾，下半却清亮，像有人刚在镜前站过。窗关着，湿度闷。
+
+邻居说听见争吵：「别换那瓶！」——以为是夫妻拌嘴。
+
+配偶沈嫁从娘家赶回，钥匙还在她包里：「我在娘家过夜，与他无争。」
+
+---
+
+## 二、人物
+
+<PersonCard name="死者" role="业主" age="41" relation="死者" alibi="——">
+  掌握保洁耗材回扣线索，打算向物业举报。
+</PersonCard>
+
+<PersonCard name="沈嫁" role="配偶" age="38" relation="妻子" alibi="称在娘家过夜">
+  持钥匙，邻居争吵声使其高度可疑。
+</PersonCard>
+
+<PersonCard name="韩璃" role="外包窗镜保洁员" age="34" relation="保洁" alibi="称按单清洁">
+  持备用钥匙，派单被提前一天，指纹在起雾侧镜缘。
+</PersonCard>
+
+<PersonCard name="物业主管" role="主管" age="50" relation="管理者" alibi="称系统显示周四上门">
+  派单记录被人改动，本人称不知情。
+</PersonCard>
+
+<PersonCard name="邻居" role="邻居" age="45" relation="证人" alibi="在家">
+  听见女声抗议「别换那瓶」，误认夫妻争吵。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈嫁" time="第一次问询">
+  「我在娘家，钥匙在我身上。我们没为耗材吵过架。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="邻居" time="第一次问询">
+  「听见女的喊别换那瓶，以为是两口子。声音不像沈嫁，但我也没细想。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="物业主管" time="第一次问询">
+  「系统原是周四单，我不知道谁改成周三。韩璃有备用钥匙是外包惯例。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韩璃" time="第二次问询">
+  「我按单除雾清洁，没杀人。配方是公司配的，瓶身标签脱落不关我事。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="119" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "半雾镜面如何重建凶手与死者的站位？",
+    "沈嫁有钥匙，为何行程记录仍能排除她？",
+    "韩璃如何比死者预期更早进入公寓？",
+    "劣质除雾剂在作案中起什么作用？",
+    "邻居听到的争吵为何是误导？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+雾气只贴住离人最近的那一面镜子。先判断谁刚在镜前站过，再判断谁倒在无雾的一侧。
+
+<DetectiveNotes caseId="119" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是外包窗镜保洁员韩璃。她虚报进口除雾剂、偷换廉价配方牟取回扣。死者发现异常，笔记写明周四向物业举报。韩璃将派单提前为周三，持备用钥匙入室，死者抗议「别换那瓶」时被其用刺激型除雾剂削弱呼吸道，再扼颈杀害。她曾在镜前弯腰检查镜面，体温加热上半镜致起雾；死者倒在无雾侧。她伪造正常保洁动线后离开。
+
+沈嫁有钥匙却不在场，是首要红鲱鱼。邻居把死者抗议听成夫妻争吵。
+
+### 关键矛盾
+
+镜只起雾一侧——有人刚在镜前站过，而死者倒在另一侧。
+
+### 伏笔解析
+
+1. 半雾镜面——体温地图，站立者在起雾侧。
+2. 镜缘指纹——韩璃弯腰高度，非死者梳妆。
+3. 除雾剂配方——刺激呼吸道，削弱反抗。
+4. 派单提前——备用钥匙创造意外访问。
+5. 耗材发票——回扣动机。
+6. 沈嫁行程——钥匙红鲱鱼。
+7. 邻居误听——「别换那瓶」是耗材抗议，非夫妻吵。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
