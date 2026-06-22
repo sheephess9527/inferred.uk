@@ -3,10 +3,10 @@ import BrandMark from './BrandMark.astro';
 
 const year = new Date().getFullYear();
 const nav = [
-  { href: '/cases', cn: '案卷', en: 'Cases' },
-  { href: '/clues', cn: '线索', en: 'Clues' },
-  { href: '/archive', cn: '档案馆', en: 'Archive' },
-  { href: '/about', cn: '关于', en: 'About' },
+  { href: '/cases', label: '案卷' },
+  { href: '/clues', label: '线索' },
+  { href: '/archive', label: '档案馆' },
+  { href: '/about', label: '关于' },
 ];
 ---
 
@@ -19,32 +19,18 @@ const nav = [
           >推知 Inferred<span class="text-accent">.</span><span class="text-muted">uk</span></span
         >
       </p>
-      <p class="text-muted site-footer__tagline">
-        <span class="i18n-zh">真相从不明说，只能被推断。</span>
-        <span class="i18n-en">The truth is never stated. It is inferred.</span>
-      </p>
-      <p class="eyebrow">
-        <span class="i18n-zh">The truth is never stated. It is inferred.</span>
-        <span class="i18n-en">真相从不明说，只能被推断。</span>
-      </p>
+      <p class="text-muted site-footer__tagline">真相从不明说，只能被推断。</p>
+      <p class="eyebrow">The truth is never stated. It is inferred.</p>
     </div>
 
     <nav class="site-footer__nav" aria-label="页脚导航">
-      {nav.map((item) => (
-        <a href={item.href}>
-          <span class="i18n-zh">{item.cn}</span>
-          <span class="i18n-en">{item.en}</span>
-        </a>
-      ))}
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
   </div>
 
   <div class="container site-footer__legal">
     <span class="mono">© {year} 推知 Inferred</span>
-    <span class="text-muted">
-      <span class="i18n-zh">原创互动推理案卷 · 一切人物与案件均属虚构</span>
-      <span class="i18n-en">Original interactive mystery · All characters and events are fictional</span>
-    </span>
+    <span class="text-muted">原创互动推理案卷 · 一切人物与案件均属虚构</span>
   </div>
 </footer>
 

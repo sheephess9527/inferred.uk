@@ -47,26 +47,15 @@ const isActive = (href: string) => current === href || current.startsWith(href +
       </ul>
     </nav>
 
-    <div class="header-controls">
-      <button
-        type="button"
-        class="lang-toggle mono"
-        data-lang-toggle
-        aria-label="切换语言 / Switch language"
-        title="切换语言 / Switch language"
-      >
-        <span data-lang-label>EN</span>
-      </button>
-      <button
-        type="button"
-        class="theme-toggle mono"
-        data-theme-toggle
-        aria-label="切换亮色/暗色模式"
-        title="切换亮色/暗色模式"
-      >
-        <span data-theme-icon>◑</span>
-      </button>
-    </div>
+    <button
+      type="button"
+      class="theme-toggle mono"
+      data-theme-toggle
+      aria-label="切换亮色/暗色模式"
+      title="切换亮色/暗色模式"
+    >
+      <span data-theme-icon>◑</span>
+    </button>
   </div>
 </header>
 
@@ -173,12 +162,6 @@ const isActive = (href: string) => current === href || current.startsWith(href +
       display: none;
     }
   }
-  .header-controls {
-    display: flex;
-    gap: var(--space-2);
-    flex-shrink: 0;
-  }
-  .lang-toggle,
   .theme-toggle {
     background: transparent;
     border: 1px solid var(--color-line);
@@ -187,39 +170,16 @@ const isActive = (href: string) => current === href || current.startsWith(href +
     height: 2.25rem;
     border-radius: var(--radius);
     cursor: pointer;
-    font-size: 0.78rem;
+    font-size: 1rem;
     line-height: 1;
     flex-shrink: 0;
     transition:
       color 0.18s ease,
       border-color 0.18s ease;
   }
-  .theme-toggle {
-    font-size: 1rem;
-  }
-  .lang-toggle:hover,
   .theme-toggle:hover {
     color: var(--color-paper);
     border-color: var(--color-gold);
-  }
-
-  /* EN mode: flip nav label prominence */
-  :global([data-lang="en"]) .site-nav__cn {
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-line);
-  }
-  :global([data-lang="en"]) .site-nav__en {
-    display: block;
-    font-size: 1rem;
-    letter-spacing: normal;
-    text-transform: none;
-    color: inherit;
-  }
-  :global([data-lang="en"]) .site-nav__link:hover .site-nav__cn,
-  :global([data-lang="en"]) .site-nav__link.is-active .site-nav__cn {
-    color: var(--color-gold);
   }
 
   /* 平板与手机：导航独立一行、四栏等宽分布，避免与品牌挤在同一行 */
@@ -240,7 +200,7 @@ const isActive = (href: string) => current === href || current.startsWith(href +
     .brand__en {
       font-size: 0.82rem;
     }
-    .header-controls {
+    .theme-toggle {
       order: 2;
       margin-left: auto;
     }
@@ -281,36 +241,6 @@ const isActive = (href: string) => current === href || current.startsWith(href +
 </style>
 
 <script>
-  // Language toggle
-  const langToggle = document.querySelector<HTMLButtonElement>('[data-lang-toggle]');
-  const langLabel = document.querySelector<HTMLElement>('[data-lang-label]');
-
-  function currentLang(): 'en' | 'zh' {
-    return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
-  }
-
-  function applyLang(lang: 'en' | 'zh') {
-    if (lang === 'en') {
-      document.documentElement.setAttribute('data-lang', 'en');
-      document.documentElement.lang = 'en';
-    } else {
-      document.documentElement.removeAttribute('data-lang');
-      document.documentElement.lang = 'zh-CN';
-    }
-    if (langLabel) langLabel.textContent = lang === 'en' ? '中' : 'EN';
-  }
-
-  if (langLabel) langLabel.textContent = currentLang() === 'en' ? '中' : 'EN';
-
-  langToggle?.addEventListener('click', () => {
-    const next = currentLang() === 'en' ? 'zh' : 'en';
-    applyLang(next);
-    try {
-      localStorage.setItem('inferred:lang', next);
-    } catch (e) {}
-  });
-
-  // Theme toggle
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
   const icon = document.querySelector<HTMLElement>('[data-theme-icon]');
