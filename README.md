@@ -560,7 +560,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
-### 2026-06-22 — 中英文界面切换
+### 2026-06-22 — 回退中英文切换功能
+
+- 已移除 `EN / 中` 语言切换按钮及全部相关改动，恢复至纯中文界面（对应 `0db07e9`）
+- 回退范围：`Header.astro`、`Footer.astro`、`BaseLayout.astro`、`global.css`、22 个组件/页面的所有 i18n 改动
+- 通过 `git revert` 保留历史，未破坏提交记录
+
+### 2026-06-22 — 中英文界面切换（已回退）
 
 - **`EN / 中` 切换按钮**：Header 右上角（主题切换旁）新增语言切换按钮；点击后 `<html>` 增删 `data-lang="en"` 属性，触发全站 CSS 联动；偏好存入 `localStorage['inferred:lang']`，刷新自动恢复
 - **首帧无闪烁**：`BaseLayout.astro` 新增内联初始化脚本（与主题初始化同级），在首次渲染前从 localStorage 读取语言偏好并应用到 `<html>`
