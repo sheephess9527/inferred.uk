@@ -560,19 +560,35 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
-### 2026-06-22 — 中英文界面切换
+### 2026-06-22 — 中英文界面切换（完整版）
 
 - **`EN / 中` 切换按钮**：Header 右上角（主题切换旁）新增语言切换按钮；点击后 `<html>` 增删 `data-lang="en"` 属性，触发全站 CSS 联动；偏好存入 `localStorage['inferred:lang']`，刷新自动恢复
 - **首帧无闪烁**：`BaseLayout.astro` 新增内联初始化脚本（与主题初始化同级），在首次渲染前从 localStorage 读取语言偏好并应用到 `<html>`
 - **全局 i18n 工具类**（`global.css`）：
   - `.i18n-zh`（默认显示）/ `.i18n-en`（默认隐藏）
   - `[data-lang="en"] .i18n-zh { display: none }` / `[data-lang="en"] .i18n-en { display: inline }`
-- **已翻译区域**：
-  - `Header.astro`：导航标签（案卷/Cases、线索/Clues、档案馆/Archive、关于/About）——EN 模式下原英文副标签升为主字号，中文降为小字副标签
+- **已翻译的全部区域**（UI 框架层，案卷正文保持中文）：
+  - `Header.astro`：导航标签（案卷/Cases、线索/Clues、档案馆/Archive、关于/About）
   - `Footer.astro`：导航链接、口号（中英互换顺序）、版权声明
-  - `CaseMeta.astro`：字段标签（案卷编号/Case、状态/Status、难度/Difficulty、类型/Type、推理时间/Est. Time、线索数量/Clues）；EN 模式下隐藏 `· 未解/已解` 等中文状态，保留英文主标（UNSOLVED/SOLVED/ACTIVE/CLOSED）
-  - `src/pages/index.astro`：Hero 标题/副标题/按钮、快速入口卡片标签、介绍段落、精选案卷/玩法说明/案件类型三个分区的标题与描述
-- **案卷正文不翻译**：MDX 侦探故事内容保持中文，语言切换仅影响 UI 框架层
+  - `CaseMeta.astro`：字段标签；EN 模式隐藏中文状态词，英文 UNSOLVED/SOLVED/ACTIVE/CLOSED 可见
+  - `src/pages/index.astro`：Hero 标题/副标题/按钮、介绍段落、玩法说明、案件类型分区
+  - `src/pages/cases/index.astro`、`archive.astro`、`clues/index.astro`、`clues/[slug].astro`：页面标题与导航
+  - `src/pages/cases/[slug].astro`：导航箭头（上一篇/下一篇）、底部链接（返回案卷列表/进入档案馆）、归档日期标签、眉题状态（已结案/CLOSED 等）
+  - `src/pages/404.astro`：404 页面全文
+  - `src/pages/about.astro`：关于页面全文（含正文段落英译）
+  - `CaseCard.astro`：「打开案卷 →」、进度徽章（CLOSED/ACTIVE/SOLVED/UNSOLVED）；JS 监听 `inferred:lang-changed` 实时更新
+  - `RelatedCases.astro`：「你可能还会喜欢 / You might also like」
+  - `RevealAnswer.astro`：按钮文字、展开/折叠提示
+  - `DifficultyVote.astro`：评分提示文字、官方难度标注
+  - `NewsletterBox.astro`：标题、描述、标签、按钮、备注
+  - `UpdatePrompt.astro`：更新提示标签
+  - `HintSystem.astro`：提示标题、状态文字（点击查看/已查看/需先解锁）、已查看计数；JS 监听语言切换实时更新
+  - `CaseSummary.astro`：物证识别/推理判断分行、命中统计、题目详情（Q1 · 你选：/You chose: 等）、结案语（5 档词句均有中英双版）；JS 渲染后 CSS 联动 i18n-zh/en span
+  - `EvidenceList.astro`：标记状态文字（重要/Important 等）、揭晓反馈（✓ 正确/✓ Correct 等）、成绩行、清除确认；JS 监听语言切换重新绘制
+  - `ShareBar.astro`：按钮文字（朋友圈/WeChat、复制链接/Copy Link、更多…/More… 等）、海报弹窗步骤说明、toast 消息、Canvas 成绩文字（全部命中/All correct 等）
+  - `DeductionQuestions.astro`：进度计数（X / N 已思考 / X / N answered）；JS 监听语言切换
+  - `ArchiveFilter.astro`：筛选分组标签（进度/Status、难度/Difficulty、类型/Type、场景/Scene）、各选项（全部/All、未解/Unsolved 等）、案卷计数、空态提示；JS 监听语言切换
+  - `CaseList.astro`：空态文字（此分类下暂无案卷。/ No cases in this category.）
 
 ### 2026-06-21 — 修复合并回退：恢复成绩海报 + 结案报告
 

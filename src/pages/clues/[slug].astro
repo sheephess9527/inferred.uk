@@ -61,7 +61,7 @@ const jsonLd = {
 
     <header class="clue__header">
       <p class="eyebrow">Clues · 推理技巧</p>
-      <h1>{entry.data.title}</h1>
+<h1>{entry.data.title}</h1>
       <p class="clue__summary text-muted">{entry.data.summary}</p>
       <p class="mono text-muted clue__date">{dateStr}</p>
     </header>
@@ -76,7 +76,7 @@ const jsonLd = {
       {
         prev ? (
           <a class="clue__nav-link" href={`/clues/${prev.id}`}>
-            <span class="clue__nav-dir mono">上一篇</span>
+            <span class="clue__nav-dir mono"><span class="i18n-zh">上一篇</span><span class="i18n-en">Previous</span></span>
             <span class="clue__nav-title">{prev.data.title}</span>
           </a>
         ) : (
@@ -86,7 +86,7 @@ const jsonLd = {
       {
         next ? (
           <a class="clue__nav-link clue__nav-link--next" href={`/clues/${next.id}`}>
-            <span class="clue__nav-dir mono">下一篇</span>
+            <span class="clue__nav-dir mono"><span class="i18n-zh">下一篇</span><span class="i18n-en">Next</span></span>
             <span class="clue__nav-title">{next.data.title}</span>
           </a>
         ) : (
@@ -96,7 +96,7 @@ const jsonLd = {
     </nav>
 
     <footer class="clue__footer">
-      <a class="clue__back" href="/clues">← 返回线索</a>
+      <a class="clue__back" href="/clues"><span class="i18n-zh">← 返回线索</span><span class="i18n-en">← Back to Clues</span></a>
     </footer>
   </article>
 </BaseLayout>

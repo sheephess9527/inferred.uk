@@ -14,14 +14,18 @@ const hasHints = hints && hints.length > 0;
         <span class="hints__count mono" data-hint-count aria-live="polite" />
       </header>
       <p class="hints__desc text-muted">
-        卡住了？按顺序逐步解锁，提示不会透露答案，只给你一个方向。
+        <span class="i18n-zh">卡住了？按顺序逐步解锁，提示不会透露答案，只给你一个方向。</span>
+        <span class="i18n-en">Stuck? Unlock hints in order — they won't spoil the answer, just point you in a direction.</span>
       </p>
       <ol class="hints__list">
         {hints.map((text, i) => (
           <li class="hints__item">
             <details class="hints__detail" data-hint={i}>
               <summary class="hints__summary">
-                <span class="hints__num mono">提示 {String(i + 1).padStart(2, '0')}</span>
+                <span class="hints__num mono">
+                  <span class="i18n-zh">提示 {String(i + 1).padStart(2, '0')}</span>
+                  <span class="i18n-en">Hint {String(i + 1).padStart(2, '0')}</span>
+                </span>
                 <span class="hints__state" data-hint-state={i}>
                   {i === 0 ? '点击查看' : '需先解锁上一个提示'}
                 </span>
@@ -173,11 +177,17 @@ const hasHints = hints && hints.length > 0;
       } catch {}
     }
 
+    function t(zh: string, en: string): string {
+      return document.documentElement.getAttribute('data-lang') === 'en' ? en : zh;
+    }
+
     function updateCount() {
       if (!countEl) return;
       const opened = details.filter((d) => d.open).length;
       countEl.textContent =
-        opened > 0 ? `已查看 ${opened} / ${details.length}` : `共 ${details.length} 个提示`;
+        opened > 0
+          ? t(`已查看 ${opened} / ${details.length}`, `Viewed ${opened} / ${details.length}`)
+          : t(`共 ${details.length} 个提示`, `${details.length} hints`);
     }
 
     function applyUnlocked(unlocked: number[]) {
@@ -186,10 +196,10 @@ const hasHints = hints && hints.length > 0;
         const stateEl = el.querySelector<HTMLElement>(`[data-hint-state="${i}"]`);
         if (isUnlocked) {
           delete el.dataset.locked;
-          if (stateEl && !el.open) stateEl.textContent = '点击查看';
+          if (stateEl && !el.open) stateEl.textContent = t('点击查看', 'Click to view');
         } else {
           el.dataset.locked = '';
-          if (stateEl) stateEl.textContent = '需先解锁上一个提示';
+          if (stateEl) stateEl.textContent = t('需先解锁上一个提示', 'Unlock previous hint first');
         }
       });
       updateCount();
@@ -197,6 +207,8 @@ const hasHints = hints && hints.length > 0;
 
     let unlocked = loadUnlocked();
     applyUnlocked(unlocked);
+
+    document.addEventListener('inferred:lang-changed', () => applyUnlocked(unlocked));
 
     details.forEach((el, i) => {
       el.addEventListener(
@@ -212,14 +224,14 @@ const hasHints = hints && hints.length > 0;
       el.addEventListener('toggle', () => {
         const stateEl = el.querySelector<HTMLElement>(`[data-hint-state="${i}"]`);
         if (el.open) {
-          if (stateEl) stateEl.textContent = '已查看';
+          if (stateEl) stateEl.textContent = t('已查看', 'Viewed');
           if (i + 1 < details.length && !unlocked.includes(i + 1)) {
             unlocked = [...unlocked, i + 1];
             saveUnlocked(unlocked);
             applyUnlocked(unlocked);
           }
         } else {
-          if (stateEl && unlocked.includes(i)) stateEl.textContent = '点击查看';
+          if (stateEl && unlocked.includes(i)) stateEl.textContent = t('点击查看', 'Click to view');
         }
         updateCount();
       });

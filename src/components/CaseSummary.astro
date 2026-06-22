@@ -224,6 +224,7 @@
 
       const rowsEl = el!.querySelector<HTMLElement>('[data-summary-rows]');
       const verdictEl = el!.querySelector<HTMLElement>('[data-summary-verdict]');
+      const isEn = document.documentElement.getAttribute('data-lang') === 'en';
 
       if (rowsEl) {
         let html = '';
@@ -232,10 +233,10 @@
           const hasScoring = evidence.evaluated > 0;
           const level = hasScoring ? scoreLevel(evidence.correct, evidence.evaluated) : 'info';
           const stat = hasScoring
-            ? `命中 ${evidence.correct} / ${evidence.evaluated} 个`
-            : `标记了 ${evidence.marked ?? 0} / ${evidence.total} 条`;
+            ? `<span class="i18n-zh">命中 ${evidence.correct} / ${evidence.evaluated} 个</span><span class="i18n-en">Hit ${evidence.correct} / ${evidence.evaluated}</span>`
+            : `<span class="i18n-zh">标记了 ${evidence.marked ?? 0} / ${evidence.total} 条</span><span class="i18n-en">Marked ${evidence.marked ?? 0} / ${evidence.total}</span>`;
           html += `<div class="case-summary__row" data-level="${level}">
-            <span class="case-summary__row-label">物证识别</span>
+            <span class="case-summary__row-label"><span class="i18n-zh">物证识别</span><span class="i18n-en">Evidence</span></span>
             <span class="case-summary__row-stat">${stat}</span>
           </div>`;
         }
@@ -244,10 +245,10 @@
           const hasScoring = deduction.evaluated > 0;
           const level = hasScoring ? scoreLevel(deduction.correct, deduction.evaluated) : 'info';
           const stat = hasScoring
-            ? `正确 ${deduction.correct} / ${deduction.evaluated} 题`
-            : `作答了 ${deduction.answered ?? 0} / ${deduction.total} 题`;
+            ? `<span class="i18n-zh">正确 ${deduction.correct} / ${deduction.evaluated} 题</span><span class="i18n-en">Correct ${deduction.correct} / ${deduction.evaluated}</span>`
+            : `<span class="i18n-zh">作答了 ${deduction.answered ?? 0} / ${deduction.total} 题</span><span class="i18n-en">Answered ${deduction.answered ?? 0} / ${deduction.total}</span>`;
           html += `<div class="case-summary__row" data-level="${level}">
-            <span class="case-summary__row-label">推理判断</span>
+            <span class="case-summary__row-label"><span class="i18n-zh">推理判断</span><span class="i18n-en">Deduction</span></span>
             <span class="case-summary__row-stat">${stat}</span>
           </div>`;
 
@@ -261,10 +262,10 @@
                 <span class="case-summary__detail-icon">${icon}</span>
                 <div class="case-summary__detail-body">
                   <p class="case-summary__detail-q">Q${i + 1} · ${esc(d.q)}</p>
-                  <p class="case-summary__detail-sel">${d.selectedText ? '你选：' + esc(d.selectedText) : '未作答'}</p>
+                  <p class="case-summary__detail-sel">${d.selectedText ? '<span class="i18n-zh">你选：</span><span class="i18n-en">You chose: </span>' + esc(d.selectedText) : '<span class="i18n-zh">未作答</span><span class="i18n-en">Unanswered</span>'}</p>
                   ${
                     (verdict === 'wrong' || verdict === 'unanswered') && d.answerText
-                      ? `<p class="case-summary__detail-ans">正确：${esc(d.answerText)}</p>`
+                      ? `<p class="case-summary__detail-ans"><span class="i18n-zh">正确：</span><span class="i18n-en">Correct: </span>${esc(d.answerText)}</p>`
                       : ''
                   }
                 </div>
@@ -288,16 +289,26 @@
           const scores = [evPct, dePct].filter((x): x is number => x !== null);
           const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
           if (avg === 1) {
-            msg = '视角精准，细节无漏。你看见了真相从缝隙里漏出来的地方。';
+            msg = isEn
+              ? 'Precise perspective, no detail missed. You saw exactly where truth leaked through.'
+              : '视角精准，细节无漏。你看见了真相从缝隙里漏出来的地方。';
           } else if (avg >= 0.6) {
-            msg = '推理扎实，思路清晰。你离真相只差一步。';
+            msg = isEn
+              ? 'Solid reasoning, clear thinking. You were one step away from the truth.'
+              : '推理扎实，思路清晰。你离真相只差一步。';
           } else if (avg >= 0.3) {
-            msg = '有些线索你抓住了，有些从指间溜走——这就是推理的本质。';
+            msg = isEn
+              ? 'Some clues you grasped, some slipped through your fingers — that\'s the essence of deduction.'
+              : '有些线索你抓住了，有些从指间溜走——这就是推理的本质。';
           } else {
-            msg = '真相从不轻易现身。但你走过了这条路，这就是开始。';
+            msg = isEn
+              ? 'Truth never reveals itself easily. But you walked this path — and that\'s the beginning.'
+              : '真相从不轻易现身。但你走过了这条路，这就是开始。';
           }
         } else {
-          msg = '案件已结。每一次标记与判断，都是你对真相的一次押注。';
+          msg = isEn
+            ? 'Case closed. Every mark and judgment was your bet on the truth.'
+            : '案件已结。每一次标记与判断，都是你对真相的一次押注。';
         }
 
         verdictEl.textContent = msg;
@@ -323,5 +334,8 @@
     window.addEventListener('inferred:case-solved', () => {
       setTimeout(render, 800);
     });
+
+    // 语言切换时重新渲染文本
+    document.addEventListener('inferred:lang-changed', render);
   }
 </script>
