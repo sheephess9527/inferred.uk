@@ -31,6 +31,12 @@ export const onRequest = defineMiddleware(async (_ctx, next) => {
     url.protocol = 'https:';
     return Response.redirect(url.toString(), 301);
   }
+  if (host === 'inferred.uk') {
+    const url = new URL(_ctx.request.url);
+    url.hostname = 'www.inferred.uk';
+    url.protocol = 'https:';
+    return Response.redirect(url.toString(), 301);
+  }
 
   const response = await next();
   const ct = response.headers.get('content-type') ?? '';
