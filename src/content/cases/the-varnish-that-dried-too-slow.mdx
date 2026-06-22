@@ -1,0 +1,220 @@
+---
+title: "干得过慢的罩光漆"
+caseId: "110"
+status: "unsolved"
+difficulty: 5
+types:
+  - "化学物证"
+  - "红鲱鱼证人"
+scene:
+  - "河边画廊"
+  - "开展前夜"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "画作右下角罩光漆未干，与开展时间如何冲突？"
+    choices:
+      - text: "说明画作开展前被重新上漆，凶手当晚接触过画框背面"
+      - text: "说明画廊空调过强"
+      - text: "说明死者自己修改画作"
+      - text: "与案件无关"
+    answer: 0
+  - q: "经纪人沈栎手套沾钛白，为何仍可能是红鲱鱼？"
+    choices:
+      - text: "钛白仅死者画室有"
+      - text: "沈栎当晚协助搬运多幅画作，钛白为展厅常用补色，可交叉沾染"
+      - text: "钛白含毒"
+      - text: "沈栎承认接触过画"
+    answer: 1
+  - q: "学徒唐缃的速写本缺一页，说明什么？"
+    choices:
+      - text: "唐缃撕去的是风景练习，与凶案无关"
+      - text: "缺页边缘有罩光漆气味，证明其曾记录画框背面编号，页被取走掩盖调换顺序"
+      - text: "速写本被盗"
+      - text: "缺页系出版社要求"
+    answer: 1
+  - q: "保险估价单为何指向真凶方向？"
+    choices:
+      - text: "估价单证明画作价值虚高"
+      - text: "估价单签字人与画框背面新漆层指纹一致，且其非画家本人"
+      - text: "估价单日期错误"
+      - text: "估价单与画廊无关"
+    answer: 1
+  - q: "谁是凶手？"
+    choices:
+      - text: "经纪人沈栎——与死者分成纠纷"
+      - text: "学徒唐缃——作品被死者否决参展"
+      - text: "保险估价员祁枚——伪造估值并调换画框背标，开展前补漆掩盖"
+      - text: "策展助理游砂——监控显示其最后离开"
+    answer: 2
+publishedAt: "2026-06-22"
+summary: "开展前夜的画，罩光漆本该干透。右下角那一块，却慢了一整个晚上。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "画家陆沉死于临河画廊储藏室，勒痕。主展画作右下角罩光漆未干，指压纹路新鲜。", detail: "" },
+  { label: "罩光漆品牌为画廊专用慢干配方，完全干燥需 8–10 小时；开展定于翌日 10:00。", detail: "" },
+  { label: "画框背面新贴估值条码，与保险单一致，但条码原应贴于另一幅次要作品。", detail: "" },
+  { label: "经纪人沈栎手套沾钛白，与展厅补色罐同批；他称 22:00 协助搬运。", detail: "搬运多画可致交叉沾染，沈栎动机充分但缺调换证据。" },
+  { label: "学徒唐缃速写本缺一页，缺页边残留罩光漆味；其称页为风景练习被风吹走。", detail: "" },
+  { label: "保险估价员祁枚签字单 21:30 完成；其指纹与画框背面新漆层指压一致。", detail: "" },
+  { label: "储藏室监控 23:10 显示游砂最后离开；祁枚 21:45 登记离馆，22:20 停车场记录仍在。", detail: "游砂离开晚，但无物证接触画框背面。" },
+];
+
+## 一、案发
+
+开展前夜，画廊只亮一盏画灯。
+
+陆沉倒在储藏室，颈有勒痕。主展巨幅右下角，罩光漆仍亮晶晶，指尖一按就陷下去。
+
+经纪人沈栎摊手：「分成谈不拢，但我靠他吃饭，不会砸展。」
+
+学徒唐缃攥着速写本：「缺了一页，风刮走的。」
+
+保险估价员祁枚递上签字单：「估值合规，别把我卷进艺术家的狗血。」
+
+探员看画框背面——新贴的条码，不属于这幅画的编号。
+
+---
+
+## 二、人物
+
+<PersonCard
+  name="陆沉"
+  role="画家"
+  age="48"
+  relation="死者"
+  alibi="——"
+>
+  主展作品价值暴涨，准备更换保险公司并曝光旧估值造假。
+</PersonCard>
+
+<PersonCard
+  name="沈栎"
+  role="经纪人"
+  age="43"
+  relation="合作者"
+  alibi="称 22:00 协助搬运"
+>
+  分成纠纷激烈，手套钛白使其极像凶手。
+</PersonCard>
+
+<PersonCard
+  name="唐缃"
+  role="学徒"
+  age="24"
+  relation="学生"
+  alibi="称在画室整理速写"
+>
+  参展作品被陆沉否决，速写缺页引怀疑。
+</PersonCard>
+
+<PersonCard
+  name="祁枚"
+  role="保险估价员"
+  age="37"
+  relation="外包评估"
+  alibi="称 21:45 已离馆"
+>
+  签字单 21:30 完成；指纹与画框新漆指压一致。
+</PersonCard>
+
+<PersonCard
+  name="游砂"
+  role="策展助理"
+  age="30"
+  relation="员工"
+  alibi="监控 23:10 最后离开"
+>
+  时间最晚，但无背面漆层接触证据。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="沈栎" time="第一次问询">
+  「我帮他抬画，钛白到处都有。分成吵归吵，杀人我图什么？」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="唐缃" time="第一次问询">
+  「老师否定我的画，我会熬下去。缺页？风大，纸轻。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="祁枚" time="第一次问询">
+  「估价按流程。条码贴错？你们画廊自己管理混乱。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="游砂" time="第二次问询">
+  「我最后走，因为要锁灯。祁枚早走了——至少登记表这么写。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="110" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "开展前夜罩光漆仍湿——凶手最晚在何时接触过画框右下角？",
+    "画框背面条码与次要作品对调——谁有动机制造「价值错位」？",
+    "沈栎钛白沾染，为何仍可能只是搬运红鲱鱼？",
+    "祁枚签字单与停车场记录矛盾，说明什么？",
+    "谁的手指会出现在新漆层，却不在画家本人的位置？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+漆干透要多久，画布不会说谎。条码贴在哪，往往比口头估值更接近真相。
+
+<DetectiveNotes caseId="110" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是保险估价员祁枚。他先将主展真迹与次要作品背标对调，虚报保费分成；陆沉发现后要求更换保险公司并报案。
+
+21:40 祁枚以「补拍条码」为由让陆沉带其入储藏室。争执中勒死陆沉，为掩盖背标调换，于画框右下角补刷慢干罩光漆——开展前夜仍湿，暴露当晚接触。21:45 登记离馆，22:20 停车场仍在，说明登记表造假。
+
+沈栎搬运钛白、唐缃缺页、游砂最晚离开，皆像凶手。真正锁凶的是：新漆指压与祁枚指纹一致，且其非画家本人；条码对调只有估值方获益。
+
+唐缃缺页因曾速写记录背标编号，被祁枚撕走；缺页边残留漆味。
+
+### 关键矛盾
+
+开展前夜的画，右下角罩光漆本该干透——却慢了一整个晚上。
+
+### 伏笔解析
+
+1. 慢干配方 8–10 小时——未干即当晚补刷。
+2. 背标与次要作品对调——估值造假核心。
+3. 沈栎钛白——搬运可沾染，红鲱鱼。
+4. 唐缃缺页漆味——记录被撕。
+5. 祁枚签字 21:30——接近案发。
+6. 离馆登记 vs 停车场——时间造假。
+7. 新漆指纹——非画家，指向祁枚。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
