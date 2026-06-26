@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**120 篇案卷**（001–120）+ **84 篇线索**
+- **当前规模**：**130 篇案卷**（001–130）+ **84 篇线索**
 - **最新提交**：见下方更新日志
 
 ---
@@ -23,7 +23,7 @@
 ### 案卷生成规则（硬性）
 
 1. **`publishedAt`**：取**创建当天**日期（`YYYY-MM-DD`）。同批次可相同。
-2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"120"`，下一篇从 `"121"` 起。
+2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"130"`，下一篇从 `"131"` 起。
 3. **正文结构**：严格七段式 MDX，标题固定：
    - `## 一、案发`
    - `## 二、人物`
@@ -491,6 +491,16 @@ questions:
 | 118 | 暴雨前被倒空的雨量筒 | `the-rain-gauge-emptied-before-the-storm` | |
 | 119 | 只起雾一侧的镜子 | `the-mirror-fogged-on-one-side-only` | |
 | 120 | 早一天还回来的馆藏书 | `the-library-book-returned-one-day-early` | ★ |
+| 121 | 剧本杀馆的最后一局 | `the-last-round-in-the-larp-room` | |
+| 122 | 凌晨四点的兰花 | `the-dawn-flower-market` | |
+| 123 | 最后一份委托书 | `the-last-brief` | |
+| 124 | 暴雪木屋的脚印 | `the-snowbound-cabin` | |
+| 125 | 录音棚最后一轨 | `the-last-take` | |
+| 126 | 闭馆之后 | `the-museum-after-hours` | |
+| 127 | 第二泡茶 | `the-second-steeping` | |
+| 128 | 那张鉴定书 | `the-forged-certificate` | |
+| 129 | 从未起飞的登机口 | `the-gate-that-never-departed` | |
+| 130 | 错误的那一颗 | `the-wrong-pill` | |
 
 ★ = `featured: true`
 
@@ -671,6 +681,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-24 — 案卷 121–130 发布收尾
+
+- 合并 `website-optimization-review` 分支：新增案卷 **121–130**（剧本杀馆 / 花市 / 律所 / 木屋 / 录音棚 / 博物馆 / 茶馆 / 拍卖鉴定 / 机场 / 养老院）
+- 补跑 `pnpm og:export`：121–130 分享图与海报
+- 修复 `the-clock-that-stopped-at-seven-forty-three` 残留 `**` 星号
+- README：规模 **120 → 130**，案卷一览表补全 121–130，`caseId` 下一篇从 **131** 起
 
 ### 2026-06-22 — 线索全面质量审校（第二轮）
 
