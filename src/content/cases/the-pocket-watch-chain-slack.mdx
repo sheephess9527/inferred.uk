@@ -1,0 +1,166 @@
+---
+title: "怀表链多出来的那一截"
+caseId: "134"
+status: "unsolved"
+difficulty: 5
+types:
+  - "机械延时"
+  - "时间诡计"
+scene:
+  - "钟表修理铺"
+  - "午后"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "怀表停在 3:17，表链却比正常佩戴长度多出约一指，说明什么？"
+    choices:
+      - text: "死者身材特别高大"
+      - text: "表曾被人从较高位置取下或悬挂，停止时刻早于坠地时刻"
+      - text: "表链被更换过"
+      - text: "制造缺陷"
+    answer: 1
+  - q: "学徒方迟称案发时在临街橱窗擦拭玻璃，破绽在哪？"
+    choices:
+      - text: "橱窗太远"
+      - text: "橱窗内侧玻璃有朝工作台的呼气雾痕，与 15:10 后停止擦拭的声称不符"
+      - text: "方迟不会擦玻璃"
+      - text: "方迟未成年"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "掌柜裴榷——欠死者巨款"
+      - text: "学徒方迟——预调发条释放器让座钟坠击，制造裴榷在柜台的不在场"
+      - text: "邻居裁缝——嫌吵"
+      - text: "收表客人——退货纠纷"
+    answer: 1
+publishedAt: "2026-06-24"
+summary: "怀表停在三点十七分，表链却松出一截。时间停了，链子记得表曾挂在比胸口更高的地方。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "古董商裘鉴死于修理铺内间，颅骨凹陷；身旁怀表停 3:17，表链比标准佩戴长约 2.8 厘米。", detail: "" },
+  { label: "内间天花板座钟摆锤脱钩坠地，摆锤座有新鲜蜡滴；蜡成分与临街橱窗蜡烛台相同。", detail: "" },
+  { label: "座钟机芯被加装微型蜡封释放片，蜡化后摆锤脱钩；释放时间推算约 15:08–15:12。", detail: "" },
+  { label: "掌柜裴榷称 15:05–15:20 在柜台接待客人；柜台账本 15:07 有收款记录，客人证实在场。", detail: "裴榷有债务压力，但柜台时段有人证。" },
+  { label: "学徒方迟称 15:10–15:25 在临街橱窗擦玻璃；橱窗内侧 15:12 左右呼气雾痕指向工作台方向。", detail: "" },
+  { label: "裘鉴笔记本记载「方迟私售客户机芯三枚，清单已拍照」；手机相册 14:50 有三张机芯照片。", detail: "" },
+  { label: "工作台下方有怀表挂钩擦痕，高度约 1.7 米；方迟身高 1.72 米，裴榷 1.68 米。", detail: "" },
+];
+
+## 一、案发
+
+午后三点二十分，钟表修理铺的座钟本该敲三下，却只发出一声闷响——摆锤掉了。
+
+客人散后，掌柜裴榷掀帘进内间，古董商裘鉴倒在怀表旁，颅骨凹陷。怀表停在 3:17，链子在胸口松出一截，像还记着更高处的挂点。
+
+学徒方迟手里捏着抹布，说一直在临街橱窗。裴榷账本上有 15:07 的收款，客人还没走远。
+
+探员抬头看挂钩擦痕：「表停得比人倒得早。链子是时钟。」
+
+---
+
+## 二、人物
+
+<PersonCard name="裘鉴" role="古董商" age="45" relation="死者" alibi="——">
+  掌握方迟私售机芯证据；14:50 已拍照存档。
+</PersonCard>
+
+<PersonCard name="方迟" role="学徒" age="22" relation="徒弟" alibi="称在擦橱窗">
+  会改装座钟；身高与挂钩高度吻合；呼气雾痕暴露朝向内间。
+</PersonCard>
+
+<PersonCard name="裴榷" role="掌柜" age="51" relation="师傅" alibi="称在柜台">
+  欠裘鉴赌债；15:07 有客人证词。
+</PersonCard>
+
+<PersonCard name="客人孟河" role="买表人" age="36" relation="访客" alibi="15:05–15:18 在柜台">
+  证实裴榷未离柜台。
+</PersonCard>
+
+<PersonCard name="邻居裁师" role="裁缝" age="58" relation="邻居" alibi="称在铺内">
+  抱怨修理铺噪音；无进入记录。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="裴榷" time="第一次问询">
+  「我在柜台收钱，孟河可以作证。内间帘子拉着，我不知道裘鉴什么时候进来的。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="方迟" time="第一次问询">
+  「我一直在擦橱窗，外面吵，里面响没听见。裘鉴要揭我私售机芯，可我没动他。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="孟河" time="第一次问询">
+  「裴掌柜全程在柜台，15:18 我才走。座钟闷响？我以为坏了。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="方迟" time="第二次问询">
+  「挂钩擦痕？师傅也常挂表给顾客看，高度差不多吧。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="134" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "怀表链多出 2.8 厘米，与挂钩高度如何互证？",
+    "座钟蜡封释放片，如何把击坠时刻与表停 3:17 拆开？",
+    "裴榷 15:07 收款记录，能否保护其不在场覆盖 15:08–15:12？",
+    "橱窗呼气雾痕朝向工作台，对方迟证词意味着什么？",
+    "裘鉴手机相册，如何压缩方迟动手时间上限？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+钟表铺里，两个钟常常不是一个答案：怀表停在三點十七分，座钟摆锤却可能在三點十分钟后才落地。先判断：谁既够得到挂钩，又动得了座钟机芯。
+
+<DetectiveNotes caseId="134" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是学徒方迟。14:55 他以验表为由将裘鉴诱入内间，争执中用挂钩座钟摆锤击颅，再把裘鉴怀表挂于 1.7 米挂钩伪造「高处坠表」假象，表于 3:17 停止。方迟预先在座钟加装蜡封释放片，设定 15:10 左右摆锤坠地，制造第二声巨响，误导死亡时刻。15:05 后他躲回橱窗制造擦拭不在场，呼气雾痕却朝向刚离开的内间。裴榷在柜台收款，有孟河证词，债务动机使其成红鲱鱼，但身高与柜台时间均不符击坠动作。
+
+### 关键矛盾
+
+怀表链松长说明表曾高挂；座锤坠地晚于表停，说明存在机械延时——单一「当场一击」无法同时解释两者。
+
+### 伏笔解析
+
+1. 表链 2.8 厘米——挂点高于胸口。
+2. 挂钩擦痕高度——与方迟身高吻合，裴榷偏矮。
+3. 蜡封释放片——延时装置，拆分死亡与巨响。
+4. 蜡滴成分——与橱窗蜡烛同源，方迟可取材。
+5. 15:07 裴榷收款——红鲱鱼：债务大，但人证牢。
+6. 呼气雾痕——橱窗证词自我击穿。
+7. 机芯相册——动机与时限，逼方迟当日灭口。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

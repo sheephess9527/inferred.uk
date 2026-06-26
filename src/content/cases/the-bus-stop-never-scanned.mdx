@@ -1,0 +1,168 @@
+---
+title: "少刷的那一站"
+caseId: "133"
+status: "unsolved"
+difficulty: 4
+types:
+  - "时间线诡计"
+  - "证词矛盾"
+scene:
+  - "校车"
+  - "清晨"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "手持刷卡机显示全员全程在车上，与路口监控矛盾点是什么？"
+    choices:
+      - text: "监控像素太低"
+      - text: "设备在清河桥站未上传下车记录，却记录了上行刷卡，说明有人中途下车未刷、返程再刷"
+      - text: "学生卡失效"
+      - text: "司机故意不刷"
+    answer: 1
+  - q: "班主任黎素称案发时在办公室早读值班，为何仍是红鲱鱼？"
+    choices:
+      - text: "黎素有完美不在场"
+      - text: "黎素与死者有师生矛盾，但门禁与值班表显示其未离校，且无法操作车载刷卡机"
+      - text: "黎素是司机亲属"
+      - text: "黎素不会开车"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "学生赵临——被死者记过"
+      - text: "跟车管理员唐芮——掌握刷卡补录权限，死者拟举报其私下代收校车费"
+      - text: "班主任黎素——偏心纠纷"
+      - text: "司机韩权——急刹车受伤"
+    answer: 1
+publishedAt: "2026-06-24"
+summary: "刷卡机说所有人都在车上。路口监控却说，有人曾在清河桥站独自下车，又独自上车。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "心理辅导教师沈砚死于校车最后一排，锐器伤；发车 06:40，发现 07:05 于校门口。", detail: "" },
+  { label: "车载刷卡记录显示 37 人全程在车上，无下车站；清河桥路口监控 06:52 拍到沈砚独自下车，06:56 再上车。", detail: "" },
+  { label: "跟车管理员唐芮手持机 06:51–06:57 有「补录」操作，备注「设备漏刷」；补录权限仅唐芮与车队长。", detail: "" },
+  { label: "沈砚笔记本写有「唐芮代收费用清单复印件已齐，周一交校长」；复印件在其抽屉未取走。", detail: "" },
+  { label: "学生赵临上月被沈砚记过，称全程坐前排；前排同学证实赵临未离座。", detail: "赵临有动机但无中途下车影像。" },
+  { label: "司机韩权称 06:50 在清河桥站停车一分钟买豆浆，未开车门；车内后视镜角度拍不到后门。", detail: "" },
+  { label: "后门台阶有新鲜泥点，与清河桥站雨洼土色光谱一致；唐芮鞋帮同光谱泥点。", detail: "" },
+];
+
+## 一、案发
+
+清晨七点，校车停在教学楼前，学生们吵嚷着下车。
+
+跟车管理员唐芮最后清点人数——少了一个，又多了一个：心理辅导教师沈砚还在最后一排，胸前有血，早已不动。
+
+司机韩权说一路平稳。班主任黎素在办公室值班，声称未见沈砚。学生赵临脸色发白，上月刚被沈砚记过。
+
+探员调路口监控：06:52，沈砚独自下车；06:56，独自上车。车载机却显示 37 人全程未离。
+
+「机器可以补记。」探员说，「监控不会。」
+
+---
+
+## 二、人物
+
+<PersonCard name="沈砚" role="心理辅导教师" age="34" relation="死者" alibi="——">
+  拟周一上交唐芮私下代收校车费清单；复印件已备。
+</PersonCard>
+
+<PersonCard name="唐芮" role="跟车管理员" age="38" relation="同事" alibi="称全程跟车">
+  06:51–06:57 补录操作；鞋帮泥点与清河桥雨洼一致。
+</PersonCard>
+
+<PersonCard name="韩权" role="校车司机" age="44" relation="同事" alibi="称在驾驶位">
+  06:50 清河桥停车买豆浆；后视镜照不到后门。
+</PersonCard>
+
+<PersonCard name="黎素" role="班主任" age="40" relation="同事" alibi="称在办公室值班">
+  与沈砚有教育理念分歧；门禁显示未离校。
+</PersonCard>
+
+<PersonCard name="赵临" role="学生" age="16" relation="被记过者" alibi="称坐前排">
+  有怨气；前排同学证明未离座。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="唐芮" time="第一次问询">
+  「设备漏刷，我补了一下，很正常。沈老师一直在车上，我清点过的。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韩权" time="第一次问询">
+  「清河桥停一分钟，我没开门。谁下车，后视镜看不见后面。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="黎素" time="第一次问询">
+  「我在办公室早读值班，沈砚的事我震惊。他要把学生往严了管，我们吵过，但我不至于动手。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="赵临" time="第一次问询">
+  「我坐前排，后面发生什么我不知道。他记我过，我烦他，但没碰过他。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="133" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "监控 06:52–06:56 与车载「全员在车上」，矛盾如何统一？",
+    "唐芮补录权限与 06:51–06:57 操作，意味着什么？",
+    "后门泥点光谱与唐芮鞋帮，如何锁定上下车路径？",
+    "韩权后视镜盲区，能否排除司机行凶？",
+    "沈砚抽屉复印件，如何解释唐芮的紧迫动机？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+清晨校车最挤的不是座位，是时间：哪一分钟有人下了车，哪一分钟有人补了刷卡。先回答：谁能在司机看不见的后门，把沈砚叫下去又带上来。
+
+<DetectiveNotes caseId="133" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是跟车管理员唐芮。06:50 韩权在清河桥停车，唐芮以核对名册为由让沈砚下车谈话，争执中用刀刺击，再拖回车上后排布置现场。06:51–06:57 她用手持机补录伪造「全程在车上」，掩盖 06:52–06:56 空档。沈砚拟周一上交的收费清单威胁唐芮多年灰色收入。赵临有动机却无监控下车影像；黎素与沈砚理念冲突，但门禁证明未离办公室，属红鲱鱼。
+
+### 关键矛盾
+
+监控拍到沈砚下车又上车，车载却显示零下车——补录只能改数据，不能改路口镜头。
+
+### 伏笔解析
+
+1. 清河桥监控——独立于车载系统的公平线索。
+2. 唐芮补录——权限与操作时间覆盖案发窗口。
+3. 后门泥点——证明有人使用后门台阶。
+4. 鞋帮光谱——将唐芮与雨洼泥土绑定。
+5. 韩权后视镜盲区——解释司机未目击，非司机共谋。
+6. 赵临前排证词——红鲱鱼：怨气大，动线不符。
+7. 收费清单复印件——动机时限逼唐芮在周一前动手。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

@@ -1,0 +1,168 @@
+---
+title: "铅封上两个不同的号"
+caseId: "132"
+status: "unsolved"
+difficulty: 4
+types:
+  - "文书诡计"
+  - "不在场证明"
+scene:
+  - "货运码头"
+  - "夜场"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "集装箱 CULU-8821 外门铅封号与理货单扫描号不一致，意味着什么？"
+    choices:
+      - text: "扫描枪故障"
+      - text: "外门铅封被换过，真货已在封条更换前被调包离港"
+      - text: "海关系统延迟"
+      - text: "编号印刷模糊"
+    answer: 1
+  - q: "报关员毕澄称案发时在办公室核对提单，破绽在哪？"
+    choices:
+      - text: "办公室太远"
+      - text: "其电脑登录记录在 23:08 查询的是另一柜号，与死者最后通话讨论的 CULU-8821 无关"
+      - text: "毕澄不会用电脑"
+      - text: "毕澄无船舶知识"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "吊车司机邵海——夜航视野差"
+      - text: "理货员乔枚——掌握换封与扫描窗口，死者掌握其虚报装货重量吃回扣"
+      - text: "报关员毕澄——与死者争客户"
+      - text: "海关巡查员——随机抽查"
+    answer: 1
+publishedAt: "2026-06-24"
+summary: "提单、扫描、铅封，三个号本该是同一个故事。可门外一个号，单上一个号，货柜里躺着的人，是第四个。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "货代经纪人费耘死于 CULU-8821 柜内，窒息；柜门内侧有抓痕，外门铅封号手写为 K90731。", detail: "" },
+  { label: "理货扫描单显示 23:12 出库铅封号为 K90718，与柜门 K90731 不符；K90718 铅封残片在码头垃圾斗发现。", detail: "" },
+  { label: "费耘手机最后通话 22:50 与乔枚，录音片段：「你要是把虚报那两吨说清楚，我今晚就不上船。」", detail: "" },
+  { label: "报关员毕澄电脑 23:08 登录，查询柜号 MAEU-4410 退税资料；门禁 22:55–23:40 在办公室。", detail: "毕澄与费耘确有客户纠纷，但当晚操作对象非涉案柜。" },
+  { label: "吊车司机邵海称 23:00–23:20 将 CULU-8821 吊至外堆场；驾驶室 GPS 与操作台日志吻合。", detail: "" },
+  { label: "乔枚手持扫描枪 23:11 录入 K90718，23:13 改录 K90731，系统留痕「更正」；更正权限仅理货长与乔枚。", detail: "" },
+  { label: "柜内货单为电子配件，少两吨；差额与乔枚近三月奖金曲线异常重合。", detail: "" },
+];
+
+## 一、案发
+
+夜航汽笛压过堆场，报关行的人还没走，码头灯把集装箱排成铁色峡谷。
+
+理货员乔枚打开 CULU-8821 复核扫描——铅封号对不上。再开门，货代经纪人费耘蜷缩在箱底，已无呼吸。
+
+报关员毕澄从办公室跑来，手里还捏着另一份提单。吊车司机邵海在驾驶室探头：「我吊过这柜，封得好好的。」
+
+探员对比三份记录：门上是 K90731，单上是 K90718，手机录音里是第三个声音——费耘说，两吨虚报今晚必须说清楚。
+
+「铅封只能证明门曾关过。」探员说，「不能证明关之前，谁进过。」
+
+---
+
+## 二、人物
+
+<PersonCard name="费耘" role="货代经纪人" age="39" relation="死者" alibi="——">
+  掌握乔枚虚报装货重量吃回扣的磅单截图；案发前约乔枚对质。
+</PersonCard>
+
+<PersonCard name="乔枚" role="理货员" age="33" relation="同事" alibi="称按流程扫描">
+  23:11–23:13 两次改录铅封；持有更正权限。
+</PersonCard>
+
+<PersonCard name="毕澄" role="报关员" age="41" relation="业务对手" alibi="称在办公室">
+  当晚查询另一柜号；与死者有客户争夺，但无 CULU-8821 操作记录。
+</PersonCard>
+
+<PersonCard name="邵海" role="吊车司机" age="46" relation="现场人员" alibi="称在驾驶室">
+  GPS 与吊运日志完整；未见开箱。
+</PersonCard>
+
+<PersonCard name="巡查老潘" role="海关协查" age="52" relation="外部" alibi="称在闸口">
+  22:30 后未进入该堆位。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="乔枚" time="第一次问询">
+  「我先扫错成 K90718，马上更正为 K90731。费耘？我今晚没见过他进堆场。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="毕澄" time="第一次问询">
+  「我在办公室核 MAEU 柜的退税，全程没离岗。费耘抢我客户，但我犯不着进集装箱。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="邵海" time="第一次问询">
+  「我把柜子吊到指定位，封条完好。谁开箱，吊车看不见。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="乔枚" time="第二次问询">
+  「旧铅封残片？可能是早班留下的废片，垃圾斗什么都有。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="132" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "K90718 残片与 K90731 外门，如何还原换封顺序？",
+    "费耘 22:50 通话与 23:12 扫描，谁更有机会先进入柜内？",
+    "毕澄查询 MAEU-4410，能否排除其当晚动 CULU-8821？",
+    "少两吨货单与乔枚奖金曲线，如何闭合动机？",
+    "邵海吊运日志完整，为何仍无法为乔枚提供不在场？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+码头夜里最吵的是机器，最安静的是铅封被剪断的那一秒。先想清楚：谁既能在扫描枪上改号，又必须在费耘开口前让他再也开不了口。
+
+<DetectiveNotes caseId="132" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是理货员乔枚。22:55 她以核对磅单为由将费耘诱入 CULU-8821，争执中用柜门反锁制造密闭，费耘窒息而亡。乔枚剪下原铅封 K90718，换用预备的新封 K90731，并先在系统录入错误号再「更正」，制造粗心印象。23:00 邵海吊运时柜门已封好，故司机只见外观完好。毕澄当晚处理另一柜，电脑记录洗清其嫌疑，却成为红鲱鱼：客户纠纷让人先入为主认定报关员行凶。
+
+### 关键矛盾
+
+扫描单先 K90718 后 K90731，说明录入者见过旧封；若费耘从未进柜，通话录音无法解释他为何坚持「今晚上船对质」。
+
+### 伏笔解析
+
+1. 铅封双号——换封发生在扫描之前，而非之后。
+2. 垃圾斗残片——旧封被剪弃，不是早班废料。
+3. 22:50 通话——死者已掌握虚报证据，乔枚必须当晚灭口。
+4. 23:11–23:13 更正——刻意表演「操作失误」。
+5. 少两吨货单——动机链，非偶然短装。
+6. 毕澄查询 MAEU——红鲱鱼：纠纷存在，但物证不在场。
+7. 邵海吊运日志——证明封条外观完好，不证明封前无人进出。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

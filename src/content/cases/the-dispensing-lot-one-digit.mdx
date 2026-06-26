@@ -1,0 +1,168 @@
+---
+title: "批次号差了一位"
+caseId: "135"
+status: "unsolved"
+difficulty: 4
+types:
+  - "医药物证"
+  - "物证栽赃"
+scene:
+  - "社区药房"
+  - "上午"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "回收瓶标签为 Lot-H2847，库存账为 Lot-H2857，关键意义是？"
+    choices:
+      - text: "印刷字体相似"
+      - text: "死者发现调剂员用相邻批次顶替过期药，差一位是故意混淆"
+      - text: "供应商变更"
+      - text: "扫码枪设置错误"
+    answer: 1
+  - q: "店长柏峥称案发时在库房盘点，为何不足以排除？"
+    choices:
+      - text: "店长有权威"
+      - text: "盘点单签字时间早于死者最后投诉短信两分钟，且笔迹为柏峥，说明案发前仍在营业区"
+      - text: "店长不会写字"
+      - text: "库房无监控"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "药师郎蔚——与死者争职称"
+      - text: "调剂员季绾——调换批次标签，死者短信将曝光，遂在调剂室用玻璃安瓿刺击"
+      - text: "店长柏峥——裁员压力"
+      - text: "送货员——迟到"
+    answer: 1
+publishedAt: "2026-06-24"
+summary: "差一位的批次号，足以让过期药看起来像刚入库。死者看清了，调剂员来不及改回标签。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "质量督导宋攸死于调剂室，颈侧玻璃划伤；身旁散落 Lot-H2847 空瓶与 H2857 新签。", detail: "" },
+  { label: "库存账 H2857 批次上月入库；H2847 上月已召回，不应出现在营业架。", detail: "" },
+  { label: "宋攸 10:18 发给药监短信草稿：「季绾调换 H2847/H2857，证据在柜台下蓝色文件夹」。", detail: "" },
+  { label: "药师郎蔚称 10:15–10:30 在咨询台；监控 10:16–10:28 其在场，与顾客交谈。", detail: "郎蔚与宋攸争年度评优，但动线不在调剂室。" },
+  { label: "调剂员季绾称 10:20 在清洗器具；清洗池旁台面有未干 H2857 新签，覆盖在旧 H2847 上。", detail: "" },
+  { label: "店长柏峥盘点单 10:16 签字，地点标注「营业区柜台」；库房监控 10:18 后才见其进入。", detail: "" },
+  { label: "季绾指甲缝有热敏纸屑，与标签打印机走纸边一致；打印机 10:17 有重打 H2857 记录。", detail: "" },
+];
+
+## 一、案发
+
+上午十点二十分，社区药房还没开门迎客，调剂室里先传来玻璃碎裂声。
+
+药师郎蔚掀帘，看见质量督导宋攸倒在操作台旁，颈侧被安瓿划伤。空瓶标签写着 H2847，台面上却压着刚打印的 H2857 新签。
+
+店长柏峥从库房跑来，手里盘点单刚签完。调剂员季绾双手湿着，说正在洗器具。
+
+探员核对批次：2847 已召回，2857 才是合法库存。差的一位数字，是整条链的缝。
+
+「标签可以重打。」他说，「短信发出去，就来不及了。」
+
+---
+
+## 二、人物
+
+<PersonCard name="宋攸" role="质量督导" age="37" relation="死者" alibi="——">
+  10:18 拟发短信举报批次调换；证据夹柜台下。
+</PersonCard>
+
+<PersonCard name="季绾" role="调剂员" age="29" relation="同事" alibi="称在清洗器具">
+  打印机 10:17 重打 H2857；指甲热敏纸屑。
+</PersonCard>
+
+<PersonCard name="郎蔚" role="执业药师" age="42" relation="同事" alibi="称在咨询台">
+  与宋攸争评优；监控证明未进调剂室。
+</PersonCard>
+
+<PersonCard name="柏峥" role="店长" age="46" relation="上级" alibi="称在库房盘点">
+  10:16 签字在营业区；裁员压力下有保店动机。
+</PersonCard>
+
+<PersonCard name="送货员" role="外部" age="38" relation="访客" alibi="10:10 已离店">
+  当日送货 H2857，无 H2847。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="季绾" time="第一次问询">
+  「我在洗器具，听见宋督导叫我核对批次，还没看清她就倒了。H2847？那是旧瓶回收吧。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="郎蔚" time="第一次问询">
+  「我在咨询台陪客人，监控都有。宋攸要抢评优名额，我们不对付，但我没进调剂室。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="柏峥" time="第一次问询">
+  「我在库房盘点，营业区签字是顺便。批次问题？我信任员工，没细看。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="季绾" time="第二次问询">
+  「新签 H2857 是补打损坏标签，不是覆盖旧批次。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="135" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "H2847 已召回却出现在营业架，谁有权限调换？",
+    "10:17 打印机重打与 10:18 短信草稿，时间顺序对季绾意味着什么？",
+    "热敏纸屑与覆盖标签，能否解释为「补打损坏」？",
+    "郎蔚咨询台监控，如何与评优动机切割？",
+    "柏峥 10:16 营业区签字，能否支持其全程在库房？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+药房上午最危险的不是药，是标签：一位数字差，就能把召回批次变成合法库存。先想清楚：谁在短信按下发送键之前，必须让宋攸再也说不出那一批号。
+
+<DetectiveNotes caseId="135" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是调剂员季绾。她用 H2857 标签覆盖回收瓶 H2847，将过期库存重新上架牟利。宋攸 10:18 发现并对峙，季绾以安瓿刺颈，试图在短信发出前删除草稿未果——手机已自动同步云端草稿。10:17 重打标签是为销毁覆盖痕迹。郎蔚争优属红鲱鱼，监控排除其进入调剂室。柏峥 10:16 在营业区签字，10:18 后才入库房，有管理失职压力，但无直接物证。
+
+### 关键矛盾
+
+合法批次是 H2857，现场却同时出现已召回 H2847 空瓶与新签覆盖——非「补打损坏」可解释，而是调换行为的残留。
+
+### 伏笔解析
+
+1. 批次一位之差——刻意混淆召回与合法。
+2. 10:18 短信草稿——案发触发点，时间钉死。
+3. 打印机 10:17 重打——销毁证据的逆向行动。
+4. 指甲热敏纸屑——接触新签的直接物证。
+5. 覆盖未干标签——调换刚发生，非历史遗留。
+6. 郎蔚咨询台监控——红鲱鱼：动机足，动线不符。
+7. 柏峥签字地点——说明其不在库房，却未能阻止调剂室案发。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
