@@ -9,10 +9,60 @@
 阅读案卷 → 查看证词 → 标记线索 → 写下推理 → 揭晓真相 → 复盘伏笔
 ```
 
-- **仓库**：`sheephess9527/inferred.uk`，分支 `main`
+- **仓库**：`sheephess9527/inferred.uk`，部署分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
 - **当前规模**：**135 篇案卷**（001–135）+ **84 篇线索**
+- **线上域名**：规范域名 **`https://www.inferred.uk`**（见下方「域名与部署现状」）
 - **最新提交**：见下方更新日志
+
+---
+
+## 🚀 快速接手（新 AI / 新账号必读）
+
+> 本节是给「第一次接手本项目的 AI 或维护者」的最小上下文。读完本节 + 下面「AI / 维护者速查」即可开始干活。
+
+### 1. 这是什么、跑在哪
+
+- 原创互动推理案卷站，纯静态内容（案卷/线索写在 `src/content/`），Astro 构建后由 **Cloudflare Workers** 托管（SSR + 静态资源）。
+- **`main` 是部署分支**：Cloudflare 监听 `main`，push 即自动构建上线。历史上虽有功能分支 `claude/website-optimization-review-shj08x`，但最终内容都要合并/推送到 `main` 才会上线。**改完内容务必最终落到 `main`。**
+
+### 2. 上手三步
+
+```bash
+pnpm install            # Node 18+（推荐 20/22）；Windows 用 pnpm.cmd
+pnpm dev                # 本地预览 http://localhost:4321
+pnpm check              # 提交前必须 0 errors
+```
+
+### 3. 最常见的任务 = 新增案卷
+
+- 规则与模板见下方「**AI / 维护者速查**」和「**案卷 MDX 模板**」两节，**动手前必读**。
+- 关键约束（最容易踩坑）：
+  - `caseId` 连续编号、三位字符串，**下一篇从 `"136"` 起**。
+  - 每案 **3 道** frontmatter `questions`（不是 5；早期批次记录里的「5 道」是过时写法，以最新案卷 121–135 为准）。
+  - **JS 字符串（`evidence` / `questions={[...]}`）和 YAML 字符串里禁止用 ASCII 直双引号 `"`**，引用文字一律用中文角括号 `「」`，否则 `pnpm build` 报 acorn 解析错误。
+  - 物证 `label` **禁止 `**` 加粗**（会原样显示星号）。
+- 新增后跑 `pnpm check`，再把案卷加进「案卷一览」表格与「内容批次记录」，更新顶部规模数字，最后 commit + push 到 `main`。
+
+### 4. 域名与部署现状（重要，含未决问题）
+
+| 域名 | 状态 | 说明 |
+|------|------|------|
+| `https://www.inferred.uk` | ✅ 正常 | **规范域名**，`astro.config.mjs` 的 `site`、`robots.txt`、sitemap 均指向它 |
+| `https://inferred.uk`（裸域名） | ⚠️ **522 未解** | 需在 Cloudflare 仪表板修 DNS，见下方「域名与部署现状」详解 |
+| `www.tuilis.com` / `tuilis.com` | ✅ 跳转正常 | 通过 `src/middleware.ts` 301 跳到 `www.inferred.uk`；已在 Cloudflare 加 Custom Domain |
+
+⚠️ **裸域名 `inferred.uk` 仍报 522**，根因是 DNS 里有 `CNAME @ → www.inferred.uk`（代理），Cloudflare 把它当成源站去连而 Worker 没有源站。**只能在 Cloudflare 仪表板手动修**（代码改不了），具体步骤见下方「域名与部署现状」。在修好前，对外、给搜索引擎一律用 `www.inferred.uk`。
+
+### 5. 当前待办（接手后可直接推进）
+
+- [ ] **修复 `inferred.uk` 522**：Cloudflare 仪表板操作（删 CNAME、加 AAAA `@ → 100::`、加 Redirect Rule），详见下文。
+- [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（不要用裸域名，会因 522 读取失败）。
+
+### 6. 铁律
+
+- **每次改代码/内容都要同步更新本 README**（规模数字、一览表、批次记录、更新日志）。
+- 提交信息清晰；改完最终推送到 `main`。
 
 ---
 
@@ -84,11 +134,39 @@ git push origin main
 
 Cloudflare 监听 `main` 自动构建部署。
 
-### 域名跳转
+### 域名与部署现状
 
-`www.tuilis.com` → `www.inferred.uk`（301 永久跳转）通过 `src/middleware.ts` 实现：检测 `host` 头为 `tuilis.com` 或 `www.tuilis.com` 时直接返回 301，路径与查询参数保留。
+**规范域名**：`https://www.inferred.uk`。`astro.config.mjs` 的 `site`、`public/robots.txt` 的 Sitemap、`@astrojs/sitemap` 生成的全部 URL 都用这个域名。对外宣传、搜索引擎提交一律用它。
 
-**仪表板操作（一次性）**：Cloudflare 仪表板 → Workers → `inferred` → Settings → Domains & Routes → Add Custom Domain → 填入 `www.tuilis.com` → Save。Cloudflare 会自动签发证书、配置 DNS，无需手动添加 A/AAAA 记录。
+**Cloudflare 部署**：Worker 名为 `inferred`，监听 `main` 分支自动构建。根目录 `wrangler.jsonc` 的 `assets.directory` 为 `dist`；构建产物 `dist/server/wrangler.json` 里实际为 `../client`（Astro Cloudflare adapter 自动改写，正确，勿手动改）。
+
+#### 别名域名跳转（已正常）
+
+`www.tuilis.com` / `tuilis.com` → `www.inferred.uk`（301 永久跳转）通过 `src/middleware.ts` 实现：检测 `host` 头命中 `REDIRECT_HOSTS` 集合时直接返回 301，路径与查询参数保留。
+
+**仪表板操作（一次性，已完成）**：Cloudflare 仪表板 → Workers → `inferred` → Settings → Domains & Routes → Add Custom Domain → 填入 `www.tuilis.com`（和 `tuilis.com`）→ Save。Cloudflare 自动签发证书、配置 DNS，无需手动加 A/AAAA。
+
+#### ⚠️ 裸域名 `inferred.uk` 的 522（未解，需仪表板操作）
+
+**现象**：访问 `https://inferred.uk`（不带 www）返回 **Error 522（连接源站超时）**；`https://www.inferred.uk` 正常。
+
+**根因**：DNS 区里裸域名有一条 `CNAME @ → www.inferred.uk`（橙云代理）。Cloudflare 代理会把 `www.inferred.uk` 当作「源站」去建立 TCP 连接，但本站是 Worker、没有传统源站，于是连接超时 → 522。Worker 的 Custom Domain 又因「该 hostname 已有外部管理的 DNS 记录」无法直接添加。
+
+**修复（只能在 Cloudflare 仪表板做，代码改不了）**：
+
+1. DNS → 删除 `CNAME @ → www.inferred.uk`。
+2. DNS → 新增 `AAAA @ → 100::`（开启橙云代理）。这是 Cloudflare 官方推荐的「仅用于触发代理 / 重定向」的占位地址。
+3. Rules → Redirect Rules → 新建：
+   - 表达式：`(http.host eq "inferred.uk")`
+   - 动作：动态重定向 → `concat("https://www.inferred.uk", http.request.uri.path)`，状态码 **301**，保留查询串。
+
+这样裸域名请求会在 Cloudflare 边缘直接 301 到 `www.inferred.uk`，不再尝试连源站，522 消失。
+
+> 历史教训：曾因改动触发 Worker 重新部署，与上述 DNS 配置相互作用导致裸域名一度不可访问。改 DNS/路由属高风险操作，**改前先确认当前线上状态，改后立即验证 `www.inferred.uk` 仍可访问**。
+
+#### 搜索引擎收录
+
+向 Google Search Console / Bing / 百度提交 sitemap 时用 **`https://www.inferred.uk/sitemap-index.xml`**（裸域名因 522 会读取失败）。站点验证码填在 `src/siteConfig.ts`。
 
 ### Windows 环境备忘
 
@@ -122,7 +200,7 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-21 | 101–105 | 5 | — | 时间线诡计批次（电钟断电/通话0秒/影子朝向/草籽物证/邮戳悖论） |
 | 2026-06-22 | 106–110 | 5 | — | 红鲱鱼证人批次（检修井保洁/笔录书记员/温控供应商/邮差动线/保险估价） |
 | 2026-06-22 | 111–120 | 10 | — | 日常边缘角色批次（账册整理/渡轮检票/望远镜讲解/面包屑伙计/印泥复印/电梯检修/棋钟记录/雨量志愿者/窗镜保洁/图书馆上架） |
-| 2026-06-24 | 121–130 | 10 | `8eb0efb` | 多场景批次（剧本杀馆/花市/律所/木屋/录音棚/博物馆/茶馆/拍卖鉴定/机场/养老院） |
+| 2026-06-24 | 121–130 | 10 | `8eb0efb` | 多场景批次（剧本杀馆/花市/律所/木屋/录音棚/博物馆/茶馆/拍卖鉴定/机场/养老院）；每案 3 道 frontmatter 选择题 |
 | 2026-06-24 | 131–135 | 5 | — | 文书与物证批次（停尸登记/码头铅封/校车刷卡/怀表链延时/药房批次） |
 
 **质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
@@ -369,7 +447,7 @@ questions:
 
 ---
 
-## 案卷一览（001–110）
+## 案卷一览（001–135）
 
 | caseId | 标题 | slug | ★ |
 |--------|------|------|---|
@@ -688,6 +766,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-28 — README 接手文档强化
+
+- 面向「其他 AI / 其他账号首次接手」补全上下文：
+  - 新增「🚀 快速接手」节（部署分支说明、上手三步、最常踩坑：caseId/3 题/中文角括号/禁加粗、域名现状表、待办清单、铁律）
+  - 「域名跳转」扩写为「域名与部署现状」：规范域名 `www.inferred.uk`、tuilis 跳转、**裸域名 `inferred.uk` 522 根因与 Cloudflare 仪表板修复步骤**、搜索引擎 sitemap 提交地址
+- 同步规模数字 **135**、下一篇 `caseId` 从 **136** 起
 
 ### 2026-06-24 — 案卷扩充（131–135）
 
