@@ -49,17 +49,15 @@ pnpm check              # 提交前必须 0 errors
 | 域名 | 状态 | 说明 |
 |------|------|------|
 | `https://www.inferred.uk` | ✅ 正常 | **规范域名**，`astro.config.mjs` 的 `site`、`robots.txt`、sitemap 均指向它 |
-| `https://inferred.uk`（裸域名） | ⚠️ **522 未解** | 需在 Cloudflare 仪表板修 DNS，见下方「域名与部署现状」详解 |
+| `https://inferred.uk`（裸域名） | ✅ 正常 | 522 已于 2026-06-28 解决，现可正常访问 |
 | `www.tuilis.com` / `tuilis.com` | ✅ 跳转正常 | 通过 `src/middleware.ts` 301 跳到 `www.inferred.uk`；已在 Cloudflare 加 Custom Domain |
-
-⚠️ **裸域名 `inferred.uk` 仍报 522**，根因是 DNS 里有 `CNAME @ → www.inferred.uk`（代理），Cloudflare 把它当成源站去连而 Worker 没有源站。**只能在 Cloudflare 仪表板手动修**（代码改不了），具体步骤见下方「域名与部署现状」。在修好前，对外、给搜索引擎一律用 `www.inferred.uk`。
 
 ### 5. 当前待办（接手后可直接推进）
 
 - [x] ~~新内容不上线~~ **已解决（2026-06-28）**：根因是 Cloudflare Worker `inferred` 的「构建」里连错了 Git 仓库——连的是 `sheephess9527/quiz-app`，而内容都 push 到 `sheephess9527/inferred.uk`。删除重连到 `inferred.uk` 后，121–140 一次性上线。**部署命令本身一直是对的（`pnpm dlx wrangler deploy`）。**
 - [ ] **轮换 Cloudflare API 令牌**：曾在对话中明文提供过一个令牌用于排障，请到 Profile → API Tokens → Roll 重置。
-- [ ] **修复 `inferred.uk` 522**：Cloudflare 仪表板操作（删 CNAME、加 AAAA `@ → 100::`、加 Redirect Rule），详见下方「域名与部署现状」。
-- [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（不要用裸域名，会因 522 读取失败）。
+- [x] ~~修复 `inferred.uk` 522~~ **已解决（2026-06-28）**：裸域名现可正常访问。
+- [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（规范域名）。
 
 ### 6. 铁律
 
@@ -148,27 +146,15 @@ Cloudflare 监听 `main` 自动构建部署。
 
 **仪表板操作（一次性，已完成）**：Cloudflare 仪表板 → Workers → `inferred` → Settings → Domains & Routes → Add Custom Domain → 填入 `www.tuilis.com`（和 `tuilis.com`）→ Save。Cloudflare 自动签发证书、配置 DNS，无需手动加 A/AAAA。
 
-#### ⚠️ 裸域名 `inferred.uk` 的 522（未解，需仪表板操作）
+#### 裸域名 `inferred.uk`（522 已解决）
 
-**现象**：访问 `https://inferred.uk`（不带 www）返回 **Error 522（连接源站超时）**；`https://www.inferred.uk` 正常。
+裸域名 `https://inferred.uk`（不带 www）现可正常访问，2026-06-28 已解决先前的 **Error 522**。两个域名（带/不带 www）均可用，规范域名仍为 `www.inferred.uk`。
 
-**根因**：DNS 区里裸域名有一条 `CNAME @ → www.inferred.uk`（橙云代理）。Cloudflare 代理会把 `www.inferred.uk` 当作「源站」去建立 TCP 连接，但本站是 Worker、没有传统源站，于是连接超时 → 522。Worker 的 Custom Domain 又因「该 hostname 已有外部管理的 DNS 记录」无法直接添加。
-
-**修复（只能在 Cloudflare 仪表板做，代码改不了）**：
-
-1. DNS → 删除 `CNAME @ → www.inferred.uk`。
-2. DNS → 新增 `AAAA @ → 100::`（开启橙云代理）。这是 Cloudflare 官方推荐的「仅用于触发代理 / 重定向」的占位地址。
-3. Rules → Redirect Rules → 新建：
-   - 表达式：`(http.host eq "inferred.uk")`
-   - 动作：动态重定向 → `concat("https://www.inferred.uk", http.request.uri.path)`，状态码 **301**，保留查询串。
-
-这样裸域名请求会在 Cloudflare 边缘直接 301 到 `www.inferred.uk`，不再尝试连源站，522 消失。
-
-> 历史教训：曾因改动触发 Worker 重新部署，与上述 DNS 配置相互作用导致裸域名一度不可访问。改 DNS/路由属高风险操作，**改前先确认当前线上状态，改后立即验证 `www.inferred.uk` 仍可访问**。
+> 备忘（若 522 再次出现）：历史根因是 DNS 里裸域名的 `CNAME @ → www.inferred.uk`（橙云代理）让 Cloudflare 把 www 当源站去连，而 Worker 无传统源站 → 522。可行修法：DNS 用占位 `AAAA @ → 100::`（开代理）+ Rules → Redirect Rules 把 `(http.host eq "inferred.uk")` 301 到 `concat("https://www.inferred.uk", http.request.uri.path)`，让边缘直接重定向、不连源站。改 DNS/路由属高风险操作，**改后立即验证 `www.inferred.uk` 仍可访问**。
 
 #### 搜索引擎收录
 
-向 Google Search Console / Bing / 百度提交 sitemap 时用 **`https://www.inferred.uk/sitemap-index.xml`**（裸域名因 522 会读取失败）。站点验证码填在 `src/siteConfig.ts`。
+向 Google Search Console / Bing / 百度提交 sitemap 时用规范域名 **`https://www.inferred.uk/sitemap-index.xml`**。站点验证码填在 `src/siteConfig.ts`。
 
 ### Windows 环境备忘
 
@@ -782,6 +768,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-28 — 裸域名 522 解决
+
+- `https://inferred.uk`（不带 www）恢复正常访问，先前的 Error 522 已解决
+- README 域名状态表、当前待办、「域名与部署现状」详解同步更新为已解决；保留一段"若再次出现"的修复备忘
 
 ### 2026-06-28 — 修复「新内容不上线」（真实根因：连错 Git 仓库）
 
