@@ -56,7 +56,8 @@ pnpm check              # 提交前必须 0 errors
 
 ### 5. 当前待办（接手后可直接推进）
 
-- [ ] **把 Cloudflare 部署命令改成 `wrangler deploy`**：原命令 `wrangler versions upload` 只上传不发布，导致 push 后新内容不上线（曾出现「131–140 不显示」）。改法见下方「部署」节。这是新内容长期不显示的根因，**优先处理**。
+- [x] ~~新内容不上线~~ **已解决（2026-06-28）**：根因是 Cloudflare Worker `inferred` 的「构建」里连错了 Git 仓库——连的是 `sheephess9527/quiz-app`，而内容都 push 到 `sheephess9527/inferred.uk`。删除重连到 `inferred.uk` 后，121–140 一次性上线。**部署命令本身一直是对的（`pnpm dlx wrangler deploy`）。**
+- [ ] **轮换 Cloudflare API 令牌**：曾在对话中明文提供过一个令牌用于排障，请到 Profile → API Tokens → Roll 重置。
 - [ ] **修复 `inferred.uk` 522**：Cloudflare 仪表板操作（删 CNAME、加 AAAA `@ → 100::`、加 Redirect Rule），详见下方「域名与部署现状」。
 - [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（不要用裸域名，会因 522 读取失败）。
 
@@ -766,12 +767,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 | 部署命令 | `pnpm dlx wrangler deploy` |
 | 说明 | 构建环境不装 devDependencies，故用 `pnpm dlx` 而非 `pnpm exec wrangler` |
 
-> ⚠️ **部署命令必须是 `wrangler deploy`，不能用 `wrangler versions upload`。**
-> `versions upload` 只**上传**一个新版本、**不会发布到生产流量**，导致 push 后线上始终停留在旧版本（曾出现「新增案卷不显示」的问题，根因即此）。`wrangler deploy` 会构建并**直接发布到生产**，每次 push `main` 自动上线。
+> ⚠️ **「新内容不上线」排查顺序（按踩坑概率排序）：**
 >
-> 修改位置：Cloudflare 仪表板 → Workers & Pages → `inferred` → Settings → Builds → Deploy command。改完后重新部署一次（或随便 push 一个提交）即可让积压的新内容上线。
->
-> 若新内容仍不显示且部署命令无误，依次排查：① Deployments 里最新构建是否成功；② 最新版本是否已 promote 到 100% 流量；③ 浏览器/边缘缓存（强刷或 Purge Cache）。
+> 1. **连接的 Git 仓库是否正确**（最关键，2026-06-28 实际踩的坑）。
+>    Cloudflare 仪表板 → Workers & Pages → `inferred` → Settings → Builds → **Git 存储库**，必须是 **`sheephess9527/inferred.uk`**。曾误连为 `sheephess9527/quiz-app`，导致 push 到 inferred.uk 的内容永远不会被构建。点该行 ↗ 图标可打开核对；连错就删除重连到 inferred.uk。
+> 2. **部署命令**必须是 `pnpm dlx wrangler deploy`（会构建并直接发布到生产）。**不要用 `wrangler versions upload`**——它只上传不发布到生产流量，push 后线上停留旧版本。
+> 3. **Deployments 标签**里最新构建是否成功（红了点进去看日志）。
+> 4. **浏览器/边缘缓存**：强刷，或 Cloudflare Caching → Purge Everything。
 
 ### 路由与静态资源
 
@@ -781,12 +783,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
-### 2026-06-28 — 修复部署命令文档（新内容不上线根因）
+### 2026-06-28 — 修复「新内容不上线」（真实根因：连错 Git 仓库）
 
-- 定位「131–140 案卷线上不显示」根因：Cloudflare 部署命令为 `wrangler versions upload`，只上传新版本、不发布到生产流量，线上长期停留旧版本
-- README「部署」节：部署命令更正为 **`pnpm dlx wrangler deploy`**，并补充警示框与排查清单（构建是否成功 / 版本是否 promote / 缓存）
-- 「快速接手 · 当前待办」置顶此项为优先处理
-- 实际仪表板改动由站长执行（沙箱网络策略禁止访问 `api.cloudflare.com`，无法由 CI/Agent 代为部署）
+- **现象**：121–140 案卷推送到 `main` 后，线上 `www.inferred.uk` 长期只到旧版本
+- **真实根因**：Cloudflare Worker `inferred` 的「构建」连接的 Git 仓库是 **`sheephess9527/quiz-app`**，而所有内容都 push 到 **`sheephess9527/inferred.uk`**——两个仓库不一致，Cloudflare 一直在构建错误的仓库
+- **解决**：站长在仪表板删除 quiz-app 连接、重新连接到 `inferred.uk`，触发构建后 121–140 一次性上线，档案馆数量恢复为 140
+- **澄清**：部署命令本身一直正确（`pnpm dlx wrangler deploy`）；此前 README 误判为 `versions upload` 问题，已更正为以「Git 仓库连接」为首要排查项
+- 沙箱网络策略禁止访问 `api.cloudflare.com`，仪表板改动均由站长执行
 
 ### 2026-06-28 — 案卷扩充（136–140）
 
