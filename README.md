@@ -56,7 +56,8 @@ pnpm check              # 提交前必须 0 errors
 
 ### 5. 当前待办（接手后可直接推进）
 
-- [ ] **修复 `inferred.uk` 522**：Cloudflare 仪表板操作（删 CNAME、加 AAAA `@ → 100::`、加 Redirect Rule），详见下文。
+- [ ] **把 Cloudflare 部署命令改成 `wrangler deploy`**：原命令 `wrangler versions upload` 只上传不发布，导致 push 后新内容不上线（曾出现「131–140 不显示」）。改法见下方「部署」节。这是新内容长期不显示的根因，**优先处理**。
+- [ ] **修复 `inferred.uk` 522**：Cloudflare 仪表板操作（删 CNAME、加 AAAA `@ → 100::`、加 Redirect Rule），详见下方「域名与部署现状」。
 - [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（不要用裸域名，会因 522 读取失败）。
 
 ### 6. 铁律
@@ -762,8 +763,15 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 | 项 | 值 |
 |----|-----|
 | 构建命令 | `pnpm run build` |
-| 部署命令 | `pnpm dlx wrangler versions upload` |
+| 部署命令 | `pnpm dlx wrangler deploy` |
 | 说明 | 构建环境不装 devDependencies，故用 `pnpm dlx` 而非 `pnpm exec wrangler` |
+
+> ⚠️ **部署命令必须是 `wrangler deploy`，不能用 `wrangler versions upload`。**
+> `versions upload` 只**上传**一个新版本、**不会发布到生产流量**，导致 push 后线上始终停留在旧版本（曾出现「新增案卷不显示」的问题，根因即此）。`wrangler deploy` 会构建并**直接发布到生产**，每次 push `main` 自动上线。
+>
+> 修改位置：Cloudflare 仪表板 → Workers & Pages → `inferred` → Settings → Builds → Deploy command。改完后重新部署一次（或随便 push 一个提交）即可让积压的新内容上线。
+>
+> 若新内容仍不显示且部署命令无误，依次排查：① Deployments 里最新构建是否成功；② 最新版本是否已 promote 到 100% 流量；③ 浏览器/边缘缓存（强刷或 Purge Cache）。
 
 ### 路由与静态资源
 
@@ -772,6 +780,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-06-28 — 修复部署命令文档（新内容不上线根因）
+
+- 定位「131–140 案卷线上不显示」根因：Cloudflare 部署命令为 `wrangler versions upload`，只上传新版本、不发布到生产流量，线上长期停留旧版本
+- README「部署」节：部署命令更正为 **`pnpm dlx wrangler deploy`**，并补充警示框与排查清单（构建是否成功 / 版本是否 promote / 缓存）
+- 「快速接手 · 当前待办」置顶此项为优先处理
+- 实际仪表板改动由站长执行（沙箱网络策略禁止访问 `api.cloudflare.com`，无法由 CI/Agent 代为部署）
 
 ### 2026-06-28 — 案卷扩充（136–140）
 
