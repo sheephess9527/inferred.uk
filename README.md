@@ -55,7 +55,7 @@ pnpm check              # 提交前必须 0 errors
 ### 5. 当前待办（接手后可直接推进）
 
 - [x] ~~新内容不上线~~ **已解决（2026-06-28）**：根因是 Cloudflare Worker `inferred` 的「构建」里连错了 Git 仓库——连的是 `sheephess9527/quiz-app`，而内容都 push 到 `sheephess9527/inferred.uk`。删除重连到 `inferred.uk` 后，121–140 一次性上线。**部署命令本身一直是对的（`pnpm dlx wrangler deploy`）。**
-- [ ] **轮换 Cloudflare API 令牌**：曾在对话中明文提供过一个令牌用于排障，请到 Profile → API Tokens → Roll 重置。
+- [x] ~~轮换 Cloudflare API 令牌~~ **已完成（2026-06-28）**：先前对话中明文出现过的令牌已删除/重置。
 - [x] ~~修复 `inferred.uk` 522~~ **已解决（2026-06-28）**：裸域名现可正常访问。
 - [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（规范域名）。
 
