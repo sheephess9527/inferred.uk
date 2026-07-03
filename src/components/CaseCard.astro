@@ -13,7 +13,7 @@ export interface Props {
   slug: string;
 }
 const { caseId, title, summary, difficulty, types, readingTime, status, slug } = Astro.props;
-const href = `/cases/${slug}`;
+const href = `/cases/${slug}/`;
 const statusCn = status === 'solved' ? '已解' : '未解';
 ---
 

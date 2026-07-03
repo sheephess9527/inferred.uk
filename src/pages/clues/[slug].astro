@@ -39,7 +39,7 @@ const jsonLd = {
   description: entry.data.summary,
   datePublished: publishedIso,
   image: new URL(shareImage, siteOrigin).href,
-  url: new URL(`/clues/${entry.id}`, siteOrigin).href,
+  url: new URL(`/clues/${entry.id}/`, siteOrigin).href,
   author: { '@type': 'Organization', name: 'Inferred' },
   publisher: { '@type': 'Organization', name: 'Inferred' },
 };
@@ -49,7 +49,7 @@ const jsonLd = {
   title={`${entry.data.title}｜Inferred 线索`}
   ogTitle={`${entry.data.title} · Inferred`}
   description={entry.data.summary}
-  path={`/clues/${entry.id}`}
+  path={`/clues/${entry.id}/`}
   ogImage={shareImage}
   ogImageAlt={`推理技巧：${entry.data.title}`}
   ogType="article"
@@ -70,12 +70,12 @@ const jsonLd = {
       <Content />
     </div>
 
-    <ShareBar title={entry.data.title} text={entry.data.summary} path={`/clues/${entry.id}`} />
+    <ShareBar title={entry.data.title} text={entry.data.summary} path={`/clues/${entry.id}/`} />
 
     <nav class="clue__nav" aria-label="线索导航">
       {
         prev ? (
-          <a class="clue__nav-link" href={`/clues/${prev.id}`}>
+          <a class="clue__nav-link" href={`/clues/${prev.id}/`}>
             <span class="clue__nav-dir mono">上一篇</span>
             <span class="clue__nav-title">{prev.data.title}</span>
           </a>
@@ -85,7 +85,7 @@ const jsonLd = {
       }
       {
         next ? (
-          <a class="clue__nav-link clue__nav-link--next" href={`/clues/${next.id}`}>
+          <a class="clue__nav-link clue__nav-link--next" href={`/clues/${next.id}/`}>
             <span class="clue__nav-dir mono">下一篇</span>
             <span class="clue__nav-title">{next.data.title}</span>
           </a>
@@ -96,7 +96,7 @@ const jsonLd = {
     </nav>
 
     <footer class="clue__footer">
-      <a class="clue__back" href="/clues">← 返回线索</a>
+      <a class="clue__back" href="/clues/">← 返回线索</a>
     </footer>
   </article>
 </BaseLayout>

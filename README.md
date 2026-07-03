@@ -787,6 +787,19 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-07-03 — SEO 修复：规范链接尾斜杠一致 + 删除页 301
+
+针对 Google Search Console 报告的三类「无法编入索引」问题：
+
+- **备用网页（有适当的规范标记）/ 网页会自动重定向**：根因是 canonical、内部链接、JSON-LD 全部用**无尾斜杠**地址（`/cases/foo`），而 sitemap 与 Cloudflare 实际返回 200 的是**有尾斜杠**目录式地址（`/cases/foo/`）——无尾斜杠版本会 301 到有尾斜杠版本，被 Google 判为重定向/重复页。
+  - `BaseLayout.astro`：canonical 统一规范化为带尾斜杠（并把兜底 origin 修正为 `www.inferred.uk`）
+  - 全站内部链接补尾斜杠：Header/Footer 导航、`CaseCard`、`RelatedCases`、案卷/线索详情页 prev/next 与「返回」链接、`clues/index`、首页 Hero/分区/继续推理/今日推荐/随机开案 JS、`archive` 标签筛选链接（`/archive/?type=…`）、案卷与线索 JSON-LD `url`
+  - **localStorage 键（`inferred:progress:/cases/{slug}` 等）保持无尾斜杠不变**——那是存储键不是 URL，改了会丢用户进度
+  - 结果：canonical = sitemap = 内部链接 = Cloudflare 200 地址，全部一致
+- **未找到 (404)**：8 篇历史删除的线索（`locked-room-basics`、`hidden-passage-designs`、`psychological-misdirection`、`evidence-planting-methods`、`narrator-unreliability`、`fair-play-boundaries`、`edge-suspect-minimal-set`、`batch-technique-dedup`）在 `src/middleware.ts` 加 301，重定向到相关继任文章或 `/clues/`
+- `pnpm check` 0 errors；构建验证 canonical/og:url/JSON-LD/内部链接均带尾斜杠且与 sitemap 吻合
+- 后续：上线后到 GSC 对受影响页「验证修复」；新内容随索引重新抓取逐步转为「已编入索引」
+
 ### 2026-06-26 — 案卷扩充（146–150）+ 线索（91–95）
 
 - 新增案卷 **5 篇**（caseId 146–150）：工业与日常物证批次

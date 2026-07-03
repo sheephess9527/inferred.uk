@@ -31,7 +31,7 @@ const articles = (await getCollection('clues')).sort((a, b) => {
           });
           return (
             <li>
-              <a class="clue-card" href={`/clues/${a.id}`}>
+              <a class="clue-card" href={`/clues/${a.id}/`}>
                 <h2 class="clue-card__title">{a.data.title}</h2>
                 <p class="clue-card__summary text-muted">{a.data.summary}</p>
                 <span class="clue-card__meta mono text-muted">{dateStr}</span>

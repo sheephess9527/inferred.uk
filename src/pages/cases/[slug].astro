@@ -75,7 +75,7 @@ const jsonLd = {
   description: data.summary,
   datePublished: publishedIso,
   image: new URL(shareImage, siteOrigin).href,
-  url: new URL(`/cases/${entry.id}`, siteOrigin).href,
+  url: new URL(`/cases/${entry.id}/`, siteOrigin).href,
   author: { '@type': 'Organization', name: 'Inferred' },
   publisher: { '@type': 'Organization', name: 'Inferred' },
 };
@@ -85,7 +85,7 @@ const jsonLd = {
   title={seoTitle}
   ogTitle={shareTitle}
   description={seoDesc}
-  path={`/cases/${entry.id}`}
+  path={`/cases/${entry.id}/`}
   ogImage={shareImage}
   ogImageAlt={shareImageAlt}
   ogType="article"
@@ -113,14 +113,14 @@ const jsonLd = {
         {
           data.types.map((t) => (
             <li>
-              <Tag label={t} href={`/archive?type=${encodeURIComponent(t)}`} />
+              <Tag label={t} href={`/archive/?type=${encodeURIComponent(t)}`} />
             </li>
           ))
         }
         {
           data.scene.map((s) => (
             <li>
-              <Tag label={s} variant="scene" href={`/archive?scene=${encodeURIComponent(s)}`} />
+              <Tag label={s} variant="scene" href={`/archive/?scene=${encodeURIComponent(s)}`} />
             </li>
           ))
         }
@@ -151,7 +151,7 @@ const jsonLd = {
     <ShareBar
       title={data.title}
       text={data.summary}
-      path={`/cases/${entry.id}`}
+      path={`/cases/${entry.id}/`}
       poster={`/share/cases/${entry.id}.jpg`}
     />
 
@@ -160,7 +160,7 @@ const jsonLd = {
     <nav class="case__nav" aria-label="案卷导航">
       {
         prev ? (
-          <a class="case__nav-link" href={`/cases/${prev.id}`}>
+          <a class="case__nav-link" href={`/cases/${prev.id}/`}>
             <span class="case__nav-dir mono">上一篇</span>
             <span class="case__nav-title">{prev.data.title}</span>
           </a>
@@ -170,7 +170,7 @@ const jsonLd = {
       }
       {
         next ? (
-          <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}`}>
+          <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}/`}>
             <span class="case__nav-dir mono">下一篇</span>
             <span class="case__nav-title">{next.data.title}</span>
           </a>
@@ -181,8 +181,8 @@ const jsonLd = {
     </nav>
 
     <footer class="case__footer">
-      <a class="case__back" href="/cases">← 返回案卷列表</a>
-      <a class="case__back" href="/archive">进入档案馆 →</a>
+      <a class="case__back" href="/cases/">← 返回案卷列表</a>
+      <a class="case__back" href="/archive/">进入档案馆 →</a>
     </footer>
   </article>
 </BaseLayout>

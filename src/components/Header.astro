@@ -2,14 +2,19 @@
 import BrandMark from './BrandMark.astro';
 
 const nav = [
-  { href: '/cases', cn: '案卷', en: 'Cases' },
-  { href: '/clues', cn: '线索', en: 'Clues' },
-  { href: '/archive', cn: '档案馆', en: 'Archive' },
-  { href: '/about', cn: '关于', en: 'About' },
+  { href: '/cases/', cn: '案卷', en: 'Cases' },
+  { href: '/clues/', cn: '线索', en: 'Clues' },
+  { href: '/archive/', cn: '档案馆', en: 'Archive' },
+  { href: '/about/', cn: '关于', en: 'About' },
 ];
 
 const current = Astro.url.pathname;
-const isActive = (href: string) => current === href || current.startsWith(href + '/');
+// 尾斜杠无关地判断当前分区（导航链接统一带尾斜杠，与 sitemap/规范链接一致）。
+const isActive = (href: string) => {
+  const base = href.replace(/\/+$/, '');
+  const cur = current.replace(/\/+$/, '');
+  return cur === base || cur.startsWith(base + '/');
+};
 ---
 
 <header class="site-header">

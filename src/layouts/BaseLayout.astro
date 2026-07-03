@@ -42,8 +42,12 @@ const {
 } = Astro.props;
 
 const siteName = '推知 Inferred';
-const siteOrigin = Astro.site ?? 'https://inferred.uk';
-const canonical = new URL(path, siteOrigin).href;
+const siteOrigin = Astro.site ?? 'https://www.inferred.uk';
+// 规范链接统一带尾斜杠：与 sitemap 和 Cloudflare 实际返回 200 的目录式 URL 一致，
+// 避免 Google 把「无尾斜杠（会 301 到有尾斜杠）」的地址判为重定向/重复页。
+const canonicalUrl = new URL(path, siteOrigin);
+if (!canonicalUrl.pathname.endsWith('/')) canonicalUrl.pathname += '/';
+const canonical = canonicalUrl.href;
 const ogImageUrl = new URL(ogImage, siteOrigin).href;
 const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
 ---

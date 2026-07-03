@@ -78,8 +78,8 @@ const caseTypes = [
         阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。
       </p>
       <div class="hero__actions">
-        <a class="btn btn--primary" href="/cases">开始推理</a>
-        <a class="btn btn--ghost" href="/archive">进入档案馆</a>
+        <a class="btn btn--primary" href="/cases/">开始推理</a>
+        <a class="btn btn--ghost" href="/archive/">进入档案馆</a>
       </div>
     </div>
     <div class="hero__rule" aria-hidden="true"></div>
@@ -130,7 +130,7 @@ const caseTypes = [
             <div class="user-progress__fill" data-progress-fill></div>
           </div>
         </div>
-        <a class="section__more" href="/cases">查看全部 →</a>
+        <a class="section__more" href="/cases/">查看全部 →</a>
       </div>
     </header>
     <CaseList cases={latest} />
@@ -166,13 +166,13 @@ const caseTypes = [
         <p class="eyebrow">Case Types</p>
         <h2 class="section__title">你会遇到的诡计</h2>
       </div>
-      <a class="section__more" href="/archive">按类型浏览 →</a>
+      <a class="section__more" href="/archive/">按类型浏览 →</a>
     </header>
     <ul class="types">
       {
         caseTypes.map((t) => (
           <li class="types__item">
-            <a class="types__link" href={`/archive?type=${encodeURIComponent(t.label)}`}>
+            <a class="types__link" href={`/archive/?type=${encodeURIComponent(t.label)}`}>
               <span class="types__label">{t.label}</span>
               <span class="types__desc text-muted">{t.desc}</span>
             </a>
@@ -508,7 +508,7 @@ const caseTypes = [
         }
       }
       if (lastSlug && lastTitle) {
-        resumeCard.setAttribute('href', `/cases/${lastSlug}`);
+        resumeCard.setAttribute('href', `/cases/${lastSlug}/`);
         resumeTitle.textContent = lastTitle;
         resumeCard.removeAttribute('hidden');
       }
@@ -521,7 +521,7 @@ const caseTypes = [
   if (dailyCard && dailyTitle && caseIndex.length > 0) {
     const dayIndex = Math.floor(Date.now() / 86400000) % caseIndex.length;
     const pick = caseIndex[dayIndex];
-    dailyCard.setAttribute('href', `/cases/${pick.slug}`);
+    dailyCard.setAttribute('href', `/cases/${pick.slug}/`);
     dailyTitle.textContent = pick.title;
   }
 
@@ -530,7 +530,7 @@ const caseTypes = [
   if (randomBtn && caseIndex.length > 0) {
     randomBtn.addEventListener('click', () => {
       const pick = caseIndex[Math.floor(Math.random() * caseIndex.length)];
-      window.location.href = `/cases/${pick.slug}`;
+      window.location.href = `/cases/${pick.slug}/`;
     });
   }
 </script>
