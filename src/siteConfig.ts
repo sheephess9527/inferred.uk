@@ -15,3 +15,9 @@ export const siteVerification = {
   /** <meta name="baidu-site-verification" content="..."> */
   baidu: '',
 };
+
+// Cloudflare Web Analytics（免费、无 Cookie 的访问统计）。
+// 获取 token：Cloudflare 仪表板 → Analytics & Logs → Web Analytics →
+// Add a site → 填 www.inferred.uk → 复制 JS 代码片段里 data-cf-beacon 的
+// "token" 值粘贴到下面。留空则不输出统计脚本。
+export const cloudflareAnalyticsToken = '';

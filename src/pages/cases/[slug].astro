@@ -66,19 +66,30 @@ const dateStr = data.publishedAt.toLocaleDateString('zh-CN', {
   month: 'long',
   day: 'numeric',
 });
-const siteOrigin = Astro.site ?? 'https://inferred.uk';
+const siteOrigin = Astro.site ?? 'https://www.inferred.uk';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: data.title,
-  description: data.summary,
-  datePublished: publishedIso,
-  image: new URL(shareImage, siteOrigin).href,
-  url: new URL(`/cases/${entry.id}/`, siteOrigin).href,
-  author: { '@type': 'Organization', name: 'Inferred' },
-  publisher: { '@type': 'Organization', name: 'Inferred' },
-};
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: data.title,
+    description: data.summary,
+    datePublished: publishedIso,
+    image: new URL(shareImage, siteOrigin).href,
+    url: new URL(`/cases/${entry.id}/`, siteOrigin).href,
+    author: { '@type': 'Organization', name: 'Inferred' },
+    publisher: { '@type': 'Organization', name: 'Inferred' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', siteOrigin).href },
+      { '@type': 'ListItem', position: 2, name: '案卷', item: new URL('/cases/', siteOrigin).href },
+      { '@type': 'ListItem', position: 3, name: data.title },
+    ],
+  },
+];
 ---
 
 <BaseLayout
@@ -92,7 +103,7 @@ const jsonLd = {
   publishedTime={publishedIso}
   jsonLd={jsonLd}
 >
-  <article class="case container container--reading">
+  <article class="case container container--reading" data-pagefind-body>
     <ReadingProgress target="#case-body" />
 
     <header class="case__header">

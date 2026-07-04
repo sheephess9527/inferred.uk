@@ -60,6 +60,20 @@ const caseTypes = [
   title="推知 Inferred｜原创互动悬疑推理案卷"
   description="推知 Inferred 是一个原创互动推理网站。真相从不明说，只能被推断——阅读案卷，分析证词，找出矛盾，在答案揭晓前推断真相。"
   path="/"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: '推知 Inferred',
+    url: 'https://www.inferred.uk/',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://www.inferred.uk/search/?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }}
 >
   <!-- Hero -->
   <section class="hero">

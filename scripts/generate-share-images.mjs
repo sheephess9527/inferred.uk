@@ -85,7 +85,7 @@ function shareCardSvg({ eyebrow, title, summary, accent = '#8B2E2E' }) {
 </svg>`;
 }
 
-/** 微信链接预览对 JPEG 兼容性更好；同时保留 PNG 备用 */
+/** 微信链接预览对 JPEG 兼容性更好；全站仅引用 .jpg，不再产出 PNG 副本（省一半体积） */
 async function writeShareImages(svg, basePath) {
   await fs.promises.mkdir(path.dirname(basePath), { recursive: true });
   const pipeline = sharp(Buffer.from(svg), { density: 144 }).resize(1200, 630);
@@ -93,10 +93,6 @@ async function writeShareImages(svg, basePath) {
     .clone()
     .jpeg({ quality: 86, mozjpeg: true })
     .toFile(`${basePath}.jpg`);
-  await pipeline
-    .clone()
-    .png({ compressionLevel: 9 })
-    .toFile(`${basePath}.png`);
 }
 
 async function generateFromDir(dir, outDir, kind) {

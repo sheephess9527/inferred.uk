@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 站内搜索：Pagefind 在构建期为全部预渲染页面（案卷/线索详情）生成静态索引，
+// 输出到 dist/client/pagefind/，本页在客户端加载其自带 UI。零后端、支持中文。
+// 注意：开发模式（pnpm dev）下索引不存在，页面会显示降级提示；
+// 需 pnpm build && pnpm preview 才能本地验证搜索。
+---
+
+<BaseLayout
+  title="搜索｜推知 Inferred"
+  description="按关键词搜索全站案卷与线索：标题、场景、诡计类型、正文均可命中。"
+  path="/search/"
+>
+  <section class="search container container--reading">
+    <header class="search__header">
+      <p class="eyebrow">SEARCH · 检索卷宗</p>
+      <h1 class="search__title">搜索案卷与线索</h1>
+      <p class="search__lead text-muted">输入关键词——标题、场景、诡计类型、正文皆可命中。</p>
+    </header>
+
+    <div id="pagefind-search"></div>
+    <noscript><p class="text-muted">搜索需要启用 JavaScript。</p></noscript>
+    <p id="search-fallback" class="text-muted" hidden>
+      搜索索引尚未生成（开发模式下不可用）。请先访问其他页面，或稍后再试。
+    </p>
+  </section>
+</BaseLayout>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<script is:inline src="/pagefind/pagefind-ui.js" defer></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof PagefindUI === 'undefined') {
+      var fb = document.getElementById('search-fallback');
+      if (fb) fb.hidden = false;
+      return;
+    }
+    var ui = new PagefindUI({
+      element: '#pagefind-search',
+      showSubResults: false,
+      showImages: false,
+      excerptLength: 24,
+      translations: {
+        placeholder: '搜索案卷、线索、诡计类型…',
+        clear_search: '清空',
+        load_more: '加载更多结果',
+        search_label: '站内搜索',
+        zero_results: '没有找到与「[SEARCH_TERM]」相关的内容',
+        many_results: '找到 [COUNT] 条与「[SEARCH_TERM]」相关的结果',
+        one_result: '找到 [COUNT] 条与「[SEARCH_TERM]」相关的结果',
+        searching: '正在搜索「[SEARCH_TERM]」…',
+      },
+    });
+    // 支持 /search/?q=关键词 直达（首页 WebSite SearchAction 也指向该格式）
+    var q = new URLSearchParams(window.location.search).get('q');
+    if (q) ui.triggerSearch(q);
+  });
+</script>
+
+<style>
+  .search {
+    padding-block: 3rem 4rem;
+  }
+  .search__header {
+    margin-bottom: 2rem;
+  }
+  .search__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0.4rem 0;
+  }
+  .search__lead {
+    margin: 0;
+  }
+  /* Pagefind UI 主题变量 → 站点变量（自动跟随亮/暗色） */
+  #pagefind-search {
+    --pagefind-ui-scale: 0.92;
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--color-paper);
+    --pagefind-ui-background: var(--color-surface);
+    --pagefind-ui-border: var(--color-line);
+    --pagefind-ui-tag: var(--color-surface);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: var(--radius);
+    --pagefind-ui-font: var(--font-serif-cn);
+  }
+</style>

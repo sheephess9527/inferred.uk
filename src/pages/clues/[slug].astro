@@ -30,19 +30,30 @@ const dateStr = entry.data.publishedAt.toLocaleDateString('zh-CN', {
   day: 'numeric',
 });
 const shareImage = `/og/clues/${entry.id}.jpg`;
-const siteOrigin = Astro.site ?? 'https://inferred.uk';
+const siteOrigin = Astro.site ?? 'https://www.inferred.uk';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: entry.data.title,
-  description: entry.data.summary,
-  datePublished: publishedIso,
-  image: new URL(shareImage, siteOrigin).href,
-  url: new URL(`/clues/${entry.id}/`, siteOrigin).href,
-  author: { '@type': 'Organization', name: 'Inferred' },
-  publisher: { '@type': 'Organization', name: 'Inferred' },
-};
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: entry.data.title,
+    description: entry.data.summary,
+    datePublished: publishedIso,
+    image: new URL(shareImage, siteOrigin).href,
+    url: new URL(`/clues/${entry.id}/`, siteOrigin).href,
+    author: { '@type': 'Organization', name: 'Inferred' },
+    publisher: { '@type': 'Organization', name: 'Inferred' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', siteOrigin).href },
+      { '@type': 'ListItem', position: 2, name: '线索', item: new URL('/clues/', siteOrigin).href },
+      { '@type': 'ListItem', position: 3, name: entry.data.title },
+    ],
+  },
+];
 ---
 
 <BaseLayout
@@ -56,7 +67,7 @@ const jsonLd = {
   publishedTime={publishedIso}
   jsonLd={jsonLd}
 >
-  <article class="container container--reading clue">
+  <article class="container container--reading clue" data-pagefind-body>
     <ReadingProgress target="#clue-body" />
 
     <header class="clue__header">

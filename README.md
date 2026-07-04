@@ -58,6 +58,7 @@ pnpm check              # 提交前必须 0 errors
 - [x] ~~轮换 Cloudflare API 令牌~~ **已完成（2026-06-28）**：先前对话中明文出现过的令牌已删除/重置。
 - [x] ~~修复 `inferred.uk` 522~~ **已解决（2026-06-28）**：裸域名现可正常访问。
 - [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（规范域名）。
+- [ ] **启用访问统计**：Cloudflare 仪表板 → Analytics & Logs → Web Analytics → Add a site（填 `www.inferred.uk`）→ 复制 JS 片段中 `token` 值 → 粘贴到 `src/siteConfig.ts` 的 `cloudflareAnalyticsToken` → push 部署即生效（免费、无 Cookie）。
 
 ### 6. 铁律
 
@@ -699,6 +700,7 @@ questions:
 ## 功能一览
 
 - 案卷详情页（档案风排版）
+- **站内搜索**（`/search/`）：Pagefind 构建期静态索引（`pnpm build` 内含 `pagefind --site dist/client`），零后端；只索引案卷/线索正文（`data-pagefind-body`），**揭晓真相区已排除索引防剧透**（`RevealAnswer` 上的 `data-pagefind-ignore`）；支持 `/search/?q=词` 直达
 - 案卷进度：未解 / 推理中 / 已结案（`localStorage`，揭晓后即时更新）
 - 档案馆：按状态 / 难度 / 类型 / 场景筛选
 - 互动物证板（重要 / 可疑 / 误导 / 排除，`localStorage`；揭晓后自动对比评分）
@@ -786,6 +788,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-07-04 — 站内搜索 + 结构化数据 + 访问统计接入 + 清理冗余 PNG
+
+- **站内搜索（Pagefind）**：新增 `/search/` 页与导航入口；`pnpm build` 现为 `astro build && pagefind --site dist/client`（pagefind 在 dependencies，Cloudflare 构建环境可用）。只索引案卷/线索正文（详情页 `<article data-pagefind-body>`），`RevealAnswer` 加 `data-pagefind-ignore` **防剧透**——已解压索引片段实测：叙事/物证/证词可搜、真相区内容零收录。中文 UI 文案已本地化；支持 `?q=` 直达
+- **结构化数据**：案卷/线索详情页 JSON-LD 由单 Article 扩为 `[Article, BreadcrumbList]`（首页→案卷/线索→标题）；首页新增 WebSite + SearchAction（指向 `/search/?q={search_term_string}`）；`BaseLayout` 的 `jsonLd` prop 支持数组
+- **Cloudflare Web Analytics**：`siteConfig.ts` 新增 `cloudflareAnalyticsToken`（留空不输出）；`BaseLayout` 条件输出 beacon 脚本；middleware CSP 放行 `static.cloudflareinsights.com`（script-src）与 `cloudflareinsights.com`（connect-src），并加 `'wasm-unsafe-eval'` 供 Pagefind WebAssembly。**待办**：站长在仪表板开通后把 token 填入
+- **删除冗余 OG PNG 副本**：全站只引用 `.jpg`，删除 251 个从未被引用的 `.png`（含 `og-default.png`），仓库/部署包减重约 11MB；生成脚本 `generate-share-images.mjs`、`export-og.mjs` 停产 PNG，`verify:og` 本就只查 jpg 无需改
 
 ### 2026-07-03 — SEO 修复：规范链接尾斜杠一致 + 删除页 301
 
