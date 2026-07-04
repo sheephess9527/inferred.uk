@@ -58,7 +58,7 @@ pnpm check              # 提交前必须 0 errors
 - [x] ~~轮换 Cloudflare API 令牌~~ **已完成（2026-06-28）**：先前对话中明文出现过的令牌已删除/重置。
 - [x] ~~修复 `inferred.uk` 522~~ **已解决（2026-06-28）**：裸域名现可正常访问。
 - [ ] **向 Google Search Console 提交 sitemap**：`https://www.inferred.uk/sitemap-index.xml`（规范域名）。
-- [ ] **启用访问统计**：Cloudflare 仪表板 → Analytics & Logs → Web Analytics → Add a site（填 `www.inferred.uk`）→ 复制 JS 片段中 `token` 值 → 粘贴到 `src/siteConfig.ts` 的 `cloudflareAnalyticsToken` → push 部署即生效（免费、无 Cookie）。
+- [x] ~~启用访问统计~~ **早已启用**：Cloudflare Web Analytics 在仪表板侧已配置（自动注入），无需再动。`src/siteConfig.ts` 的 `cloudflareAnalyticsToken` 留空即可，仅作手动接入的备用通道。注意：2026-07-04 之前 middleware 的 CSP 未放行 `cloudflareinsights.com`，SSR 页面（首页/列表页）的统计脚本可能被浏览器拦截、导致数据偏低；该次 CSP 放行后已恢复正常，此前的统计数字仅供参考。
 
 ### 6. 铁律
 
