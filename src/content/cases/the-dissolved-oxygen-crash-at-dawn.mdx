@@ -1,0 +1,166 @@
+---
+title: "黎明跌穿的溶氧线"
+caseId: "152"
+status: "unsolved"
+difficulty: 4
+types:
+  - "时间鉴定"
+  - "物证推理"
+scene:
+  - "水族馆"
+  - "检疫池"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "检疫池溶氧仪在 04:18 骤降至接近零、04:31 回升，说明什么？"
+    choices:
+      - text: "探头坏了"
+      - text: "有人在凌晨排空或大幅换水再回注，溶氧崩溃记录的是真实操作时刻，与「清晨才开馆发现」的说法矛盾"
+      - text: "鱼群集体耗氧"
+      - text: "停电导致"
+    answer: 1
+  - q: "饲养员纪岑称 04:00–06:00 在宿舍睡觉，破绽在哪？"
+    choices:
+      - text: "宿舍太远"
+      - text: "员工通道门禁 04:12 刷入馆区、04:36 刷出，与溶氧崩溃窗口重合；宿舍门禁同期无活动"
+      - text: "他不会游泳"
+      - text: "闹钟没响"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "饲养员纪岑——非法转运受保护物种被检疫员抽检将曝光，凌晨排空检疫池毁证并杀害检疫员"
+      - text: "馆长邬柏——参观纠纷"
+      - text: "志愿者梁汀——排班争执"
+      - text: "供应商段禾——饲料回扣"
+    answer: 0
+publishedAt: "2026-07-11"
+summary: "溶氧曲线在黎明塌了一截。开馆的人说那时还在睡觉，水却记下了谁动过闸阀。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者莘岚，外聘检疫员，36 岁，发现于检疫池池底，溺亡合并钝器伤；死亡时间约 04:15 至 04:40。", detail: "衣袋中有未封存的组织采样管与物种登记表复印件。" },
+  { label: "检疫池在线溶氧仪：04:18 溶氧骤降至 0.2 mg/L，水位同步下降；04:22 起进水阀开启，04:31 溶氧回升至正常带。此前七日夜间溶氧波动小于 0.5 mg/L。", detail: "骤降对应大量排水后水体更新，非鱼类耗氧可致。" },
+  { label: "饲养员纪岑称 04:00–06:00 在员工宿舍睡觉，06:10 开馆巡池才发现异常。", detail: "" },
+  { label: "员工通道门禁：纪岑工卡 04:12 刷入后区、04:36 刷出；宿舍楼门禁 03:50 后至 06:05 无其卡活动。", detail: "宿舍门禁与后区门禁系统独立对时，误差小于 30 秒。" },
+  { label: "莘岚前夜短信（已读）：「检疫池标签与 CITES 附录物种样本不符，明日凌晨抽检前请馆方说明来源。」收件人纪岑。", detail: "" },
+  { label: "排水阀手轮内侧有与纪岑乳胶手套同批次滑石粉残留；池壁水位线有新近刮擦，高度对应半排空。", detail: "" },
+  { label: "馆长邬柏 03:00–07:00 酒店住宿记录完整；志愿者梁汀无后区门禁权限；供应商段禾 04:00 货车 GPS 在城东仓库。", detail: "红鲱鱼：参观纠纷、饲料回扣。" },
+];
+
+## 一、案发
+
+检疫池的水在黎明前安静得过分。
+
+外聘检疫员莘岚被发现时面朝池底，采样管还揣在衣袋里。溶氧仪的曲线在 04:18 像断崖一样跌下去，又在十几分钟后爬回。
+
+「鱼不会把水排空，」探员说，「人会。」
+
+---
+
+## 二、人物
+
+<PersonCard name="莘岚" role="外聘检疫员" age="36" relation="死者" alibi="——">
+  凌晨抽检检疫池物种来源；短信已警告标签不符。
+</PersonCard>
+
+<PersonCard name="纪岑" role="饲养员" age="33" relation="值班饲养" alibi="称在宿舍睡觉">
+  掌管检疫池闸阀与后区门禁；短信收件人。
+</PersonCard>
+
+<PersonCard name="邬柏" role="馆长" age="50" relation="上级" alibi="酒店住宿记录">
+  对非法转运知情风险高，但当晚不在馆。
+</PersonCard>
+
+<PersonCard name="梁汀" role="志愿者" age="24" relation="协助" alibi="无后区权限">
+  只能进入公开展区，无法操作检疫池。
+</PersonCard>
+
+<PersonCard name="段禾" role="饲料供应商" age="45" relation="外部" alibi="货车 GPS 在仓库">
+  与馆方有供货纠纷，时段不在现场。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="纪岑" time="第一次问询">
+  「我四点多还在宿舍。溶氧跳水可能是探头故障，开馆我才看见莘检疫倒在池里。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="邬柏" time="第一次问询">
+  「物种来源合规。我住酒店，有订单和门卡记录。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="梁汀" time="第一次问询">
+  「我进不了后区。闸阀我摸不到。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="纪岑" time="第二次问询">
+  「门禁 04:12？可能是工卡借给别人了。排水？夜间维护从不排空检疫池。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="152" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "溶氧与水位同步骤降，更像探头故障还是真实排水？",
+    "宿舍门禁无活动、后区门禁有刷入，说明人当时在哪？",
+    "莘岚短信里的 CITES 不符，威胁的是谁的日常操作权？",
+    "排水阀手轮上的滑石粉与手套批次如何对应？",
+    "馆长不在馆，是否就能排除其对转运的知情？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+水不会记得面孔，但会记得被排空的那几分钟。溶氧线跌穿的时刻，就是有人把手按在闸阀上的时刻。
+
+<DetectiveNotes caseId="152" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是饲养员纪岑。
+
+纪岑长期协助非法转运受保护物种，用检疫池作中转。莘岚短信要求凌晨抽检并指出标签不符。纪岑 04:12 刷入后区，排空检疫池试图销毁水体痕迹与部分样本，冲突中将莘岚击伤推入池中溺亡，04:31 前回注并在 04:36 刷出。溶氧与水位曲线记录了真实操作窗口；「在宿舍睡觉」被门禁与溶氧双重否定。
+
+### 关键矛盾
+
+自称睡眠时段的门禁出现在馆区后区，且恰与溶氧崩溃、排水回注窗口重合——人不可能同时在宿舍与闸阀旁。
+
+### 伏笔解析
+
+1. 04:18 溶氧骤降与水位下降——真实排水。
+2. 04:22–04:31 回注——毁证与行凶后的回灌。
+3. 门禁 04:12/04:36——纪岑亲至现场。
+4. 宿舍门禁无活动——伪不在场崩溃。
+5. 莘岚短信与采样管——动机与抽检目的。
+6. 手套滑石粉——操作排水阀。
+7. 邬柏酒店、梁汀无权限、段禾 GPS——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

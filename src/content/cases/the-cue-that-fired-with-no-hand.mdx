@@ -1,0 +1,166 @@
+---
+title: "没人按的那道黑场"
+caseId: "153"
+status: "unsolved"
+difficulty: 4
+types:
+  - "机械诡计"
+  - "时间线诡计"
+scene:
+  - "剧场后台"
+  - "夜戏"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "灯光控台在 21:48 自动执行「全场黑场」指令且操作源显示平板远程，说明什么？"
+    choices:
+      - text: "控台自己坏了"
+      - text: "有人用已登录的平板在后台触发黑场，用以掩盖声响或行动，时间被控台日志精确记下"
+      - text: "观众起哄"
+      - text: "停电"
+    answer: 1
+  - q: "舞台监督祁晏称 21:40–22:00 在演员休息室开场前会，破绽在哪？"
+    choices:
+      - text: "休息室太吵"
+      - text: "会签到表有其签字，但灯光控台绑定的平板 MAC 在 21:47–21:49 连接后台 Wi-Fi 且发起黑场；同平板陀螺仪记录显示设备在移动，而休息室 Wi-Fi 与后台为不同 AP"
+      - text: "他不会用灯光"
+      - text: "戏停演了"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "主演佟朗——角色纠纷"
+      - text: "舞台监督祁晏——盗用舞美预算被道具主管核对将曝光，借黑场掩护在吊杆区行凶"
+      - text: "灯光师沈柯——控台权限"
+      - text: "票务杜宁——退票矛盾"
+    answer: 1
+publishedAt: "2026-07-11"
+summary: "黑场指令自己响了。监督说人在开会，控台却记下了另一只手按下的时间。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者裴叙事，道具主管，43 岁，发现于后台吊杆区，钢丝绞伤合并坠落；死亡时间约 21:45 至 22:00。", detail: "手中攥着预算核对表，页边批注「吊杆租赁发票重复报销」。" },
+  { label: "灯光控台日志：21:48:03 执行 Cue「全场黑场」，操作源为远程平板（设备名 stage-pad-03），非主控台本地键。", detail: "黑场持续 47 秒后由主控台手动恢复，操作者为灯光师沈柯。" },
+  { label: "舞台监督祁晏称 21:40–22:00 在演员休息室主持场前会，签到表有其签字。", detail: "签到表可代签，时间不精确到秒。" },
+  { label: "stage-pad-03 网络日志：21:47–21:49 关联后台 AP（SSID 含 fly-loft），非休息室 AP；平板陀螺仪在该两分钟有位移峰值。", detail: "休息室与后台吊杆区 Wi-Fi 分区固定，无法串 AP。" },
+  { label: "裴叙事当天下午消息：「吊杆发票与祁监督签批的租赁合同份数对不上，今晚戏前对账。」收件人祁晏。", detail: "" },
+  { label: "吊杆手摇制动销有新近撬痕；祁晏工作手套内侧纤维与制动销防滑胶一致。", detail: "" },
+  { label: "主演佟朗 21:40–22:05 在休息室被多人证明念词；灯光师沈柯 21:48 在主控台侧，恢复黑场有键位录像；票务杜宁在前厅。", detail: "红鲱鱼：角色纠纷、退票。" },
+];
+
+## 一、案发
+
+夜戏开场前，剧场突然黑了四十七秒。
+
+道具主管裴叙事倒在后台吊杆区，预算表还攥在手里。控台说，那道黑场不是主台按的——是一块叫 stage-pad-03 的平板。
+
+「没人承认按过，」探员说，「可日志不认人，只认设备。」
+
+---
+
+## 二、人物
+
+<PersonCard name="裴叙事" role="道具主管" age="43" relation="死者" alibi="——">
+  核对吊杆租赁发票重复报销；约祁晏戏前对账。
+</PersonCard>
+
+<PersonCard name="祁晏" role="舞台监督" age="39" relation="统筹" alibi="称在休息室开会">
+  可签批租赁合同；持有 stage-pad-03 日常调度权限。
+</PersonCard>
+
+<PersonCard name="沈柯" role="灯光师" age="31" relation="技术" alibi="主控台键位录像">
+  黑场后手动恢复；本地键与远程源可区分。
+</PersonCard>
+
+<PersonCard name="佟朗" role="主演" age="35" relation="演员" alibi="休息室多人证明">
+  与道具组有过场次争执，但时段在念词。
+</PersonCard>
+
+<PersonCard name="杜宁" role="票务" age="28" relation="前厅" alibi="前厅监控">
+  与后台吊杆区物理隔离。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="祁晏" time="第一次问询">
+  「我在休息室开会，签到表在。黑场是灯光事故，跟我无关。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="沈柯" time="第一次问询">
+  「远程黑场不是我发的。我在主控台，恢复操作有录像。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="佟朗" time="第一次问询">
+  「休息室里都看见祁监督了……大概吧，人多，我盯词。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="祁晏" time="第二次问询">
+  「平板可能被别人拿走。吊杆发票是财务的事，我对账完了。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="153" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "黑场操作源显示远程平板，说明主控台本地键是否被按下？",
+    "休息室 AP 与后台 AP 不同，平板连上后台意味着设备在哪？",
+    "裴叙事批注的重复报销，直接指向谁的签批权？",
+    "签到表签字能否精确到 21:48 的位置证明？",
+    "沈柯恢复黑场的录像，是自证还是旁证？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+舞台上的黑，常常是为了换景。后台的黑，有时是为了让声音和脚步一起消失。谁触发了那四十七秒，谁就需要那四十七秒。
+
+<DetectiveNotes caseId="153" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是舞台监督祁晏。
+
+祁晏在吊杆租赁上重复报销，裴叙事戏前要挟对账。祁晏在场前会签到后借故离开，携带 stage-pad-03 至后台，21:48 远程触发全场黑场掩盖吊杆制动销撬动声，松开钢丝致裴叙事坠落致死，再返回会场。平板关联后台 AP 与位移记录否定「人一直在休息室」；手套纤维与制动销吻合。
+
+### 关键矛盾
+
+人若在休息室，调度平板不应在同一分钟连上后台 AP 并移动——黑场不是事故，是掩护。
+
+### 伏笔解析
+
+1. 21:48 远程黑场——精确时间锚点。
+2. 平板连后台 AP——设备在吊杆区侧。
+3. 陀螺仪位移——平板被手持移动。
+4. 裴叙事重复报销批注——动机。
+5. 制动销撬痕与手套纤维——直接动手。
+6. 沈柯本地恢复录像——排除灯光师主控作案。
+7. 佟朗念词、杜宁前厅——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

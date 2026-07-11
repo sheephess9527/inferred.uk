@@ -1,0 +1,166 @@
+---
+title: "温探头挪到了隔壁缸"
+caseId: "154"
+status: "unsolved"
+difficulty: 4
+types:
+  - "物证推理"
+  - "时间线伪造"
+scene:
+  - "酱园"
+  - "发酵车间"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "3 号发酵缸曲线整夜平稳，但探头支架编号属于 4 号空缸，说明什么？"
+    choices:
+      - text: "编号贴错了"
+      - text: "有人把 3 号探头临时插到温度稳定的 4 号空缸，用平稳曲线掩盖 3 号真实被开盖扰动的时段"
+      - text: "传感器精度不够"
+      - text: "天气太热"
+    answer: 1
+  - q: "车间主任颜述称 23:00–01:00 在值班室写日志，破绽在哪？"
+    choices:
+      - text: "值班室没空调"
+      - text: "3 号缸搅拌电机 23:40–23:55 有启动电流，仅主任钥匙能开本地连锁；同时 3 号探头物理位置在 4 号支架，说明有人离岗操作并伪造「缸温正常」"
+      - text: "他不会写日志"
+      - text: "酱香太冲"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "质检员霍青——抽检过严"
+      - text: "车间主任颜述——掺入过期基料被品控抽检将曝光，挪探头伪造缸温平稳并在开盖窗口行凶"
+      - text: "采购甘麦——原料纠纷"
+      - text: "夜班学徒卞舟——误操作"
+    answer: 1
+publishedAt: "2026-07-11"
+summary: "曲线漂亮得不像发酵。探头却插在隔壁空缸里——平稳的，是谎言的温度。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者容止，品控抽检员，40 岁，发现于 3 号发酵缸旁地沟盖板后，窒息；死亡时间约 23:45 至 00:10。", detail: "取样勺掉在缸沿，勺上残留与缸内表层不一致的浅色基料。" },
+  { label: "3 号缸在线温度曲线 23:00–01:00 波动小于 0.2℃，显示「工艺平稳」；但探头金属标牌与卡箍钢印均为 4 号缸资产编号，4 号为空缸且室温稳定。", detail: "探头线被加长临时固定，胶布为车间常用灰色电工胶。" },
+  { label: "车间主任颜述称 23:00–01:00 在值班室写生产日志，未进发酵间；日志字迹连贯。", detail: "日志可提前写好时间栏。" },
+  { label: "3 号搅拌电机电流记录：23:40–23:55 启动一次；本地连锁钥匙仅主任与设备员各一把，设备员当晚出差。", detail: "开盖搅拌会真实扰动缸温，故需挪走探头。" },
+  { label: "容止抽样单批注：「3 号表层色泽异常，疑过期基料回掺，请主任到场启封。」时间写 23:30。", detail: "" },
+  { label: "颜述工装口袋灰胶布卷边缘齿痕与探头加长固定处吻合；地沟盖板内侧有其鞋底花纹。", detail: "" },
+  { label: "质检霍青 23:00 后在化验室门禁内；采购甘麦在外地；学徒卞舟 23:30–00:30 在包装线打卡。", detail: "红鲱鱼：抽检过严、原料纠纷、误操作。" },
+];
+
+## 一、案发
+
+发酵车间的夜里，酱香压过一切声音。
+
+品控容止倒在 3 号缸旁，取样勺还搭在缸沿。曲线仪显示整夜平稳——可探头标牌写的是 4 号。
+
+「空缸的温度，」探员说，「被拿来冒充一缸正在撒谎的酱。」
+
+---
+
+## 二、人物
+
+<PersonCard name="容止" role="品控抽检员" age="40" relation="死者" alibi="——">
+  发现 3 号表层异常，约主任启封核对过期基料。
+</PersonCard>
+
+<PersonCard name="颜述" role="车间主任" age="48" relation="当班负责" alibi="称在值班室写日志">
+  持有搅拌连锁钥匙；可调度探头维护。
+</PersonCard>
+
+<PersonCard name="霍青" role="化验质检" age="34" relation="同事" alibi="化验室门禁">
+  与容止有方法分歧，但未进发酵间。
+</PersonCard>
+
+<PersonCard name="甘麦" role="采购" age="42" relation="外部接口" alibi="外地行程">
+  供过期基料嫌疑上游，当晚不在厂。
+</PersonCard>
+
+<PersonCard name="卞舟" role="夜班学徒" age="22" relation="下属" alibi="包装线打卡">
+  无主任钥匙，不能启搅拌连锁。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="颜述" time="第一次问询">
+  「我在值班室写日志。3 号曲线正常，说明没人动缸。容止自己掉进地沟也有可能。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="霍青" time="第一次问询">
+  「我在化验室。表层异常她跟我说过，要找主任启封。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="卞舟" time="第一次问询">
+  「包装线打卡能查。钥匙我不碰，探头我不敢拔。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="颜述" time="第二次问询">
+  「探头在 4 号？可能是日班维护放错。搅拌电流？也许是误触，我没进车间。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="154" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "为何平稳曲线反而可疑？",
+    "探头资产编号在 4 号、显示却挂 3 号名，说明数据在测什么？",
+    "搅拌电流出现时，若探头仍在 3 号，曲线应如何变化？",
+    "仅主任钥匙能开连锁，缩小了哪些人？",
+    "取样勺上的浅色基料与缸表不一致，指向什么操作？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+发酵怕的是扰动。有人怕的是扰动被记下来。把探头挪到空缸，曲线就学会说假话。
+
+<DetectiveNotes caseId="154" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是车间主任颜述。
+
+颜述将过期基料回掺 3 号缸，容止 23:30 要求启封抽检。颜述先把 3 号温度探头挪到室温稳定的 4 号空缸，使监控曲线显示「平稳」，再于 23:40 用钥匙开连锁搅拌掩盖表层，冲突中将容止窒息后藏于地沟盖板后。灰胶布齿痕、鞋底花纹与唯一钥匙证明其到场操作；值班室日志不能覆盖电机电流与探头错位。
+
+### 关键矛盾
+
+若无人动缸，探头不应出现在 4 号支架，电机亦不应在「主任不在场」时段启动。
+
+### 伏笔解析
+
+1. 探头钢印属 4 号——测的是空缸室温。
+2. 3 号曲线假平稳——掩盖开盖扰动。
+3. 23:40 搅拌电流——有人持钥匙操作。
+4. 设备员出差——钥匙唯一落到颜述。
+5. 容止抽样批注——过期基料动机。
+6. 胶布齿痕与鞋底——现场直接证据。
+7. 霍青门禁、甘麦外地、卞舟打卡——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

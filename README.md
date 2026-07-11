@@ -11,7 +11,7 @@
 
 - **仓库**：`sheephess9527/inferred.uk`，部署分支 `main`
 - **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
-- **当前规模**：**150 篇案卷**（001–150）+ **89 篇线索**
+- **当前规模**：**155 篇案卷**（001–155）+ **89 篇线索**
 - **线上域名**：规范域名 **`https://www.inferred.uk`**（见下方「域名与部署现状」）
 - **最新提交**：见下方更新日志
 
@@ -38,7 +38,7 @@ pnpm check              # 提交前必须 0 errors
 
 - 规则与模板见下方「**AI / 维护者速查**」和「**案卷 MDX 模板**」两节，**动手前必读**。
 - 关键约束（最容易踩坑）：
-  - `caseId` 连续编号、三位字符串，**下一篇从 `"151"` 起**。
+  - `caseId` 连续编号、三位字符串，**下一篇从 `"156"` 起**。
   - 每案 **3 道** frontmatter `questions`（不是 5；早期批次记录里的「5 道」是过时写法，以最新案卷 121–145 为准）。
   - **JS 字符串（`evidence` / `questions={[...]}`）和 YAML 字符串里禁止用 ASCII 直双引号 `"`**，引用文字一律用中文角括号 `「」`，否则 `pnpm build` 报 acorn 解析错误。
   - 物证 `label` **禁止 `**` 加粗**（会原样显示星号）。
@@ -74,7 +74,7 @@ pnpm check              # 提交前必须 0 errors
 ### 案卷生成规则（硬性）
 
 1. **`publishedAt`**：取**创建当天**日期（`YYYY-MM-DD`）。同批次可相同。
-2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"150"`，下一篇从 `"151"` 起。
+2. **`caseId`**：三位数字字符串（`"001"`…），按 `publishedAt` 从旧到新**连续编号**，**禁止跳号、乱序**。当前已用到 `"155"`，下一篇从 `"156"` 起。
 3. **正文结构**：严格七段式 MDX，标题固定：
    - `## 一、案发`
    - `## 二、人物`
@@ -195,6 +195,7 @@ Cloudflare 监听 `main` 自动构建部署。
 | 2026-06-29 | 141–145 | 5 | — | 场景/物证扩展批次（攀岩馆确保/印刷厂偷印/温室花粉时钟/缆车空载计数/宠物医院芯片）；每案 3 道选择题 |
 | 2026-06-26 | 146–150 | 5 | — | 工业/日常物证批次（纺织梭位/蜂箱秤/色带叠印/清冰车路线/邮轮点名）；每案 3 道选择题 |
 | 2026-06-26 | 线索 91–95 | 5 | — | 配套线索（电子秤曲线/织机梭位/色带叠印/清冰路线/点名册缺口） |
+| 2026-07-11 | 151–155 | 5 | — | 仪器/日志物证批次（闸机空抬/溶氧崩溃/灯光黑场/发酵探头/风速仪读零）；每案 3 道选择题 |
 
 **质量标杆案卷**：`001`（早期完整版）、`091`（进阶批次范例）。
 
@@ -440,7 +441,7 @@ questions:
 
 ---
 
-## 案卷一览（001–150）
+## 案卷一览（001–155）
 
 | caseId | 标题 | slug | ★ |
 |--------|------|------|---|
@@ -594,6 +595,11 @@ questions:
 | 148 | 色带重叠的那一分钟 | `the-ribbon-that-typed-the-same-minute` | |
 | 149 | 四号道没清过的冰 | `the-zamboni-never-touched-lane-four` | |
 | 150 | 救生艇点名少了一名 | `the-lifeboat-roll-call-one-short` | ★ |
+| 151 | 闸机空抬的那一次 | `the-parking-gate-with-a-blank-lift` | ★ |
+| 152 | 黎明跌穿的溶氧线 | `the-dissolved-oxygen-crash-at-dawn` | |
+| 153 | 没人按的那道黑场 | `the-cue-that-fired-with-no-hand` | |
+| 154 | 温探头挪到了隔壁缸 | `the-probe-moved-to-the-next-vat` | ★ |
+| 155 | 大风夜读零的风速仪 | `the-anemometer-that-read-zero` | |
 
 ★ = `featured: true`
 
@@ -808,6 +814,17 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 - **未找到 (404)**：8 篇历史删除的线索（`locked-room-basics`、`hidden-passage-designs`、`psychological-misdirection`、`evidence-planting-methods`、`narrator-unreliability`、`fair-play-boundaries`、`edge-suspect-minimal-set`、`batch-technique-dedup`）在 `src/middleware.ts` 加 301，重定向到相关继任文章或 `/clues/`
 - `pnpm check` 0 errors；构建验证 canonical/og:url/JSON-LD/内部链接均带尾斜杠且与 sitemap 吻合
 - 后续：上线后到 GSC 对受影响页「验证修复」；新内容随索引重新抓取逐步转为「已编入索引」
+
+### 2026-07-11 — 案卷扩充（151–155）
+
+- 新增案卷 **5 篇**（caseId 151–155）：仪器/日志物证批次
+  - 151 闸机空抬的那一次（地下停车场·空抬杆 + 岗亭键鼠静默伪造在岗）
+  - 152 黎明跌穿的溶氧线（水族馆检疫池·溶氧/水位崩溃锚定排水时刻）
+  - 153 没人按的那道黑场（剧场后台·灯光平板远程黑场掩护吊杆行凶）
+  - 154 温探头挪到了隔壁缸（酱园·探头挪空缸伪造平稳曲线 + 搅拌电流）
+  - 155 大风夜读零的风速仪（气象站·胶带固定转杯 vs 气压/超声波交叉校验）
+- 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5（155 为 5）；featured：151、154
+- 案卷总数 **150 → 155**；线索总数不变 **89**；下一篇 `caseId` **156**
 
 ### 2026-06-26 — 案卷扩充（146–150）+ 线索（91–95）
 

@@ -1,0 +1,166 @@
+---
+title: "闸机空抬的那一次"
+caseId: "151"
+status: "unsolved"
+difficulty: 4
+types:
+  - "动线推理"
+  - "时间线诡计"
+scene:
+  - "地下停车场"
+  - "夜班"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "B2 员工通道闸机在 22:17 记录「抬杆一次」却无车牌抓拍，说明什么？"
+    choices:
+      - text: "摄像头坏了"
+      - text: "有人遮挡或无牌通过，或步行尾随抬杆——该次抬杆对应一次真实出入，而不是系统误报"
+      - text: "物业做测试"
+      - text: "雨天反光导致"
+    answer: 1
+  - q: "门卫柏川称 22:00–23:00 未离岗，破绽在哪？"
+    choices:
+      - text: "岗亭太冷"
+      - text: "岗亭内网考勤仅在 22:16 与 22:41 各有一次「人工确认在岗」点击，中间无鼠标/键盘活动；且 22:17 空抬杆恰在此静默段，与他声称一直盯屏矛盾"
+      - text: "他不会用电脑"
+      - text: "监控没装"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "业主代表闵柯——车位纠纷"
+      - text: "门卫柏川——与死者合谋虚报月卡收入，审计员将核对闸机流水，柏川借空抬杆进出 B2 灭口并伪造在岗"
+      - text: "保洁员曲宁——清洁时间冲突"
+      - text: "车场主管霍砺——绩效考核"
+    answer: 1
+publishedAt: "2026-07-11"
+summary: "闸机抬了一次杆，镜头里却没有车。岗亭说人一直在，流水却在说谎。"
+featured: true
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者谈霁，物业第三方审计员，41 岁，发现于 B2 消防通道拐角，钝器伤；死亡时间约 22:15 至 22:35。", detail: "手中平板最后页面为「月卡收入与抬杆次数对账表」。" },
+  { label: "B2 员工通道闸机日志：22:17 抬杆一次，LPR 抓拍为空（无车牌、无车身轮廓）；同小时其余抬杆均有清晰车牌。", detail: "系统将空抓拍标记为「异常抬杆」，需人工复核，柏川值班却未复核。" },
+  { label: "门卫柏川称 22:00–23:00 始终在岗亭，未进入 B2；考勤机显示其工卡未刷员工通道。", detail: "员工通道可用闸机按钮手动抬杆，无需刷卡。" },
+  { label: "岗亭内网电脑操作日志：22:16 与 22:41 各有一次「人工确认在岗」勾选；22:16–22:40 无键鼠活动，屏幕录制（抽检策略）该时段为静止画面。", detail: "静止不等于人在，只说明无人操作电脑。" },
+  { label: "谈霁案发前邮件（已发送）：「员工通道空抬杆与月卡收款差额已累计十七次，今晚 B2 对账，请门卫配合。」收件人含柏川与霍砺。", detail: "" },
+  { label: "B2 消防通道墙角有柏川制服袖口同色纤维；钝器为消防箱旁活动扳手，柄部有新近擦拭痕。", detail: "" },
+  { label: "业主代表闵柯 21:50–23:10 在业主群视频连线有录屏；保洁曲宁 22:00–22:50 在 B1 保洁打卡点连续打卡；主管霍砺 22:10–22:50 在 A 座会议室门禁进出记录完整。", detail: "红鲱鱼：车位纠纷、绩效考核。" },
+];
+
+## 一、案发
+
+地下停车场的灯永远比地面冷一截。
+
+审计员谈霁倒在 B2 消防通道拐角，平板屏幕还亮着对账表。闸机日志里，22:17 有一次抬杆——镜头里却什么都没有。
+
+「空抬杆，」探员说，「有人从这儿过了，但不想留下车的影子。」
+
+---
+
+## 二、人物
+
+<PersonCard name="谈霁" role="第三方审计员" age="41" relation="死者" alibi="——">
+  核对月卡收入与抬杆次数；邮件约门卫当晚配合对账。
+</PersonCard>
+
+<PersonCard name="柏川" role="夜班门卫" age="38" relation="值班员" alibi="称 22:00–23:00 未离岗亭">
+  可手动抬员工通道闸杆；月卡收款与空抬杆对账由其当班复核。
+</PersonCard>
+
+<PersonCard name="霍砺" role="车场主管" age="47" relation="上级" alibi="A 座会议室门禁完整">
+  对差额知情但推给「系统误报」；当晚有会议记录。
+</PersonCard>
+
+<PersonCard name="闵柯" role="业主代表" age="52" relation="投诉方" alibi="业主群视频连线录屏">
+  与物业有车位纠纷，但时段可证明在线上。
+</PersonCard>
+
+<PersonCard name="曲宁" role="保洁员" age="29" relation="同事" alibi="B1 保洁点连续打卡">
+  需进入 B2 清扫，但打卡链完整。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="柏川" time="第一次问询">
+  「我整点都在岗亭。空抬杆可能是系统抽风，谈审计要来对账，我又没躲。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="霍砺" time="第一次问询">
+  「差额我让门卫自行解释。我在 A 座开会，门禁能查。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="曲宁" time="第一次问询">
+  「我在 B1 打卡清扫，没下 B2。扳手不是我的工具。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="柏川" time="第二次问询">
+  「考勤机没刷卡说明我没走员工通道。按钮抬杆？那是应急用的，我没用过。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="151" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "为何空抬杆比「有车牌抬杆」更危险？",
+    "岗亭电脑 22:16–22:40 无键鼠活动，能否证明人一直在？",
+    "谈霁邮件点名「十七次空抬杆」，威胁的是谁的收入链？",
+    "工卡未刷通道，是否等于未曾离开岗亭？",
+    "闵柯与霍砺谁的时段证据更难伪造？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+闸机最老实的时候，是它抬杆却拍不到车。那一次空，往往不是故障，而是有人故意把自己从画面里抠掉。
+
+<DetectiveNotes caseId="151" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是门卫柏川。
+
+柏川与外部合谋虚报月卡、用空抬杆放行未缴费车辆，差额长期挂在「系统异常」。谈霁邮件要求当晚对账，柏川在 22:16 点一次「在岗确认」后离开岗亭，经员工通道按钮空抬杆进入 B2，在消防通道用扳手袭击谈霁，再于 22:41 返回岗亭补点在岗。工卡未刷是因按钮抬杆无需刷卡；袖口纤维与扳手擦拭痕指向其接触现场。
+
+### 关键矛盾
+
+柏川声称整段未离岗，但闸机 22:17 空抬杆与岗亭电脑长静默同时出现；能按钮抬杆的人，恰恰不必留下刷卡记录。
+
+### 伏笔解析
+
+1. 22:17 空抬杆无车牌——有人故意避开 LPR。
+2. 按钮可抬杆——解释「工卡未刷」。
+3. 键鼠静默与双次在岗勾选——伪造值守。
+4. 谈霁对账邮件——直接动机。
+5. 袖口纤维与扳手——现场接触。
+6. 闵柯视频、曲宁打卡、霍砺门禁——红鲱鱼排除。
+7. 平板停在对账表——死者正要揭穿空抬杆差额。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
