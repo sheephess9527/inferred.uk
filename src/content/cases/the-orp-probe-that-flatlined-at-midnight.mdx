@@ -1,0 +1,166 @@
+---
+title: "午夜走平的氧化还原电位"
+caseId: "170"
+status: "unsolved"
+difficulty: 4
+types:
+  - "物证推理"
+  - "文书诡计"
+scene:
+  - "污水处理厂"
+  - "中控室"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "氧化还原电位（ORP）探头在 00:05–00:40 读数几乎走平，而加药泵电流显示同期有大量还原剂注入，说明什么？"
+    choices:
+      - text: "探头结垢"
+      - text: "有人把探头移出有效水体或旁路取样，使监测失真，同时真实加药量被用来掩盖偷排或超标排放"
+      - text: "泵空转正常"
+      - text: "软件显示延迟"
+    answer: 1
+  - q: "中控值班员韦砾称 00:00–01:00 曲线「一切正常」，破绽在哪？"
+    choices:
+      - text: "中控没有椅子"
+      - text: "加药泵电流与药剂罐液位下降证明大量加药，ORP 却走平，说明探头未反映真实水质；巡检摄像头拍到韦砾 00:10 在探头井旁，而环保督察员已约其当面核对偷排嫌疑"
+      - text: "韦砾不懂 ORP"
+      - text: "探头在维修"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "厂长——排放考核"
+      - text: "中控值班员韦砾——为掩盖夜间偷排将 ORP 探头旁路，督察员窦澄发现加药与曲线矛盾后将其杀害并伪造「探头故障」记录"
+      - text: "加药工——操作失误"
+      - text: "在线仪表商——设备维保"
+    answer: 1
+publishedAt: "2026-07-26"
+summary: "加药泵在半夜拼命工作，ORP 曲线却像一条死人的直线。探头若还泡在水里，数字不该这么安静。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者窦澄，市级环保督察员，48 岁，发现于污水厂中控室侧门，钝器伤；死亡时间约 00:45 至 01:10。", detail: "公文包内有未发送的现场笔录草稿，标题为「ORP 走平与加药电流矛盾」。" },
+  { label: "在线 ORP 探头历史数据：00:05–00:40 读数几乎走平（波动小于 5 mV）；同期加药泵电流与药剂罐液位显示大量还原剂注入，按化学计量 ORP 应显著偏移。", detail: "探头井壁有新鲜刮擦与提拉痕迹，井口安全链解开。" },
+  { label: "中控值班员韦砾称 00:00–01:00 曲线正常，走平「是探头结垢」，已在台账写「待维保」。", detail: "" },
+  { label: "巡检摄像头（独立存储）00:10 拍到韦砾在 ORP 探头井旁操作约六分钟；中控操作日志 00:12 有一次「数据保持」指令，账号韦砾。", detail: "「数据保持」可使上位机显示冻结或平滑。" },
+  { label: "窦澄督察函：该厂夜间出水 COD 抽检多次超标，怀疑加药台账造假与探头旁路，约韦砾零点班当面核对。", detail: "" },
+  { label: "厂长当晚在市区应酬，车载轨迹可核；加药工 23:00 交班后离厂；仪表商工程师次日才有工单。", detail: "红鲱鱼：考核压力、维保商。" },
+  { label: "凶器为中控室消防扳手，韦砾指纹在柄部；其工作服袖口有药剂罐区特有的还原剂气味残留（快速检测呈阳性）。", detail: "" },
+];
+
+## 一、案发
+
+污水处理厂的午夜闻起来像铁锈与消毒水。
+
+督察员窦澄倒在中控侧门。屏幕上，ORP 曲线平得像一条直线，加药泵的电流柱却在疯狂跳动。
+
+「泵在干活，」探员说，「探头像睡着了。」
+
+---
+
+## 二、人物
+
+<PersonCard name="窦澄" role="环保督察员" age="48" relation="死者" alibi="——">
+  怀疑夜间偷排与探头旁路，约零点班当面核对。
+</PersonCard>
+
+<PersonCard name="韦砾" role="中控值班员" age="41" relation="同事" alibi="称曲线正常、探头结垢">
+  00:10 在探头井操作；00:12 数据保持指令；加药与 ORP 矛盾。
+</PersonCard>
+
+<PersonCard name="靳浦" role="厂长" age="53" relation="上级" alibi="市区应酬">
+  排放考核压力大，车载轨迹不在厂。
+</PersonCard>
+
+<PersonCard name="饶汀" role="加药工" age="36" relation="同事" alibi="23:00 交班离厂">
+  交班后离厂，未参与零点操作。
+</PersonCard>
+
+<PersonCard name="华冕" role="仪表商工程师" age="39" relation="外协" alibi="次日工单">
+  无当日进厂记录。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="韦砾" time="第一次问询">
+  「曲线平稳说明水质好。探头可能结垢，我已经报了维保。窦督察自己摔的。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="靳浦" time="电话问询">
+  「考核是有压力，但我当晚不在厂。零点班归韦砾负责。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="饶汀" time="第一次问询">
+  「我十一点交班就走了，加药泵远程也能启停，中控能操作。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="韦砾" time="第二次问询">
+  「我去探头井是巡检。数据保持是滤波。袖口药剂味？加药间谁都有。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="170" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "大量加药而 ORP 走平，更像水质稳定还是探头未测到真水？",
+    "探头井刮擦与 00:10 井旁影像说明什么动作？",
+    "「数据保持」指令对上位机显示有何作用？",
+    "窦澄笔录标题如何直接指向矛盾？",
+    "袖口还原剂残留与「仅在中控」如何冲突？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+泵的电流不会说谎，探头却可以被拎出水面。曲线走平的四十分钟里，总有人希望监测闭嘴。
+
+<DetectiveNotes caseId="170" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是中控值班员韦砾。
+
+该厂夜间存在偷排与加药台账造假。韦砾在 00:05 前后将 ORP 探头旁路或提离有效水体，使曲线走平，同时启动加药泵制造「已处理」假象，并下发「数据保持」平滑显示。窦澄约零点班当面核对加药与曲线矛盾，发现异常后与韦砾冲突，被消防扳手击倒。探头井痕迹、独立摄像头、泵电流与药剂液位共同拆穿「探头结垢、水质正常」的说法。
+
+### 关键矛盾
+
+韦砾称曲线正常因水质好、走平因结垢，但加药泵大量注入时 ORP 应偏移，且其 00:10 出现在探头井并下发数据保持。
+
+### 伏笔解析
+
+1. ORP 走平 vs 加药电流——监测失真。
+2. 探头井刮擦——旁路/提拉探头。
+3. 00:10 摄像头——韦砾在场操作。
+4. 数据保持指令——伪造平稳曲线。
+5. 窦澄笔录草稿——灭口动机。
+6. 消防扳手指纹与袖口药剂——现场与加药区。
+7. 厂长应酬、加药工离厂、仪表商次日——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

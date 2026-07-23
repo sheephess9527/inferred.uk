@@ -1,0 +1,168 @@
+---
+title: "不是雷击的那次电压尖峰"
+caseId: "168"
+status: "unsolved"
+difficulty: 4
+types:
+  - "物证推理"
+  - "时间鉴定"
+scene:
+  - "变电站"
+  - "雷雨夜"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "SCADA 记录 21:47 出现单相电压尖峰，气象雷达显示当时雷暴中心在 40 公里外，说明什么？"
+    choices:
+      - text: "雷达误差"
+      - text: "尖峰并非远方雷击耦合，更可能是站内人为操作或旁路切换引起，与值班员「雷击导致跳闸」的说法矛盾"
+      - text: "设备老化"
+      - text: "电缆感应正常"
+    answer: 1
+  - q: "值班员戎碑称 21:40–22:10 一直在控制室未进高压区，破绽在哪？"
+    choices:
+      - text: "控制室没有窗"
+      - text: "高压区电子钥匙柜 21:45 取出记录为戎碑工号，SCADA 操作序列显示有人在 21:46 执行了未授权的旁路合闸，与其「未进高压区」矛盾"
+      - text: "戎碑不会取钥匙"
+      - text: "钥匙柜坏了"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "调度中心主任——考核"
+      - text: "值班员戎碑——私改保护定值掩盖过负荷，稽查工程师褚衡调取 SCADA 原始曲线后将其杀害，并用「雷击」叙事掩盖站内操作"
+      - text: "外线施工队长——施工纠纷"
+      - text: "安防承包商——监控合同"
+    answer: 1
+publishedAt: "2026-07-26"
+summary: "雷雨夜电压跳了一下。雷达说雷在四十公里外，SCADA 却说有人在站里合过一次不该合的闸。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者褚衡，电网稽查工程师，52 岁，发现于变电站高压区巡视廊道，电击与钝器复合伤；死亡时间约 21:50 至 22:15。", detail: "平板停留在 SCADA 历史曲线导出界面。" },
+  { label: "SCADA 系统记录 21:47 单相电压尖峰及一次未在调度令中的旁路合闸操作；气象雷达与雷电定位网显示 21:40–22:00 最近雷击落点距站 40 公里以上。", detail: "远方雷击不足以解释该形态尖峰与站内合闸序列。" },
+  { label: "值班员戎碑称 21:40–22:10 一直在控制室监盘，跳闸「是雷击引起」，未进入高压区。", detail: "" },
+  { label: "高压区电子钥匙柜日志：21:45 戎碑工号取出间隔钥匙；21:46 SCADA 操作站记录旁路合闸指令，源终端为站内本地操作员站。", detail: "" },
+  { label: "褚衡稽查任务单：复核该站近半年保护定值变更与过负荷告警隐瞒情况，戎碑多次在变更单上签字。", detail: "" },
+  { label: "外线施工队长当晚在 8 公里外抢修点签到；安防承包商监控室 21:30 后仅一人值守，无进站权限。调度中心主任在远端调度台，语音通话记录完整。", detail: "红鲱鱼：施工纠纷与安防合同。" },
+  { label: "廊道接地刀闸操作柄有新鲜汗渍与戎碑指纹；控制室监控 21:44–21:52 被切为「维护静止画面」，操作账号为戎碑。", detail: "" },
+];
+
+## 一、案发
+
+雷雨压境，变电站的指示灯却比雷声更先跳了一下。
+
+稽查工程师褚衡倒在高压区巡视廊道。值班员说：雷击，跳闸，正常处置。
+
+探员对照雷达：最近的落雷，在四十公里外。
+
+「尖峰是站里的。」他说，「不是天上下来的。」
+
+---
+
+## 二、人物
+
+<PersonCard name="褚衡" role="电网稽查工程师" age="52" relation="死者" alibi="——">
+  复核保护定值变更与过负荷隐瞒，调取 SCADA 原始曲线。
+</PersonCard>
+
+<PersonCard name="戎碑" role="值班员" age="44" relation="同事" alibi="称在控制室监盘">
+  21:45 取钥匙、21:46 旁路合闸；切监控维护画面；定值变更签字人。
+</PersonCard>
+
+<PersonCard name="阚舟" role="调度中心主任" age="50" relation="上级" alibi="远端调度台">
+  考核压力，但通话与调度日志完整。
+</PersonCard>
+
+<PersonCard name="穆野" role="外线施工队长" age="46" relation="外协" alibi="8 公里外抢修点">
+  与站方有施工窗口争执，签到可核。
+</PersonCard>
+
+<PersonCard name="巩瑟" role="安防承包" age="35" relation="外协" alibi="监控室值守">
+  无高压区钥匙权限。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="戎碑" time="第一次问询">
+  「雷雨夜跳闸很常见，我一直在控制室。褚工自己进高压区不规范，触电了。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="阚舟" time="电话问询">
+  「定值的事按流程走。我当晚在调度台，没进站。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="穆野" time="第一次问询">
+  「我们在外面抢修，没靠近变电站围墙。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="戎碑" time="第二次问询">
+  「钥匙是巡视规程要求取的。旁路合闸是应急。监控维护是系统自动的。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="168" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "40 公里外雷击能否解释站内旁路合闸序列？",
+    "钥匙柜 21:45 与 SCADA 21:46 如何拆穿「未进高压区」？",
+    "监控维护静止画面由谁账号切换？",
+    "保护定值变更签字与褚衡稽查任务如何构成动机？",
+    "操作柄指纹与「触电自伤」叙事能否并存？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+雷声可以当借口，雷达不会配合演戏。尖峰若从站里长出来，合闸的手就在附近。
+
+<DetectiveNotes caseId="168" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是值班员戎碑。
+
+戎碑长期私改保护定值、隐瞒过负荷，褚衡调取 SCADA 原始曲线将曝光。雷雨夜戎碑制造「雷击跳闸」叙事：21:45 取钥匙进入高压区，21:46 执行未授权旁路合闸制造尖峰与混乱，与褚衡在廊道冲突后致其死亡，并切换控制室监控为维护静止画面。雷达与雷电定位排除远方雷击主因，钥匙柜与操作序列钉死其在场。
+
+### 关键矛盾
+
+戎碑称雷击导致异常且人在控制室，但最近雷击在 40 公里外，而站内 21:45–21:46 有其工号取钥匙与旁路合闸。
+
+### 伏笔解析
+
+1. SCADA 尖峰 + 旁路合闸——站内人为操作。
+2. 雷达 40 公里——推翻雷击主叙事。
+3. 钥匙柜戎碑工号——进入高压区。
+4. 监控维护画面——掩盖廊道冲突。
+5. 定值变更签字——动机。
+6. 操作柄指纹——现场接触。
+7. 调度远端、施工外线、安防无权限——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>

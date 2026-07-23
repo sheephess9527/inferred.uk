@@ -1,0 +1,166 @@
+---
+title: "芯片多洗了一次的那批床单"
+caseId: "167"
+status: "unsolved"
+difficulty: 4
+types:
+  - "物证推理"
+  - "文书诡计"
+scene:
+  - "五星酒店洗衣房"
+  - "凌晨"
+readingTime: "12-16 分钟"
+clueCount: 7
+questions:
+  - q: "床单 RFID 芯片记录同批布草在 03:10 完成第二次完整洗涤循环，而生产单只登记一次，说明什么？"
+    choices:
+      - text: "芯片误读"
+      - text: "有人在凌晨把布草再投一次机，掩盖布草被调换或夹带出馆的痕迹，与「当班只洗一轮」的台账矛盾"
+      - text: "洗衣机自动重跑"
+      - text: "客人加单"
+    answer: 1
+  - q: "洗衣房领班路琛称 02:30–04:00 在休息室睡觉，破绽在哪？"
+    choices:
+      - text: "休息室没有床"
+      - text: "洗衣机启动日志账号为路琛，03:05 二次投洗，后门货梯称重记录同窗有异常出货，且丢失的是绣有贵宾房号的定制布草"
+      - text: "路琛不会开机"
+      - text: "洗衣房停电"
+    answer: 1
+  - q: "谁是真凶？"
+    choices:
+      - text: "客房部经理——布草损耗考核"
+      - text: "洗衣房领班路琛——盗卖定制贵宾布草，质检员于瑾发现 RFID 二次循环后将其杀害并伪造成设备误启动"
+      - text: "外协洗涤司机——运输丢失"
+      - text: "夜班保安——门禁纠纷"
+    answer: 1
+publishedAt: "2026-07-26"
+summary: "生产单只写洗了一轮。芯片却说，同一批床单在凌晨又走完了一次完整循环。"
+featured: false
+---
+
+import PersonCard from '../../components/PersonCard.astro';
+import TestimonyBlock from '../../components/TestimonyBlock.astro';
+import EvidenceList from '../../components/EvidenceList.astro';
+import DeductionQuestions from '../../components/DeductionQuestions.astro';
+import DetectiveNotes from '../../components/DetectiveNotes.astro';
+import RevealAnswer from '../../components/RevealAnswer.astro';
+
+export const evidence = [
+  { label: "死者于瑾，布草质检员，41 岁，发现于洗衣房烘干机旁，勒杀；死亡时间约 03:20 至 03:50。", detail: "手中平板停在 RFID 异常报告页：同批芯片二次全循环。" },
+  { label: "RFID 洗涤追踪系统（芯片缝入布草角，洗涤全程自动读头记录）显示贵宾套房定制床单批次在 03:10 完成第二次完整洗涤循环；当日生产单仅登记 01:40 一轮。", detail: "二次循环无法由误读解释：读头时间戳与进水、甩干阶段完整。" },
+  { label: "洗衣房领班路琛称 02:30–04:00 在员工休息室睡觉，生产单由系统自动生成，「没人二次开机」。", detail: "" },
+  { label: "洗衣机 PLC 启动日志：03:05 启动账号为路琛工号；后门货梯 03:15 称重记录一袋出货 18 公斤，目的地栏空，与正常布草回房路径不符。", detail: "" },
+  { label: "于瑾邮件草稿：近两周贵宾房定制布草 RFID 回房率低于出库率，怀疑夹带盗卖，约路琛凌晨对账。", detail: "" },
+  { label: "客房部经理荀岚对布草损耗考核压力大，但 02:00 后酒店管理系统显示其在行政楼层处理投诉至 04:00；外协司机当晚未进后门（无来访登记）。", detail: "红鲱鱼：考核压力与外协运输。" },
+  { label: "勒痕绳结为洗衣房常用捆扎绳，绳端纤维与路琛围裙口袋内残绳一致；夜班保安 03:00–04:00 在大堂巡更打点完整。", detail: "" },
+];
+
+## 一、案发
+
+酒店地下洗衣房蒸汽未散尽，质检员于瑾倒在烘干机旁，平板还亮着。
+
+RFID 报告写着：同一批贵宾套房床单，在 03:10 又走完了一次完整洗涤循环。生产单上，只有 01:40 那一轮。
+
+「布草不会自己跳进洗衣机。」探员说。
+
+---
+
+## 二、人物
+
+<PersonCard name="于瑾" role="布草质检员" age="41" relation="死者" alibi="——">
+  发现 RFID 回房率异常，约路琛凌晨对账。
+</PersonCard>
+
+<PersonCard name="路琛" role="洗衣房领班" age="38" relation="同事" alibi="称在休息室睡觉">
+  03:05 开机账号为其工号；货梯异常出货；围裙残绳与勒痕一致。
+</PersonCard>
+
+<PersonCard name="荀岚" role="客房部经理" age="45" relation="上级" alibi="行政楼层处理投诉">
+  布草损耗考核压力大，系统显示 02:00–04:00 在行政楼层。
+</PersonCard>
+
+<PersonCard name="齐渡" role="外协洗涤司机" age="40" relation="外协" alibi="未进后门">
+  无来访登记；正常收货在白班。
+</PersonCard>
+
+<PersonCard name="尚戎" role="夜班保安" age="36" relation="员工" alibi="大堂巡更打点">
+  03:00–04:00 巡更点完整，未进洗衣房。
+</PersonCard>
+
+---
+
+## 三、证词
+
+<TestimonyBlock speaker="路琛" time="第一次问询">
+  「我两点半就去休息室睡了，洗衣机要是二次启动，可能是上一班预设程序。于质检的事我不知道。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="荀岚" time="第一次问询">
+  「损耗考核是有，但我不碰洗衣机。我通宵在行政层处理一桩客人投诉。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="尚戎" time="第一次问询">
+  「后门货梯我三点多听见响过一次，以为是布草回房，没拦。」
+</TestimonyBlock>
+
+<TestimonyBlock speaker="路琛" time="第二次问询">
+  「账号是我的？密码班组共用。二次洗涤是质检要求重洗污渍，我记不清了。」
+</TestimonyBlock>
+
+---
+
+## 四、物证
+
+<EvidenceList caseId="167" items={evidence} />
+
+---
+
+## 五、推理问题
+
+<DeductionQuestions
+  questions={[
+    "RFID 二次全循环与生产单「只洗一轮」如何矛盾？",
+    "PLC 启动账号路琛与「休息室睡觉」如何冲突？",
+    "货梯 03:15 空目的地出货 18 公斤指向什么？",
+    "于瑾邮件约对账，谁最怕 RFID 回房率被查？",
+    "捆扎绳纤维在路琛围裙口袋，能否支持「密码共用」脱罪？",
+  ]}
+/>
+
+---
+
+## 六、你的推理
+
+芯片不怕蒸汽，只怕读头。同一批床单洗了两次，总有一次不是为了干净，而是为了让账面对得上。
+
+<DetectiveNotes caseId="167" />
+
+---
+
+## 七、揭晓真相
+
+<RevealAnswer>
+
+### 真相
+
+凶手是洗衣房领班路琛。
+
+路琛盗卖绣有贵宾房号的定制布草，以「重洗污渍」为名在 03:05 将替代布草二次投洗，使 RFID 显示该批次仍在馆内循环，掩盖真布草已从后门货梯运出。于瑾发现回房率异常并约凌晨对账，路琛在烘干机旁将其勒杀，伪称在休息室睡觉、系统自动误启动。PLC 工号、货梯称重与围裙残绳形成闭环。
+
+### 关键矛盾
+
+路琛称 02:30 后睡觉且未二次开机，但 03:05 启动账号为其工号，RFID 在 03:10 完成第二次全循环，货梯同步异常出货。
+
+### 伏笔解析
+
+1. RFID 二次全循环——掩盖盗卖的「假在馆」。
+2. 生产单只一轮——台账造假。
+3. PLC 路琛工号——本人操作。
+4. 货梯 18 公斤空目的地——真布草出馆。
+5. 于瑾对账邮件——灭口动机。
+6. 围裙残绳——凶器来源。
+7. 荀岚行政层、齐渡未进、尚戎巡更——红鲱鱼排除。
+
+真相从不明说。它只能被推断。
+
+</RevealAnswer>
