@@ -609,39 +609,39 @@ questions:
 | 153 | 没人按的那道黑场 | `the-cue-that-fired-with-no-hand` | |
 | 154 | 温探头挪到了隔壁缸 | `the-probe-moved-to-the-next-vat` | ★ |
 | 155 | 大风夜读零的风速仪 | `the-anemometer-that-read-zero` | |
-| 156 | 阀门计数器多跳的那几下 | `the-valve-counter-with-extra-clicks` | ★ |
-| 157 | 早了三天的胶点 | `the-tension-chart-glued-three-days-early` | |
-| 158 | 跑快了的透析计数 | `the-dialysis-counter-that-ran-too-fast` | |
-| 159 | 半空中归零的高度计 | `the-altimeter-that-reset-at-altitude` | ★ |
-| 160 | 多烧了一段的紫外灯 | `the-uv-lamp-timer-that-lied` | |
-| 161 | 播出日志里那段没直播的声音 | `the-playout-log-that-wasnt-live` | ★ |
-| 162 | 窑温曲线太年轻的那把壶 | `the-kiln-curve-that-was-too-young` | |
-| 163 | 撑得太久的气瓶记录 | `the-air-tank-log-that-lasted-too-long` | ★ |
-| 164 | 从未歇下来的心率项圈 | `the-heart-rate-collar-that-never-rested` | |
-| 165 | 推进速度跑赢工期的那段记录 | `the-thrust-log-that-outran-the-schedule` | |
+| 156 | 棘轮只认四十七次 | `the-valve-counter-with-extra-clicks` | ★ |
+| 157 | 胶口错了三天 | `the-tension-chart-glued-three-days-early` | |
+| 158 | 血泵算得比人诚实 | `the-dialysis-counter-that-ran-too-fast` | |
+| 159 | 两个高度，一句谎 | `the-altimeter-that-reset-at-altitude` | ★ |
+| 160 | 多亮了两小时的灯 | `the-uv-lamp-timer-that-lied` | |
+| 161 | 话筒亮着，人却不在 | `the-playout-log-that-wasnt-live` | ★ |
+| 162 | 壶是老的，窑是新的 | `the-kiln-curve-that-was-too-young` | |
+| 163 | 气瓶比报告喘得更久 | `the-air-tank-log-that-lasted-too-long` | ★ |
+| 164 | 项圈三周没歇过 | `the-heart-rate-collar-that-never-rested` | |
+| 165 | 推力表没让一成八 | `the-thrust-log-that-outran-the-schedule` | |
 | 166 | 血库冰箱暖了十二分钟 | `the-blood-fridge-that-warmed-twelve-minutes` | ★ |
 | 167 | 芯片多洗了一次的那批床单 | `the-laundry-chip-that-washed-twice` | |
 | 168 | 不是雷击的那次电压尖峰 | `the-scada-spike-that-wasnt-lightning` | |
 | 169 | 跳过一道药浴的显影计时 | `the-color-timer-that-skipped-a-bath` | ★ |
 | 170 | 午夜走平的氧化还原电位 | `the-orp-probe-that-flatlined-at-midnight` | |
-| 171 | 安全带锁扣少响的那一声 | `the-restraint-sensor-that-stayed-silent` | ★ |
-| 172 | 刹车记录晚了半秒的那一圈 | `the-ecu-log-that-braked-too-late` | |
-| 173 | 纸面上一直凉着的机房 | `the-cooling-log-that-stayed-cold-on-paper` | |
-| 174 | 灌溉时序里多浇的那一遍 | `the-irrigation-log-that-watered-past-midnight` | ★ |
-| 175 | 烘缸温度记录里偏凉的那一段 | `the-drying-cylinder-log-that-ran-too-cool` | |
-| 176 | 调温曲线里省掉的那一步 | `the-tempering-curve-that-skipped-a-step` | |
-| 177 | 麻醉记录里偏浅的那一段 | `the-anesthesia-log-that-ran-shallow` | ★ |
-| 178 | 航迹记录里抄近的那一段 | `the-gps-track-that-cut-the-mark` | |
-| 179 | 结算表上少算的那两百人 | `the-turnstile-count-the-ledger-forgot` | ★ |
-| 180 | 反作弊日志认出的那双手 | `the-anti-cheat-log-that-knew-the-hands` | |
-| 181 | 杀菌记录里没到温的那一段 | `the-pasteurization-log-that-ran-too-cool` | ★ |
-| 182 | 故障码没清过的那份维修单 | `the-obd-log-that-never-cleared` | |
-| 183 | 余氯记录里悄悄走低的那几天 | `the-chlorine-log-that-drifted-low` | ★ |
-| 184 | 计价器里程对不上账的那几单 | `the-meter-log-the-settlement-shrank` | ★ |
-| 185 | 扫描枪没扫到的那一格货架 | `the-scanner-log-that-never-left-the-warehouse` | |
-| 186 | 渲染农场日志里多算的那几个小时 | `the-render-farm-log-that-overcharged-hours` | |
-| 187 | 直播后台数据里虚涨的那场大促 | `the-livestream-backend-log-that-inflated-sales` | |
-| 188 | 飞控日志里没喷到的那片远地 | `the-flight-log-that-skipped-the-far-field` | ★ |
+| 171 | 联锁没拦住，报告拦住了 | `the-restraint-sensor-that-stayed-silent` | ★ |
+| 172 | 0.4秒，刹车片没瞒住 | `the-ecu-log-that-braked-too-late` | |
+| 173 | 机房热了三个钟头没人说 | `the-cooling-log-that-stayed-cold-on-paper` | |
+| 174 | 地下水少了四成 | `the-irrigation-log-that-watered-past-midnight` | ★ |
+| 175 | 少烧了十五度 | `the-drying-cylinder-log-that-ran-too-cool` | |
+| 176 | 省掉了一道结晶 | `the-tempering-curve-that-skipped-a-step` | |
+| 177 | 九分钟，浅睡过去 | `the-anesthesia-log-that-ran-shallow` | ★ |
+| 178 | 浮标记得那条近路 | `the-gps-track-that-cut-the-mark` | |
+| 179 | 满座，报的却是十九人 | `the-turnstile-count-the-ledger-forgot` | ★ |
+| 180 | 另一双手，键盘认出来了 | `the-anti-cheat-log-that-knew-the-hands` | |
+| 181 | 少烫了八度 | `the-pasteurization-log-that-ran-too-cool` | ★ |
+| 182 | 故障码，清不掉 | `the-obd-log-that-never-cleared` | |
+| 183 | 悄悄矮了五天的余氯 | `the-chlorine-log-that-drifted-low` | ★ |
+| 184 | 计价器多走了九公里 | `the-meter-log-the-settlement-shrank` | ★ |
+| 185 | 出库之后，货还在架上 | `the-scanner-log-that-never-left-the-warehouse` | |
+| 186 | 渲染农场，账算多了 | `the-render-farm-log-that-overcharged-hours` | |
+| 187 | 后台只认一千三百单 | `the-livestream-backend-log-that-inflated-sales` | |
+| 188 | 远田，无人机没去过 | `the-flight-log-that-skipped-the-far-field` | ★ |
 
 ★ = `featured: true`
 
@@ -876,11 +876,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-07-15 — 案卷扩充（156–160）
 
 - 新增案卷 **5 篇**（caseId 156–160）：行业记录仪批次
-  - 156 阀门计数器多跳的那几下（酒庄地窖·取样阀棘轮计数器 vs 品鉴日志不符，揭穿年份酒勾兑）
-  - 157 早了三天的胶点（缫丝厂·张力记录仪滚筒接纸胶点位置对不上走纸速度，纸带被调换）
-  - 158 跑快了的透析计数（血液透析中心·血泵转数记录 vs 护理时长缩水）
-  - 159 半空中归零的高度计（跳伞俱乐部·AAD 开伞高度 vs 机载黑匣子舱门高度矛盾）
-  - 160 多烧了一段的紫外灯（古籍修复室·紫外曝光记录仪 vs 工作日报缺口，揭穿孤本内页调换）
+  - 156 棘轮只认四十七次（酒庄地窖·取样阀棘轮计数器 vs 品鉴日志不符，揭穿年份酒勾兑）
+  - 157 胶口错了三天（缫丝厂·张力记录仪滚筒接纸胶点位置对不上走纸速度，纸带被调换）
+  - 158 血泵算得比人诚实（血液透析中心·血泵转数记录 vs 护理时长缩水）
+  - 159 两个高度，一句谎（跳伞俱乐部·AAD 开伞高度 vs 机载黑匣子舱门高度矛盾）
+  - 160 多亮了两小时的灯（古籍修复室·紫外曝光记录仪 vs 工作日报缺口，揭穿孤本内页调换）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：156、159
 - `pnpm check` 0 errors
 - 案卷总数 **155 → 160**；线索总数不变 **89**；下一篇 `caseId` **161**
@@ -888,11 +888,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-07-21 — 案卷扩充（161–165）
 
 - 新增案卷 **5 篇**（caseId 161–165）：行业记录仪批次二
-  - 161 播出日志里那段没直播的声音（广播电台·播出自动化触发源标识 vs 主持人「全程直播」证词）
-  - 162 窑温曲线太年轻的那把壶（紫砂陶艺坊·热电偶记录仪电窑曲线 vs 柴窑证书，揭穿仿古壶）
-  - 163 撑得太久的气瓶记录（消防站·呼吸器气瓶压力记录仪 vs 出警报告缩短耗尽时间）
-  - 164 从未歇下来的心率项圈（马术俱乐部·心率/GPS 项圈云端记录 vs 训练日志，揭穿保险诈骗）
-  - 165 推进速度跑赢工期的那段记录（隧道盾构工地·主控系统推力记录仪 vs 项目日报「正常受控」）
+  - 161 话筒亮着，人却不在（广播电台·播出自动化触发源标识 vs 主持人「全程直播」证词）
+  - 162 壶是老的，窑是新的（紫砂陶艺坊·热电偶记录仪电窑曲线 vs 柴窑证书，揭穿仿古壶）
+  - 163 气瓶比报告喘得更久（消防站·呼吸器气瓶压力记录仪 vs 出警报告缩短耗尽时间）
+  - 164 项圈三周没歇过（马术俱乐部·心率/GPS 项圈云端记录 vs 训练日志，揭穿保险诈骗）
+  - 165 推力表没让一成八（隧道盾构工地·主控系统推力记录仪 vs 项目日报「正常受控」）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：161、163
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（165 案全配图）
 - 案卷总数 **160 → 165**；线索总数不变 **89**；下一篇 `caseId` **166**
@@ -922,9 +922,9 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-07-28 — 案卷扩充（171–173）
 
 - 新增案卷 **3 篇**（caseId 171–173）：行业记录仪批次四
-  - 171 安全带锁扣少响的那一声（游乐园过山车·锁扣联锁传感器日志 vs 巡检报告「全部正常」）
-  - 172 刹车记录晚了半秒的那一圈（赛车维修站·ECU 黑匣子制动数据 vs 赛前检查表「检查合格」）
-  - 173 纸面上一直凉着的机房（数据中心·温控系统云端记录 vs 巡检报告「温度正常」）
+  - 171 联锁没拦住，报告拦住了（游乐园过山车·锁扣联锁传感器日志 vs 巡检报告「全部正常」）
+  - 172 0.4秒，刹车片没瞒住（赛车维修站·ECU 黑匣子制动数据 vs 赛前检查表「检查合格」）
+  - 173 机房热了三个钟头没人说（数据中心·温控系统云端记录 vs 巡检报告「温度正常」）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：171
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（173 案全配图）
 - 案卷总数 **170 → 173**；线索总数不变 **94**；下一篇 `caseId` **174**
@@ -933,11 +933,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-08-04 — 案卷扩充（174–178）
 
 - 新增案卷 **5 篇**（caseId 174–178）：行业记录仪批次五
-  - 174 灌溉时序里多浇的那一遍（高尔夫球场·灌溉控制器云端记录 vs 节水报告「下降 12%」，揭穿超采地下水）
-  - 175 烘缸温度记录里偏凉的那一段（造纸厂·烘缸温度记录仪 vs 质检报告「全批次合格」，揭穿以次充好）
-  - 176 调温曲线里省掉的那一步（巧克力工坊·调温机温度曲线 vs 工艺单「全程合规」，揭穿代可可脂掺假）
-  - 177 麻醉记录里偏浅的那一段（医院手术室·麻醉机流量记录 vs 记录单「全程达标」，揭穿赶台次减浅麻醉）
-  - 178 航迹记录里抄近的那一段（帆船俱乐部·GPS 航迹记录仪 vs 仲裁复核报告「航线合规」，揭穿决赛切标）
+  - 174 地下水少了四成（高尔夫球场·灌溉控制器云端记录 vs 节水报告「下降 12%」，揭穿超采地下水）
+  - 175 少烧了十五度（造纸厂·烘缸温度记录仪 vs 质检报告「全批次合格」，揭穿以次充好）
+  - 176 省掉了一道结晶（巧克力工坊·调温机温度曲线 vs 工艺单「全程合规」，揭穿代可可脂掺假）
+  - 177 九分钟，浅睡过去（医院手术室·麻醉机流量记录 vs 记录单「全程达标」，揭穿赶台次减浅麻醉）
+  - 178 浮标记得那条近路（帆船俱乐部·GPS 航迹记录仪 vs 仲裁复核报告「航线合规」，揭穿决赛切标）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：174、177
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（178 案全配图）
 - 案卷总数 **173 → 178**；线索总数不变 **94**；下一篇 `caseId` **179**
@@ -945,8 +945,8 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-08-11 — 案卷扩充（179–180）
 
 - 新增案卷 **2 篇**（caseId 179–180）：行业记录仪批次六
-  - 179 结算表上少算的那两百人（影院·数字放映服务器日志 + 检票闸机记录 vs 票房结算表「特惠专场」，揭穿偷票房）
-  - 180 反作弊日志认出的那双手（电竞俱乐部·反作弊系统设备指纹/击键特征 vs 赛后自查报告「均符合规定」，揭穿代打）
+  - 179 满座，报的却是十九人（影院·数字放映服务器日志 + 检票闸机记录 vs 票房结算表「特惠专场」，揭穿偷票房）
+  - 180 另一双手，键盘认出来了（电竞俱乐部·反作弊系统设备指纹/击键特征 vs 赛后自查报告「均符合规定」，揭穿代打）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：179
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（180 案全配图）
 - 案卷总数 **178 → 180**；线索总数不变 **94**；下一篇 `caseId` **181**
@@ -954,9 +954,9 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-08-18 — 案卷扩充（181–183）
 
 - 新增案卷 **3 篇**（caseId 181–183）：行业记录仪批次七
-  - 181 杀菌记录里没到温的那一段（果汁饮料工厂·巴氏杀菌记录仪 vs 出厂检验报告「全程达标」，揭穿杀菌不足）
-  - 182 故障码没清过的那份维修单（汽车维修厂·OBD 诊断记录 vs 维修单「已更换」，揭穿刹车片维修造假）
-  - 183 余氯记录里悄悄走低的那几天（温泉水疗馆·循环水监测仪 vs 巡检记录「各项指标合格」，揭穿军团菌超标）
+  - 181 少烫了八度（果汁饮料工厂·巴氏杀菌记录仪 vs 出厂检验报告「全程达标」，揭穿杀菌不足）
+  - 182 故障码，清不掉（汽车维修厂·OBD 诊断记录 vs 维修单「已更换」，揭穿刹车片维修造假）
+  - 183 悄悄矮了五天的余氯（温泉水疗馆·循环水监测仪 vs 巡检记录「各项指标合格」，揭穿军团菌超标）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：181、183
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（183 案全配图）
 - 案卷总数 **180 → 183**；线索总数不变 **94**；下一篇 `caseId` **184**
@@ -964,11 +964,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ### 2026-09-23 — 案卷扩充（184–188）
 
 - 新增案卷 **5 篇**（caseId 184–188）：行业记录仪批次八
-  - 184 计价器里程对不上账的那几单（网约车车队·计价器/GPS 行车记录仪 vs 结算系统，揭穿克扣司机提成）
-  - 185 扫描枪没扫到的那一格货架（快递分拣中心·分拣系统扫描枪日志 vs 出库报告「无异常」，揭穿贵重包裹调包）
-  - 186 渲染农场日志里多算的那几个小时（影视特效公司·渲染农场服务器日志 vs 结算报告，揭穿虚报渲染耗时）
-  - 187 直播后台数据里虚涨的那场大促（直播电商基地·平台后台成交数据 vs 战报，揭穿刷单骗取坑位费）
-  - 188 飞控日志里没喷到的那片远地（农业植保公司·无人机飞控日志 vs 作业验收单「全部完成」，揭穿跳喷地块）
+  - 184 计价器多走了九公里（网约车车队·计价器/GPS 行车记录仪 vs 结算系统，揭穿克扣司机提成）
+  - 185 出库之后，货还在架上（快递分拣中心·分拣系统扫描枪日志 vs 出库报告「无异常」，揭穿贵重包裹调包）
+  - 186 渲染农场，账算多了（影视特效公司·渲染农场服务器日志 vs 结算报告，揭穿虚报渲染耗时）
+  - 187 后台只认一千三百单（直播电商基地·平台后台成交数据 vs 战报，揭穿刷单骗取坑位费）
+  - 188 远田，无人机没去过（农业植保公司·无人机飞控日志 vs 作业验收单「全部完成」，揭穿跳喷地块）
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 4–5；featured：184、188
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（188 案全配图）
 - 案卷总数 **183 → 188**；线索总数不变 **94**；下一篇 `caseId` **189**
