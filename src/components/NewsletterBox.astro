@@ -1,5 +1,6 @@
 ---
-// v1：视觉占位，不接外部服务。表单禁用，提交不会发送任何数据。
+// 邮件订阅仍是视觉占位（不接外部服务，表单禁用，提交不会发送任何数据）。
+// RSS 订阅已是真实功能：/rss.xml 由 src/pages/rss.xml.js 在请求时动态生成。
 ---
 
 <section class="newsletter" aria-labelledby="newsletter-title">
@@ -21,7 +22,10 @@
       >即将开放</button
     >
   </form>
-  <p class="newsletter__note text-muted" id="newsletter-note">订阅功能正在筹备中。</p>
+  <p class="newsletter__note text-muted" id="newsletter-note">
+    邮件订阅正在筹备中；现在可以先用
+    <a class="newsletter__rss" href="/rss.xml">RSS 订阅新案卷更新</a>。
+  </p>
 </section>
 
 <style>
@@ -75,5 +79,9 @@
   .newsletter__note {
     margin: var(--space-4) 0 0;
     font-size: 0.78rem;
+  }
+  .newsletter__rss {
+    color: var(--color-gold);
+    text-decoration: underline;
   }
 </style>

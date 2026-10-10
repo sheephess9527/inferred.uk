@@ -65,6 +65,14 @@ export default defineConfig({
           return item;
         }
 
+        // 本周悬案：固定 URL、内容每周轮换，供外部分享长期引用
+        if (pathname === '/weekly/') {
+          item.priority = 0.8;
+          item.changefreq = ChangeFreqEnum.WEEKLY;
+          item.lastmod = buildLastmod;
+          return item;
+        }
+
         // 案卷详情：精选 0.8，普通 0.7；lastmod 取发布日
         if (pathname.startsWith('/cases/')) {
           const slug = pathname.replace(/^\/cases\//, '').replace(/\/$/, '');

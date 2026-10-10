@@ -764,6 +764,8 @@ questions:
 - SEO + sitemap（带 lastmod / changefreq / priority 加权）+ Open Graph + JSON-LD
 - 搜索引擎站点验证（Google / Bing / 百度，验证码填于 `src/siteConfig.ts`）
 - 分享：`ShareBar`（海报 / 微信 / 小红书 / 复制图文）
+- **新案卷订阅**（`/rss.xml`）：按 `publishedAt` 倒序，仅含标题/摘要/链接/分类，不含正文与揭晓真相，防剧透；`<head>` 带 `<link rel="alternate">` 发现标签，首页 `NewsletterBox` 内可直接订阅（邮件表单仍是占位，RSS 是真实功能）
+- **本周悬案**（`/weekly/`）：固定 URL、内容按「自 Unix 纪元以来的周数」对 featured 案卷取模轮换，服务端每次请求实时计算，无需每周手动换链接；专供外部分享（小红书/豆瓣等）长期引用同一地址；首页快速入口新增入口卡
 - PWA：雷达眼 logo 图标（512/192/apple-touch/maskable）
 - 响应式布局，支持「添加到主屏幕」
 
@@ -810,7 +812,9 @@ src/
 │   ├── cases/[slug].astro
 │   ├── archive.astro
 │   ├── clues/[slug].astro
-│   └── about.astro
+│   ├── about.astro
+│   ├── rss.xml.js      # 新案卷订阅
+│   └── weekly.astro    # 本周悬案（/weekly/，固定 URL 每周轮换）
 └── content.config.ts
 ```
 
@@ -841,6 +845,13 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
+
+- **新案卷订阅**：新增 `src/pages/rss.xml.js`（`@astrojs/rss`），按 `publishedAt` 倒序取最近 40 篇案卷，`description` 只用 frontmatter `summary`、不含正文与揭晓真相，防剧透；`BaseLayout` `<head>` 加 `<link rel="alternate" type="application/rss+xml">` 发现标签；首页 `NewsletterBox` 邮件表单仍保持占位（未接外部服务），旁边新增可用的「RSS 订阅新案卷更新」链接——这是路线图里"每周邮件案卷"的零后端替代方案
+- **本周悬案**：新增 `src/pages/weekly.astro`（`/weekly/`），固定 URL、内容每周轮换，供外部分享（小红书/豆瓣等）长期引用同一地址，不用每周换链接。轮换池只取 `featured` 案卷，按 `caseId` 稳定排序，用「`Date.now()` 除以 7 天取整」的周序号对池长度取模决定当前展示哪一篇；`output: 'server'` 下该页默认非预渲染，每次请求服务端实时计算，始终反映当前周。页面独立设置 `ogTitle`/`ogImage`（复用该案的分享图）/`publishedTime`，外部预览卡片能看到当周案卷信息而非站点默认图
+- 首页快速入口新增第四张卡片「本周悬案」，链接 `/weekly/`；`astro.config.mjs` sitemap `serialize()` 为 `/weekly/` 加规则（priority 0.8，changefreq weekly）
+- `pnpm check` 0 errors；`pnpm build` 验证两条新路由实际渲染正确（`wrangler dev` 本地请求 `/rss.xml`、`/weekly/` 均 200，OG 标签与案卷分享图对应）
 
 ### 2026-07-04 — 站内搜索 + 结构化数据 + 访问统计接入 + 清理冗余 PNG
 
@@ -1259,7 +1270,7 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 路线图（v1 之后）
 
-用户提交推理 · 推理评分 · 排行榜 · 每周邮件案卷 · 会员高难案件 · PDF 导出 · 系列案件。
+用户提交推理 · 推理评分 · 排行榜 · ~~每周邮件案卷~~（**RSS 已上线，邮件仍占位**，见下方「新案卷订阅」）· 会员高难案件 · PDF 导出 · 系列案件。
 
 ---
 

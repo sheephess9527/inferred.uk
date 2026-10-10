@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseCard from '../components/CaseCard.astro';
+
+// 本周悬案：固定 URL（/weekly/），内容每周轮换，专供外部分享（小红书/豆瓣等）长期链接同一地址。
+// 轮换池只取 featured 案卷（保证推出去的质量），按 caseId 顺序稳定排列，
+// 用「自 Unix 纪元以来的周数」取模决定当前该展示哪一篇——服务端渲染，每次请求实时计算，无需每周手动换链接。
+const allCases = await getCollection('cases');
+const pool = allCases
+  .filter((c) => c.data.featured)
+  .sort((a, b) => a.data.caseId.localeCompare(b.data.caseId));
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const weekIndex = Math.floor(Date.now() / WEEK_MS);
+const pick = pool[weekIndex % pool.length];
+
+const nextRotation = new Date((weekIndex + 1) * WEEK_MS);
+const nextRotationStr = nextRotation.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const card = {
+  caseId: pick.data.caseId,
+  title: pick.data.title,
+  summary: pick.data.summary,
+  difficulty: pick.data.difficulty,
+  types: pick.data.types,
+  readingTime: pick.data.readingTime,
+  status: pick.data.status,
+  slug: pick.id,
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: `本周悬案 · ${pick.data.title}`,
+  description: pick.data.summary,
+  datePublished: pick.data.publishedAt.toISOString(),
+};
+---
+
+<BaseLayout
+  title={`本周悬案｜${pick.data.title}｜推知 Inferred`}
+  description={`每周一换的悬案挑战。本周：${pick.data.title}——${pick.data.summary}`}
+  path="/weekly/"
+  ogTitle={`本周悬案 · ${pick.data.title}`}
+  ogImage={`/og/cases/${pick.id}.jpg`}
+  ogImageAlt={`案卷 ${pick.data.caseId}：${pick.data.title}`}
+  ogType="article"
+  publishedTime={pick.data.publishedAt.toISOString()}
+  jsonLd={jsonLd}
+>
+  <article class="container container--reading weekly">
+    <header class="weekly__header">
+      <p class="eyebrow">Weekly Case · 本周悬案</p>
+      <h1>每周一案，错过就要等下周</h1>
+      <p class="weekly__lead text-muted">
+        这个地址本身不会变——每周切换一篇精选案卷，适合长期收藏或转发。
+        下次更新：{nextRotationStr}。
+      </p>
+    </header>
+
+    <div class="weekly__card">
+      <CaseCard {...card} />
+    </div>
+
+    <p class="weekly__more text-muted">
+      想现在就开下一案？去 <a href="/cases/">案卷列表</a> 或 <a href="/archive/">档案馆</a> 按难度/场景挑一篇。
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .weekly {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+  .weekly__header {
+    margin-bottom: var(--space-8);
+  }
+  .weekly__lead {
+    max-width: 36rem;
+    margin-top: var(--space-3);
+  }
+  .weekly__card {
+    max-width: 28rem;
+  }
+  .weekly__more {
+    margin-top: var(--space-8);
+    font-size: 0.9rem;
+  }
+</style>
