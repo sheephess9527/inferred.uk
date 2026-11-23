@@ -88,7 +88,14 @@ test('reading → solved, scoring summary, locked choices and difficulty vote su
   await expect(summary).toBeVisible();
   await expect(summary).toContainText('正确 1 / 3 题');
   await expect(summary).toContainText('标记了 1 / 7 条');
+  const rows = summary.locator('.case-summary__row');
+  await expect(rows).toHaveCount(2);
+  for (const row of await rows.all()) {
+    await expect(row).toHaveCSS('display', 'flex');
+    await expect(row).toHaveCSS('justify-content', 'space-between');
+  }
   await expect(summary.locator('[data-verdict="unanswered"]')).toContainText('未作答');
+  await expect(summary.locator('[data-verdict="unanswered"]')).toHaveCSS('display', 'flex');
   await first.getByRole('button').first().click();
   expect(await stored(page, deductionKey)).toBe('{"0":2,"1":0}');
   await page.locator('[data-evidence-item]').first().click();

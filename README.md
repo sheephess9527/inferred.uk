@@ -477,6 +477,8 @@ export const evidence = [
 
 **`<style is:global>` 陷阱**：Astro `<style>` 块编译后会给选择器附加 `[data-astro-cid-xxx]` 属性限定符。但通过 `innerHTML` 或 `document.createElement` 在客户端脚本里动态创建的元素**不携带**该属性，导致 scoped 样式静默失效。凡是组件通过 JS 构建 DOM（如 `DetectiveNotes`、`CaseSummary`），必须使用 `<style is:global>`，并确保 class 名称唯一（`deduction__`、`case-summary__` 前缀已足够唯一）。
 
+**案件总结排版**：`CaseSummary` 使用全局样式恢复了揭晓后的物证识别、推理判断统计行及逐题详情排版。浏览器冒烟测试覆盖动态生成的统计行和逐题详情的布局。
+
 ### frontmatter 字段（`src/content.config.ts`）
 
 | 字段 | 类型 | 说明 |
