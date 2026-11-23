@@ -308,7 +308,7 @@
 
     function isSolved(): boolean {
       try {
-        return localStorage.getItem(`inferred:progress:${path}`) === 'solved';
+        return localStorage.getItem(`inferred:progress:${path.replace(/\/$/, '')}`) === 'solved';
       } catch {
         return false;
       }

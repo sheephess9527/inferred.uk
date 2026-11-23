@@ -474,7 +474,7 @@ const hasAnswers = items.some((item) => item.answer);
 
     // 如果案卷已经在之前的访问中揭晓，立即显示裁决（无动画）
     try {
-      const progressKey = `inferred:progress:${location.pathname}`;
+      const progressKey = `inferred:progress:${location.pathname.replace(/\/$/, '')}`;
       if (localStorage.getItem(progressKey) === 'solved') {
         revealFeedback(board, buttons, false);
       }
