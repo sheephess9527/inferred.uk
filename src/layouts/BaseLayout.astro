@@ -57,10 +57,7 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
   <head>
     <meta charset="UTF-8" />
     <!-- 预渲染页面由静态资源直接返回、不经 middleware，tuilis 别名在此兜底跳转到规范域名 -->
-    <script is:inline>
-      if (/^(www\.)?tuilis\.com$/.test(location.hostname))
-        location.replace('https://www.inferred.uk' + location.pathname + location.search + location.hash);
-    </script>
+    <script is:inline src="/host-redirect.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
@@ -125,31 +122,18 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {
+      jsonLd && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+        />
+      )
+    }
 
     <!-- 主题在首帧前确定，避免闪烁；同步浏览器/PWA 顶栏颜色 -->
-    <script is:inline>
-      (function () {
-        var THEME_COLORS = { dark: '#0E0E0C', light: '#E8E2D2' };
-        var STATUS_BAR = { dark: 'black-translucent', light: 'default' };
-        window.inferredApplyTheme = function (theme) {
-          var resolved = theme === 'light' ? 'light' : 'dark';
-          document.documentElement.dataset.theme = resolved;
-          var themeColor = document.getElementById('meta-theme-color');
-          var statusBar = document.getElementById('meta-status-bar');
-          if (themeColor) themeColor.setAttribute('content', THEME_COLORS[resolved]);
-          if (statusBar) statusBar.setAttribute('content', STATUS_BAR[resolved]);
-        };
-        try {
-          var saved = localStorage.getItem('inferred:theme');
-          if (saved === 'light' || saved === 'dark') {
-            window.inferredApplyTheme(saved);
-          } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-            window.inferredApplyTheme('light');
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <script is:inline src="/theme.js"></script>
 
     <!-- Cloudflare Web Analytics（无 Cookie；token 留空则不输出，见 src/siteConfig.ts） -->
     {

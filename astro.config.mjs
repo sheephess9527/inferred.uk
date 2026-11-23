@@ -41,6 +41,8 @@ const buildLastmod = new Date().toISOString();
 export default defineConfig({
   site: 'https://www.inferred.uk',
   output: 'server',
+  build: { inlineStylesheets: 'never' },
+  vite: { build: { assetsInlineLimit: 0 } },
   compressHTML: true,
   integrations: [
     mdx(),

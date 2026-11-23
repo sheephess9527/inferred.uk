@@ -8,16 +8,13 @@ const SECURITY_HEADERS: Record<string, string> = {
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-  // public/_headers 只作用于静态资源；SSR 的 HTML 响应需在此补 HSTS，值与 _headers 保持一致。
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  // Inline scripts are unavoidable with Astro's define:vars and is:inline
-  // patterns, so 'unsafe-inline' is required for script-src.
   // script-src: 'wasm-unsafe-eval' 供 Pagefind 搜索的 WebAssembly 使用；
   // cloudflareinsights 域名供 Cloudflare Web Analytics beacon 加载与上报。
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://static.cloudflareinsights.com",
-    "style-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com",
+    "style-src 'self'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
     "connect-src 'self' https://cloudflareinsights.com",
@@ -26,6 +23,12 @@ const SECURITY_HEADERS: Record<string, string> = {
     "form-action 'self'",
   ].join('; '),
 };
+
+if (import.meta.env.DEV) {
+  SECURITY_HEADERS['Content-Security-Policy'] = SECURITY_HEADERS[
+    'Content-Security-Policy'
+  ].replace(/(script|style)-src 'self'/g, "$& 'unsafe-inline'");
+}
 
 // 已删除线索文章 → 301 到相关继任文章（消除 Google Search Console 报告的 404）。
 // key 为旧 slug，value 为目标路径（统一带尾斜杠）。仅这些 slug 会被重定向，

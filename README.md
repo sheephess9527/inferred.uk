@@ -17,6 +17,36 @@
 
 ---
 
+## Content Security Policy
+
+- The static-page alias fallback uses synchronous `/host-redirect.js` early in the head; progress migration runs in `/case-progress.js` before component modules, preserving canonical keys without a trailing slash.
+- Production CSP no longer permits `unsafe-inline` in either `script-src` or `style-src`.
+  Other directives are unchanged, including Pagefind's `wasm-unsafe-eval` and
+  Cloudflare Analytics origins.
+- Only `pnpm dev` (`import.meta.env.DEV`) allows inline scripts/styles for Astro/Vite development injection; production builds and Wrangler retain the strict policy.
+- `src/middleware.ts` supplies the HTTP header for SSR HTML; `public/_headers`
+  supplies the same policy for prerendered Cloudflare Workers Static Assets.
+  Keep the two policies synchronized (`pnpm verify:csp` checks this).
+- Astro stylesheets and processed component scripts are always external
+  (`build.inlineStylesheets: 'never'`, Vite `assetsInlineLimit: 0`). No client
+  islands, inline style attributes, or HTML event-handler attributes currently exist.
+- The theme bootstrap is a synchronous, same-origin `/theme.js` in the head,
+  preserving theme selection before body rendering without an inline hash.
+  Home quick-start and case-progress scripts now read escaped `data-*` JSON
+  rather than `define:vars`. Case progress remains synchronous so deduction
+  questions are available before component modules execute.
+- Search initialization is `/search.js`, deferred after Pagefind's external UI
+  script. Pagefind CSS remains external. JSON-LD remains an inert
+  `application/ld+json` data block, with `<` escaped; it does not execute and
+  requires no CSP script hash. There are no remaining inline executable scripts
+  or styles, so there are no hashes to maintain.
+- Validate after building: `pnpm build && pnpm verify:csp && pnpm check && pnpm verify:og`.
+  `verify:csp` scans every emitted static HTML file and includes rejection checks
+  for inline scripts/styles/handlers. After `pnpm exec wrangler dev --port 8787`,
+  verify both delivery paths with
+  `pnpm verify:csp http://localhost:8787/cases/the-last-page/ http://localhost:8787/weekly/`.
+  Add SSR route URLs to this command when introducing new dynamic HTML surfaces.
+
 ## 🚀 快速接手（新 AI / 新账号必读）
 
 > 本节是给「第一次接手本项目的 AI 或维护者」的最小上下文。读完本节 + 下面「AI / 维护者速查」即可开始干活。
@@ -967,6 +997,11 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 本地验证：`pnpm build && npx wrangler dev --port 8787`，用 `curl -H "Host: tuilis.com"` 区分（静态页返回 200，SSR 路由返回 301）。
 
 ## 更新日志（精编）
+
+### 2026-11-23 — 严格 CSP（SSR 与预渲染）
+
+- 移除生产环境 `script-src` / `style-src` 的 `unsafe-inline`；主题、别名跳转、搜索与案卷进度脚本外置，组件脚本与样式禁止内联。保留旧进度键迁移、HSTS、分享图 30 天缓存与所有预渲染路由；仅开发环境允许 Astro/Vite 内联注入。
+- 新增 `pnpm verify:csp`，检查构建 HTML 与静态/SSR 策略一致性。
 
 ### 2026-11-23 — 静态路由预渲染，减少 Worker 调用
 
