@@ -1002,6 +1002,11 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 
 - 没有推理中的案卷时隐藏「继续推理」卡片；有阅读进度时仍显示案卷标题与链接。
 
+### 2026-11-23 — 修复线上构建版本号始终为 dev
+
+- Cloudflare Workers Builds 提供 `WORKERS_CI_COMMIT_SHA`，但 Astro 在 workerd 中预渲染时读不到构建进程的环境变量。现在在 `astro.config.mjs` 中解析版本号（`BUILD_ID` → `WORKERS_CI_COMMIT_SHA` → `CF_PAGES_COMMIT_SHA` → `GITHUB_SHA` → 本地 Git 提交 → `dev`），再由 Vite 注入构建产物。
+- `/version.json` 和页面的 `data-build` 使用同一个构建版本号；独立 App 检测到两个非空版本号不一致时仍提示更新。
+
 ### 2026-11-23 — 严格 CSP（SSR 与预渲染）
 
 - 移除生产环境 `script-src` / `style-src` 的 `unsafe-inline`；主题、别名跳转、搜索与案卷进度脚本外置，组件脚本与样式禁止内联。保留旧进度键迁移、HSTS、分享图 30 天缓存与所有预渲染路由；仅开发环境允许 Astro/Vite 内联注入。
