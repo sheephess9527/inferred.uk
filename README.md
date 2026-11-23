@@ -173,7 +173,7 @@ Cloudflare 监听 `main` 自动构建部署。
 
 **规范域名**：`https://www.inferred.uk`。`astro.config.mjs` 的 `site`、`public/robots.txt` 的 Sitemap、`@astrojs/sitemap` 生成的全部 URL 都用这个域名。对外宣传、搜索引擎提交一律用它。
 
-**Cloudflare 部署**：Worker 名为 `inferred`，监听 `main` 分支自动构建。根目录 `wrangler.jsonc` 的 `assets.directory` 为 `dist`；构建产物 `dist/server/wrangler.json` 里实际为 `../client`（Astro Cloudflare adapter 自动改写，正确，勿手动改）。
+**Cloudflare 部署**：Worker 名为 `inferred`，监听 `main` 分支自动构建。根目录 `wrangler.jsonc` 的 `assets.directory` 为 `dist`；构建产物 `dist/server/wrangler.json` 里实际为 `../client`（Astro Cloudflare adapter 自动改写，正确，勿手动改）。`observability` 为 `enabled: true` + `head_sampling_rate: 0.1`（2026-11-23 起，Workers Logs 头部采样降到 10%）。
 
 #### 别名域名跳转（已正常）
 
@@ -1001,6 +1001,12 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 本地验证：`pnpm build && npx wrangler dev --port 8787`，用 `curl -H "Host: tuilis.com"` 区分（静态页返回 200，SSR 路由返回 301）。
 
 ## 更新日志（精编）
+
+### 2026-11-23 — Workers Observability 采样降到 10%
+
+- `wrangler.jsonc`：`observability` 保持 `enabled: true`，新增 `head_sampling_rate: 0.1`，Workers Logs 头部采样降到 10%，减少观测数据量与开销；`/weekly/`、404/旧链接跳转这些走 Worker 的路由仍可查日志，只是按比例抽样。
+- 不涉其他配置：`assets.directory`、`compatibility_date`、`compatibility_flags` 均未动。
+- 验证：`astro build` + `pagefind` 构建通过，`dist/server/wrangler.json` 中实际输出 `observability.head_sampling_rate: 0.1`、`assets.directory` 仍为 `../client`；`dist/` 未提交（`.gitignore`）。
 
 ### 2026-11-23 — 新案卷 216
 
