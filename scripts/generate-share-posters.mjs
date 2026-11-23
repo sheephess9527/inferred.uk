@@ -5,7 +5,7 @@ import QRCode from 'qrcode';
 
 // 生成「分享海报」——竖版 1080×1440，含站点标识、案卷标题、摘要与二维码。
 // 用途：朋友圈 / 小红书无法渲染链接卡片，改为长按保存这张图直接发布。
-// 产物提交到 public/share/cases/{slug}.jpg（+ .png 备用）。
+// 产物提交到 public/share/cases/{slug}.jpg。
 
 const ROOT = process.cwd();
 const CASES_DIR = path.join(ROOT, 'src/content/cases');
@@ -142,7 +142,7 @@ async function generate() {
     await sharp(Buffer.from(svg), { density: 144 })
       .resize(W, H)
       .composite([{ input: qr, top: 1090 + 16, left: 88 + 16 }])
-      .jpeg({ quality: 80, mozjpeg: true })
+      .jpeg({ quality: 70, mozjpeg: true, progressive: true, chromaSubsampling: '4:2:0' })
       .toFile(`${base}.jpg`);
     count++;
   }
