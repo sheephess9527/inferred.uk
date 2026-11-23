@@ -535,7 +535,7 @@ const { caseId } = Astro.props;
     });
 
     try {
-      if (localStorage.getItem(`inferred:progress:${location.pathname}`) === 'solved') {
+      if (localStorage.getItem(`inferred:progress:${location.pathname.replace(/\/$/, '')}`) === 'solved') {
         revealFeedback(
           board,
           board.querySelectorAll<HTMLButtonElement>('[data-deduction-choice]'),

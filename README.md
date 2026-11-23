@@ -872,7 +872,24 @@ pnpm preview      # wrangler dev
 pnpm check
 pnpm og:export
 pnpm verify:og
+pnpm exec playwright install --with-deps chromium  # 首次运行浏览器测试
+pnpm test:e2e
 ```
+
+### 浏览器冒烟测试
+
+`pnpm test:e2e` 自动执行生产构建（含 Pagefind），再用 `wrangler dev` 在
+`http://127.0.0.1:8787` 提供 Cloudflare Worker / 静态资源；无需另开开发服务器。
+仅运行 Chromium，每个测试使用独立浏览器上下文，不共享 localStorage。
+覆盖物证分类循环与清除确认、推理问题勾选、判断题切换、阅读/结案状态、揭晓评分与案件总结、
+结案后锁定、难度投票及刷新持久化，以及 `/weekly/` 服务端路由到真实案卷的跳转。
+当前案卷没有配置 `hints`，因此真实页面未渲染提示系统，暂未覆盖顺序解锁；新增带提示的案卷时需补充该用例。
+CI 的独立 `e2e` job 安装 Chromium 后运行同一命令；失败时上传 HTML 报告、截图与 trace（保留 7 天）。
+本地用 `pnpm exec playwright show-report` 查看报告。
+
+同时修复结案进度键的尾斜杠不一致：所有进度读写统一使用无尾斜杠的案卷路径，
+避免刷新后难度投票消失、列表仍显示推理中。访问案卷时自动迁移旧的尾斜杠进度，
+优先保留已结案状态；评分结果键保持不变。冒烟测试包含该迁移回归用例。
 
 Windows 若 `pnpm` 报错，改用 `pnpm.cmd`。
 
@@ -881,7 +898,8 @@ Windows 若 `pnpm` 报错，改用 `pnpm.cmd`。
 ## 目录结构
 
 ```
-.github/workflows/     # CI：check + build
+.github/workflows/     # CI：check + verify:og + build；独立 Chromium e2e job
+tests/e2e/            # localStorage 交互冒烟测试
 scripts/
   export-og.mjs
   generate-share-images.mjs
