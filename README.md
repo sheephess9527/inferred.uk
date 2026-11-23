@@ -885,7 +885,7 @@ questions:
 - SEO + sitemap（带 lastmod / changefreq / priority 加权）+ Open Graph + JSON-LD
 - 搜索引擎站点验证（Google / Bing / 百度，验证码填于 `src/siteConfig.ts`）
 - 分享：`ShareBar`（海报 / 微信 / 小红书 / 复制图文）
-- **新案卷订阅**（`/rss.xml`）：请求时动态生成，收录全部案卷，按 `publishedAt` 倒序，仅含标题/摘要/链接/日期/分类，不含正文与揭晓真相，防剧透；`<head>` 带 `<link rel="alternate">` 发现标签。首页 `NewsletterBox` 提供订阅链接与可选中复制的完整地址，将地址粘贴到 RSS 阅读器的「添加订阅」即可；不收集邮箱，不依赖脚本或外部服务。
+- **新案卷订阅**（`/rss.xml`）：构建时生成，收录全部案卷，按 `publishedAt` 倒序，仅含标题/摘要/链接/日期/分类，不含正文与揭晓真相，防剧透；`<head>` 带 `<link rel="alternate">` 发现标签。浏览器直开时使用同源样式 `/rss.css` 排版；首页 `NewsletterBox` 提供订阅链接与可选中复制的完整地址，将地址粘贴到 RSS 阅读器的「添加订阅」即可；不收集邮箱，不依赖脚本或外部服务。
 - **本周悬案**（`/weekly/`）：固定 URL、内容按「自 Unix 纪元以来的周数」对 featured 案卷取模轮换，服务端每次请求实时计算，无需每周手动换链接；专供外部分享（小红书/豆瓣等）长期引用同一地址；首页快速入口新增入口卡
 - PWA：雷达眼 logo 图标（512/192/apple-touch/maskable）
 - 响应式布局，支持「添加到主屏幕」
@@ -999,6 +999,18 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 本地验证：`pnpm build && npx wrangler dev --port 8787`，用 `curl -H "Host: tuilis.com"` 区分（静态页返回 200，SSR 路由返回 301）。
 
 ## 更新日志（精编）
+
+### 2026-11-23 — 补齐 favicon.ico
+
+- 从现有 `favicon.svg` 生成 `public/favicon.ico`，使直接请求 `/favicon.ico` 的浏览器不再遇到 404；页面仍使用 SVG 图标。
+
+### 2026-11-23 — 修复 RSS 在 Chrome 中的显示
+
+- `/rss.xml` 引用同源 CSS，在严格 CSP 下显示标题、摘要和案卷列表，不依赖 Chrome 内置 XML 查看器或 XSLT。RSS 2.0 内容和安全响应头均不变。
+
+### 2026-11-23 — 首页继续推理卡片
+
+- 没有推理中的案卷时隐藏「继续推理」卡片；有阅读进度时仍显示案卷标题与链接。
 
 ### 2026-11-23 — 修复线上构建版本号始终为 dev
 

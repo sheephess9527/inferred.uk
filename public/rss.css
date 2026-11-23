@@ -1,0 +1,54 @@
+rss,
+channel,
+item,
+title,
+description,
+pubDate,
+link {
+  display: block;
+}
+
+rss {
+  color-scheme: light dark;
+  background: Canvas;
+  color: CanvasText;
+  font: 1rem/1.6 system-ui, sans-serif;
+  padding: clamp(1rem, 4vw, 2rem);
+  overflow-wrap: anywhere;
+}
+
+channel {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+channel > title {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+channel > description::after {
+  display: block;
+  margin-block: 0.5rem 1rem;
+  content: '将此页地址添加到 RSS 阅读器，即可订阅新案卷。';
+}
+
+item {
+  border-block-start: 1px solid GrayText;
+  padding-block: 1rem;
+}
+
+item > title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+item > pubDate,
+item > link {
+  font-size: 0.875rem;
+}
+
+channel > :not(title, description, item),
+item > :not(title, description, pubDate, link) {
+  display: none;
+}
