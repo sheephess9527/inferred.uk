@@ -17,6 +17,34 @@
 
 ---
 
+## Content Security Policy
+
+- CSP no longer permits `unsafe-inline` in either `script-src` or `style-src`.
+  Other directives are unchanged, including Pagefind's `wasm-unsafe-eval` and
+  Cloudflare Analytics origins.
+- `src/middleware.ts` supplies the HTTP header for SSR HTML; `public/_headers`
+  supplies the same policy for prerendered Cloudflare Workers Static Assets.
+  Keep the two policies synchronized (`pnpm verify:csp` checks this).
+- Astro stylesheets and processed component scripts are always external
+  (`build.inlineStylesheets: 'never'`, Vite `assetsInlineLimit: 0`). No client
+  islands, inline style attributes, or HTML event-handler attributes currently exist.
+- The theme bootstrap is a synchronous, same-origin `/theme.js` in the head,
+  preserving theme selection before body rendering without an inline hash.
+  Home quick-start and case-progress scripts now read escaped `data-*` JSON
+  rather than `define:vars`. Case progress remains synchronous so deduction
+  questions are available before component modules execute.
+- Search initialization is `/search.js`, deferred after Pagefind's external UI
+  script. Pagefind CSS remains external. JSON-LD remains an inert
+  `application/ld+json` data block, with `<` escaped; it does not execute and
+  requires no CSP script hash. There are no remaining inline executable scripts
+  or styles, so there are no hashes to maintain.
+- Validate after building: `pnpm build && pnpm verify:csp && pnpm check && pnpm verify:og`.
+  `verify:csp` scans every emitted static HTML file and includes rejection checks
+  for inline scripts/styles/handlers. After `pnpm exec wrangler dev --port 8787`,
+  verify both delivery paths with
+  `pnpm verify:csp http://localhost:8787/cases/the-last-page/ http://localhost:8787/`.
+  Add SSR route URLs to this command when introducing new dynamic HTML surfaces.
+
 ## 🚀 快速接手（新 AI / 新账号必读）
 
 > 本节是给「第一次接手本项目的 AI 或维护者」的最小上下文。读完本节 + 下面「AI / 维护者速查」即可开始干活。
