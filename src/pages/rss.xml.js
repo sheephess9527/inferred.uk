@@ -12,6 +12,7 @@ export async function GET(context) {
     title: '推知 Inferred — 新案卷',
     description: '真相从不明说，只能被推断。新案卷上架即第一时间收到。',
     site: context.site,
+    stylesheet: '/rss.css',
     items: sorted.map((entry) => ({
       title: entry.data.title,
       description: entry.data.summary,
