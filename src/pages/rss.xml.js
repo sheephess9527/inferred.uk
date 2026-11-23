@@ -1,8 +1,6 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
-export const prerender = true;
-
 // 新案卷更新订阅：只用 frontmatter summary 做摘要，不含正文/揭晓真相，避免 RSS 阅读器剧透。
 export async function GET(context) {
   const cases = await getCollection('cases');
