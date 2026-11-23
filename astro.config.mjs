@@ -3,10 +3,28 @@ import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
+import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
 import cloudflare from '@astrojs/cloudflare';
+
+function localGitSha() {
+  try {
+    return execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+  } catch {
+    return undefined;
+  }
+}
+
+// workerd 预渲染拿不到构建进程的环境变量，版本号需在 Node 中求值。
+const buildId =
+  process.env.BUILD_ID ??
+  process.env.WORKERS_CI_COMMIT_SHA ??
+  process.env.CF_PAGES_COMMIT_SHA ??
+  process.env.GITHUB_SHA ??
+  localGitSha() ??
+  'dev';
 
 // 读取某个内容目录下每篇的 frontmatter，提取 sitemap 需要的元信息：
 // publishedAt 作为 lastmod、featured 用于提升精选案卷的 priority。
@@ -42,7 +60,10 @@ export default defineConfig({
   site: 'https://www.inferred.uk',
   output: 'server',
   build: { inlineStylesheets: 'never' },
-  vite: { build: { assetsInlineLimit: 0 } },
+  vite: {
+    build: { assetsInlineLimit: 0 },
+    define: { __INFERRED_BUILD_ID__: JSON.stringify(buildId) },
+  },
   compressHTML: true,
   integrations: [
     mdx(),
