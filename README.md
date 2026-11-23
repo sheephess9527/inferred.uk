@@ -1002,6 +1002,10 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 
 - `/rss.xml` 引用同源 CSS，在严格 CSP 下显示标题、摘要和案卷列表，不依赖 Chrome 内置 XML 查看器或 XSLT。RSS 2.0 内容和安全响应头均不变。
 
+### 2026-11-23 — 首页继续推理卡片
+
+- 没有推理中的案卷时隐藏「继续推理」卡片；有阅读进度时仍显示案卷标题与链接。
+
 ### 2026-11-23 — 修复线上构建版本号始终为 dev
 
 - Cloudflare Workers Builds 提供 `WORKERS_CI_COMMIT_SHA`，但 Astro 在 workerd 中预渲染时读不到构建进程的环境变量。现在在 `astro.config.mjs` 中解析版本号（`BUILD_ID` → `WORKERS_CI_COMMIT_SHA` → `CF_PAGES_COMMIT_SHA` → `GITHUB_SHA` → 本地 Git 提交 → `dev`），再由 Vite 注入构建产物。
