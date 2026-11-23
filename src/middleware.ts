@@ -23,6 +23,12 @@ const SECURITY_HEADERS: Record<string, string> = {
   ].join('; '),
 };
 
+if (import.meta.env.DEV) {
+  SECURITY_HEADERS['Content-Security-Policy'] = SECURITY_HEADERS[
+    'Content-Security-Policy'
+  ].replace(/(script|style)-src 'self'/g, "$& 'unsafe-inline'");
+}
+
 // 已删除线索文章 → 301 到相关继任文章（消除 Google Search Console 报告的 404）。
 // key 为旧 slug，value 为目标路径（统一带尾斜杠）。仅这些 slug 会被重定向，
 // 其余线索正常走 next() 渲染。

@@ -19,9 +19,10 @@
 
 ## Content Security Policy
 
-- CSP no longer permits `unsafe-inline` in either `script-src` or `style-src`.
+- Production CSP no longer permits `unsafe-inline` in either `script-src` or `style-src`.
   Other directives are unchanged, including Pagefind's `wasm-unsafe-eval` and
   Cloudflare Analytics origins.
+- Only `pnpm dev` (`import.meta.env.DEV`) allows inline scripts/styles for Astro/Vite development injection; production builds and Wrangler retain the strict policy.
 - `src/middleware.ts` supplies the HTTP header for SSR HTML; `public/_headers`
   supplies the same policy for prerendered Cloudflare Workers Static Assets.
   Keep the two policies synchronized (`pnpm verify:csp` checks this).
