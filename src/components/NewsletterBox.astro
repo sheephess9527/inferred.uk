@@ -1,3 +1,7 @@
+---
+const feedUrl = new URL('/rss.xml', Astro.site).href;
+---
+
 <section class="newsletter" aria-labelledby="newsletter-title">
   <p class="eyebrow">RSS · 新案卷订阅</p>
   <h2 class="newsletter__title" id="newsletter-title">让下一份案卷找到你</h2>
@@ -10,7 +14,7 @@
     <input
       id="newsletter-feed"
       type="url"
-      value="https://inferred.uk/rss.xml"
+      value={feedUrl}
       readonly
       aria-describedby="newsletter-note"
     />
