@@ -29,7 +29,7 @@
 ### 2. 上手三步
 
 ```bash
-pnpm install            # Node 18+（推荐 20/22）；Windows 用 pnpm.cmd
+pnpm install            # Node.js 22.23.4 或更高版本；Windows 用 pnpm.cmd
 pnpm dev                # 本地预览 http://localhost:4321
 pnpm check              # 提交前必须 0 errors
 ```
@@ -858,7 +858,7 @@ questions:
 
 ## 本地运行
 
-需要 Node 18+（推荐 20/22）。
+需要 Node.js 22.23.4 或更高版本（Astro 7 的最低要求）。
 
 ```bash
 pnpm install
@@ -912,6 +912,7 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 | 项 | 值 |
 |----|-----|
 | 构建命令 | `pnpm run build` |
+| Node.js | 22.23.4 或更高版本（若 Worker Builds 已设置 `NODE_VERSION`，请确认符合要求） |
 | 部署命令 | `pnpm dlx wrangler deploy` |
 | 说明 | 构建环境不装 devDependencies，故用 `pnpm dlx` 而非 `pnpm exec wrangler` |
 
@@ -924,6 +925,8 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 > 4. **浏览器/边缘缓存**：强刷，或 Cloudflare Caching → Purge Everything。
 
 ### 路由与静态资源
+
+Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
 
 `output: 'server'`，但除下列例外，所有页面都 `export const prerender = true`，构建为 `dist/client/` 下的静态文件，由 Workers Static Assets 在 Worker 之前直接返回，**不产生 Worker 调用**（Workers 免费计划每天 10 万次请求配额只消耗在 SSR 路由上）：
 
@@ -948,6 +951,11 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 - 首页、`/archive/`、`/search/`、`/cases/`、`/clues/`、`/about/`、`/rss.xml`、`/version.json` 加 `export const prerender = true`，改由静态资源直接返回、不再调用 Worker；`/weekly/` 和 404 保持 SSR（原因见「部署 → 路由与静态资源」）。sitemap、RSS、Pagefind 索引（309 页）与改动前一致。
 - `public/_headers` 的 `/*` 增加与 middleware 相同的 CSP，此前已预渲染的案卷/线索详情页也补齐了 CSP。
 - `BaseLayout` 增加 tuilis.com 内联跳转兜底，用于不经 middleware 的静态页；推荐再加免费 Redirect Rule，实现边缘 301。
+
+### 2026-11-23 — Astro 7 与 Cloudflare 工具链升级
+
+- Astro 6.4.8 → 7.4.13、Cloudflare 适配器 13.7.0 → 14.4.9、MDX 6.0.3 → 8.1.6、Wrangler 4.103.0 → 4.166.0（仍为 v4）；同步更新 Sitemap、Pagefind、两套 Fontsource 字体、Astro Check 和 Prettier。
+- 显式保留原有的 `unified()` Markdown/MDX 渲染与 `compressHTML: true` 空白处理，避免升级默认值改变现有内容；保留 SSR、预渲染和 Workers Static Assets，不启用额外 Cloudflare 服务。
 
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
