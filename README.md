@@ -10,7 +10,7 @@
 ```
 
 - **仓库**：`sheephess9527/inferred.uk`，部署分支 `main`
-- **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，SSR）
+- **技术栈**：Astro + MDX + Cloudflare Workers（`@astrojs/cloudflare`，页面以预渲染静态为主，仅 `/weekly/` 与 404/旧链接跳转走 SSR）
 - **当前规模**：**215 篇案卷**（001–215）+ **94 篇线索**
 - **线上域名**：规范域名 **`https://www.inferred.uk`**（见下方「域名与部署现状」）
 - **最新提交**：见下方更新日志
@@ -23,7 +23,7 @@
 
 ### 1. 这是什么、跑在哪
 
-- 原创互动推理案卷站，纯静态内容（案卷/线索写在 `src/content/`），Astro 构建后由 **Cloudflare Workers** 托管（SSR + 静态资源）。
+- 原创互动推理案卷站，纯静态内容（案卷/线索写在 `src/content/`），Astro 构建后由 **Cloudflare Workers** 托管（预渲染静态页 + 少量 SSR，见「部署 → 路由与静态资源」）。
 - **`main` 是部署分支**：Cloudflare 监听 `main`，push 即自动构建上线。历史上虽有功能分支 `claude/website-optimization-review-shj08x`，但最终内容都要合并/推送到 `main` 才会上线。**改完内容务必最终落到 `main`。**
 
 ### 2. 上手三步
@@ -50,7 +50,7 @@ pnpm check              # 提交前必须 0 errors
 |------|------|------|
 | `https://www.inferred.uk` | ✅ 正常 | **规范域名**，`astro.config.mjs` 的 `site`、`robots.txt`、sitemap 均指向它 |
 | `https://inferred.uk`（裸域名） | ✅ 正常 | 522 已于 2026-06-28 解决，现可正常访问 |
-| `www.tuilis.com` / `tuilis.com` | ✅ 跳转正常 | 通过 `src/middleware.ts` 301 跳到 `www.inferred.uk`；已在 Cloudflare 加 Custom Domain |
+| `www.tuilis.com` / `tuilis.com` | ✅ 跳转正常 | SSR 路由由 `src/middleware.ts` 301 跳到 `www.inferred.uk`；预渲染页面不经 Worker，由 `BaseLayout` 内联脚本兜底跳转（canonical 也指向 www）。要让边缘直接 301，可在 tuilis.com 区域加免费 Redirect Rule（见「路由与静态资源」）；已在 Cloudflare 加 Custom Domain |
 
 ### 5. 当前待办（接手后可直接推进）
 
@@ -925,11 +925,29 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ### 路由与静态资源
 
-`astro.config.mjs` 中 `routes.extend.exclude` 排除 `/share/cases/*`、`/og/cases/*`、`/og/clues/*`，避免 Worker 拦截静态分享图（Cloudflare `_routes.json` 通配符 `*` 只匹配单段路径）。
+`output: 'server'`，但除下列例外，所有页面都 `export const prerender = true`，构建为 `dist/client/` 下的静态文件，由 Workers Static Assets 在 Worker 之前直接返回，**不产生 Worker 调用**（Workers 免费计划每天 10 万次请求配额只消耗在 SSR 路由上）：
 
----
+| 路由 | 渲染方式 | 原因 |
+|------|----------|------|
+| `/`、`/archive/`、`/search/`、`/cases/`、`/clues/`、`/about/`、`/cases/*`、`/clues/*`、`/rss.xml`、`/version.json` | 预渲染（静态） | 内容只随构建变化；每次 push `main` 都会重新构建 |
+| `/weekly/` | SSR | 按当前周序号实时选案，且 OG 标签需反映当周案卷（社交平台爬虫不执行 JS） |
+| 404 页（`src/pages/404.astro`） | SSR | 未命中静态文件的请求本来就会进 Worker；若预渲染，adapter 直接回静态 404、跳过 middleware，旧线索 301 和 tuilis 跳转会失效 |
+
+注意事项：
+
+- **安全头**：静态页不经过 `src/middleware.ts`，其 CSP 等安全头来自 `public/_headers` 的 `/*` 规则；修改 CSP 时两处须同步。
+- **旧线索跳转**（`CLUE_REDIRECTS`）：这些 slug 没有静态文件，请求落到 Worker，由 middleware 301。
+- **别名域名**：Workers Static Assets 只能按路径决定是否先跑 Worker，不能按域名。`tuilis.com` 访问预渲染页时不经 middleware，由 `BaseLayout` 内联脚本 `location.replace` 到 `https://www.inferred.uk`（保留路径、查询串和 hash）。想要零 Worker 调用的真正 301，用免费的 Rules → Redirect Rules（每个区域免费 10 条）：tuilis.com 区域 `(http.host in {"tuilis.com" "www.tuilis.com"})` → 动态 `concat("https://www.inferred.uk", http.request.uri.path)`，保留查询串，301。裸域名 `inferred.uk` 同理。**不要用 `assets.run_worker_first: true`**，它会让每个静态请求都调用 Worker，抵消预渲染的收益。
+- 新增页面时：内容不依赖请求（时间、Cookie、查询串、Host）就加 `export const prerender = true`。
+- 本地验证：`pnpm build && npx wrangler dev --port 8787`，用 `curl -H "Host: tuilis.com"` 区分（静态页返回 200，SSR 路由返回 301）。
 
 ## 更新日志（精编）
+
+### 2026-11-23 — 静态路由预渲染，减少 Worker 调用
+
+- 首页、`/archive/`、`/search/`、`/cases/`、`/clues/`、`/about/`、`/rss.xml`、`/version.json` 加 `export const prerender = true`，改由静态资源直接返回、不再调用 Worker；`/weekly/` 和 404 保持 SSR（原因见「部署 → 路由与静态资源」）。sitemap、RSS、Pagefind 索引（309 页）与改动前一致。
+- `public/_headers` 的 `/*` 增加与 middleware 相同的 CSP，此前已预渲染的案卷/线索详情页也补齐了 CSP。
+- `BaseLayout` 增加 tuilis.com 内联跳转兜底，用于不经 middleware 的静态页；推荐再加免费 Redirect Rule，实现边缘 301。
 
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
