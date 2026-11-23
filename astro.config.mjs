@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import fs from 'node:fs';
@@ -42,6 +43,7 @@ export default defineConfig({
   output: 'server',
   build: { inlineStylesheets: 'never' },
   vite: { build: { assetsInlineLimit: 0 } },
+  compressHTML: true,
   integrations: [
     mdx(),
     sitemap({
@@ -104,13 +106,12 @@ export default defineConfig({
   ],
 
   markdown: {
+    processor: unified(),
     shikiConfig: {
       theme: 'css-variables',
     },
   },
 
-  // @astrojs/cloudflare v13 使用 Workers Static Assets 模型：public/ 下的静态资源
-  // （/share/cases/*、/og/* 等）由 wrangler.jsonc 的 assets binding 在 Worker 之前
-  // 直接命中返回，无需再用 routes.extend.exclude 生成 _routes.json（该选项 v13 已移除）。
+  // 静态资源由 Workers Static Assets 优先返回，未命中的请求交给 Worker。
   adapter: cloudflare(),
 });

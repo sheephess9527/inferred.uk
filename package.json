@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.11.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
   "description": "Inferred — 原创互动悬疑推理案卷站。真相从不明说，只能被推断。",
   "scripts": {
     "dev": "astro dev",
@@ -20,23 +23,24 @@
     "format": "prettier --write 'src/**/*.{astro,ts,js,mjs}' 'astro.config.mjs' '*.{ts,js,mjs}'"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/cloudflare": "^13.7.0",
-    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/cloudflare": "^14.4.9",
+    "@astrojs/markdown-remark": "^7.3.10",
+    "@astrojs/mdx": "^8.1.6",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.6.0",
-    "@fontsource/ibm-plex-mono": "^5.2.0",
-    "@fontsource/playfair-display": "^5.2.0",
-    "astro": "^6.4.8",
-    "pagefind": "^1.5.2",
+    "@astrojs/sitemap": "^3.7.6",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "astro": "^7.4.13",
+    "pagefind": "^1.6.0",
     "typescript": "^5.9.0"
   },
   "devDependencies": {
-    "prettier": "^3.8.4",
+    "prettier": "^3.10.1",
     "prettier-plugin-astro": "^0.14.1",
     "qrcode": "^1.5.4",
     "sharp": "^0.34.5",
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.166.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
