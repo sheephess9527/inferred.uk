@@ -946,6 +946,10 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - Astro 6.4.8 → 7.4.13、Cloudflare 适配器 13.7.0 → 14.4.9、MDX 6.0.3 → 8.1.6、Wrangler 4.103.0 → 4.166.0（仍为 v4）；同步更新 Sitemap、Pagefind、两套 Fontsource 字体、Astro Check 和 Prettier。
 - 显式保留原有的 `unified()` Markdown/MDX 渲染与 `compressHTML: true` 空白处理，避免升级默认值改变现有内容；保留 SSR、预渲染和 Workers Static Assets，不启用额外 Cloudflare 服务。
 
+### 2026-11-23 — 首页主按钮对比度
+
+- 首页「开始推理」使用独立的 `--color-on-accent` 浅纸色文字令牌，避免亮色主题的正文色覆盖深红按钮文字；保留现有强调色及其他用途不变。深浅主题的普通/键盘焦点状态文字对比度均为 6.26:1，悬停（含焦点叠加）为 8.04:1，满足 WCAG AA。
+
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
 - **新案卷订阅**：新增 `src/pages/rss.xml.js`（`@astrojs/rss`），按 `publishedAt` 倒序取最近 40 篇案卷，`description` 只用 frontmatter `summary`、不含正文与揭晓真相，防剧透；`BaseLayout` `<head>` 加 `<link rel="alternate" type="application/rss+xml">` 发现标签；首页 `NewsletterBox` 邮件表单仍保持占位（未接外部服务），旁边新增可用的「RSS 订阅新案卷更新」链接——这是路线图里"每周邮件案卷"的零后端替代方案
@@ -1311,6 +1315,11 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 5；featured：215
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（215 案全配图）
 - 案卷总数 **214 → 215**；线索总数不变 **94**；下一篇 `caseId` **216**
+
+### 2026-11-23 — HTML 响应补齐 HSTS 安全头
+
+- **问题**：`public/_headers` 声明的 `Strict-Transport-Security` 只作用于静态资源；首页、列表页等 SSR 的 HTML 响应由 `src/middleware.ts` 设安全头，其中缺 HSTS，线上 `curl -I https://inferred.uk/` 看不到该头
+- **修复**：`src/middleware.ts` 的 `SECURITY_HEADERS` 新增 `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`，与 `_headers` 取值一致；无新增 Cloudflare 资源，免费额度内
 
 ### 2026-06-26 — 案卷扩充（146–150）+ 线索（91–95）
 
