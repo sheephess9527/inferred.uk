@@ -931,6 +931,10 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ## 更新日志（精编）
 
+### 2026-11-23 — 首页主按钮对比度
+
+- 首页「开始推理」使用独立的 `--color-on-accent` 浅纸色文字令牌，避免亮色主题的正文色覆盖深红按钮文字；保留现有强调色及其他用途不变。深浅主题的普通/键盘焦点状态文字对比度均为 6.26:1，悬停（含焦点叠加）为 8.04:1，满足 WCAG AA。
+
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
 - **新案卷订阅**：新增 `src/pages/rss.xml.js`（`@astrojs/rss`），按 `publishedAt` 倒序取最近 40 篇案卷，`description` 只用 frontmatter `summary`、不含正文与揭晓真相，防剧透；`BaseLayout` `<head>` 加 `<link rel="alternate" type="application/rss+xml">` 发现标签；首页 `NewsletterBox` 邮件表单仍保持占位（未接外部服务），旁边新增可用的「RSS 订阅新案卷更新」链接——这是路线图里"每周邮件案卷"的零后端替代方案
