@@ -49,7 +49,7 @@ pnpm check              # 提交前必须 0 errors
 | 域名 | 状态 | 说明 |
 |------|------|------|
 | `https://www.inferred.uk` | ✅ 正常 | **规范域名**，`astro.config.mjs` 的 `site`、`robots.txt`、sitemap 均指向它 |
-| `https://inferred.uk`（裸域名） | ✅ 正常 | 522 已于 2026-06-28 解决，现可正常访问 |
+| `https://inferred.uk`（裸域名） | 301（本次部署后） | 保留路径与查询串跳转到 `https://www.inferred.uk` |
 | `www.tuilis.com` / `tuilis.com` | ✅ 跳转正常 | 通过 `src/middleware.ts` 301 跳到 `www.inferred.uk`；已在 Cloudflare 加 Custom Domain |
 
 ### 5. 当前待办（接手后可直接推进）
@@ -149,7 +149,13 @@ Cloudflare 监听 `main` 自动构建部署。
 
 #### 裸域名 `inferred.uk`（522 已解决）
 
-裸域名 `https://inferred.uk`（不带 www）现可正常访问，2026-06-28 已解决先前的 **Error 522**。两个域名（带/不带 www）均可用，规范域名仍为 `www.inferred.uk`。
+裸域名 `https://inferred.uk`（不带 www）由 `src/worker.ts` 在 Astro/静态资源处理之前返回 301，目标为 `https://www.inferred.uk`，保留原路径与查询串。`src/apex-redirect.mjs` 只匹配 URL hostname `inferred.uk`，www、localhost、workers.dev 和预览域名不受此规则影响；原有 tuilis 别名及旧线索跳转仍由 middleware 处理。
+
+`wrangler.jsonc` 的 `main` 指向自定义 Worker，`assets.run_worker_first: true` 确保预渲染案卷、图片等静态资源也先检查域名，再委托 `@astrojs/cloudflare/handler`。无需付费 Redirect Rules 或其他付费功能；静态请求因此也会调用 Worker，计入 Workers 免费计划请求配额（超额需减少用量，而非必须升级）。
+
+本次修改前实测 `curl -sI https://www.inferred.uk` 和 `curl -sI https://inferred.uk` 均为 HTTP/2 200。仓库没有管理 `routes` / Custom Domains，因此不新增可能覆盖现有绑定的域名配置。两域名当前均已能提供站点服务，无需新增 www 绑定或仪表板规则；合并到 main 自动部署后，验证 apex 为 301 且 www 仍为 200。若迁移到新 Worker，需在 Domains & Routes 将两个域名都绑定到 `inferred`。
+
+回归检查：`node scripts/test-apex-redirect.mjs`；构建：`pnpm build`。
 
 > 备忘（若 522 再次出现）：历史根因是 DNS 里裸域名的 `CNAME @ → www.inferred.uk`（橙云代理）让 Cloudflare 把 www 当源站去连，而 Worker 无传统源站 → 522。可行修法：DNS 用占位 `AAAA @ → 100::`（开代理）+ Rules → Redirect Rules 把 `(http.host eq "inferred.uk")` 301 到 `concat("https://www.inferred.uk", http.request.uri.path)`，让边缘直接重定向、不连源站。改 DNS/路由属高风险操作，**改后立即验证 `www.inferred.uk` 仍可访问**。
 
@@ -930,6 +936,12 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 ---
 
 ## 更新日志（精编）
+
+### 2026-11-23 — 裸域名统一跳转到 www
+
+- 新增 Worker 入口，仅对 `inferred.uk` 返回 HTTPS www 的 301，完整保留路径与查询串，覆盖 SSR、预渲染页面及静态资源。
+- www、开发/预览域名继续原处理流程；`astro.config.mjs` 的 `site` 原本已为 www，保持不变。
+- 新增 `scripts/test-apex-redirect.mjs`，记录免费计划配额及现有域名绑定的部署注意事项。
 
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 

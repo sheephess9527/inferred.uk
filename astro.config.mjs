@@ -108,7 +108,7 @@ export default defineConfig({
   },
 
   // @astrojs/cloudflare v13 使用 Workers Static Assets 模型：public/ 下的静态资源
-  // （/share/cases/*、/og/* 等）由 wrangler.jsonc 的 assets binding 在 Worker 之前
-  // 直接命中返回，无需再用 routes.extend.exclude 生成 _routes.json（该选项 v13 已移除）。
+  // （/share/cases/*、/og/* 等）经自定义 Worker 检查裸域名后交给 adapter 的 assets binding。
+  // 无需 routes.extend.exclude / _routes.json（该选项 v13 已移除）。
   adapter: cloudflare(),
 });
