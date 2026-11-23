@@ -127,13 +127,17 @@ pnpm check              # 提交前必须 0 errors
 ```bash
 pnpm og:export      # 生成 public/og/ 与 public/share/cases/
 pnpm check          # astro check，0 errors
-pnpm verify:og      # 确认每篇案卷/线索均有分享图
+pnpm verify:og      # 检查案卷/线索 OG、案卷海报齐全，且无孤立 OG JPG
 git add -A
 git commit -m "content: add cases XXX-YYY ..."
 git push origin main
 ```
 
 Cloudflare 监听 `main` 自动构建部署。
+
+分享图保持 JPEG：`pnpm og:export` 使用 Sharp 的 mozjpeg、渐进式编码与 4:2:0 色度采样；案卷/线索 OG 和 `og-default.jpg` 的 quality 为 75，1080×1440 案卷海报为 70（OG 为 1200×630）。生成产物需提交。`pnpm verify:og` 检查每篇案卷/线索的 OG JPG、每篇案卷的海报 JPG 是否存在，并拒绝没有对应文档的 OG JPG；删除文档时须手动删除对应孤立 OG 图片。
+
+`/og/*`、`/share/*`、`/og-default.jpg` 使用 `Cache-Control: public, max-age=2592000`（30 天）。相同 URL 的图片更新后，缓存/分享抓取器可能需要最多 30 天刷新；第三方抓取器也可能有独立缓存策略，需另行请求刷新。
 
 ### 域名与部署现状
 
@@ -926,7 +930,7 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ### 路由与静态资源
 
-Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
+Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；已有静态分享图在 Worker/Astro middleware 之前直接返回，响应头来自 `public/_headers`，未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
 
 ---
 
@@ -937,10 +941,19 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 首页 `NewsletterBox` 移除禁用的邮箱表单，保留原有视觉风格，改为 RSS 链接、只读可复制地址与中文使用说明；无新增脚本，兼容现有 CSP。站点已回退英文切换，因此沿用简体中文界面。
 - 复用现有 `@astrojs/rss` 与共享布局中的自动发现标签；`/rss.xml` 移除 40 篇上限，覆盖全部案卷，链接基于 `astro.config.mjs` 的 `site` 生成绝对地址。保持「新案卷」订阅定位，不混入推理技巧文章，摘要仍不含谜底。
 
+### 2026-11-23 — 分享图 JPEG 优化与缓存
+
+- 重新生成 OG（quality 75）和海报（quality 70），统一 mozjpeg、渐进式 JPEG 与 4:2:0，清理 11 张已无文档的线索 OG。
+- 图片缓存延长至 30 天；加强 `verify:og`，检查缺失海报和孤立 OG 图片。
+
 ### 2026-11-23 — Astro 7 与 Cloudflare 工具链升级
 
 - Astro 6.4.8 → 7.4.13、Cloudflare 适配器 13.7.0 → 14.4.9、MDX 6.0.3 → 8.1.6、Wrangler 4.103.0 → 4.166.0（仍为 v4）；同步更新 Sitemap、Pagefind、两套 Fontsource 字体、Astro Check 和 Prettier。
 - 显式保留原有的 `unified()` Markdown/MDX 渲染与 `compressHTML: true` 空白处理，避免升级默认值改变现有内容；保留 SSR、预渲染和 Workers Static Assets，不启用额外 Cloudflare 服务。
+
+### 2026-11-23 — 首页主按钮对比度
+
+- 首页「开始推理」使用独立的 `--color-on-accent` 浅纸色文字令牌，避免亮色主题的正文色覆盖深红按钮文字；保留现有强调色及其他用途不变。深浅主题的普通/键盘焦点状态文字对比度均为 6.26:1，悬停（含焦点叠加）为 8.04:1，满足 WCAG AA。
 
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
@@ -1307,6 +1320,11 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - 每案 **3 道** frontmatter 选择题 + **5 题** `DeductionQuestions`；难度 5；featured：215
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（215 案全配图）
 - 案卷总数 **214 → 215**；线索总数不变 **94**；下一篇 `caseId` **216**
+
+### 2026-11-23 — HTML 响应补齐 HSTS 安全头
+
+- **问题**：`public/_headers` 声明的 `Strict-Transport-Security` 只作用于静态资源；首页、列表页等 SSR 的 HTML 响应由 `src/middleware.ts` 设安全头，其中缺 HSTS，线上 `curl -I https://inferred.uk/` 看不到该头
+- **修复**：`src/middleware.ts` 的 `SECURITY_HEADERS` 新增 `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`，与 `_headers` 取值一致；无新增 Cloudflare 资源，免费额度内
 
 ### 2026-06-26 — 案卷扩充（146–150）+ 线索（91–95）
 

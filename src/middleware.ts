@@ -8,6 +8,8 @@ const SECURITY_HEADERS: Record<string, string> = {
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  // public/_headers 只作用于静态资源；SSR 的 HTML 响应需在此补 HSTS，值与 _headers 保持一致。
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
   // Inline scripts are unavoidable with Astro's define:vars and is:inline
   // patterns, so 'unsafe-inline' is required for script-src.
   // script-src: 'wasm-unsafe-eval' 供 Pagefind 搜索的 WebAssembly 使用；
