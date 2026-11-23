@@ -29,7 +29,7 @@
 ### 2. 上手三步
 
 ```bash
-pnpm install            # Node 18+（推荐 20/22）；Windows 用 pnpm.cmd
+pnpm install            # Node.js 22.23.4 或更高版本；Windows 用 pnpm.cmd
 pnpm dev                # 本地预览 http://localhost:4321
 pnpm check              # 提交前必须 0 errors
 ```
@@ -862,7 +862,7 @@ questions:
 
 ## 本地运行
 
-需要 Node 18+（推荐 20/22）。
+需要 Node.js 22.23.4 或更高版本（Astro 7 的最低要求）。
 
 ```bash
 pnpm install
@@ -916,6 +916,7 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 | 项 | 值 |
 |----|-----|
 | 构建命令 | `pnpm run build` |
+| Node.js | 22.23.4 或更高版本（若 Worker Builds 已设置 `NODE_VERSION`，请确认符合要求） |
 | 部署命令 | `pnpm dlx wrangler deploy` |
 | 说明 | 构建环境不装 devDependencies，故用 `pnpm dlx` 而非 `pnpm exec wrangler` |
 
@@ -929,7 +930,7 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ### 路由与静态资源
 
-Cloudflare adapter v13 使用 Workers Static Assets；`wrangler.jsonc` 配置 assets binding，已有静态分享图在 Worker/Astro middleware 之前直接返回，响应头来自 `public/_headers`。不再使用已移除的 `routes.extend.exclude`。
+Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；已有静态分享图在 Worker/Astro middleware 之前直接返回，响应头来自 `public/_headers`，未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
 
 ---
 
@@ -939,6 +940,11 @@ Cloudflare adapter v13 使用 Workers Static Assets；`wrangler.jsonc` 配置 as
 
 - 重新生成 OG（quality 75）和海报（quality 70），统一 mozjpeg、渐进式 JPEG 与 4:2:0，清理 11 张已无文档的线索 OG。
 - 图片缓存延长至 30 天；加强 `verify:og`，检查缺失海报和孤立 OG 图片。
+
+### 2026-11-23 — Astro 7 与 Cloudflare 工具链升级
+
+- Astro 6.4.8 → 7.4.13、Cloudflare 适配器 13.7.0 → 14.4.9、MDX 6.0.3 → 8.1.6、Wrangler 4.103.0 → 4.166.0（仍为 v4）；同步更新 Sitemap、Pagefind、两套 Fontsource 字体、Astro Check 和 Prettier。
+- 显式保留原有的 `unified()` Markdown/MDX 渲染与 `compressHTML: true` 空白处理，避免升级默认值改变现有内容；保留 SSR、预渲染和 Workers Static Assets，不启用额外 Cloudflare 服务。
 
 ### 2026-10-10 — 新案卷订阅（RSS）+ 本周悬案页
 
