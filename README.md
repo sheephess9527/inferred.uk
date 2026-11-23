@@ -477,6 +477,8 @@ export const evidence = [
 
 **`<style is:global>` 陷阱**：Astro `<style>` 块编译后会给选择器附加 `[data-astro-cid-xxx]` 属性限定符。但通过 `innerHTML` 或 `document.createElement` 在客户端脚本里动态创建的元素**不携带**该属性，导致 scoped 样式静默失效。凡是组件通过 JS 构建 DOM（如 `DetectiveNotes`、`CaseSummary`），必须使用 `<style is:global>`，并确保 class 名称唯一（`deduction__`、`case-summary__` 前缀已足够唯一）。
 
+**案件总结排版**：`CaseSummary` 使用全局样式恢复了揭晓后的物证识别、推理判断统计行及逐题详情排版。浏览器冒烟测试覆盖动态生成的统计行和逐题详情的布局。
+
 ### frontmatter 字段（`src/content.config.ts`）
 
 | 字段 | 类型 | 说明 |
@@ -998,9 +1000,10 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 
 ## 更新日志（精编）
 
-### 2026-11-23 — 恢复案件总结排版
+### 2026-11-23 — 修复线上构建版本号始终为 dev
 
-- 修正揭晓答案后动态生成的物证识别、推理判断统计行及逐题详情样式，恢复行内对齐与结果标记。
+- Cloudflare Workers Builds 提供 `WORKERS_CI_COMMIT_SHA`，但 Astro 在 workerd 中预渲染时读不到构建进程的环境变量。现在在 `astro.config.mjs` 中解析版本号（`BUILD_ID` → `WORKERS_CI_COMMIT_SHA` → `CF_PAGES_COMMIT_SHA` → `GITHUB_SHA` → 本地 Git 提交 → `dev`），再由 Vite 注入构建产物。
+- `/version.json` 和页面的 `data-build` 使用同一个构建版本号；独立 App 检测到两个非空版本号不一致时仍提示更新。
 
 ### 2026-11-23 — 严格 CSP（SSR 与预渲染）
 
