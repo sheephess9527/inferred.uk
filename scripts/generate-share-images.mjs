@@ -91,7 +91,7 @@ async function writeShareImages(svg, basePath) {
   const pipeline = sharp(Buffer.from(svg), { density: 144 }).resize(1200, 630);
   await pipeline
     .clone()
-    .jpeg({ quality: 86, mozjpeg: true })
+    .jpeg({ quality: 75, mozjpeg: true, progressive: true, chromaSubsampling: '4:2:0' })
     .toFile(`${basePath}.jpg`);
 }
 
@@ -126,4 +126,4 @@ async function generateFromDir(dir, outDir, kind) {
 
 const caseCount = await generateFromDir(CASES_DIR, OG_CASES, 'case');
 const clueCount = await generateFromDir(CLUES_DIR, OG_CLUES, 'clue');
-console.log(`Wrote ${caseCount} case + ${clueCount} clue share images (.jpg + .png) to public/og/`);
+console.log(`Wrote ${caseCount} case + ${clueCount} clue share images (.jpg) to public/og/`);

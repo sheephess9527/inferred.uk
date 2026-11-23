@@ -30,11 +30,14 @@ for (const html of [
 }
 
 const root = 'dist/client';
-const policy = (await readFile('public/_headers', 'utf8')).match(
-  /Content-Security-Policy: (.+)/
-)[1];
+const staticHeaders = await readFile('public/_headers', 'utf8');
+const policies = [...staticHeaders.matchAll(/Content-Security-Policy: (.+)/g)];
+assert.equal(policies.length, 1, 'Expected exactly one static CSP header');
+const policy = policies[0][1];
 assert(!policy.includes('unsafe-inline'));
 const middleware = await readFile('src/middleware.ts', 'utf8');
+const hsts = staticHeaders.match(/Strict-Transport-Security: (.+)/)[1];
+assert(middleware.includes(`'Strict-Transport-Security': '${hsts}'`), 'HSTS differs');
 for (const directive of policy.split('; '))
   assert(
     middleware.includes(JSON.stringify(directive)) || middleware.includes(`"${directive}"`),

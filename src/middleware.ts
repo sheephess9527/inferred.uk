@@ -8,6 +8,7 @@ const SECURITY_HEADERS: Record<string, string> = {
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
   // script-src: 'wasm-unsafe-eval' 供 Pagefind 搜索的 WebAssembly 使用；
   // cloudflareinsights 域名供 Cloudflare Web Analytics beacon 加载与上报。
   'Content-Security-Policy': [

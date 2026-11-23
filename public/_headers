@@ -1,3 +1,5 @@
+# 预渲染页面（首页、列表页、案卷/线索详情等）作为静态资源返回，不经过 src/middleware.ts，
+# 安全头只来自这里；CSP 须与 middleware.ts 的 SECURITY_HEADERS 保持一致。
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   X-Content-Type-Options: nosniff
@@ -7,15 +9,15 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
 /og/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /share/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /og-default.jpg
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /version.json

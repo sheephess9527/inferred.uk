@@ -14,6 +14,11 @@ const { caseSlug, siteStatus, caseQuestions } = JSON.parse(document.querySelecto
   }
   try {
     var key = 'inferred:progress:/cases/' + caseSlug;
+    var legacyProgress = localStorage.getItem(key + '/');
+    if (legacyProgress === 'solved' || (legacyProgress === 'reading' && !localStorage.getItem(key))) {
+      localStorage.setItem(key, legacyProgress);
+    }
+    if (legacyProgress !== null) localStorage.removeItem(key + '/');
     if (localStorage.getItem(key) !== 'solved') {
       localStorage.setItem(key, 'reading');
     }
