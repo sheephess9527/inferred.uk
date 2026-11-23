@@ -56,6 +56,11 @@ const ogImageType = ogImage.endsWith('.png') ? 'image/png' : 'image/jpeg';
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <!-- 预渲染页面由静态资源直接返回、不经 middleware，tuilis 别名在此兜底跳转到规范域名 -->
+    <script is:inline>
+      if (/^(www\.)?tuilis\.com$/.test(location.hostname))
+        location.replace('https://www.inferred.uk' + location.pathname + location.search + location.hash);
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
