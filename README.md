@@ -127,13 +127,17 @@ pnpm check              # 提交前必须 0 errors
 ```bash
 pnpm og:export      # 生成 public/og/ 与 public/share/cases/
 pnpm check          # astro check，0 errors
-pnpm verify:og      # 确认每篇案卷/线索均有分享图
+pnpm verify:og      # 检查案卷/线索 OG、案卷海报齐全，且无孤立 OG JPG
 git add -A
 git commit -m "content: add cases XXX-YYY ..."
 git push origin main
 ```
 
 Cloudflare 监听 `main` 自动构建部署。
+
+分享图保持 JPEG：`pnpm og:export` 使用 Sharp 的 mozjpeg、渐进式编码与 4:2:0 色度采样；案卷/线索 OG 和 `og-default.jpg` 的 quality 为 75，1080×1440 案卷海报为 70（OG 为 1200×630）。生成产物需提交。`pnpm verify:og` 检查每篇案卷/线索的 OG JPG、每篇案卷的海报 JPG 是否存在，并拒绝没有对应文档的 OG JPG；删除文档时须手动删除对应孤立 OG 图片。
+
+`/og/*`、`/share/*`、`/og-default.jpg` 使用 `Cache-Control: public, max-age=2592000`（30 天）。相同 URL 的图片更新后，缓存/分享抓取器可能需要最多 30 天刷新；第三方抓取器也可能有独立缓存策略，需另行请求刷新。
 
 ### 域名与部署现状
 
@@ -926,11 +930,16 @@ Cloudflare Workers Git 集成，跟踪 `main`：
 
 ### 路由与静态资源
 
-Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
+Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `dist/client` 的静态资源配置。预渲染案卷、线索、Pagefind 索引和分享图由 Workers Static Assets 提供；已有静态分享图在 Worker/Astro middleware 之前直接返回，响应头来自 `public/_headers`，未命中的请求交给 Worker。无需 `routes.extend.exclude` 或 `_routes.json`。
 
 ---
 
 ## 更新日志（精编）
+
+### 2026-11-23 — 分享图 JPEG 优化与缓存
+
+- 重新生成 OG（quality 75）和海报（quality 70），统一 mozjpeg、渐进式 JPEG 与 4:2:0，清理 11 张已无文档的线索 OG。
+- 图片缓存延长至 30 天；加强 `verify:og`，检查缺失海报和孤立 OG 图片。
 
 ### 2026-11-23 — Astro 7 与 Cloudflare 工具链升级
 
