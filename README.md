@@ -998,6 +998,10 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 
 ## 更新日志（精编）
 
+### 2026-11-23 — 补齐 favicon.ico
+
+- 从现有 `favicon.svg` 生成 `public/favicon.ico`，使直接请求 `/favicon.ico` 的浏览器不再遇到 404；页面仍使用 SVG 图标。
+
 ### 2026-11-23 — 修复 RSS 在 Chrome 中的显示
 
 - `/rss.xml` 引用同源 CSS，在严格 CSP 下显示标题、摘要和案卷列表，不依赖 Chrome 内置 XML 查看器或 XSLT。RSS 2.0 内容和安全响应头均不变。
