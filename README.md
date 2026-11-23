@@ -1303,6 +1303,11 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 - `pnpm check` 0 errors；`pnpm og:export` + `pnpm verify:og` 通过（215 案全配图）
 - 案卷总数 **214 → 215**；线索总数不变 **94**；下一篇 `caseId` **216**
 
+### 2026-11-23 — HTML 响应补齐 HSTS 安全头
+
+- **问题**：`public/_headers` 声明的 `Strict-Transport-Security` 只作用于静态资源；首页、列表页等 SSR 的 HTML 响应由 `src/middleware.ts` 设安全头，其中缺 HSTS，线上 `curl -I https://inferred.uk/` 看不到该头
+- **修复**：`src/middleware.ts` 的 `SECURITY_HEADERS` 新增 `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload`，与 `_headers` 取值一致；无新增 Cloudflare 资源，免费额度内
+
 ### 2026-06-26 — 案卷扩充（146–150）+ 线索（91–95）
 
 - 新增案卷 **5 篇**（caseId 146–150）：工业与日常物证批次
