@@ -125,7 +125,7 @@
     el.addEventListener('toggle', () => {
       if (el.open) {
         try {
-          localStorage.setItem(`inferred:progress:${location.pathname}`, 'solved');
+          localStorage.setItem(`inferred:progress:${location.pathname.replace(/\/$/, '')}`, 'solved');
           window.dispatchEvent(new CustomEvent('inferred:case-solved'));
         } catch (_) {}
       }
