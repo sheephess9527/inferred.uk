@@ -6,15 +6,15 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
 /og/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /share/*
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /og-default.jpg
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=2592000
   Access-Control-Allow-Origin: *
 
 /version.json

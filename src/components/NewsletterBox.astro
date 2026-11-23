@@ -1,30 +1,28 @@
 ---
-// 邮件订阅仍是视觉占位（不接外部服务，表单禁用，提交不会发送任何数据）。
-// RSS 订阅已是真实功能：/rss.xml 由 src/pages/rss.xml.js 在请求时动态生成。
+const feedUrl = new URL('/rss.xml', Astro.site).href;
 ---
 
 <section class="newsletter" aria-labelledby="newsletter-title">
-  <p class="eyebrow">Newsletter · 每周案卷</p>
+  <p class="eyebrow">RSS · 新案卷订阅</p>
   <h2 class="newsletter__title" id="newsletter-title">让下一份案卷找到你</h2>
-  <p class="newsletter__lead text-muted">新案卷上架时，把它送到你的信箱。没有广告，只有谜案。</p>
+  <p class="newsletter__lead text-muted">
+    用 RSS 阅读器订阅，新案卷更新就能在阅读器里看到。免费、无广告，无需留下邮箱。
+  </p>
 
-  <form class="newsletter__form" aria-describedby="newsletter-note" aria-disabled="true">
-    <label class="visually-hidden" for="newsletter-email">邮箱地址</label>
+  <div class="newsletter__form">
+    <label class="visually-hidden" for="newsletter-feed">RSS 订阅地址（可选中复制）</label>
     <input
-      id="newsletter-email"
-      type="email"
-      name="email"
-      placeholder="you@example.com"
-      autocomplete="email"
-      disabled
+      id="newsletter-feed"
+      type="url"
+      value={feedUrl}
+      readonly
+      aria-describedby="newsletter-note"
     />
-    <button type="button" class="newsletter__btn mono" disabled aria-disabled="true"
-      >即将开放</button
-    >
-  </form>
+    <a href="/rss.xml" class="newsletter__btn mono">打开 RSS 订阅源</a>
+  </div>
   <p class="newsletter__note text-muted" id="newsletter-note">
-    邮件订阅正在筹备中；现在可以先用
-    <a class="newsletter__rss" href="/rss.xml">RSS 订阅新案卷更新</a>。
+    RSS
+    把网站更新汇集到你的阅读器中。选中并复制上方地址，粘贴到阅读器的「添加订阅」即可。摘要不含谜底，放心订阅。
   </p>
 </section>
 
@@ -61,10 +59,6 @@
     font-family: var(--font-mono);
     font-size: 0.9rem;
   }
-  .newsletter__form input:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
   .newsletter__btn {
     padding: 0.7em 1.4em;
     border: 1px solid var(--color-gold);
@@ -73,15 +67,19 @@
     color: var(--color-gold);
     font-size: 0.85rem;
     letter-spacing: 0.08em;
-    cursor: not-allowed;
+    text-decoration: none;
     white-space: nowrap;
   }
   .newsletter__note {
     margin: var(--space-4) 0 0;
     font-size: 0.78rem;
   }
-  .newsletter__rss {
-    color: var(--color-gold);
-    text-decoration: underline;
+  .newsletter__btn:hover {
+    background: var(--color-bg);
+  }
+  .newsletter__btn:focus-visible,
+  .newsletter__form input:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
   }
 </style>
