@@ -1006,6 +1006,19 @@ Astro 保持 `output: 'server'`，Cloudflare 适配器生成 Worker 和指向 `d
 
 ## 更新日志（精编）
 
+### 2026-11-27 — 全站视觉与页面版式改版（D1 素宣朱砂日间 + 墨灰烛光夜间 + 纯中文化双栏卷宗室）
+
+- **双主题与跟随系统升级（`src/styles/global.css`、`public/theme.js`、`src/layouts/BaseLayout.astro`、`public/site.webmanifest`）**：
+  - **日间模式（D1 素宣朱砂）**：清透宣纸白画布 `#f6f4ef` + 纯净卡片 `#fdfcf9` + 朱砂火漆印主色 `#9f2b2b` + 古铜金星级 `#855d2d`，告别旧版偏暗发黄底色。
+  - **夜间模式（D1 墨灰烛光）**：柔和暖炭墨灰 `#181816 / #21201d` + 暗朱砂 `#c84b4b` + 暖铜金 `#caa06a`，告别 `#0e0e0c` 纯黑眩光。
+  - 顶栏新增「日/夜 + 自动」组合控件，点击「自动」可清除 `localStorage['inferred:theme']` 恢复跟随系统 `prefers-color-scheme`，系统切换时实时同步。
+- **彻底纯中文化与顶栏/四栏页脚重整（`src/components/Header.astro`、`src/components/Footer.astro` 及全站页面与组件眉标）**：
+  - 清除全站生硬英文装饰眉标（`Cases / Featured Cases / How It Works / Case File # / Evidence / Your Call / Solution / Case Report` 等），统一为克制的纯中文卷宗语汇（`卷宗第 XXX 号`、`现场物证板`、`锦囊提示`、`推演思考清单`、`落笔裁决`、`真相拆封`、`结案复盘`）。
+  - 顶栏补齐 `精选 | 案卷库 | 档案馆 | 本周悬案 | 推理技法 | 关于` 与独立 `⌕ 搜索` 胶囊；修复旧版手机端 5 项导航硬塞 4 列网格错行的 Bug，改为紧凑响应式抽屉菜单；页脚升级为四栏结构。
+- **首页「侦探案头」五幕式重构（`src/pages/index.astro`）**：首屏改为左文案动作、右「侦探案头」快速开卷面板（继续推理、今日推荐、本周悬案、随机抽卷 + 个人破案进度条），删去冗余抒情过渡段直达精选案卷；底部新增「按作案手法调阅 + 推理技法专栏读案手记」均衡双区。
+- **218 篇案卷详情页升级为「宽屏双栏卷宗室」（`src/pages/cases/[slug].astro`、`src/components/CaseMeta.astro`）**：宽屏（`> 1040px`）左侧为衬线正文阅读区，右侧常驻吸顶卷宗元信息卡与实时滚动高亮的「卷宗目录」（一键跳达案发、人物、证词、物证、推理问题、落笔裁决与揭晓真相）；宽屏下连续的 `PersonCard` 自动呈紧凑双列排布，便于同屏比对嫌疑人关系与不在场证明；窄屏自动回退单栏。
+- **验证**：`pnpm check`（0 errors）、`pnpm build` + Pagefind 全文索引、`pnpm verify:csp`（318 个静态 HTML 零内联脚本/样式）、`pnpm verify:og` 与 Playwright E2E 持久化/快速入口/RSS 测试全部通过。
+
 ### 2026-11-25 — 新案卷 218
 
 - 新增案卷 **1 篇**（caseId 218）：《第三架布，比别的深一成》，`types` 为 `心理误导` + `证词矛盾`，场景为浙东运河支流边梅堰镇的「蓝记染坊」。

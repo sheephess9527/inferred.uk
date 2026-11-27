@@ -14,7 +14,7 @@ const { caseId } = Astro.props;
   aria-labelledby={`deduction-${caseId}`}
 >
   <header class="deduction__head">
-    <p class="eyebrow" id={`deduction-${caseId}`}>Your Call · 你的判断</p>
+    <p class="eyebrow" id={`deduction-${caseId}`}>落笔裁决</p>
     <p class="deduction__hint text-muted">
       在打开答案前，先选出你的推断。揭晓后自动对比，看你推对了几条。
     </p>
@@ -181,16 +181,17 @@ const { caseId } = Astro.props;
 
   /* 已选中 */
   .deduction__choice[data-selected] {
-    border-left: 4px solid #c05555;
-    border-color: color-mix(in srgb, #c05555 40%, var(--color-line));
-    background: color-mix(in srgb, #c05555 18%, var(--color-surface));
+    border-left: 4px solid var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-line));
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
   }
   .deduction__choice[data-selected] .deduction__choice-key {
-    color: #c05555;
+    color: var(--color-accent);
     font-weight: 700;
   }
   .deduction__choice[data-selected] .deduction__choice-text {
-    color: #d98080;
+    color: var(--color-paper);
+    font-weight: 600;
   }
 
   /* 揭晓后：正确（用户选对） */

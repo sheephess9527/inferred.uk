@@ -12,41 +12,39 @@ export interface Props {
 }
 const { caseId, slug, status, difficulty, types, readingTime, clueCount } = Astro.props;
 const statusCn = status === 'solved' ? '已解' : '未解';
-const statusEn = status === 'solved' ? 'SOLVED' : 'UNSOLVED';
-const typeEn = types.join(' / ');
+const typeCn = types.join(' · ');
 ---
 
 <dl class="case-meta">
   <div class="case-meta__row">
-    <dt>案卷编号</dt>
-    <dd class="mono">CASE FILE #{caseId}</dd>
+    <dt>卷宗编号</dt>
+    <dd class="mono">第 {caseId} 号</dd>
   </div>
   <div class="case-meta__row">
-    <dt>状态</dt>
+    <dt>当前状态</dt>
     <dd data-case-progress data-case-slug={slug} data-site-status={status}>
-      <span class:list={['mono', 'case-meta__status', `is-${status}`]} data-case-progress-en
-        >{statusEn}</span
+      <span class:list={['mono', 'case-meta__status', `is-${status}`]} data-case-progress-cn
+        >{statusCn}</span
       >
-      <span class="text-muted" data-case-progress-cn>· {statusCn}</span>
     </dd>
   </div>
   <div class="case-meta__row">
-    <dt>难度</dt>
+    <dt>推理难度</dt>
     <dd><DifficultyStars value={difficulty} showLabel /></dd>
   </div>
   <div class="case-meta__row">
-    <dt>类型</dt>
-    <dd>{typeEn}</dd>
+    <dt>诡计门类</dt>
+    <dd>{typeCn}</dd>
   </div>
   <div class="case-meta__row">
-    <dt>推理时间</dt>
+    <dt>预计用时</dt>
     <dd class="mono">{readingTime}</dd>
   </div>
   {
     typeof clueCount === 'number' && clueCount > 0 && (
       <div class="case-meta__row">
-        <dt>线索数量</dt>
-        <dd class="mono">{clueCount}</dd>
+        <dt>现场物证</dt>
+        <dd class="mono">{clueCount} 件</dd>
       </div>
     )
   }
@@ -58,29 +56,33 @@ const typeEn = types.join(' / ');
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
     background: var(--color-surface);
-    padding: var(--space-4) var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-card);
   }
   .case-meta__row {
     display: grid;
-    grid-template-columns: 7rem 1fr;
-    gap: var(--space-4);
-    padding: var(--space-2) 0;
+    grid-template-columns: 5.2rem 1fr;
+    gap: var(--space-3);
+    padding: 0.42rem 0;
     border-bottom: 1px dashed var(--color-line);
+    font-size: 0.9rem;
   }
   .case-meta__row:last-child {
     border-bottom: none;
   }
   dt {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
     color: var(--color-muted);
     align-self: center;
   }
   dd {
     margin: 0;
     align-self: center;
+  }
+  .case-meta__status {
+    font-weight: 600;
   }
   .case-meta__status.is-unsolved {
     color: var(--color-accent);
@@ -89,25 +91,18 @@ const typeEn = types.join(' / ');
     color: var(--color-gold);
   }
   .case-meta__status.is-reading {
-    color: #e8a84c;
+    color: var(--color-warn);
   }
   .case-meta__status.is-user-solved {
-    color: #6abf8a;
-  }
-  @media (max-width: 460px) {
-    .case-meta__row {
-      grid-template-columns: 1fr;
-      gap: var(--space-1);
-    }
+    color: var(--color-good);
   }
 </style>
 
 <script>
   function updateCaseProgressBadge(root: HTMLElement) {
     const slug = root.dataset.caseSlug;
-    const en = root.querySelector<HTMLElement>('[data-case-progress-en]');
     const cn = root.querySelector<HTMLElement>('[data-case-progress-cn]');
-    if (!slug || !en || !cn) return;
+    if (!slug || !cn) return;
 
     const siteSolved = root.dataset.siteStatus === 'solved';
     let progress: string | null = null;
@@ -116,21 +111,17 @@ const typeEn = types.join(' / ');
     } catch (_) {}
 
     if (progress === 'solved') {
-      en.textContent = 'CLOSED';
-      en.className = 'mono case-meta__status is-user-solved';
-      cn.textContent = '· 已结案';
+      cn.textContent = '已结案';
+      cn.className = 'mono case-meta__status is-user-solved';
     } else if (progress === 'reading') {
-      en.textContent = 'ACTIVE';
-      en.className = 'mono case-meta__status is-reading';
-      cn.textContent = '· 推理中';
+      cn.textContent = '推理中';
+      cn.className = 'mono case-meta__status is-reading';
     } else if (siteSolved) {
-      en.textContent = 'SOLVED';
-      en.className = 'mono case-meta__status is-solved';
-      cn.textContent = '· 已解';
+      cn.textContent = '已解';
+      cn.className = 'mono case-meta__status is-solved';
     } else {
-      en.textContent = 'UNSOLVED';
-      en.className = 'mono case-meta__status is-unsolved';
-      cn.textContent = '· 未解';
+      cn.textContent = '未解';
+      cn.className = 'mono case-meta__status is-unsolved';
     }
   }
 

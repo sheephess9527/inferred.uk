@@ -2,35 +2,66 @@
 import BrandMark from './BrandMark.astro';
 
 const year = new Date().getFullYear();
-const nav = [
-  { href: '/cases/', label: '案卷' },
-  { href: '/clues/', label: '线索' },
-  { href: '/archive/', label: '档案馆' },
-  { href: '/about/', label: '关于' },
+
+const colExplore = [
+  { href: '/cases/', label: '全部案卷' },
+  { href: '/archive/', label: '档案馆筛选' },
+  { href: '/weekly/', label: '本周悬案' },
+  { href: '/search/', label: '检索卷宗' },
+];
+
+const colTricks = [
+  { href: '/archive/?type=%E5%AF%86%E5%AE%A4', label: '密室诡计' },
+  { href: '/archive/?type=%E4%B8%8D%E5%9C%A8%E5%9C%BA%E8%AF%81%E6%98%8E', label: '不在场证明' },
+  { href: '/archive/?type=%E6%97%B6%E9%97%B4%E8%AF%A1%E8%AE%A1', label: '时间诡计' },
+  { href: '/archive/?type=%E8%AF%81%E8%AF%8D%E7%9F%9B%E7%9B%BE', label: '证词矛盾' },
+];
+
+const colMore = [
+  { href: '/clues/', label: '推理技法专栏' },
+  { href: '/about/', label: '关于推知' },
+  { href: '/rss.xml', label: 'RSS 订阅更新' },
 ];
 ---
 
 <footer class="site-footer">
-  <div class="container site-footer__inner">
+  <div class="container site-footer__grid">
     <div class="site-footer__brand">
-      <p class="site-footer__title">
+      <a class="site-footer__title" href="/">
         <BrandMark class="site-footer__logo" size={28} />
-        <span
-          >推知 Inferred<span class="text-accent">.</span><span class="text-muted">uk</span></span
-        >
+        <span>推知</span>
+      </a>
+      <p class="site-footer__tagline">真相从不明说，只能被推断。</p>
+      <p class="text-muted site-footer__desc">
+        原创公平本格互动推理案卷馆。查阅人物档案、比对矛盾证词、标记现场物证，在拆封答案前完成你自己的推演。
       </p>
-      <p class="text-muted site-footer__tagline">真相从不明说，只能被推断。</p>
-      <p class="eyebrow">The truth is never stated. It is inferred.</p>
     </div>
 
-    <nav class="site-footer__nav" aria-label="页脚导航">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    <nav class="site-footer__col" aria-label="阅览导航">
+      <h2 class="site-footer__heading mono">卷宗阅览</h2>
+      <ul>
+        {colExplore.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="site-footer__col" aria-label="常见诡计分类">
+      <h2 class="site-footer__heading mono">常见诡计</h2>
+      <ul>
+        {colTricks.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="site-footer__col" aria-label="专栏与订阅">
+      <h2 class="site-footer__heading mono">专栏与关于</h2>
+      <ul>
+        {colMore.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
     </nav>
   </div>
 
   <div class="container site-footer__legal">
-    <span class="mono">© {year} 推知 Inferred</span>
-    <span class="text-muted">原创互动推理案卷 · 一切人物与案件均属虚构</span>
+    <span class="mono">© {year} 推知 · inferred.uk</span>
+    <span class="text-muted">原创互动推理案卷 · 馆藏人物、地点与案件均属虚构</span>
   </div>
 </footer>
 
@@ -39,21 +70,22 @@ const nav = [
     margin-top: var(--space-24);
     border-top: 1px solid var(--color-line);
     background: var(--color-surface);
-    /* 底部为 iOS Home 指示条留出安全区 */
     padding-block: var(--space-12) calc(var(--space-8) + env(safe-area-inset-bottom));
   }
-  .site-footer__inner {
-    display: flex;
-    justify-content: space-between;
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr 1fr 1fr;
     gap: var(--space-8);
-    flex-wrap: wrap;
   }
   .site-footer__title {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-3);
     font-family: var(--font-display);
+    font-weight: 700;
     font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    color: var(--color-paper);
     margin: 0 0 var(--space-2);
   }
   .site-footer__logo {
@@ -61,18 +93,38 @@ const nav = [
     display: block;
   }
   .site-footer__tagline {
-    margin: 0 0 var(--space-1);
+    margin: 0 0 var(--space-2);
+    font-weight: 600;
+    color: var(--color-gold);
+    font-size: 0.95rem;
   }
-  .site-footer__nav {
+  .site-footer__desc {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    max-width: 30ch;
+  }
+  .site-footer__heading {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-paper);
+    margin: 0 0 var(--space-3);
+  }
+  .site-footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    gap: var(--space-6);
-    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
   }
-  .site-footer__nav a {
+  .site-footer__col a {
+    font-size: 0.92rem;
     color: var(--color-muted);
   }
-  .site-footer__nav a:hover {
-    color: var(--color-paper);
+  .site-footer__col a:hover {
+    color: var(--color-accent);
   }
   .site-footer__legal {
     display: flex;
@@ -84,5 +136,17 @@ const nav = [
     border-top: 1px solid var(--color-line);
     font-size: 0.8rem;
     color: var(--color-muted);
+  }
+
+  @media (max-width: 900px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 520px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

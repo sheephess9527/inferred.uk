@@ -52,11 +52,12 @@ export async function getStaticPaths() {
 }
 
 const { entry, prev, next, related } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const sectionHeadings = headings.filter((h) => h.depth === 2);
 const data = entry.data;
 
-const seoTitle = `${data.title}｜Inferred Case File #${data.caseId}`;
-const shareTitle = `${data.title} · Inferred`;
+const seoTitle = `${data.title}｜卷宗第 ${data.caseId} 号 · 推知`;
+const shareTitle = `${data.title} · 推知`;
 const seoDesc = data.summary;
 const shareImage = `/og/cases/${entry.id}.jpg`;
 const shareImageAlt = `案卷 ${data.caseId}：${data.title}`;
@@ -77,15 +78,15 @@ const jsonLd = [
     datePublished: publishedIso,
     image: new URL(shareImage, siteOrigin).href,
     url: new URL(`/cases/${entry.id}/`, siteOrigin).href,
-    author: { '@type': 'Organization', name: 'Inferred' },
-    publisher: { '@type': 'Organization', name: 'Inferred' },
+    author: { '@type': 'Organization', name: '推知 Inferred' },
+    publisher: { '@type': 'Organization', name: '推知 Inferred' },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', siteOrigin).href },
-      { '@type': 'ListItem', position: 2, name: '案卷', item: new URL('/cases/', siteOrigin).href },
+      { '@type': 'ListItem', position: 2, name: '案卷库', item: new URL('/cases/', siteOrigin).href },
       { '@type': 'ListItem', position: 3, name: data.title },
     ],
   },
@@ -104,7 +105,7 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <article
-    class="case container container--reading"
+    class="case container"
     data-pagefind-body
     data-case-config={JSON.stringify({
       caseSlug: entry.id,
@@ -114,132 +115,310 @@ const jsonLd = [
   >
     <ReadingProgress target="#case-body" />
 
-    <header class="case__header">
-      <p
-        class="eyebrow case__eyebrow"
-        data-case-eyebrow
-        data-case-slug={entry.id}
-        data-site-status={data.status}
-      >
-        Case File #{data.caseId} · <span data-case-eyebrow-text
-          >{data.status === 'solved' ? '已解' : '未解'}</span
-        >
-      </p>
-      <h1 class="case__title">{data.title}</h1>
-      <p class="case__summary">{data.summary}</p>
+    <div class="case__layout">
+      <div class="case__main">
+        <header class="case__header">
+          <p
+            class="eyebrow case__eyebrow"
+            data-case-eyebrow
+            data-case-slug={entry.id}
+            data-site-status={data.status}
+          >
+            卷宗第 {data.caseId} 号 · <span data-case-eyebrow-text
+              >{data.status === 'solved' ? '已解' : '未解'}</span
+            >
+          </p>
+          <h1 class="case__title">{data.title}</h1>
+          <p class="case__summary">{data.summary}</p>
 
-      <ul class="case__tags">
+          <ul class="case__tags">
+            {
+              data.types.map((t) => (
+                <li>
+                  <Tag label={t} href={`/archive/?type=${encodeURIComponent(t)}`} />
+                </li>
+              ))
+            }
+            {
+              data.scene.map((s) => (
+                <li>
+                  <Tag label={s} variant="scene" href={`/archive/?scene=${encodeURIComponent(s)}`} />
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="case__meta-mobile">
+            <CaseMeta
+              caseId={data.caseId}
+              slug={entry.id}
+              status={data.status}
+              difficulty={data.difficulty}
+              types={data.types}
+              readingTime={data.readingTime}
+              clueCount={data.clueCount}
+            />
+          </div>
+          <p class="case__published mono text-muted">归档于 {dateStr}</p>
+        </header>
+
         {
-          data.types.map((t) => (
-            <li>
-              <Tag label={t} href={`/archive/?type=${encodeURIComponent(t)}`} />
-            </li>
-          ))
+          data.hints && data.hints.length > 0 && (
+            <div id="case-hints">
+              <HintSystem hints={data.hints} />
+            </div>
+          )
         }
+
+        <div id="case-body" class="case__body prose">
+          <Content />
+        </div>
+
+        <CaseSummary />
+
+        <DifficultyVote slug={entry.id} officialDifficulty={data.difficulty} />
+
+        <ShareBar
+          title={data.title}
+          text={data.summary}
+          path={`/cases/${entry.id}/`}
+          poster={`/share/cases/${entry.id}.jpg`}
+        />
+
+        <RelatedCases cases={related} />
+
+        <nav class="case__nav" aria-label="案卷导航">
+          {
+            prev ? (
+              <a class="case__nav-link" href={`/cases/${prev.id}/`}>
+                <span class="case__nav-dir mono">← 上一卷</span>
+                <span class="case__nav-title">{prev.data.title}</span>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+          {
+            next ? (
+              <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}/`}>
+                <span class="case__nav-dir mono">下一卷 →</span>
+                <span class="case__nav-title">{next.data.title}</span>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+        </nav>
+
+        <footer class="case__footer">
+          <a class="case__back" href="/cases/">← 返回案卷库</a>
+          <a class="case__back" href="/archive/">进入档案馆筛选 →</a>
+        </footer>
+      </div>
+
+      <!-- 宽屏右侧吸顶「卷宗导航台」 -->
+      <aside class="case__aside" aria-label="卷宗档案与章节导航" data-pagefind-ignore>
+        <div class="case__aside-card">
+          <CaseMeta
+            caseId={data.caseId}
+            slug={entry.id}
+            status={data.status}
+            difficulty={data.difficulty}
+            types={data.types}
+            readingTime={data.readingTime}
+            clueCount={data.clueCount}
+          />
+        </div>
+
         {
-          data.scene.map((s) => (
-            <li>
-              <Tag label={s} variant="scene" href={`/archive/?scene=${encodeURIComponent(s)}`} />
-            </li>
-          ))
+          sectionHeadings.length > 0 && (
+            <nav class="case__toc" aria-label="卷宗章节跳转">
+              <p class="case__toc-head mono">卷宗目录</p>
+              <ol class="case__toc-list">
+                {sectionHeadings.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`} class="case__toc-link" data-toc-link={h.slug}>
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+              {data.hints && data.hints.length > 0 && (
+                <a class="case__toc-hint mono" href="#case-hints">
+                  查看锦囊提示（共 {data.hints.length} 条） ↑
+                </a>
+              )}
+            </nav>
+          )
         }
-      </ul>
-
-      <CaseMeta
-        caseId={data.caseId}
-        slug={entry.id}
-        status={data.status}
-        difficulty={data.difficulty}
-        types={data.types}
-        readingTime={data.readingTime}
-        clueCount={data.clueCount}
-      />
-      <p class="case__published mono text-muted">归档于 {dateStr}</p>
-    </header>
-
-    {data.hints && data.hints.length > 0 && <HintSystem hints={data.hints} />}
-
-    <div id="case-body" class="case__body prose">
-      <Content />
+      </aside>
     </div>
-
-    <CaseSummary />
-
-    <DifficultyVote slug={entry.id} officialDifficulty={data.difficulty} />
-
-    <ShareBar
-      title={data.title}
-      text={data.summary}
-      path={`/cases/${entry.id}/`}
-      poster={`/share/cases/${entry.id}.jpg`}
-    />
-
-    <RelatedCases cases={related} />
-
-    <nav class="case__nav" aria-label="案卷导航">
-      {
-        prev ? (
-          <a class="case__nav-link" href={`/cases/${prev.id}/`}>
-            <span class="case__nav-dir mono">上一篇</span>
-            <span class="case__nav-title">{prev.data.title}</span>
-          </a>
-        ) : (
-          <span />
-        )
-      }
-      {
-        next ? (
-          <a class="case__nav-link case__nav-link--next" href={`/cases/${next.id}/`}>
-            <span class="case__nav-dir mono">下一篇</span>
-            <span class="case__nav-title">{next.data.title}</span>
-          </a>
-        ) : (
-          <span />
-        )
-      }
-    </nav>
-
-    <footer class="case__footer">
-      <a class="case__back" href="/cases/">← 返回案卷列表</a>
-      <a class="case__back" href="/archive/">进入档案馆 →</a>
-    </footer>
   </article>
 </BaseLayout>
 
 <script is:inline src="/case-progress.js"></script>
 
+<script>
+  // 将连续的涉案人物卡归入双列等高网格（.person-grid），消除 MDX 空白节点导致的宽度折行
+  const body = document.getElementById('case-body');
+  if (body) {
+    const cards = Array.from(body.querySelectorAll<HTMLElement>(':scope > .person-card'));
+    if (cards.length > 1) {
+      let group: HTMLElement | null = null;
+      cards.forEach((card) => {
+        const prev = card.previousElementSibling;
+        if (!group || prev !== group) {
+          group = document.createElement('div');
+          group.className = 'person-grid';
+          card.parentNode?.insertBefore(group, card);
+        }
+        group.appendChild(card);
+      });
+    }
+  }
+
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  const targets = links
+    .map((a) => {
+      const id = a.dataset.tocLink;
+      return id ? document.getElementById(id) : null;
+    })
+    .filter((el): el is HTMLElement => Boolean(el));
+
+  if (links.length > 0 && targets.length > 0 && 'IntersectionObserver' in window) {
+    const activate = (id: string) => {
+      links.forEach((a) => {
+        a.classList.toggle('is-active', a.dataset.tocLink === id);
+      });
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]?.target.id) activate(visible[0].target.id);
+      },
+      { rootMargin: '-90px 0px -65% 0px', threshold: 0 }
+    );
+    targets.forEach((t) => observer.observe(t));
+    activate(targets[0].id);
+  }
+</script>
+
 <style>
   .case {
     padding-top: var(--space-12);
   }
+  .case__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 44rem) minmax(15.5rem, 18.5rem);
+    justify-content: space-between;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  .case__main {
+    min-width: 0;
+  }
   .case__header {
     margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-line);
   }
   .case__eyebrow {
-    color: var(--color-accent);
     margin-bottom: var(--space-3);
   }
   .case__title {
     margin-bottom: var(--space-4);
   }
   .case__summary {
-    font-size: 1.15rem;
-    line-height: 1.7;
+    font-size: 1.12rem;
+    line-height: 1.75;
     color: var(--color-muted);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
   .case__tags {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin: 0 0 var(--space-6);
+    margin: 0 0 var(--space-5);
     padding: 0;
     list-style: none;
   }
+  .case__meta-mobile {
+    display: none;
+    margin-bottom: var(--space-4);
+  }
   .case__published {
-    margin: var(--space-3) 0 0;
+    margin: var(--space-2) 0 0;
     font-size: 0.78rem;
   }
+
+  /* 右侧吸顶卷宗台 */
+  .case__aside {
+    position: sticky;
+    top: 5.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .case__toc {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-card);
+  }
+  .case__toc-head {
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-gold);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .case__toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .case__toc-link {
+    display: block;
+    padding: 0.36rem 0.55rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    border-left: 2px solid transparent;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .case__toc-link:hover {
+    color: var(--color-paper);
+    background: var(--color-surface-2);
+  }
+  .case__toc-link.is-active {
+    color: var(--color-accent);
+    font-weight: 700;
+    border-left-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 9%, transparent);
+  }
+  .case__toc-hint {
+    display: block;
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--color-line);
+    font-size: 0.76rem;
+    color: var(--color-gold);
+  }
+  .case__toc-hint:hover {
+    color: var(--color-accent);
+  }
+
   .case__nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -252,28 +431,31 @@ const jsonLd = [
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
-    padding: var(--space-4);
+    padding: var(--space-4) var(--space-5);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
     background: var(--color-surface);
     color: var(--color-paper);
-    transition: border-color 0.18s ease;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease;
   }
   .case__nav-link:hover {
-    border-color: var(--color-gold);
+    border-color: var(--color-accent);
+    background: var(--color-surface-2);
     color: var(--color-paper);
   }
   .case__nav-link--next {
     text-align: right;
   }
   .case__nav-dir {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--color-muted);
-    letter-spacing: 0.1em;
   }
   .case__nav-title {
-    font-size: 0.95rem;
-    line-height: 1.4;
+    font-weight: 600;
+    font-size: 0.96rem;
+    line-height: 1.45;
   }
   .case__footer {
     display: flex;
@@ -290,7 +472,21 @@ const jsonLd = [
     color: var(--color-muted);
   }
   .case__back:hover {
-    color: var(--color-gold);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 1040px) {
+    .case__layout {
+      display: block;
+      max-width: var(--measure);
+      margin-inline: auto;
+    }
+    .case__aside {
+      display: none;
+    }
+    .case__meta-mobile {
+      display: block;
+    }
   }
 
   @media (max-width: 560px) {
@@ -306,7 +502,7 @@ const jsonLd = [
 <style is:global>
   /* 案卷正文排版 */
   .prose h2 {
-    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.65rem);
     padding-bottom: var(--space-2);
     border-bottom: 1px solid var(--color-line);
   }
@@ -327,12 +523,30 @@ const jsonLd = [
   }
   .prose blockquote {
     margin: var(--space-4) 0;
-    padding-left: var(--space-4);
-    border-left: 2px solid var(--color-accent-cold);
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--color-accent-cold);
+    background: var(--color-surface);
+    border-radius: 0 var(--radius) var(--radius) 0;
     color: var(--color-muted);
-    font-style: italic;
   }
   .prose strong {
     color: var(--color-paper);
+  }
+
+  /* 宽屏下连续的涉案人物卡（.person-grid）双列等高排布，一屏比对嫌疑人与不在场证明 */
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+  .person-grid > .person-card {
+    margin: 0;
+    height: 100%;
+  }
+  @media (max-width: 720px) {
+    .person-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

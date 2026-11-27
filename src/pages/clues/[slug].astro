@@ -57,12 +57,12 @@ const jsonLd = [
 ---
 
 <BaseLayout
-  title={`${entry.data.title}｜Inferred 线索`}
-  ogTitle={`${entry.data.title} · Inferred`}
+  title={`${entry.data.title}｜推理技法 · 推知`}
+  ogTitle={`${entry.data.title} · 推知`}
   description={entry.data.summary}
   path={`/clues/${entry.id}/`}
   ogImage={shareImage}
-  ogImageAlt={`推理技巧：${entry.data.title}`}
+  ogImageAlt={`推理技法：${entry.data.title}`}
   ogType="article"
   publishedTime={publishedIso}
   jsonLd={jsonLd}
@@ -71,7 +71,7 @@ const jsonLd = [
     <ReadingProgress target="#clue-body" />
 
     <header class="clue__header">
-      <p class="eyebrow">Clues · 推理技巧</p>
+      <p class="eyebrow">推理技法专栏 · 读案手记</p>
       <h1>{entry.data.title}</h1>
       <p class="clue__summary text-muted">{entry.data.summary}</p>
       <p class="mono text-muted clue__date">{dateStr}</p>

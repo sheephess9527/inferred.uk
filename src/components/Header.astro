@@ -2,50 +2,44 @@
 import BrandMark from './BrandMark.astro';
 
 const nav = [
-  { href: '/cases/', cn: '案卷', en: 'Cases' },
-  { href: '/clues/', cn: '线索', en: 'Clues' },
-  { href: '/archive/', cn: '档案馆', en: 'Archive' },
-  { href: '/search/', cn: '搜索', en: 'Search' },
-  { href: '/about/', cn: '关于', en: 'About' },
+  { href: '/', label: '精选', exact: true },
+  { href: '/cases/', label: '案卷库' },
+  { href: '/archive/', label: '档案馆' },
+  { href: '/weekly/', label: '本周悬案' },
+  { href: '/clues/', label: '推理技法' },
+  { href: '/about/', label: '关于' },
 ];
 
 const current = Astro.url.pathname;
-// 尾斜杠无关地判断当前分区（导航链接统一带尾斜杠，与 sitemap/规范链接一致）。
-const isActive = (href: string) => {
+const isActive = (href: string, exact = false) => {
   const base = href.replace(/\/+$/, '');
   const cur = current.replace(/\/+$/, '');
+  if (exact) return cur === base;
   return cur === base || cur.startsWith(base + '/');
 };
 ---
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href="/" aria-label="推知 Inferred 首页">
-      <BrandMark class="brand__logo" size={34} />
+    <a class="brand" href="/" aria-label="推知首页">
+      <BrandMark class="brand__logo" size={32} />
       <span class="brand__name">
         <span class="brand__cn">推知</span>
-        <span class="brand__en">
-          <span class="brand__mark">Inferred</span><span class="brand__dot" aria-hidden="true"
-            >.</span
-          ><span class="brand__tld">uk</span>
-        </span>
+        <span class="brand__sub mono">推理案卷馆</span>
       </span>
     </a>
 
-    <nav class="site-nav" aria-label="主导航">
+    <nav class="site-nav" id="primary-nav" aria-label="主导航">
       <ul>
         {
           nav.map((item) => (
             <li>
               <a
                 href={item.href}
-                class:list={['site-nav__link', { 'is-active': isActive(item.href) }]}
-                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={['site-nav__link', { 'is-active': isActive(item.href, item.exact) }]}
+                aria-current={isActive(item.href, item.exact) ? 'page' : undefined}
               >
-                <span class="site-nav__cn">{item.cn}</span>
-                <span class="site-nav__en mono" aria-hidden="true">
-                  {item.en}
-                </span>
+                {item.label}
               </a>
             </li>
           ))
@@ -53,15 +47,49 @@ const isActive = (href: string) => {
       </ul>
     </nav>
 
-    <button
-      type="button"
-      class="theme-toggle mono"
-      data-theme-toggle
-      aria-label="切换亮色/暗色模式"
-      title="切换亮色/暗色模式"
-    >
-      <span data-theme-icon>◑</span>
-    </button>
+    <div class="header-tools">
+      <a
+        href="/search/"
+        class:list={['search-pill mono', { 'is-active': isActive('/search/') }]}
+        aria-label="搜索案卷与线索"
+      >
+        <span aria-hidden="true">⌕</span>
+        <span class="search-pill__label">搜索</span>
+      </a>
+
+      <div class="theme-group mono" role="group" aria-label="外观模式">
+        <button
+          type="button"
+          class="theme-btn"
+          data-theme-toggle
+          aria-label="切换日间或夜间模式"
+          title="切换日间或夜间模式"
+        >
+          <span data-theme-icon>夜</span>
+        </button>
+        <button
+          type="button"
+          class="theme-btn theme-btn--auto"
+          data-theme-auto
+          aria-pressed="true"
+          aria-label="跟随系统外观"
+          title="跟随系统外观"
+        >
+          自动
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="nav-burger"
+        data-nav-burger
+        aria-controls="primary-nav"
+        aria-expanded="false"
+        aria-label="展开导航菜单"
+      >
+        <span data-burger-icon aria-hidden="true">☰</span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -70,28 +98,29 @@ const isActive = (href: string) => {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
-    backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-line);
-    /* 为 iOS 刘海 / 灵动岛 / 状态栏留出安全区，避免内容被画到状态栏底下点不到 */
     padding-top: env(safe-area-inset-top);
   }
   .site-header__inner {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
-    min-height: 4rem;
+    gap: var(--space-5);
+    min-height: 3.9rem;
     flex-wrap: nowrap;
-    /* 横屏时避开左右刘海 */
-    padding-inline: max(0px, env(safe-area-inset-left)) max(0px, env(safe-area-inset-right));
   }
   .brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-3);
     color: var(--color-paper);
     margin-right: auto;
     flex-shrink: 0;
+  }
+  .brand:hover {
+    color: var(--color-paper);
   }
   .brand__logo {
     flex-shrink: 0;
@@ -99,164 +128,227 @@ const isActive = (href: string) => {
   }
   .brand__name {
     display: flex;
-    flex-direction: column;
-    line-height: 1.05;
+    align-items: baseline;
+    gap: var(--space-2);
+    line-height: 1;
   }
   .brand__cn {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.3rem;
+    font-weight: 700;
+    font-size: 1.28rem;
     letter-spacing: 0.08em;
   }
-  .brand__en {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.92rem;
-    letter-spacing: 0.01em;
-  }
-  .site-nav {
-    flex-shrink: 1;
-    min-width: 0;
-  }
-  .brand__dot {
-    color: var(--color-accent);
-  }
-  .brand__tld {
+  .brand__sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
     color: var(--color-muted);
-    font-family: var(--font-mono);
-    font-size: 0.82em;
+    padding-left: var(--space-2);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .site-nav {
+    flex-shrink: 0;
   }
   .site-nav ul {
     display: flex;
-    gap: var(--space-6);
+    align-items: center;
+    gap: var(--space-1);
     margin: 0;
     padding: 0;
     list-style: none;
   }
   .site-nav__link {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.94rem;
     color: var(--color-muted);
-    padding: var(--space-1) 0;
-    border-bottom: 1px solid transparent;
-  }
-  .site-nav__link:hover,
-  .site-nav__link.is-active {
-    color: var(--color-paper);
-  }
-  .site-nav__link.is-active {
-    border-bottom-color: var(--color-accent);
-  }
-  .site-nav__cn {
-    font-size: 1rem;
-  }
-  .site-nav__en {
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-line);
-  }
-  .site-nav__link:hover .site-nav__en,
-  .site-nav__link.is-active .site-nav__en {
-    color: var(--color-gold);
-  }
-
-  @media (max-width: 1100px) {
-    .site-nav__en {
-      display: none;
-    }
-  }
-  .theme-toggle {
-    background: transparent;
-    border: 1px solid var(--color-line);
-    color: var(--color-muted);
-    width: 2.25rem;
-    height: 2.25rem;
+    padding: 0.42rem 0.72rem;
     border-radius: var(--radius);
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1;
-    flex-shrink: 0;
+    white-space: nowrap;
     transition:
-      color 0.18s ease,
-      border-color 0.18s ease;
+      color 0.16s ease,
+      background 0.16s ease;
   }
-  .theme-toggle:hover {
+  .site-nav__link:hover {
     color: var(--color-paper);
-    border-color: var(--color-gold);
+    background: var(--color-surface-2);
+  }
+  .site-nav__link.is-active {
+    color: var(--color-accent);
+    font-weight: 700;
+    background: color-mix(in srgb, var(--color-accent) 11%, transparent);
   }
 
-  /* 平板与手机：导航独立一行、四栏等宽分布，避免与品牌挤在同一行 */
-  @media (max-width: 960px) {
-    .site-header__inner {
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--space-3) var(--space-4);
-      padding-block: var(--space-3) var(--space-4);
-    }
-    .brand {
-      margin-right: 0;
-      gap: var(--space-2);
-    }
-    .brand__cn {
-      font-size: 1.15rem;
-    }
-    .brand__en {
-      font-size: 0.82rem;
-    }
-    .theme-toggle {
-      order: 2;
-      margin-left: auto;
+  .header-tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .search-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 2.15rem;
+    padding: 0 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    transition:
+      color 0.16s ease,
+      border-color 0.16s ease,
+      background 0.16s ease;
+  }
+  .search-pill:hover,
+  .search-pill.is-active {
+    color: var(--color-paper);
+    border-color: var(--color-accent);
+    background: var(--color-surface-2);
+  }
+
+  .theme-group {
+    display: inline-flex;
+    align-items: center;
+    height: 2.15rem;
+    padding: 2px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    gap: 2px;
+  }
+  .theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-muted);
+    height: 100%;
+    padding: 0 0.52rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.76rem;
+    line-height: 1;
+    transition:
+      color 0.16s ease,
+      background 0.16s ease;
+  }
+  .theme-btn:hover {
+    color: var(--color-paper);
+    background: var(--color-surface-2);
+  }
+  .theme-btn--auto[aria-pressed='true'] {
+    color: var(--color-accent);
+    font-weight: 600;
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  }
+
+  .nav-burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-paper);
+    cursor: pointer;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 980px) {
+    .nav-burger {
+      display: inline-flex;
     }
     .site-nav {
-      order: 3;
-      flex: 1 1 100%;
-      width: 100%;
-      padding-top: var(--space-2);
-      border-top: 1px solid var(--color-line);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-line);
+      box-shadow: var(--shadow-float);
+      padding: var(--space-3) var(--space-5) var(--space-4);
+      display: none;
+    }
+    .site-nav.is-open {
+      display: block;
     }
     .site-nav ul {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--space-2);
-      width: 100%;
-    }
-    .site-nav__en {
-      display: none;
     }
     .site-nav__link {
-      align-items: center;
-      text-align: center;
-      padding: var(--space-2) var(--space-1);
-      min-height: 2.75rem;
       justify-content: center;
-    }
-    .site-nav__cn {
-      font-size: 0.95rem;
-      white-space: nowrap;
+      padding: 0.58rem var(--space-2);
+      border: 1px solid var(--color-line);
+      background: var(--color-bg);
+      font-size: 0.9rem;
     }
   }
 
-  @media (max-width: 400px) {
-    .site-nav__cn {
-      font-size: 0.88rem;
+  @media (max-width: 560px) {
+    .brand__sub {
+      display: none;
+    }
+    .search-pill__label {
+      display: none;
+    }
+    .search-pill {
+      width: 2.15rem;
+      padding: 0;
+      justify-content: center;
+    }
+    .site-nav ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>
 
 <script>
+  type ThemeWin = Window & {
+    inferredApplyTheme?: (t: string) => void;
+    inferredStoredTheme?: () => string | null;
+    inferredSystemTheme?: () => string;
+  };
+  const win = window as ThemeWin;
   const header = document.querySelector<HTMLElement>('.site-header');
   const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const autoBtn = document.querySelector<HTMLButtonElement>('[data-theme-auto]');
   const icon = document.querySelector<HTMLElement>('[data-theme-icon]');
+  const burger = document.querySelector<HTMLButtonElement>('[data-nav-burger]');
+  const burgerIcon = document.querySelector<HTMLElement>('[data-burger-icon]');
+  const nav = document.getElementById('primary-nav');
 
   function currentTheme(): 'light' | 'dark' {
     return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   }
 
-  function paintIcon() {
-    if (icon) icon.textContent = currentTheme() === 'light' ? '◐' : '◑';
+  function paintThemeControls() {
+    const isLight = currentTheme() === 'light';
+    const isAuto = !win.inferredStoredTheme?.();
+    if (icon) icon.textContent = isLight ? '日' : '夜';
+    if (toggle) {
+      const label = isLight ? '当前日间模式，点击切换夜间' : '当前夜间模式，点击切换日间';
+      toggle.setAttribute('aria-label', label);
+      toggle.setAttribute('title', label);
+    }
+    if (autoBtn) {
+      autoBtn.setAttribute('aria-pressed', isAuto ? 'true' : 'false');
+    }
+  }
+
+  function setMenu(open: boolean) {
+    if (!nav || !burger) return;
+    nav.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? '收起导航菜单' : '展开导航菜单');
+    if (burgerIcon) burgerIcon.textContent = open ? '✕' : '☰';
   }
 
   function syncHeaderHeight() {
@@ -267,21 +359,51 @@ const isActive = (href: string) => {
     );
   }
 
-  paintIcon();
+  paintThemeControls();
   syncHeaderHeight();
   window.addEventListener('resize', syncHeaderHeight, { passive: true });
+  window.addEventListener('inferred:theme-changed', paintThemeControls);
   if (typeof ResizeObserver !== 'undefined' && header) {
     new ResizeObserver(syncHeaderHeight).observe(header);
   }
 
   toggle?.addEventListener('click', () => {
     const next = currentTheme() === 'light' ? 'dark' : 'light';
-    (window as unknown as { inferredApplyTheme?: (theme: string) => void }).inferredApplyTheme?.(
-      next
-    );
     try {
       localStorage.setItem('inferred:theme', next);
-    } catch (e) {}
-    paintIcon();
+    } catch (_) {}
+    win.inferredApplyTheme?.(next);
+    paintThemeControls();
+  });
+
+  autoBtn?.addEventListener('click', () => {
+    try {
+      localStorage.removeItem('inferred:theme');
+    } catch (_) {}
+    win.inferredApplyTheme?.(win.inferredSystemTheme?.() ?? 'dark');
+    paintThemeControls();
+  });
+
+  burger?.addEventListener('click', () => {
+    setMenu(!nav?.classList.contains('is-open'));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav?.classList.contains('is-open')) {
+      setMenu(false);
+      burger?.focus();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node | null;
+    if (
+      nav?.classList.contains('is-open') &&
+      target &&
+      !nav.contains(target) &&
+      !burger?.contains(target)
+    ) {
+      setMenu(false);
+    }
   });
 </script>

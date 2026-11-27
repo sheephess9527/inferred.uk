@@ -3,18 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="线索中断｜Inferred"
+  title="线索中断｜推知"
   description="这条线索没有指向任何案卷。"
   path="/404"
   noindex={true}
 >
   <section class="container notfound">
-    <p class="eyebrow">Error 404 · 线索中断</p>
+    <p class="eyebrow">卷宗缺失 · 线索中断</p>
     <h1 class="notfound__title">这条线索<br />没有指向任何案卷。</h1>
     <p class="notfound__lead text-muted">你要找的页面不存在，或者已被归档到别处。</p>
     <div class="notfound__actions">
-      <a class="btn" href="/">返回首页</a>
-      <a class="btn btn--ghost" href="/cases/">查看案卷</a>
+      <a class="btn btn--primary" href="/">返回首页</a>
+      <a class="btn btn--ghost" href="/cases/">翻阅案卷库</a>
     </div>
   </section>
 </BaseLayout>
