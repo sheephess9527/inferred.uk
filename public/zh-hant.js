@@ -52,6 +52,10 @@
     try {
       var saved = localStorage.getItem(KEY);
       if (saved === "hant" || saved === "hans") return saved;
+      var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ""];
+      for (var i = 0; i < langs.length; i++) {
+        if (/^zh-(tw|hk|mo|hant)\b/i.test(String(langs[i] || "").trim())) return "hant";
+      }
     } catch (e) {}
     return "hans";
   }
